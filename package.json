@@ -1,0 +1,21 @@
+{
+  "name": "lobbywatch-rooster",
+  "version": "0.1.0",
+  "description": "Lobbywatch 2017",
+  "scripts": {
+    "dev": "nodemon -w server.js server.js",
+    "build": "next build",
+    "start": "NODE_ENV=production node server.js"
+  },
+  "author": "Thomas Preusse <t@preus.se> (https://t.preus.se/)",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "express": "^4.14.0",
+    "isomorphic-fetch": "^2.2.1",
+    "next": "^2.0.0-beta.17"
+  },
+  "devDependencies": {
+    "babel-root-import": "^4.1.5",
+    "nodemon": "^1.11.0"
+  }
+}
