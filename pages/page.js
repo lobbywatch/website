@@ -1,26 +1,46 @@
 import React, {Component} from 'react'
-import fetch from '~/api/fetch'
 
-export default class extends Component {
-  static async getInitialProps(p) {
-    const {query, res} = p;
-    return fetch(`http://localhost:2000${query.path}?load-entity-refs=taxonomy_term,file&max-depth=1`)
-      .then(data => ({page: data}))
-      .catch(error => {
-        if (res && error.response && error.response.status === 404) {
-          res.statusCode = 404
-          res.end('Not found')
-          return
-        } else {
-          throw error
-        }
-      })
+import gql from 'graphql-tag'
+import {graphql} from 'react-apollo'
+
+import withData, {serverContext} from '~/apollo/withData'
+
+const pageQuery = gql`
+  query page($path: String!) {
+    page(path: $path) {
+      statusCode,
+      title,
+      content
+    }
   }
-  render() {
-    const {page: {title, body}} = this.props;
-    return <div>
-      <h1>{title}</h1>
-      <div dangerouslySetInnerHTML={{__html: body.value}}></div>
-    </div>
+`
+
+const Page = ({title, content}) => (
+  <div>
+    <h1>{title}</h1>
+    <div dangerouslySetInnerHTML={{__html: content}}></div>
+  </div>
+)
+
+const PageWithQuery = graphql(pageQuery, {
+  options: ({url}) => {
+    return {
+      variables: {
+        path: url.query.path
+      }
+    }
+  },
+  props: ({data, ownProps: {url}}) => {
+    if (serverContext) {
+      if (data.page && data.page.statusCode) {
+        serverContext.res.statusCode = 404
+      }
+    }
+    return {
+      ...data.page,
+      path: url.query.path
+    }
   }
-}
+})(Page)
+
+export default withData(PageWithQuery);

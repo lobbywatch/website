@@ -17,6 +17,7 @@ type Meta {
   links: [MenuLink]
 }
 type Page {
+  statusCode: Int
   title: String
   content: String
 }
