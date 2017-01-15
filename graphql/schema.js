@@ -1,21 +1,29 @@
 const typeDefinitions = `
-type Author {
-  id: Int!
-  firstName: String
-  lastName: String
-  posts: [Post]
+enum Locale {
+  de
+  fr
 }
-type Post {
-  id: Int!
-  tags: [String]
+type MenuLink {
   title: String
-  text: String
-  views: Int
-  author: Author
+  href: String
+}
+type Block {
+  key: String
+  title: String
+  content: String
+}
+type Meta {
+  blocks: [Block]
+  links: [MenuLink]
+}
+type Page {
+  title: String
+  content: String
 }
 
 type RootQuery {
-  author(firstName: String, lastName: String): Author
+  meta(locale: Locale!): Meta
+  page(path: String!): Page
 }
 
 schema {

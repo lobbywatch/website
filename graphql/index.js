@@ -4,17 +4,10 @@ const {makeExecutableSchema, addMockFunctionsToSchema} = require('graphql-tools'
 
 const Schema = require('./schema')
 const Resolvers = require('./resolvers')
-const Mocks = require('./mocks')
 
 const executableSchema = makeExecutableSchema({
   typeDefs: Schema,
   resolvers: Resolvers
-})
-
-addMockFunctionsToSchema({
-  schema: executableSchema,
-  mocks: Mocks,
-  preserveResolvers: true
 })
 
 module.exports = server => {
