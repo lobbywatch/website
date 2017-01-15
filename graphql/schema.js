@@ -21,10 +21,21 @@ type Page {
   title: String
   content: String
 }
+type Article {
+  url: String
+  title: String
+  image: String
+  content: String
+  created: Int
+  categories: [String]!
+  tags: [String]!
+  lobbyGroups: [String]!
+}
 
 type RootQuery {
   meta(locale: Locale!): Meta
   page(path: String!): Page
+  articles(locale: Locale!, limit: Int = 3, page: Int = 0): [Article]
 }
 
 schema {

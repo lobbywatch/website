@@ -17,7 +17,7 @@ const pageQuery = gql`
   }
 `
 
-const Page = ({title, content, locale}) => (
+const Page = ({title, content, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <h1>{title}</h1>
     <div dangerouslySetInnerHTML={{__html: content}}></div>
@@ -38,11 +38,7 @@ const PageWithQuery = graphql(pageQuery, {
         serverContext.res.statusCode = 404
       }
     }
-    return {
-      ...data.page,
-      path: url.query.path,
-      locale: url.query.locale
-    }
+    return data.page
   }
 })(Page)
 
