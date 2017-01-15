@@ -1,6 +1,8 @@
 const express = require('express')
 const next = require('next')
 const acceptLanguage = require('accept-language')
+
+const graphql = require('./graphql')
 const {locales} = require('./src/constants')
 
 const DEV = process.env.NODE_ENV !== 'production'
@@ -14,6 +16,8 @@ acceptLanguage.languages(locales)
 
 app.prepare().then(() => {
   const server = express()
+
+  graphql(server)
 
   server.get('/', (req, res) => {
     res.redirect(`/${acceptLanguage.get(req.headers['accept-language'])}`);

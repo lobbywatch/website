@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Lobbywatch 2017",
   "scripts": {
-    "dev": "nodemon -w server.js server.js",
+    "dev": "nodemon -w server.js -w graphql server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js"
   },
@@ -11,7 +11,11 @@
   "license": "BSD-3-Clause",
   "dependencies": {
     "accept-language": "^3.0.15",
+    "body-parser": "^1.15.2",
     "express": "^4.14.0",
+    "graphql": "^0.8.2",
+    "graphql-server-express": "^0.5.0",
+    "graphql-tools": "^0.9.0",
     "isomorphic-fetch": "^2.2.1",
     "next": "^2.0.0-beta.17"
   },
