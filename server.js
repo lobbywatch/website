@@ -26,7 +26,7 @@ app.prepare().then(() => {
     app.render(req, res, '/index', {locale: req.params.locale})
   })
   server.get(`/${localeSegment}/*`, (req, res) => {
-    app.render(req, res, '/page', {path: req.path})
+    app.render(req, res, '/page', {locale: req.params.locale, path: req.path})
   })
   server.get('*', (req, res) => handle(req, res))
 

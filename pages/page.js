@@ -5,6 +5,8 @@ import {graphql} from 'react-apollo'
 
 import withData, {serverContext} from '~/apollo/withData'
 
+import Frame from '~/components/Frame'
+
 const pageQuery = gql`
   query page($path: String!) {
     page(path: $path) {
@@ -15,11 +17,11 @@ const pageQuery = gql`
   }
 `
 
-const Page = ({title, content}) => (
-  <div>
+const Page = ({title, content, locale}) => (
+  <Frame locale={locale}>
     <h1>{title}</h1>
     <div dangerouslySetInnerHTML={{__html: content}}></div>
-  </div>
+  </Frame>
 )
 
 const PageWithQuery = graphql(pageQuery, {
@@ -38,7 +40,8 @@ const PageWithQuery = graphql(pageQuery, {
     }
     return {
       ...data.page,
-      path: url.query.path
+      path: url.query.path,
+      locale: url.query.locale
     }
   }
 })(Page)
