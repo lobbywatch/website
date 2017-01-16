@@ -29,12 +29,12 @@ const Footer = ({links, blocks, locale}) => (
         .map(block => (
           <div key={block.key}>
             <h2>{block.title}</h2>
-            <div dangerouslySetInnerHTML={{__html: block.content}}></div>
+            <div dangerouslySetInnerHTML={{__html: block.content}} />
           </div>
         ))
     }
     <ul>
-    {
+      {
       (links || []).map((link, i) => (
         <li key={i}>
           <Link
@@ -57,12 +57,9 @@ const FooterWithQuery = graphql(metaQuery, {
       }
     }
   },
-  props: ({data, ownProps}) => {
-    return {
-      ...data.meta,
-      ...ownProps
-    }
+  props: ({data}) => {
+    return data.meta
   }
 })(Footer)
 
-export default FooterWithQuery;
+export default FooterWithQuery

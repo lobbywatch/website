@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
@@ -20,7 +20,7 @@ const pageQuery = gql`
 const Page = ({title, content, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <h1>{title}</h1>
-    <div dangerouslySetInnerHTML={{__html: content}}></div>
+    <div dangerouslySetInnerHTML={{__html: content}} />
   </Frame>
 )
 
@@ -35,11 +35,11 @@ const PageWithQuery = graphql(pageQuery, {
   props: ({data, ownProps: {url}}) => {
     if (serverContext) {
       if (data.page && data.page.statusCode) {
-        serverContext.res.statusCode = 404
+        serverContext.res.statusCode = data.page.statusCode
       }
     }
     return data.page
   }
 })(Page)
 
-export default withData(PageWithQuery);
+export default withData(PageWithQuery)

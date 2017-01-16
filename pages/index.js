@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import Link from 'next/link'
 
 import gql from 'graphql-tag'
@@ -49,4 +49,4 @@ const IndexWithQuery = graphql(articleQuery, {
   }
 })(Index)
 
-export default withData(IndexWithQuery);
+export default withData(IndexWithQuery)

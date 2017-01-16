@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "nodemon -w server.js -w graphql server.js",
     "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "start": "NODE_ENV=production node server.js",
+    "test": "standard 'src/**/*.js' 'pages/**/*.js'",
+    "standardize": "standard --fix 'src/**/*.js' 'pages/**/*.js'"
   },
   "author": "Thomas Preusse <t@preus.se> (https://t.preus.se/)",
   "license": "BSD-3-Clause",
@@ -26,6 +28,7 @@
   },
   "devDependencies": {
     "babel-root-import": "^4.1.5",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "standard": "^8.6.0"
   }
 }

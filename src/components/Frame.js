@@ -18,7 +18,7 @@ const Frame = ({locale: currentLocale, children}) => (
           {
             intersperse(locales.map(locale => {
               if (locale === currentLocale) {
-                return locale;
+                return locale
               }
 
               return (
@@ -38,4 +38,4 @@ const Frame = ({locale: currentLocale, children}) => (
   </div>
 )
 
-export default Frame;
+export default Frame
