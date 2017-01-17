@@ -7,6 +7,7 @@ import {graphql} from 'react-apollo'
 import withData from '~/apollo/withData'
 
 import Frame from '~/components/Frame'
+import ParliamentarianSelect from '~/components/ParliamentarianSelect'
 
 const articleQuery = gql`
   query article($locale: Locale!) {
@@ -19,6 +20,7 @@ const articleQuery = gql`
 
 const Index = ({articles, url: {query: {locale}}}) => (
   <Frame locale={locale}>
+    <ParliamentarianSelect locale={locale} />
     <h1>Blog</h1>
     {(articles || []).map((article, i) => (
       <div key={i}>

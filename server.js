@@ -20,10 +20,13 @@ app.prepare().then(() => {
   graphql(server)
 
   server.get('/', (req, res) => {
-    res.redirect(`/${acceptLanguage.get(req.headers['accept-language'])}`);
+    res.redirect(`/${acceptLanguage.get(req.headers['accept-language'])}`)
   })
   server.get(`/${localeSegment}`, (req, res) => {
     app.render(req, res, '/index', {locale: req.params.locale})
+  })
+  server.get(`/${localeSegment}/daten/parlamentarier/:id/:name`, (req, res) => {
+    app.render(req, res, '/parliamentarian', {locale: req.params.locale, id: req.params.id})
   })
   server.get(`/${localeSegment}/*`, (req, res) => {
     app.render(req, res, '/page', {locale: req.params.locale, path: req.path})
