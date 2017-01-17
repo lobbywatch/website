@@ -25,11 +25,16 @@ export default (Component) => (
         serverContext = null
       }
 
-      const initialProps = {
-        initialState: store.getState(),
+      const state = store.getState()
+      return {
+        initialState: {
+          ...state,
+          apollo: {
+            data: state.apollo.data
+          }
+        },
         headers
       }
-      return initialProps
     }
 
     constructor (props) {
