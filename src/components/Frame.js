@@ -35,7 +35,7 @@ const Frame = ({locale: currentLocale, children}) => (
     </div>
     {children}
     <Footer locale={currentLocale} />
-    <style>{`
+    <style jsx global>{`
     @import url('https://fonts.googleapis.com/css?family=Roboto');
     body {
       max-width: 800px;
@@ -44,6 +44,9 @@ const Frame = ({locale: currentLocale, children}) => (
     }
     body, h1, h2 {
       font-family: 'Roboto', sans-serif;
+    }
+    a, a:visited {
+      color: #2897d7;
     }
     `}</style>
   </div>
