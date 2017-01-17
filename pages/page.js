@@ -17,9 +17,10 @@ const pageQuery = gql`
   }
 `
 
-const Page = ({title, content, url: {query: {locale}}}) => (
+const Page = ({title, content, loading, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <h1>{title}</h1>
+    {loading && <span>Lädt...</span>}
     <div dangerouslySetInnerHTML={{__html: content}} />
   </Frame>
 )
@@ -38,7 +39,10 @@ const PageWithQuery = graphql(pageQuery, {
         serverContext.res.statusCode = data.page.statusCode
       }
     }
-    return data.page
+    return {
+      loading: data.loading,
+      ...data.page
+    }
   }
 })(Page)
 

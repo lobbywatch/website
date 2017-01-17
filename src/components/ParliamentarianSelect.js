@@ -22,7 +22,7 @@ const ParliamentarianSelect = ({parliamentarians, locale, loading}) => (
       `/${locale}/daten/parlamentarier/${value}`
     )
   }}>
-    <option />
+    <option>{loading ? 'Lädt...' : ''}</option>
     {parliamentarians.map(({firstName, lastName, id}) => (
       <option
         key={id}

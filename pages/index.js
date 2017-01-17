@@ -18,11 +18,12 @@ const articleQuery = gql`
   }
 `
 
-const Index = ({articles, url: {query: {locale}}}) => (
+const Index = ({articles, loading, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <ParliamentarianSelect locale={locale} />
     <h1>Blog</h1>
-    {(articles || []).map((article, i) => (
+    {loading && <span>Lädt...</span>}
+    {articles.map((article, i) => (
       <div key={i}>
         <h2>
           <Link
@@ -46,7 +47,8 @@ const IndexWithQuery = graphql(articleQuery, {
   },
   props: ({data, ownProps: {url}}) => {
     return {
-      articles: data.articles
+      loading: data.loading,
+      articles: data.articles || []
     }
   }
 })(Index)

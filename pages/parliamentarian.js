@@ -8,7 +8,7 @@ import withData, {serverContext} from '~/apollo/withData'
 import Frame from '~/components/Frame'
 
 const parliamentarianQuery = gql`
-  query parliamentarian($locale: Locale!, $id: Int!) {
+  query getParliamentarian($locale: Locale!, $id: Int!) {
     getParliamentarian(locale: $locale, id: $id) {
       firstName,
       lastName,
@@ -24,9 +24,10 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({firstName, dateOfBirth, gender, lastName, partyMembership, content, url: {query: {locale}}}) => (
+const Parliamentarian = ({loading, firstName, dateOfBirth, gender, lastName, partyMembership, content, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <h1>{firstName} {lastName}</h1>
+    {loading && <span>Lädt...</span>}
     <dl>
       <dt>Person</dt>
       <dd>{dateOfBirth} {gender}</dd>
@@ -40,8 +41,8 @@ const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
   options: ({url}) => {
     return {
       variables: {
-        locale: url.query.locale,
-        id: url.query.id
+        id: url.query.id,
+        locale: url.query.locale
       }
     }
   },
@@ -51,7 +52,10 @@ const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
         serverContext.res.statusCode = data.getParliamentarian.statusCode
       }
     }
-    return data.getParliamentarian
+    return {
+      loading: data.loading,
+      ...data.getParliamentarian
+    }
   }
 })(Parliamentarian)
 
