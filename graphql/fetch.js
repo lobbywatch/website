@@ -24,7 +24,15 @@ const defaultOptions = {
 }
 
 module.exports = (url, options = defaultOptions) => {
+  const start = new Date().getTime()
   return fetch(url, options)
+    .then(response => {
+      const end = new Date().getTime()
+      console.info('[fetch]', url)
+      console.info(`${response.status} ${end - start}ms`)
+
+      return response
+    })
     .then(checkStatus)
-    .then(response => response.json())
+    .then(response => response.json().then(json => ({response, json})))
 }

@@ -7,6 +7,7 @@ const resolveFunctions = {
   RootQuery: {
     meta (_, {locale}) {
       return fetch(`${DRUPAL_BASE_URL}/${encodeURIComponent(locale)}/daten/meta`)
+        .then(({json}) => json)
     },
     page (_, {path}) {
       const query = {
@@ -16,9 +17,10 @@ const resolveFunctions = {
       const segments = path.split('/').filter(Boolean).map(encodeURIComponent)
       return fetch(`${DRUPAL_BASE_URL}/${segments.join('/')}?${qs.encode(query)}`)
         .then(
-          data => ({
-            title: data.title,
-            content: data.body.value
+          ({json, response}) => ({
+            statusCode: response.status,
+            title: json.title,
+            content: json.body.value
           }),
           error => {
             if (error.response && error.response.status === 404) {
@@ -44,17 +46,17 @@ const resolveFunctions = {
       }
 
       return fetch(`${DRUPAL_BASE_URL}/${encodeURIComponent(locale)}?${qs.encode(query)}`)
-        .then(data => data.list.map(mapArticle))
+        .then(({json}) => json.list.map(mapArticle))
     },
     parliamentarians (_, {locale}) {
       return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/flat/list&limit=none`)
-        .then(json => {
+        .then(({json}) => {
           return json.data.map(mapParliamentarian)
         })
     },
     getParliamentarian (_, {locale, id}) {
       return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/flat/id/${encodeURIComponent(id)}`)
-        .then(json => {
+        .then(({json}) => {
           return mapParliamentarian(json.data)
         })
     }

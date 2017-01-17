@@ -1,4 +1,7 @@
+const {timeFormat} = require('d3-time-format')
 const {DRUPAL_BASE_URL} = require('../src/constants')
+
+const dateTimeFormat = timeFormat('%Y-%m-%d %H:%M')
 
 exports.mapParliamentarian = raw => {
   return {
@@ -22,7 +25,7 @@ exports.mapParliamentarian = raw => {
 exports.mapArticle = raw => {
   return Object.assign({}, raw, {
     url: raw.url.replace(DRUPAL_BASE_URL, ''),
-    created: +raw.created * 1000,
+    created: raw.created ? dateTimeFormat(+raw.created * 1000) : null,
     content: raw.body.value,
     categories: (raw.field_category || [])
       .map(category => category.name),

@@ -29,7 +29,8 @@ type Article {
   title: String
   image: String
   content: String
-  created: Int
+  # YYYY-MM-DD HH-MM
+  created: String
   categories: [String!]!
   tags: [String!]!
   lobbyGroups: [String!]!
