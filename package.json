@@ -2,12 +2,16 @@
   "name": "lobbywatch-rooster",
   "version": "0.1.0",
   "engines": {
-    "node": "7.4.x"
+    "node": "6.9.x"
   },
+  "cacheDirectories": [
+    "nextjs/node_modules"
+  ],
   "description": "Lobbywatch 2017",
   "scripts": {
     "dev": "nodemon -w server.js -w graphql server.js",
     "build": "next build",
+    "postinstall": "./bin/build.sh",
     "start": "NODE_ENV=production node server.js",
     "test": "standard 'src/**/*.js' 'pages/**/*.js'",
     "standardize": "standard --fix 'src/**/*.js' 'pages/**/*.js'"

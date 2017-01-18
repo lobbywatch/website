@@ -4,10 +4,10 @@ import Link from 'next/prefetch'
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
-import withData from '~/apollo/withData'
+import withData from '../src/apollo/withData'
 
-import Frame from '~/components/Frame'
-import ParliamentarianSelect from '~/components/ParliamentarianSelect'
+import Frame from '../src/components/Frame'
+import ParliamentarianSelect from '../src/components/ParliamentarianSelect'
 
 const articleQuery = gql`
   query article($locale: Locale!) {

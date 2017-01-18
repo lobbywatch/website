@@ -1,7 +1,7 @@
 // common js for server
 
 exports.locales = ['de', 'fr']
-exports.EXPRESS_PORT = 3000
+exports.EXPRESS_PORT = typeof process !== 'undefined' && process.env.PORT || 3000
 exports.DRUPAL_BASE_URL = 'https://lobbywatch-cms.interactivethings.io'
 
 const location = typeof window !== 'undefined' && window.location

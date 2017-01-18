@@ -3,9 +3,9 @@ import React from 'react'
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
-import withData from '~/apollo/withData'
+import withData from '../src/apollo/withData'
 
-import Frame from '~/components/Frame'
+import Frame from '../src/components/Frame'
 
 const pageQuery = gql`
   query page($path: String!) {

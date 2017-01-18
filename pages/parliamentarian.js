@@ -3,9 +3,9 @@ import React from 'react'
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
-import withData, {serverContext} from '~/apollo/withData'
+import withData, {serverContext} from '../src/apollo/withData'
 
-import Frame from '~/components/Frame'
+import Frame from '../src/components/Frame'
 
 const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: Int!) {

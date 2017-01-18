@@ -1,10 +1,10 @@
 import React from 'react'
 import Link from 'next/prefetch'
 
-import {locales} from '~/constants'
-import {intersperse} from '~/utils/helpers'
+import {locales} from '../constants'
+import {intersperse} from '../utils/helpers'
 
-import Footer from '~/components/Footer'
+import Footer from '../components/Footer'
 
 const Frame = ({locale: currentLocale, children}) => (
   <div>
