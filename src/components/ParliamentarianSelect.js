@@ -1,5 +1,6 @@
 import React from 'react'
 import Router from 'next/router'
+import {prefetch} from 'next/prefetch'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
@@ -15,7 +16,7 @@ const parliamentarianQuery = gql`
 `
 
 const ParliamentarianSelect = ({parliamentarians, locale, loading}) => (
-  <select disabled={loading} onChange={event => {
+  <select disabled={loading} onFocus={() => prefetch('/parliamentarian')} onChange={event => {
     const value = event.target.value
     Router.push(
       `/parliamentarian?id=${value.split('/')[0]}&locale=${locale}`,

@@ -1,5 +1,5 @@
 import React from 'react'
-import Link from 'next/link'
+import Link from 'next/prefetch'
 
 import {locales} from '~/constants'
 import {intersperse} from '~/utils/helpers'
