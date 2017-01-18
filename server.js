@@ -3,10 +3,9 @@ const next = require('next')
 const acceptLanguage = require('accept-language')
 
 const graphql = require('./graphql')
-const {locales} = require('./src/constants')
+const {locales, EXPRESS_PORT} = require('./src/constants')
 
 const DEV = process.env.NODE_ENV !== 'production'
-const PORT = 3000
 
 const app = next({dir: '.', dev: DEV})
 const handle = app.getRequestHandler()
@@ -33,8 +32,8 @@ app.prepare().then(() => {
   })
   server.get('*', (req, res) => handle(req, res))
 
-  server.listen(PORT, (err) => {
+  server.listen(EXPRESS_PORT, (err) => {
     if (err) throw err
-    console.log(`> Ready on port ${PORT}`)
+    console.log(`> Ready on port ${EXPRESS_PORT}`)
   })
 })

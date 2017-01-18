@@ -19,7 +19,8 @@ const checkStatus = (response) => {
 
 const defaultOptions = {
   headers: {
-    Accept: 'application/json'
+    Accept: 'application/json',
+    Authorization: `Basic ${(new Buffer('lobbywatch:#IchBinKeineTentakelPuppe')).toString('base64')}`
   }
 }
 

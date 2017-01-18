@@ -1,7 +1,6 @@
 import ApolloClient, {createNetworkInterface} from 'apollo-client'
 import {IS_SERVER} from './exenv'
-
-const GRAPHQL_URI = `http://localhost:3000/graphql`
+import {GRAPHQL_URI} from '~/constants'
 
 export const initClient = (headers) => {
   const client = new ApolloClient({
