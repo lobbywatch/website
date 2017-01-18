@@ -5,8 +5,6 @@ import {IS_SERVER} from './exenv'
 import {initClient} from './initClient'
 import {initStore} from './initStore'
 
-export let serverContext = null
-
 export default (Component) => (
   class extends React.Component {
     static async getInitialProps (ctx) {
@@ -17,12 +15,10 @@ export default (Component) => (
       if (IS_SERVER) {
         const app = (
           <ApolloProvider client={client} store={store}>
-            <Component url={{ query: ctx.query, pathname: ctx.pathname }} />
+            <Component url={{ query: ctx.query, pathname: ctx.pathname }} serverContext={ctx} />
           </ApolloProvider>
         )
-        serverContext = ctx
         await getDataFromTree(app)
-        serverContext = null
       }
 
       const state = store.getState()

@@ -3,7 +3,7 @@ import React from 'react'
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
-import withData, {serverContext} from '~/apollo/withData'
+import withData from '~/apollo/withData'
 
 import Frame from '~/components/Frame'
 
@@ -33,7 +33,7 @@ const PageWithQuery = graphql(pageQuery, {
       }
     }
   },
-  props: ({data, ownProps: {url}}) => {
+  props: ({data, ownProps: {url, serverContext}}) => {
     if (serverContext) {
       if (data.page && data.page.statusCode) {
         serverContext.res.statusCode = data.page.statusCode
