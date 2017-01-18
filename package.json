@@ -1,6 +1,9 @@
 {
   "name": "lobbywatch-rooster",
   "version": "0.1.0",
+  "engines": {
+    "node": "7.4.x"
+  },
   "description": "Lobbywatch 2017",
   "scripts": {
     "dev": "nodemon -w server.js -w graphql server.js",
