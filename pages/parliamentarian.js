@@ -6,6 +6,7 @@ import {graphql} from 'react-apollo'
 import withData, {serverContext} from '../src/apollo/withData'
 
 import Frame from '../src/components/Frame'
+import {H1} from '../src/components/Styled'
 
 const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: Int!) {
@@ -26,7 +27,7 @@ const parliamentarianQuery = gql`
 
 const Parliamentarian = ({loading, firstName, dateOfBirth, gender, lastName, partyMembership, content, url: {query: {locale}}}) => (
   <Frame locale={locale}>
-    <h1>{firstName} {lastName}</h1>
+    <H1>{firstName} {lastName}</H1>
     {loading && <span>Lädt...</span>}
     <dl>
       <dt>Person</dt>

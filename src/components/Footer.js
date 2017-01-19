@@ -1,8 +1,10 @@
 import React from 'react'
-import Link from 'next/prefetch'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
+
+import RawHtml from './RawHtml'
+import {H2, Link} from './Styled'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {
@@ -28,8 +30,9 @@ const Footer = ({links, blocks, locale}) => (
         .filter(block => block.key === 'block_8')
         .map(block => (
           <div key={block.key}>
-            <h2>{block.title}</h2>
-            <div dangerouslySetInnerHTML={{__html: block.content}} />
+            <H2>{block.title}</H2>
+
+            <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
           </div>
         ))
     }

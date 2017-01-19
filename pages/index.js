@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/prefetch'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
@@ -7,6 +6,7 @@ import {graphql} from 'react-apollo'
 import withData from '../src/apollo/withData'
 
 import Frame from '../src/components/Frame'
+import {Link, H1, H3} from '../src/components/Styled'
 import ParliamentarianSelect from '../src/components/ParliamentarianSelect'
 
 const articleQuery = gql`
@@ -21,17 +21,17 @@ const articleQuery = gql`
 const Index = ({articles, loading, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <ParliamentarianSelect locale={locale} />
-    <h1>Blog</h1>
+    <H1>Blog</H1>
     {loading && <span>Lädt...</span>}
     {articles.map((article, i) => (
       <div key={i}>
-        <h2>
+        <H3>
           <Link
             href={`/page?path=${encodeURIComponent(article.url)}&locale=${locale}`}
             as={article.url}>
             {article.title}
           </Link>
-        </h2>
+        </H3>
       </div>
     ))}
   </Frame>

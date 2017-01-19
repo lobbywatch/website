@@ -1,0 +1,10 @@
+export const LW_BLUE = '#0077D7'
+export const LW_BLUE_DARK = '#112233'
+export const LW_BLUE_LIGHT = '#74D7FF'
+
+export const BLACK = '#000'
+export const GREY_DARK = '#666'
+export const GREY_MID = '#999'
+export const GREY_LIGHT = '#ddd'
+export const GREY_SOFT = '#f2f2f2'
+export const WHITE = '#fff'
