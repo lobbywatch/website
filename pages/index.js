@@ -7,7 +7,6 @@ import withData from '../src/apollo/withData'
 
 import Frame from '../src/components/Frame'
 import {Link, H1, H3} from '../src/components/Styled'
-import ParliamentarianSelect from '../src/components/ParliamentarianSelect'
 
 const articleQuery = gql`
   query article($locale: Locale!) {
@@ -20,7 +19,6 @@ const articleQuery = gql`
 
 const Index = ({articles, loading, url: {query: {locale}}}) => (
   <Frame locale={locale}>
-    <ParliamentarianSelect locale={locale} />
     <H1>Blog</H1>
     {loading && <span>Lädt...</span>}
     {articles.map((article, i) => (

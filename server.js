@@ -24,6 +24,9 @@ app.prepare().then(() => {
   server.get(`/${localeSegment}`, (req, res) => {
     app.render(req, res, '/index', {locale: req.params.locale})
   })
+  server.get(`/${localeSegment}/daten/parlamentarier`, (req, res) => {
+    app.render(req, res, '/parliamentarians', {locale: req.params.locale})
+  })
   server.get(`/${localeSegment}/daten/parlamentarier/:id/:name`, (req, res) => {
     app.render(req, res, '/parliamentarian', {locale: req.params.locale, id: req.params.id})
   })

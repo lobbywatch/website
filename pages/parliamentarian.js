@@ -3,7 +3,7 @@ import React from 'react'
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
-import withData, {serverContext} from '../src/apollo/withData'
+import withData from '../src/apollo/withData'
 
 import Frame from '../src/components/Frame'
 import {H1} from '../src/components/Styled'
@@ -47,7 +47,7 @@ const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
       }
     }
   },
-  props: ({data}) => {
+  props: ({data, ownProps: {serverContext}}) => {
     if (serverContext) {
       if (data.getParliamentarian && data.getParliamentarian.statusCode) {
         serverContext.res.statusCode = data.getParliamentarian.statusCode
