@@ -8,7 +8,7 @@ import {intersperse} from '../utils/helpers'
 import Footer from '../components/Footer'
 import {Link} from './Styled'
 import Logo from '../assets/Logo'
-import {LW_BLUE} from '../colors'
+import {LW_BLUE} from '../theme'
 
 const titleStyle = css({
   fontSize: 24,

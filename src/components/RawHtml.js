@@ -1,5 +1,5 @@
 import React from 'react'
-import {LW_BLUE} from '../colors'
+import {LW_BLUE} from '../theme'
 
 const RawHtml = ({dangerouslySetInnerHTML}) => (
   <div className='RawHtml'>

@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {LW_BLUE_LIGHT} from '../colors'
+import {LW_BLUE_LIGHT} from '../theme'
 
 const Logo = ({size, style}) => (
   <svg width={size} height={size} style={style} viewBox='0 0 74 74'>
