@@ -1,5 +1,6 @@
 import React from 'react'
 import RawLink from 'next/prefetch'
+import Head from 'next/head'
 import {css} from 'glamor'
 
 import {locales} from '../constants'
@@ -8,7 +9,7 @@ import {intersperse} from '../utils/helpers'
 import Footer from '../components/Footer'
 import {Link} from './Styled'
 import Logo from '../assets/Logo'
-import {LW_BLUE} from '../theme'
+import {LW_BLUE, BLACK} from '../theme'
 
 const titleStyle = css({
   fontSize: 24,
@@ -24,8 +25,14 @@ const centerStyle = css({
 })
 const Center = ({children}) => <div {...centerStyle}>{children}</div>
 
+css.global('body, h1, h2, h3, h4, h5, h6, input, textarea', {fontFamily: "'Roboto', sans-serif"})
+css.global('body', {color: BLACK})
+
 const Frame = ({locale: currentLocale, children}) => (
   <div>
+    <Head>
+      <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' />
+    </Head>
     <Center style={{marginBottom: 20}}>
       <RawLink href={`/index?locale=${currentLocale}`} as={`/${currentLocale}`}>
         <a {...titleStyle}>
@@ -55,16 +62,6 @@ const Frame = ({locale: currentLocale, children}) => (
       {children}
       <Footer locale={currentLocale} />
     </Center>
-    <style jsx global>{`
-    @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,700');
-
-    body, h1, h2, h3, h4, h5, h6, input, textarea {
-      font-family: 'Roboto', sans-serif;
-    }
-    body {
-      color: #000;
-    }
-    `}</style>
   </div>
 )
 

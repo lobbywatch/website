@@ -3,14 +3,18 @@ import NextLink from 'next/prefetch'
 import {LW_BLUE, GREY_DARK, mediaM} from '../theme'
 import {css} from 'glamor'
 
-const linkStyle = css({
-  color: LW_BLUE
-})
+export const linkStyle = {
+  color: LW_BLUE,
+  ':visited': {
+    color: LW_BLUE
+  }
+}
+const linkRule = css(linkStyle)
 export const Link = ({children, className, ...props}) => (
-  <NextLink {...props}><a {...linkStyle}>{children}</a></NextLink>
+  <NextLink {...props}><a {...linkRule}>{children}</a></NextLink>
 )
 
-const h1Style = css({
+export const h1Style = {
   fontSize: 42,
   lineHeight: '50px',
   fontWeight: 300,
@@ -18,10 +22,11 @@ const h1Style = css({
     fontSize: 48,
     lineHeight: '56px'
   }
-})
-export const H1 = ({children, ...props}) => <h1 {...props} {...h1Style}>{children}</h1>
+}
+const h1Rule = css(h1Style)
+export const H1 = ({children, ...props}) => <h1 {...props} {...h1Rule}>{children}</h1>
 
-const h2Style = css({
+export const h2Style = {
   fontSize: 32,
   lineHeight: '40px',
   fontWeight: 300,
@@ -29,36 +34,41 @@ const h2Style = css({
     fontSize: 36,
     lineHeight: '42px'
   }
-})
-export const H2 = ({children, ...props}) => <h2 {...props} {...h2Style}>{children}</h2>
+}
+const h2Rule = css(h2Style)
+export const H2 = ({children, ...props}) => <h2 {...props} {...h2Rule}>{children}</h2>
 
-const h3Style = css({
+export const h3Style = {
   fontSize: 24,
   lineHeight: '32px',
   fontWeight: 400
-})
-export const H3 = ({children, ...props}) => <h3 {...props} {...h3Style}>{children}</h3>
+}
+const h3Rule = css(h3Style)
+export const H3 = ({children, ...props}) => <h3 {...props} {...h3Rule}>{children}</h3>
 
-const h4Style = css({
+export const h4Style = {
   fontSize: 16,
   lineHeight: '24px',
   fontWeight: 700
-})
-export const H4 = ({children, ...props}) => <h4 {...props} {...h4Style}>{children}</h4>
+}
+const h4Rule = css(h4Style)
+export const H4 = ({children, ...props}) => <h4 {...props} {...h4Rule}>{children}</h4>
 
-const pStyle = css({
+export const pStyle = {
   fontSize: 16,
   lineHeight: '24px'
-})
-export const P = ({children, ...props}) => <p {...props} {...pStyle}>{children}</p>
+}
+const pRule = css(pStyle)
+export const P = ({children, ...props}) => <p {...props} {...pRule}>{children}</p>
 
-const smallStyle = css({
+export const smallStyle = {
   fontSize: 14,
   lineHeight: '20px'
-})
-export const Small = ({children, ...props}) => <small {...props} {...smallStyle}>{children}</small>
+}
+const smallRule = css(smallStyle)
+export const Small = ({children, ...props}) => <small {...props} {...smallRule}>{children}</small>
 
-export const metaStyle = css({
+export const metaStyle = {
   fontSize: 12,
   lineHeight: '20px',
   color: GREY_DARK,
@@ -66,4 +76,4 @@ export const metaStyle = css({
     fontSize: 14,
     lineHeight: '24px'
   }
-})
+}

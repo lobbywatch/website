@@ -1,62 +1,22 @@
 import React from 'react'
-import {LW_BLUE} from '../theme'
+import {css} from 'glamor'
+import {
+  linkStyle,
+  h1Style, h2Style, h3Style, h4Style,
+  pStyle, smallStyle
+} from './Styled'
+
+css.global('.RawHtml a', linkStyle)
+css.global('.RawHtml h1', h1Style)
+css.global('.RawHtml h2', h2Style)
+css.global('.RawHtml h3', h3Style)
+css.global('.RawHtml h4, .RawHtml h5, .RawHtml h6', h4Style)
+css.global('.RawHtml p', pStyle)
+css.global('.RawHtml small', smallStyle)
 
 const RawHtml = ({dangerouslySetInnerHTML}) => (
   <div className='RawHtml'>
     <div dangerouslySetInnerHTML={dangerouslySetInnerHTML} />
-    <style jsx>{`
-    .RawHtml :global(p) {
-      color: #000;
-      font-size: 16px;
-      line-height: 24px;
-    }
-    .RawHtml :global(h1) {
-      color: #000;
-      font-size: 48px;
-      line-height: 56px;
-      font-weight: 300;
-    }
-    .RawHtml :global(h2) {
-      color: #000;
-      font-size: 36px;
-      line-height: 42px;
-      font-weight: 300;
-    }
-    .RawHtml :global(h3) {
-      color: #000;
-      font-size: 24px;
-      line-height: 32px;
-      font-weight: 400;
-    }
-    .RawHtml :global(h4) {
-      color: #000;
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 700;
-    }
-    .RawHtml :global(h5) {
-      color: #000;
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 700;
-    }
-    .RawHtml :global(h6) {
-      color: #000;
-      font-size: 16px;
-      line-height: 24px;
-      font-weight: 700;
-    }
-    .RawHtml :global(small) {
-      font-size: 14px;
-      line-height: 20px;
-    }
-    .RawHtml :global(a) {
-      color: ${LW_BLUE};
-    }
-    .RawHtml :global(a:visited) {
-      color: ${LW_BLUE};
-    }
-    `}</style>
   </div>
 )
 
