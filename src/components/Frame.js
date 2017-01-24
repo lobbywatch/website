@@ -1,5 +1,6 @@
 import React from 'react'
 import RawLink from 'next/prefetch'
+import {css} from 'glamor'
 
 import {locales} from '../constants'
 import {intersperse} from '../utils/helpers'
@@ -9,28 +10,26 @@ import {Link} from './Styled'
 import Logo from '../assets/Logo'
 import {LW_BLUE} from '../colors'
 
-import styled from 'styled-components'
+const titleStyle = css({
+  fontSize: 24,
+  lineHeight: '34px',
+  textDecoration: 'none',
+  color: LW_BLUE
+})
 
-const Title = styled.span`
-  font-size: 24px;
-  line-height: 34px;
-  text-decoration: none;
-  color: ${LW_BLUE};
-`
-
-const Center = styled.div`
-  max-width: 800px;
-  padding: 20px;
-  margin: 0 auto;
-  font-family: 'Roboto', sans-serif;
-`
+const centerStyle = css({
+  maxWidth: 800,
+  padding: 20,
+  margin: '0 auto'
+})
+const Center = ({children}) => <div {...centerStyle}>{children}</div>
 
 const Frame = ({locale: currentLocale, children}) => (
   <div>
     <Center style={{marginBottom: 20}}>
       <RawLink href={`/index?locale=${currentLocale}`} as={`/${currentLocale}`}>
-        <a style={{textDecoration: 'none'}}>
-          <Title><Logo size={32} style={{verticalAlign: 'middle', marginRight: 10}} />Lobbywatch</Title>
+        <a {...titleStyle}>
+          <Logo size={32} style={{verticalAlign: 'middle', marginRight: 10}} />Lobbywatch
         </a>
       </RawLink>
       &nbsp;&nbsp;
