@@ -1,10 +1,9 @@
 import ApolloClient, {createNetworkInterface} from 'apollo-client'
-import {IS_SERVER} from './exenv'
 import {GRAPHQL_URI} from '../constants'
 
 export const initClient = (headers) => {
   const client = new ApolloClient({
-    ssrMode: IS_SERVER,
+    ssrMode: !process.browser,
     headers,
     dataIdFromObject: (result) => {
       if (result.id) {
@@ -16,7 +15,7 @@ export const initClient = (headers) => {
       uri: GRAPHQL_URI
     })
   })
-  if (IS_SERVER) {
+  if (!process.browser) {
     return client
   } else {
     if (!window.__APOLLO_CLIENT__) {
