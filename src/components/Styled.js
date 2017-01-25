@@ -78,3 +78,5 @@ export const metaStyle = {
     lineHeight: '24px'
   }
 }
+const metaRule = css(metaStyle)
+export const Meta = ({children, ...props}) => <p {...props} {...metaRule}>{children}</p>

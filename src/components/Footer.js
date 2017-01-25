@@ -1,10 +1,13 @@
 import React from 'react'
+import {css} from 'glamor'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
-import RawHtml from './RawHtml'
-import {H2, Link} from './Styled'
+import {Center} from './Frame'
+import {Link, metaStyle} from './Styled'
+import {GREY_SOFT, GREY_DARK, GREY_MID, GREY_LIGHT, mediaM} from '../theme'
+import CreativeCommons from '../assets/CreativeCommons'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {
@@ -13,42 +16,91 @@ const metaQuery = gql`
         title,
         href
       }
-      blocks {
-        key
-        title
-        content
-      }
     }
   }
 `
 
-const Footer = ({links, blocks, locale}) => (
-  <div>
-    <hr />
-    {
-      (blocks || [])
-        .filter(block => block.key === 'block_8')
-        .map(block => (
-          <div key={block.key}>
-            <H2>{block.title}</H2>
+const footerStyle = css({
+  backgroundColor: GREY_SOFT
+})
 
-            <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
-          </div>
-        ))
-    }
-    <ul>
-      {
-      (links || []).map((link, i) => (
-        <li key={i}>
-          <Link
-            href={`/page?path=${encodeURIComponent(link.href)}&locale=${locale}`}
-            as={link.href}>
-            {link.title}
-          </Link>
-        </li>
-      ))
-    }
-    </ul>
+const footerColumnStyle = css({
+  lineHeight: '24px',
+  fontSize: 14,
+  color: GREY_DARK,
+  '& a, & a:visited': {
+    color: GREY_DARK
+  },
+  '& a:hover': {
+    color: GREY_MID
+  }
+})
+
+const footerListStyle = css({
+  listStyle: 'none',
+  margin: 0,
+  padding: 0
+})
+
+const hrStyle = css({
+  margin: '30px 0',
+  border: 'none',
+  borderTop: `1px solid ${GREY_LIGHT}`
+})
+
+const ccContainerStyle = css({
+  [mediaM]: {
+    display: 'flex',
+    alignItems: 'center'
+  }
+})
+const ccLogoStyle = css({
+  display: 'block',
+  margin: '0 auto',
+  [mediaM]: {
+    marginLeft: 0,
+    marginRight: 0,
+    minWidth: 88
+  }
+})
+const ccTextStyle = css({
+  ...metaStyle,
+  textAlign: 'center',
+  [mediaM]: {
+    ...metaStyle[mediaM],
+    margin: 0,
+    textAlign: 'left',
+    paddingLeft: 30
+  }
+})
+
+const Footer = ({links, blocks, locale}) => (
+  <div {...footerStyle}>
+    <Center>
+      <div {...footerColumnStyle}>
+        <strong>Inhalt</strong>
+        <ul {...footerListStyle}>
+          {
+          (links || []).map((link, i) => (
+            <li key={i}>
+              <Link
+                href={`/page?path=${encodeURIComponent(link.href)}&locale=${locale}`}
+                as={link.href}>
+                {link.title}
+              </Link>
+            </li>
+          ))
+        }
+        </ul>
+      </div>
+      <hr {...hrStyle} />
+      <div {...ccContainerStyle}>
+        <CreativeCommons className={ccLogoStyle} />
+        <p {...ccTextStyle}>
+          Inhalte von Lobbywatch.ch sind lizenziert unter einer Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz.
+        </p>
+      </div>
+    </Center>
   </div>
 )
 
