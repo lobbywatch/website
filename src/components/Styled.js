@@ -1,6 +1,6 @@
 import React from 'react'
 import NextLink from 'next/prefetch'
-import {LW_BLUE, GREY_DARK, mediaM} from '../theme'
+import {LW_BLUE, GREY_DARK, GREY_LIGHT, mediaM} from '../theme'
 import {css} from 'glamor'
 
 export const linkStyle = {
@@ -80,3 +80,11 @@ export const metaStyle = {
 }
 const metaRule = css(metaStyle)
 export const Meta = ({children, ...props}) => <p {...props} {...metaRule}>{children}</p>
+
+export const hrStyle = {
+  margin: '30px 0',
+  border: 'none',
+  borderTop: `1px solid ${GREY_LIGHT}`
+}
+const hrRule = css(hrStyle)
+export const Hr = ({children, ...props}) => <hr {...props} {...hrRule} />

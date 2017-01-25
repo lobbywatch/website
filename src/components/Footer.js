@@ -5,8 +5,8 @@ import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
 import {Center} from './Frame'
-import {Link, metaStyle} from './Styled'
-import {GREY_SOFT, GREY_DARK, GREY_MID, GREY_LIGHT, mediaM} from '../theme'
+import {Link, Hr, metaStyle} from './Styled'
+import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../theme'
 import CreativeCommons from '../assets/CreativeCommons'
 
 const metaQuery = gql`
@@ -40,12 +40,6 @@ const footerListStyle = css({
   listStyle: 'none',
   margin: 0,
   padding: 0
-})
-
-const hrStyle = css({
-  margin: '30px 0',
-  border: 'none',
-  borderTop: `1px solid ${GREY_LIGHT}`
 })
 
 const ccContainerStyle = css({
@@ -93,7 +87,7 @@ const Footer = ({links, blocks, locale}) => (
         }
         </ul>
       </div>
-      <hr {...hrStyle} />
+      <Hr />
       <div {...ccContainerStyle}>
         <CreativeCommons className={ccLogoStyle} />
         <p {...ccTextStyle}>
