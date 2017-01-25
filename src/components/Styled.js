@@ -4,6 +4,7 @@ import {LW_BLUE, GREY_DARK, mediaM} from '../theme'
 import {css} from 'glamor'
 
 export const linkStyle = {
+  textDecoration: 'none',
   color: LW_BLUE,
   ':visited': {
     color: LW_BLUE
