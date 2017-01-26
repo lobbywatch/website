@@ -2,7 +2,6 @@ import React from 'react'
 import Head from 'next/head'
 import {css} from 'glamor'
 
-import {withT} from '../utils/translate'
 import Header from './Header'
 import Footer from './Footer'
 import {BLACK} from '../theme'
@@ -28,19 +27,13 @@ const bodyGrowerStyle = css({
   flexGrow: 1
 })
 
-const Frame = ({locale, children, t}) => (
+const Frame = ({locale, children}) => (
   <div {...containerStyle}>
     <div {...bodyGrowerStyle}>
       <Head>
         <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' />
       </Head>
-      <Header locale={locale} menuItems={[
-        {
-          label: t('menu/parliamentarians'),
-          href: `/parliamentarians?locale=${locale}`,
-          as: `/${locale}/daten/parlamentarier`
-        }
-      ]} />
+      <Header locale={locale} />
       <Center>
         {children}
       </Center>
@@ -49,4 +42,4 @@ const Frame = ({locale, children, t}) => (
   </div>
 )
 
-export default withT(Frame)
+export default Frame

@@ -2,6 +2,7 @@ import React, {PropTypes, Component} from 'react'
 import RawLink from 'next/prefetch'
 import {css} from 'glamor'
 
+import {withT} from '../utils/translate'
 import {Link} from './Styled'
 import {Center} from './Frame'
 import {locales} from '../constants'
@@ -189,14 +190,21 @@ class Header extends Component {
   }
   render () {
     const {expanded} = this.state
-    const {locale: currentLocale, menuItems} = this.props
+    const {locale: currentLocale, t} = this.props
+    const menuItems = [
+      {
+        label: t('menu/parliamentarians'),
+        href: `/parliamentarians?locale=${currentLocale}`,
+        as: `/${currentLocale}/daten/parlamentarier`
+      }
+    ]
     const localeLinks = locales
       .filter(locale => locale !== currentLocale)
       .map((locale, i) => ({
         separator: i === 0,
         href: `/index?locale=${locale}`,
         as: `/${locale}`,
-        label: locale
+        label: t(`menu/locales/${locale}`, {}, locale)
       }))
 
     return (
@@ -221,4 +229,4 @@ class Header extends Component {
   }
 }
 
-export default Header
+export default withT(Header)
