@@ -40,6 +40,8 @@ const resolveFunctions = {
       const query = {
         'load-entity-refs': 'taxonomy_term,file',
         'max-depth': 1,
+        type: 'article',
+        promote: 1,
         limit,
         page,
         sort: 'created',
