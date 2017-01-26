@@ -3,6 +3,11 @@ enum Locale {
   de
   fr
 }
+
+type Translation {
+  key: String!,
+  value: String
+}
 `
 
 const cmsTypes = `
@@ -83,6 +88,7 @@ type RootQuery {
   articles(locale: Locale!, limit: Int = 3, page: Int = 0): [Article]
   parliamentarians(locale: Locale!): [Parliamentarian]
   getParliamentarian(locale: Locale!, id: Int!): Parliamentarian
+  translations(locale: Locale!): [Translation]
 }
 
 schema {

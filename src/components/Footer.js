@@ -8,6 +8,8 @@ import {Center} from './Frame'
 import {Link, Hr, metaStyle} from './Styled'
 import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../theme'
 import CreativeCommons from '../assets/CreativeCommons'
+import {getFormatter} from '../utils/translate'
+import Message from './/Message'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {
@@ -21,12 +23,7 @@ const metaQuery = gql`
 `
 
 const footerStyle = css({
-  backgroundColor: GREY_SOFT
-})
-
-const footerColumnStyle = css({
-  lineHeight: '24px',
-  fontSize: 14,
+  backgroundColor: GREY_SOFT,
   color: GREY_DARK,
   '& a, & a:visited': {
     color: GREY_DARK
@@ -34,6 +31,11 @@ const footerColumnStyle = css({
   '& a:hover': {
     color: GREY_MID
   }
+})
+
+const footerColumnStyle = css({
+  lineHeight: '24px',
+  fontSize: 14
 })
 
 const footerListStyle = css({
@@ -68,11 +70,11 @@ const ccTextStyle = css({
   }
 })
 
-const Footer = ({links, blocks, locale}) => (
+const Footer = ({links, blocks, t, locale}) => (
   <div {...footerStyle}>
     <Center>
       <div {...footerColumnStyle}>
-        <strong>Inhalt</strong>
+        <strong><Message id='footer/content' locale={locale} /></strong>
         <ul {...footerListStyle}>
           {
           (links || []).map((link, i) => (
@@ -91,7 +93,7 @@ const Footer = ({links, blocks, locale}) => (
       <div {...ccContainerStyle}>
         <CreativeCommons className={ccLogoStyle} />
         <p {...ccTextStyle}>
-          Inhalte von Lobbywatch.ch sind lizenziert unter einer Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz.
+          <Message id='footer/cc' locale={locale} raw />
         </p>
       </div>
     </Center>
@@ -107,7 +109,10 @@ const FooterWithQuery = graphql(metaQuery, {
     }
   },
   props: ({data}) => {
-    return data.meta
+    return {
+      ...data.meta,
+      t: getFormatter(data.translations)
+    }
   }
 })(Footer)
 

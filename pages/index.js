@@ -7,6 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Frame from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
+import Message from '../src/components/Message'
 import {Link, H1, H2, H3} from '../src/components/Styled'
 
 const indexQuery = gql`
@@ -25,9 +26,9 @@ const indexQuery = gql`
   }
 `
 
-const Index = ({articles, blocks, loading, url: {query: {locale}}}) => (
+const Index = ({articles, blocks, t, loading, url: {query: {locale}}}) => (
   <Frame locale={locale}>
-    <H1>Blog</H1>
+    <H1><Message id='index/blog/title' locale={locale} /></H1>
     {loading && <span>Lädt...</span>}
     {articles.map((article, i) => (
       <div key={i}>

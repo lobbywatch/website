@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import {css} from 'glamor'
 import {
   linkStyle,
@@ -16,10 +16,13 @@ css.global('.RawHtml p', pStyle)
 css.global('.RawHtml small', smallStyle)
 css.global('.RawHtml hr', hrStyle)
 
-const RawHtml = ({dangerouslySetInnerHTML}) => (
-  <div className='RawHtml'>
-    <div dangerouslySetInnerHTML={dangerouslySetInnerHTML} />
-  </div>
-)
+const RawHtml = ({type, dangerouslySetInnerHTML}) => createElement(type, {
+  className: 'RawHtml',
+  dangerouslySetInnerHTML
+})
+
+RawHtml.defaultProps = {
+  type: 'div'
+}
 
 export default RawHtml

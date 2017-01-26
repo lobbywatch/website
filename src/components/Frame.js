@@ -2,6 +2,7 @@ import React from 'react'
 import Head from 'next/head'
 import {css} from 'glamor'
 
+import {withT} from '../utils/translate'
 import Header from './Header'
 import Footer from './Footer'
 import {BLACK} from '../theme'
@@ -26,7 +27,7 @@ const bodyGrowerStyle = css({
   flexGrow: 1
 })
 
-const Frame = ({locale, children}) => (
+const Frame = ({locale, children, t}) => (
   <div {...containerStyle}>
     <div {...bodyGrowerStyle}>
       <Head>
@@ -34,7 +35,7 @@ const Frame = ({locale, children}) => (
       </Head>
       <Header locale={locale} menuItems={[
         {
-          label: 'Parlamentarier',
+          label: t('menu/parliamentarians'),
           href: `/parliamentarians?locale=${locale}`,
           as: `/${locale}/daten/parlamentarier`
         }
@@ -47,4 +48,4 @@ const Frame = ({locale, children}) => (
   </div>
 )
 
-export default Frame
+export default withT(Frame)

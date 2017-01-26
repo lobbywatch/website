@@ -1,5 +1,6 @@
 const fetch = require('./fetch')
 const qs = require('querystring')
+const gsheets = require('gsheets')
 const {DRUPAL_BASE_URL} = require('../src/constants')
 const {mapArticle, mapParliamentarian} = require('./mappers')
 
@@ -58,6 +59,19 @@ const resolveFunctions = {
       return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/flat/id/${encodeURIComponent(id)}`)
         .then(({json}) => {
           return mapParliamentarian(json.data)
+        })
+    },
+    translations (_, {locale}) {
+      const start = new Date().getTime()
+      return gsheets.getWorksheet('1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg', 'translations')
+        .then(res => {
+          const end = new Date().getTime()
+          console.info('[gsheets]', '1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg', 'translations')
+          console.info(`${end - start}ms`)
+          return res.data.map(translation => ({
+            key: translation.key,
+            value: translation[locale]
+          }))
         })
     }
   }

@@ -11,9 +11,14 @@ export const initClient = (headers) => {
       }
       return null
     },
+    queryDeduplication: true,
     networkInterface: createNetworkInterface({
       uri: GRAPHQL_URI
     })
+    // networkInterface: createBatchingNetworkInterface({
+    //   uri: GRAPHQL_URI,
+    //   batchInterval: 10
+    // })
   })
   if (!process.browser) {
     return client
