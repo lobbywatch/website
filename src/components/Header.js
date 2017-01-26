@@ -8,7 +8,7 @@ import {locales} from '../constants'
 import {LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE, mediaM, mediaSOnly} from '../theme'
 import Logo from '../assets/Logo'
 
-const HEADER_HEIGHT = 75
+export const HEADER_HEIGHT = 75
 const ITEM_MARGIN_RIGHT = 5
 const menuStyle = css({
   [mediaSOnly]: {

@@ -9,7 +9,8 @@ import {Link, Hr, metaStyle} from './Styled'
 import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../theme'
 import CreativeCommons from '../assets/CreativeCommons'
 import {getFormatter} from '../utils/translate'
-import Message from './/Message'
+import Message from './Message'
+import Loader from './Loader'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {
@@ -70,32 +71,36 @@ const ccTextStyle = css({
   }
 })
 
-const Footer = ({links, blocks, t, locale}) => (
+const Footer = ({loading, error, links, t, locale}) => (
   <div {...footerStyle}>
     <Center>
-      <div {...footerColumnStyle}>
-        <strong><Message id='footer/content' locale={locale} /></strong>
-        <ul {...footerListStyle}>
-          {
-          (links || []).map((link, i) => (
-            <li key={i}>
-              <Link
-                href={`/page?path=${encodeURIComponent(link.href)}&locale=${locale}`}
-                as={link.href}>
-                {link.title}
-              </Link>
-            </li>
-          ))
-        }
-        </ul>
-      </div>
-      <Hr />
-      <div {...ccContainerStyle}>
-        <CreativeCommons className={ccLogoStyle} />
-        <p {...ccTextStyle}>
-          <Message id='footer/cc' locale={locale} raw />
-        </p>
-      </div>
+      <Loader height={300} loading={loading} error={error} render={() => (
+        <div>
+          <div {...footerColumnStyle}>
+            <strong><Message id='footer/content' locale={locale} /></strong>
+            <ul {...footerListStyle}>
+              {
+                links.map((link, i) => (
+                  <li key={i}>
+                    <Link
+                      href={`/page?path=${encodeURIComponent(link.href)}&locale=${locale}`}
+                      as={link.href}>
+                      {link.title}
+                    </Link>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+          <Hr />
+          <div {...ccContainerStyle}>
+            <CreativeCommons className={ccLogoStyle} />
+            <p {...ccTextStyle}>
+              <Message id='footer/cc' locale={locale} raw />
+            </p>
+          </div>
+        </div>
+      )} />
     </Center>
   </div>
 )
@@ -110,7 +115,9 @@ const FooterWithQuery = graphql(metaQuery, {
   },
   props: ({data}) => {
     return {
-      ...data.meta,
+      loading: data.loading,
+      error: data.error,
+      links: data.meta && data.meta.links,
       t: getFormatter(data.translations)
     }
   }

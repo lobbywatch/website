@@ -5,6 +5,7 @@ import {graphql} from 'react-apollo'
 
 import withData from '../src/apollo/withData'
 
+import Loader from '../src/components/Loader'
 import Frame from '../src/components/Frame'
 import {H1} from '../src/components/Styled'
 
@@ -25,16 +26,19 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({loading, firstName, dateOfBirth, gender, lastName, partyMembership, content, url: {query: {locale}}}) => (
+const Parliamentarian = ({loading, error, firstName, dateOfBirth, gender, lastName, partyMembership, content, url: {query: {locale}}}) => (
   <Frame locale={locale}>
-    <H1>{firstName} {lastName}</H1>
-    {loading && <span>Lädt...</span>}
-    <dl>
-      <dt>Person</dt>
-      <dd>{dateOfBirth} {gender}</dd>
-      {partyMembership && <dt>{partyMembership.party.name}</dt>}
-      {partyMembership && <dd>{partyMembership.function}</dd>}
-    </dl>
+    <Loader loading={loading} error={error} render={() => (
+      <div>
+        <H1>{firstName} {lastName}</H1>
+        <dl>
+          <dt>Person</dt>
+          <dd>{dateOfBirth} {gender}</dd>
+          {partyMembership && <dt>{partyMembership.party.name}</dt>}
+          {partyMembership && <dd>{partyMembership.function}</dd>}
+        </dl>
+      </div>
+    )} />
   </Frame>
 )
 
@@ -55,6 +59,7 @@ const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
     }
     return {
       loading: data.loading,
+      error: data.error,
       ...data.getParliamentarian
     }
   }

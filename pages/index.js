@@ -5,6 +5,7 @@ import {graphql} from 'react-apollo'
 
 import withData from '../src/apollo/withData'
 
+import Loader from '../src/components/Loader'
 import Frame from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
 import Message from '../src/components/Message'
@@ -26,31 +27,34 @@ const indexQuery = gql`
   }
 `
 
-const Index = ({articles, blocks, t, loading, url: {query: {locale}}}) => (
+const Index = ({loading, error, articles, blocks, t, url: {query: {locale}}}) => (
   <Frame locale={locale}>
-    <H1><Message id='index/blog/title' locale={locale} /></H1>
-    {loading && <span>Lädt...</span>}
-    {articles.map((article, i) => (
-      <div key={i}>
-        <H3>
-          <Link
-            href={`/page?path=${encodeURIComponent(article.url)}&locale=${locale}`}
-            as={article.url}>
-            {article.title}
-          </Link>
-        </H3>
-      </div>
-    ))}
-    {
-      blocks.filter(block => block.key === 'block_8')
-        .map(block => (
-          <div key={block.key}>
-            <H2>{block.title}</H2>
-
-            <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
+    <Loader loading={loading} error={error} render={() => (
+      <div>
+        <H1><Message id='index/blog/title' locale={locale} /></H1>
+        {articles.map((article, i) => (
+          <div key={i}>
+            <H3>
+              <Link
+                href={`/page?path=${encodeURIComponent(article.url)}&locale=${locale}`}
+                as={article.url}>
+                {article.title}
+              </Link>
+            </H3>
           </div>
-        ))
-    }
+        ))}
+        {
+          blocks.filter(block => block.key === 'block_8')
+            .map(block => (
+              <div key={block.key}>
+                <H2>{block.title}</H2>
+
+                <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
+              </div>
+            ))
+        }
+      </div>
+    )} />
   </Frame>
 )
 
@@ -65,8 +69,9 @@ const IndexWithQuery = graphql(indexQuery, {
   props: ({data, ownProps: {url}}) => {
     return {
       loading: data.loading,
-      articles: data.articles || [],
-      blocks: (data.meta && data.meta.blocks) || []
+      error: data.error,
+      articles: data.articles,
+      blocks: data.meta && data.meta.blocks
     }
   }
 })(Index)
