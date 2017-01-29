@@ -2,7 +2,10 @@ const fetch = require('./fetch')
 const qs = require('querystring')
 const gsheets = require('gsheets')
 const {DRUPAL_BASE_URL} = require('../src/constants')
-const {mapArticle, mapParliamentarian} = require('./mappers')
+const {
+  mapArticle,
+  mapParliamentarian, parliamentarianIdPrefix
+} = require('./mappers')
 
 const resolveFunctions = {
   RootQuery: {
@@ -51,14 +54,35 @@ const resolveFunctions = {
       return fetch(`${DRUPAL_BASE_URL}/${encodeURIComponent(locale)}?${qs.encode(query)}`)
         .then(({json}) => json.list.map(mapArticle))
     },
-    parliamentarians (_, {locale}) {
-      return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/flat/list&limit=none`)
-        .then(({json}) => {
-          return json.data.map(mapParliamentarian)
-        })
+    parliamentarians (_, {locale}, context, info) {
+      const queriedFields = new Set(
+        info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
+      )
+
+      return Promise.all([
+        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/flat/list&limit=none`),
+        queriedFields.has('commissions') && fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/relation/in_kommission_liste/flat/list&limit=none`)
+      ]).then(([{json: {data: parliamentarians}}, commissions]) => {
+        if (commissions) {
+          const commissionIndex = commissions.json.data.reduce(
+            (index, commission) => {
+              index[commission.parlamentarier_id] = index[commission.parlamentarier_id] || []
+              index[commission.parlamentarier_id].push(commission)
+              return index
+            },
+            {}
+          )
+
+          parliamentarians.forEach(parliamentarian => {
+            parliamentarian.in_kommission = commissionIndex[parliamentarian.id]
+          })
+        }
+        return parliamentarians.map(mapParliamentarian)
+      })
     },
     getParliamentarian (_, {locale, id}) {
-      return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/flat/id/${encodeURIComponent(id)}`)
+      const rawId = id.replace(parliamentarianIdPrefix, '')
+      return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}`)
         .then(({json}) => {
           return mapParliamentarian(json.data)
         })

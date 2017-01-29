@@ -7,17 +7,22 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame from '../src/components/Frame'
-import {H1} from '../src/components/Styled'
+import {h3Rule} from '../src/components/Styled'
+import {withT} from '../src/utils/translate'
 
 const parliamentarianQuery = gql`
-  query getParliamentarian($locale: Locale!, $id: Int!) {
+  query getParliamentarian($locale: Locale!, $id: ID!) {
     getParliamentarian(locale: $locale, id: $id) {
-      firstName,
-      lastName,
-      dateOfBirth,
-      gender,
+      firstName
+      lastName
+      dateOfBirth
+      age
+      portrait
+      gender
+      council
+      active
       partyMembership {
-        function,
+        function
         party {
           name
         }
@@ -26,14 +31,18 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({loading, error, firstName, dateOfBirth, gender, lastName, partyMembership, content, url: {query: {locale}}}) => (
+const Parliamentarian = ({loading, error, t, council, active, firstName, dateOfBirth, age, portrait, gender, lastName, partyMembership, content, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <Loader loading={loading} error={error} render={() => (
       <div>
-        <H1>{firstName} {lastName}</H1>
+        <img src={portrait} />
+        <h1 {...h3Rule}>
+          {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}{' '}
+          {firstName} {lastName}
+        </h1>
         <dl>
           <dt>Person</dt>
-          <dd>{dateOfBirth} {gender}</dd>
+          <dd>{dateOfBirth} {age} {gender}</dd>
           {partyMembership && <dt>{partyMembership.party.name}</dt>}
           {partyMembership && <dd>{partyMembership.function}</dd>}
         </dl>
@@ -65,4 +74,4 @@ const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
   }
 })(Parliamentarian)
 
-export default withData(ParliamentarianWithQuery)
+export default withData(withT(ParliamentarianWithQuery, ({url}) => url.query.locale))

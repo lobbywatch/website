@@ -68,8 +68,20 @@ type PartyMembership {
   function: String
 }
 
+enum Council {
+  NR
+  SR
+}
+
+type Commission {
+  id: ID!
+  name: String!
+  abbr: String!
+}
+
 type Parliamentarian implements Person {
-  id: Int!
+  id: ID!
+  parliamentId: ID!
   firstName: String!
   middleName: String
   lastName: String!
@@ -77,7 +89,24 @@ type Parliamentarian implements Person {
   gender: Gender
   # Format: YYYY-MM-DD
   dateOfBirth: String
+  age: Int
+  portrait: String
   partyMembership: PartyMembership
+  canton: String!
+  active: Boolean!
+  council: Council!
+  # In number of months
+  councilTenure: Int
+  # Format: YYYY-MM-DD
+  councilJoinDate: String!
+  # Format: YYYY-MM-DD
+  councilExitDate: String
+  # Number of people
+  represents: Int
+  children: Int
+  civilStatus: String
+  website: String
+  commissions: [Commission!]
 }
 `
 
@@ -87,7 +116,7 @@ type RootQuery {
   page(path: String!): Page
   articles(locale: Locale!, limit: Int = 3, page: Int = 0): [Article]
   parliamentarians(locale: Locale!): [Parliamentarian]
-  getParliamentarian(locale: Locale!, id: Int!): Parliamentarian
+  getParliamentarian(locale: Locale!, id: ID!): Parliamentarian
   translations(locale: Locale!): [Translation]
 }
 
