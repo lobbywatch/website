@@ -8,6 +8,12 @@ const {
 } = require('./mappers')
 
 const resolveFunctions = {
+  ConnectionEntity: {
+    __resolveType (data, context, info) {
+      const [type] = data.id.split('-')
+      return info.schema.getType(type)
+    }
+  },
   RootQuery: {
     meta (_, {locale}) {
       return fetch(`${DRUPAL_BASE_URL}/${encodeURIComponent(locale)}/daten/meta`)
@@ -59,6 +65,10 @@ const resolveFunctions = {
         info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
       )
 
+      if (queriedFields.has('connections')) {
+        throw new Error('Connections currently only supported in getParliamentarian')
+      }
+
       return Promise.all([
         fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/flat/list&limit=none`),
         queriedFields.has('commissions') && fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/relation/in_kommission_liste/flat/list&limit=none`)
@@ -83,7 +93,7 @@ const resolveFunctions = {
     getParliamentarian (_, {locale, id}) {
       const rawId = id.replace(parliamentarianIdPrefix, '')
       // ToDo handle inactive – could send `includeInactive=1` but would need permission fixing on php side
-      return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}`)
+      return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
         .then(({json}) => {
           return json.data && mapParliamentarian(json.data)
         })

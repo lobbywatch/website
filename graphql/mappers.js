@@ -6,7 +6,27 @@ const parseDate = timeParse('%Y-%m-%d')
 const formatDate = timeFormat('%Y-%m-%d')
 const formatTime = timeFormat('%Y-%m-%d %H:%M')
 
+const potencyMap = {
+  '3': 'HIGH',
+  '2': 'MEDIUM',
+  '1': 'LOW'
+}
+
+const guestIdPrefix = exports.guestIdPrefix = 'Guest-'
+const orgIdPrefix = exports.orgIdPrefix = 'Organisation-'
 const commissionIdPrefix = exports.commissionIdPrefix = 'Commission-'
+
+const mapConnection = (from, via, connection) => ({
+  from: () => from,
+  via,
+  to: {
+    id: `${orgIdPrefix}${connection.organisation_id}`,
+    name: connection.organisation_name
+  },
+  sector: connection.branche || connection.interessengruppe_branche,
+  group: connection.interessengruppe,
+  potency: connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index]
+})
 
 const parliamentarianIdPrefix = exports.parliamentarianIdPrefix = 'Parliamentarian-'
 exports.mapParliamentarian = raw => {
@@ -15,8 +35,29 @@ exports.mapParliamentarian = raw => {
   const councilExitDate = raw.im_rat_bis_unix
     ? new Date(+raw.im_rat_bis_unix * 1000) : null
 
-  return {
+  const connections = () => {
+    const direct = raw.interessenbindungen.map(directConnection => mapConnection(parliamentarian, null, directConnection))
+    let indirect = []
+    raw.zutrittsberechtigungen.forEach(guest => {
+      const via = {
+        id: `${guestIdPrefix}${guest.person_id}`,
+        name: () => `${guest.vorname} ${guest.nachname}`,
+        firstName: guest.vorname,
+        middleName: guest.zweiter_vorname,
+        lastName: guest.nachname,
+        occupation: guest.beruf,
+        gender: guest.geschlecht
+      }
+      guest.mandate.forEach(indirectConnection => {
+        indirect.push(mapConnection(parliamentarian, via, indirectConnection))
+      })
+    })
+    return direct.concat(indirect)
+  }
+
+  const parliamentarian = {
     id: `${parliamentarianIdPrefix}${raw.id}`,
+    name: () => `${raw.vorname} ${raw.nachname}`,
     parliamentId: raw.parlament_biografie_id,
     firstName: raw.vorname,
     middleName: raw.zweiter_vorname,
@@ -58,8 +99,10 @@ exports.mapParliamentarian = raw => {
       id: `${commissionIdPrefix}${commission.id}`,
       name: commission.name,
       abbr: commission.abkuerzung
-    })) : null
+    })) : null,
+    connections
   }
+  return parliamentarian
 }
 
 exports.mapArticle = raw => {

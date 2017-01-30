@@ -49,9 +49,10 @@ enum Gender {
 }
 
 interface Person {
-  firstName: String!
+  name: String!
+  firstName: String
   middleName: String
-  lastName: String!
+  lastName: String
   occupation: String
   gender: Gender
   # Format: YYYY-MM-DD
@@ -79,8 +80,51 @@ type Commission {
   abbr: String!
 }
 
+type Compensation {
+  # measured in yearly CHF
+  money: Int
+  description: String
+  source: String
+  sourceUrl: String
+}
+
+enum Potency {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+type Organisation {
+  id: ID!
+  name: String
+}
+type Guest implements Person {
+  id: ID!
+  name: String!
+  firstName: String!
+  middleName: String
+  lastName: String!
+  occupation: String
+  gender: Gender
+  # Format: YYYY-MM-DD
+  dateOfBirth: String
+}
+
+union ConnectionEntity = Parliamentarian | Organisation | Guest
+
+type Connection {
+  from: ConnectionEntity!
+  to: ConnectionEntity!
+  via: ConnectionEntity
+  compensation: Compensation
+  sector: String
+  group: String
+  potency: Potency
+}
+
 type Parliamentarian implements Person {
   id: ID!
+  name: String!
   parliamentId: ID!
   firstName: String!
   middleName: String
@@ -107,6 +151,7 @@ type Parliamentarian implements Person {
   civilStatus: String
   website: String
   commissions: [Commission!]
+  connections: [Connection!]
 }
 `
 
