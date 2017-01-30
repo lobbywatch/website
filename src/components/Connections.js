@@ -1,9 +1,18 @@
 import React, {Component} from 'react'
 import {css, merge} from 'glamor'
 import {nest} from 'd3-collection'
+import {formatLocale} from 'd3-format'
 
 import {LW_BLUE_DARK, WHITE, GREY_LIGHT, BLACK, POTENCY_COLORS} from '../theme'
 import GuestIcon from '../assets/Guest'
+
+const swissNumbers = formatLocale({
+  decimal: '.',
+  thousands: "'",
+  grouping: [3],
+  currency: ['', '\u00a0CHF']
+})
+const chfFormat = swissNumbers.format('$,.0f')
 
 const containerStyle = css({
   backgroundColor: GREY_LIGHT,
@@ -56,9 +65,14 @@ const connectionStyle = css({
   backgroundColor: BLACK,
   color: WHITE,
   fontSize: 14,
+  lineHeight: '16px',
   padding: '5px 10px',
   marginRight: 10,
   marginBottom: 10
+})
+const connectionCompensationStyle = css({
+  fontSize: 12,
+  lineHeight: '14px'
 })
 
 const nestData = (state, {data}) => {
@@ -122,11 +136,14 @@ class Connections extends Component {
                       <span className={via ? countViaStyle : countStyle}>{values.length}</span> {key}
                     </span>
                     {isOpen && <br />}
-                    {isOpen && values.map(connection => (
-                      <span key={connection.to.id}
+                    {isOpen && values.map((connection, i) => (
+                      <span key={i}
                         {...connectionStyle}
                         style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
                         {connection.to.name}
+                        {!!connection.compensation && (
+                          <span {...connectionCompensationStyle}><br />{chfFormat(connection.compensation.money)}</span>
+                        )}
                       </span>
                     ))}
                     {isOpen && <br />}

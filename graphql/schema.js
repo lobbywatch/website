@@ -81,6 +81,7 @@ type Commission {
 }
 
 type Compensation {
+  year: Int
   # measured in yearly CHF
   money: Int
   description: String

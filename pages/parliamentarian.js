@@ -33,6 +33,10 @@ const parliamentarianQuery = gql`
         group
         sector
         potency
+        compensation {
+          money
+          description
+        }
         to {
           ... on Organisation {
             id

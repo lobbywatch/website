@@ -25,7 +25,14 @@ const mapConnection = (from, via, connection) => ({
   },
   sector: connection.branche || connection.interessengruppe_branche,
   group: connection.interessengruppe,
-  potency: connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index]
+  potency: connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index],
+  compensation: connection.verguetung !== null ? ({
+    year: connection.verguetung_jahr && +connection.verguetung_jahr,
+    money: +connection.verguetung,
+    description: connection.verguetung_beschreibung,
+    source: connection.verguetung_quelle,
+    sourceUrl: connection.verguetung_quelle_url
+  }) : null
 })
 
 const parliamentarianIdPrefix = exports.parliamentarianIdPrefix = 'Parliamentarian-'
