@@ -27,27 +27,53 @@ const parliamentarianQuery = gql`
           name
         }
       }
+      connections {
+        potency
+        to {
+          ... on Organisation {
+            id
+            name
+          }
+        }
+        via {
+          ... on Guest {
+            id
+            name
+          }
+        }
+      }
     }
   }
 `
 
-const Parliamentarian = ({loading, error, t, council, active, firstName, dateOfBirth, age, portrait, gender, lastName, partyMembership, content, url: {query: {locale}}}) => (
+const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {locale}}}) => (
   <Frame locale={locale}>
-    <Loader loading={loading} error={error} render={() => (
-      <div>
-        <img src={portrait} />
-        <h1 {...h3Rule}>
-          {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}{' '}
-          {firstName} {lastName}
-        </h1>
-        <dl>
-          <dt>Person</dt>
-          <dd>{dateOfBirth} {age} {gender}</dd>
-          {partyMembership && <dt>{partyMembership.party.name}</dt>}
-          {partyMembership && <dd>{partyMembership.function}</dd>}
-        </dl>
-      </div>
-    )} />
+    <Loader loading={loading} error={error} render={() => {
+      const {council, active, firstName, dateOfBirth, age, portrait, gender, lastName, partyMembership} = parliamentarian
+      return (
+        <div>
+          <img src={portrait} />
+          <h1 {...h3Rule}>
+            {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}{' '}
+            {firstName} {lastName}
+          </h1>
+          <dl>
+            <dt>Person</dt>
+            <dd>{dateOfBirth} {age} {gender}</dd>
+            {partyMembership && <dt>{partyMembership.party.name}</dt>}
+            {partyMembership && <dd>{partyMembership.function}</dd>}
+          </dl>
+          <ul>
+            {parliamentarian.connections.map((connection, i) => (
+              <li key={`connection-${i}`}>
+                {!!connection.via && <span>via {connection.via.name}<br /></span>}
+                {connection.potency} {connection.to.name}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )
+    }} />
   </Frame>
 )
 
@@ -70,7 +96,7 @@ const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
     return {
       loading: data.loading,
       error: data.error || (notFound && t('parliamentarian/error/404')),
-      ...data.getParliamentarian
+      parliamentarian: data.getParliamentarian
     }
   }
 })(Parliamentarian)

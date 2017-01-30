@@ -150,8 +150,8 @@ type Parliamentarian implements Person {
   children: Int
   civilStatus: String
   website: String
-  commissions: [Commission!]
-  connections: [Connection!]
+  commissions: [Commission!]!
+  connections: [Connection!]!
 }
 `
 
