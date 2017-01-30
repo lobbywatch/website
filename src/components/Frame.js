@@ -14,6 +14,8 @@ const centerStyle = css({
 })
 export const Center = ({children, ...props}) => <div {...props} {...centerStyle}>{children}</div>
 
+css.global('html', {boxSizing: 'border-box'})
+css.global('*, *:before, *:after', {boxSizing: 'inherit'})
 css.global('body, h1, h2, h3, h4, h5, h6, input, textarea', {fontFamily: "'Roboto', sans-serif"})
 css.global('body', {color: BLACK})
 

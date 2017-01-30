@@ -7,6 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame from '../src/components/Frame'
+import Connections from '../src/components/Connections'
 import {h3Rule} from '../src/components/Styled'
 import {withT} from '../src/utils/translate'
 
@@ -28,6 +29,8 @@ const parliamentarianQuery = gql`
         }
       }
       connections {
+        group
+        sector
         potency
         to {
           ... on Organisation {
@@ -63,6 +66,7 @@ const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {loca
             {partyMembership && <dt>{partyMembership.party.name}</dt>}
             {partyMembership && <dd>{partyMembership.function}</dd>}
           </dl>
+          <Connections data={parliamentarian.connections} />
           <ul>
             {parliamentarian.connections.map((connection, i) => (
               <li key={`connection-${i}`}>
