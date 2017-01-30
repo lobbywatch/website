@@ -19,3 +19,9 @@ const toEm = (px) => `${px / 16}em`
 export const mediaSOnly = `@media only screen and (max-width: ${toEm(breakpointS[1])})`
 export const mediaM = `@media only screen and (min-width: ${toEm(breakpointM[0])})`
 export const mediaL = `@media only screen and (min-width: ${toEm(breakpointL[0])})`
+
+export const POTENCY_COLORS = {
+  HIGH: '#00305A',
+  MEDIUM: '#005599',
+  LOW: LW_BLUE
+}

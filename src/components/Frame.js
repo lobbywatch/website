@@ -33,7 +33,7 @@ const Frame = ({locale, children}) => (
   <div {...containerStyle}>
     <div {...bodyGrowerStyle}>
       <Head>
-        <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' />
+        <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' />
       </Head>
       <Header locale={locale} />
       <Center>

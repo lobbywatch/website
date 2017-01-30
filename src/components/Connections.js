@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {css, merge} from 'glamor'
 import {nest} from 'd3-collection'
 
-import {LW_BLUE_DARK, WHITE, GREY_LIGHT} from '../theme'
+import {LW_BLUE_DARK, WHITE, GREY_LIGHT, BLACK, POTENCY_COLORS} from '../theme'
 import GuestIcon from '../assets/Guest'
 
 const containerStyle = css({
@@ -19,7 +19,8 @@ const bubbleStyle = css({
   padding: '8px 16px',
   marginRight: 10,
   marginBottom: 10,
-  minHeight: 40
+  minHeight: 40,
+  cursor: 'pointer'
 })
 const bubbleViaStyle = merge(bubbleStyle, {
   color: LW_BLUE_DARK,
@@ -36,7 +37,8 @@ const countStyle = css({
   padding: '0 8px',
   marginRight: 3,
   backgroundColor: WHITE,
-  color: LW_BLUE_DARK
+  color: LW_BLUE_DARK,
+  fontWeight: 500
 })
 const countViaStyle = merge(countStyle, {
   color: WHITE,
@@ -48,25 +50,86 @@ const iconStyle = css({
   verticalAlign: 'middle'
 })
 
-class Connections extends Component {
-  render () {
-    const {data} = this.props
+const connectionStyle = css({
+  display: 'inline-block',
+  borderRadius: 8,
+  backgroundColor: BLACK,
+  color: WHITE,
+  fontSize: 14,
+  padding: '5px 10px',
+  marginRight: 10,
+  marginBottom: 10
+})
 
-    const tree = nest()
-      .key(connection => connection.via ? connection.via.name : '')
-      .key(connection => connection.sector || 'Sonstiges')
-      .entries(data)
+const nestData = (state, {data}) => {
+  const tree = nest()
+    .key(connection => connection.via ? connection.via.name : '')
+    .key(connection => connection.sector || 'Sonstiges')
+    .entries(data)
+
+  let nextState = {
+    tree
+  }
+  if (state.open === undefined) {
+    nextState.open = [tree[0].key, tree[0].values[0].key]
+  }
+
+  return nextState
+}
+
+class Connections extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      tree: []
+    }
+    this.nestData = ({data}) => {
+      const tree = nest()
+        .key(connection => connection.via ? connection.via.name : '')
+        .key(connection => connection.sector || 'Sonstiges')
+        .entries(data)
+
+      this.setState({
+        tree
+      })
+    }
+  }
+  componentWillMount () {
+    this.setState(nestData)
+  }
+  componentWillReceiveProps (nextProps) {
+    this.setState(nestData(this.state, nextProps))
+  }
+  render () {
+    const {tree, open} = this.state
 
     return (
       <div {...containerStyle}>
         {tree.map(({key: via, values: groups}) => {
           return (
             <div key={via} style={{textAlign: 'center'}}>
-              {!!via && <span><span {...bubbleViaStyle}><GuestIcon className={iconStyle} /> {via}</span><br /></span>}
-              {groups.map(({key, values}) => {
+              {!!via && (<span><span {...bubbleViaStyle} style={{opacity: open[0] === via ? 1 : 0.5}}>
+                <GuestIcon className={iconStyle} /> {via}</span><br />
+              </span>)}
+              {groups.map(({key, values}, i) => {
+                const isOpen = open[0] === via && open[1] === key
                 return (
-                  <span key={key} className={via ? bubbleViaStyle : bubbleStyle}>
-                    <span className={via ? countViaStyle : countStyle}>{values.length}</span> {key}
+                  <span key={key}>
+                    <span
+                      className={via ? bubbleViaStyle : bubbleStyle}
+                      style={{opacity: !open || isOpen ? 1 : 0.5}}
+                      onClick={() => this.setState({open: [via, key]})}>
+                      <span className={via ? countViaStyle : countStyle}>{values.length}</span> {key}
+                    </span>
+                    {isOpen && <br />}
+                    {isOpen && values.map(connection => (
+                      <span key={connection.to.id}
+                        {...connectionStyle}
+                        style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
+                        {connection.to.name}
+                      </span>
+                    ))}
+                    {isOpen && <br />}
                   </span>
                 )
               })}
