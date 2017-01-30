@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {css} from 'glamor'
 import {GREY_MID} from '../theme'
 import {HEADER_HEIGHT} from './Header'
-import {PADDING} from './Frame'
+import {PADDING, Center} from './Frame'
 
 const spacerStyle = css({
   position: 'relative',
@@ -78,7 +78,11 @@ class Loader extends Component {
         </Spacer>
       )
     } else if (error) {
-      return <Spacer width={width} height={height}>{error.toString()}</Spacer>
+      return (
+        <Spacer width={width} height={height}>
+          <Center>{error.toString()}</Center>
+        </Spacer>
+      )
     }
     return render()
   }
