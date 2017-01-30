@@ -7,7 +7,7 @@ import GuestIcon from '../assets/Guest'
 
 const containerStyle = css({
   backgroundColor: GREY_LIGHT,
-  padding: '20px 10px 10px'
+  padding: '10px 0 0'
 })
 const bubbleStyle = css({
   display: 'inline-block',

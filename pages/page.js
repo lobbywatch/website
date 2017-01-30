@@ -6,7 +6,7 @@ import {graphql} from 'react-apollo'
 import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
-import Frame from '../src/components/Frame'
+import Frame, {Center} from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
 import {H1} from '../src/components/Styled'
 
@@ -23,10 +23,10 @@ const pageQuery = gql`
 const Page = ({loading, error, title, content, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <Loader loading={loading} error={error} render={() => (
-      <div>
+      <Center>
         <H1>{title}</H1>
         <RawHtml dangerouslySetInnerHTML={{__html: content}} />
-      </div>
+      </Center>
     )} />
   </Frame>
 )

@@ -6,7 +6,7 @@ import {graphql} from 'react-apollo'
 import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
-import Frame from '../src/components/Frame'
+import Frame, {Center} from '../src/components/Frame'
 import {H1, Link} from '../src/components/Styled'
 
 const parliamentarianQuery = gql`
@@ -22,7 +22,7 @@ const parliamentarianQuery = gql`
 const Parliamentarian = ({loading, error, parliamentarians, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <Loader loading={loading} error={error} render={() => (
-      <div>
+      <Center>
         <H1>Parlamentarier</H1>
         <ul>
           {parliamentarians.map(({id, firstName, lastName}) => (
@@ -34,7 +34,7 @@ const Parliamentarian = ({loading, error, parliamentarians, url: {query: {locale
             </li>
           ))}
         </ul>
-      </div>
+      </Center>
     )} />
   </Frame>
 )

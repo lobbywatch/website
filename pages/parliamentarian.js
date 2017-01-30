@@ -6,10 +6,11 @@ import {graphql} from 'react-apollo'
 import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
-import Frame from '../src/components/Frame'
+import Frame, {Center} from '../src/components/Frame'
 import Connections from '../src/components/Connections'
 import {h3Rule} from '../src/components/Styled'
 import {withT} from '../src/utils/translate'
+import {GREY_LIGHT} from '../src/theme'
 
 const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: ID!) {
@@ -55,26 +56,34 @@ const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {loca
       const {council, active, firstName, dateOfBirth, age, portrait, gender, lastName, partyMembership} = parliamentarian
       return (
         <div>
-          <img src={portrait} />
-          <h1 {...h3Rule}>
-            {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}{' '}
-            {firstName} {lastName}
-          </h1>
-          <dl>
-            <dt>Person</dt>
-            <dd>{dateOfBirth} {age} {gender}</dd>
-            {partyMembership && <dt>{partyMembership.party.name}</dt>}
-            {partyMembership && <dd>{partyMembership.function}</dd>}
-          </dl>
-          <Connections data={parliamentarian.connections} />
-          <ul>
-            {parliamentarian.connections.map((connection, i) => (
-              <li key={`connection-${i}`}>
-                {!!connection.via && <span>via {connection.via.name}<br /></span>}
-                {connection.potency} {connection.to.name}
-              </li>
-            ))}
-          </ul>
+          <Center>
+            <img src={portrait} />
+            <h1 {...h3Rule}>
+              {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}{' '}
+              {firstName} {lastName}
+            </h1>
+            <dl>
+              <dt>Person</dt>
+              <dd>{dateOfBirth} {age} {gender}</dd>
+              {partyMembership && <dt>{partyMembership.party.name}</dt>}
+              {partyMembership && <dd>{partyMembership.function}</dd>}
+            </dl>
+          </Center>
+          <div style={{backgroundColor: GREY_LIGHT}}>
+            <Center>
+              <Connections data={parliamentarian.connections} />
+            </Center>
+          </div>
+          <Center>
+            <ul>
+              {parliamentarian.connections.map((connection, i) => (
+                <li key={`connection-${i}`}>
+                  {!!connection.via && <span>via {connection.via.name}<br /></span>}
+                  {connection.potency} {connection.to.name}
+                </li>
+              ))}
+            </ul>
+          </Center>
         </div>
       )
     }} />

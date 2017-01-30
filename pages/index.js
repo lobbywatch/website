@@ -6,7 +6,7 @@ import {graphql} from 'react-apollo'
 import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
-import Frame from '../src/components/Frame'
+import Frame, {Center} from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
 import Message from '../src/components/Message'
 import {Link, H1, H2, H3} from '../src/components/Styled'
@@ -30,7 +30,7 @@ const indexQuery = gql`
 const Index = ({loading, error, articles, blocks, t, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <Loader loading={loading} error={error} render={() => (
-      <div>
+      <Center>
         <H1><Message id='index/blog/title' locale={locale} /></H1>
         {articles.map((article, i) => (
           <div key={i}>
@@ -53,7 +53,7 @@ const Index = ({loading, error, articles, blocks, t, url: {query: {locale}}}) =>
               </div>
             ))
         }
-      </div>
+      </Center>
     )} />
   </Frame>
 )

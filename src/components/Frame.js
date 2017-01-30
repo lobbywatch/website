@@ -36,9 +36,7 @@ const Frame = ({locale, children}) => (
         <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' />
       </Head>
       <Header locale={locale} />
-      <Center>
-        {children}
-      </Center>
+      {children}
     </div>
     <Footer locale={locale} />
   </div>
