@@ -82,9 +82,10 @@ const resolveFunctions = {
     },
     getParliamentarian (_, {locale, id}) {
       const rawId = id.replace(parliamentarianIdPrefix, '')
+      // ToDo handle inactive – could send `includeInactive=1` but would need permission fixing on php side
       return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}`)
         .then(({json}) => {
-          return mapParliamentarian(json.data)
+          return json.data && mapParliamentarian(json.data)
         })
     },
     translations (_, {locale}) {

@@ -60,15 +60,16 @@ const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
       }
     }
   },
-  props: ({data, ownProps: {serverContext}}) => {
+  props: ({data, ownProps: {serverContext, t}}) => {
+    const notFound = !data.loading && !data.getParliamentarian
     if (serverContext) {
-      if (data.getParliamentarian && data.getParliamentarian.statusCode) {
-        serverContext.res.statusCode = data.getParliamentarian.statusCode
+      if (notFound) {
+        serverContext.res.statusCode = 404
       }
     }
     return {
       loading: data.loading,
-      error: data.error,
+      error: data.error || (notFound && t('parliamentarian/error/404')),
       ...data.getParliamentarian
     }
   }
