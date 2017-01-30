@@ -108,17 +108,17 @@ class Connections extends Component {
         {tree.map(({key: via, values: groups}) => {
           return (
             <div key={via} style={{textAlign: 'center'}}>
-              {!!via && (<span><span {...bubbleViaStyle} style={{opacity: open[0] === via ? 1 : 0.5}}>
+              {!!via && (<span><span {...bubbleViaStyle} style={{opacity: !open || open[0] === via ? 1 : 0.5}}>
                 <GuestIcon className={iconStyle} /> {via}</span><br />
               </span>)}
               {groups.map(({key, values}, i) => {
-                const isOpen = open[0] === via && open[1] === key
+                const isOpen = open && open[0] === via && open[1] === key
                 return (
                   <span key={key}>
                     <span
                       className={via ? bubbleViaStyle : bubbleStyle}
                       style={{opacity: !open || isOpen ? 1 : 0.5}}
-                      onClick={() => this.setState({open: [via, key]})}>
+                      onClick={() => this.setState({open: isOpen ? null : [via, key]})}>
                       <span className={via ? countViaStyle : countStyle}>{values.length}</span> {key}
                     </span>
                     {isOpen && <br />}
