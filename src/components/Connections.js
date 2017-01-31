@@ -5,6 +5,8 @@ import {formatLocale} from 'd3-format'
 
 import {LW_BLUE_DARK, WHITE, GREY_LIGHT, BLACK, POTENCY_COLORS} from '../theme'
 import GuestIcon from '../assets/Guest'
+import ContextBox from './ContextBox'
+import {A, P, metaRule} from './Styled'
 
 const swissNumbers = formatLocale({
   decimal: '.',
@@ -15,6 +17,7 @@ const swissNumbers = formatLocale({
 const chfFormat = swissNumbers.format('$,.0f')
 
 const containerStyle = css({
+  position: 'relative',
   backgroundColor: GREY_LIGHT,
   padding: '10px 0 0'
 })
@@ -115,10 +118,29 @@ class Connections extends Component {
     this.setState(nestData(this.state, nextProps))
   }
   render () {
-    const {tree, open} = this.state
+    const {tree, open, hover} = this.state
 
     return (
-      <div {...containerStyle}>
+      <div {...containerStyle} ref={ref => { this.containerRef = ref }}>
+        {!!hover && <ContextBox x={hover.x} y={hover.y} contextWidth={hover.contextWidth}>
+          <P style={{margin: 0}}>
+            <span {...metaRule}>Branche</span><br /> {hover.connection.sector}<br />
+            <span {...metaRule}>Lobbygruppe</span><br /> {hover.connection.group}<br />
+            <span {...metaRule}>Funktion</span><br /> {hover.connection.function}
+            {!!hover.connection.compensation && (
+              <span>
+                <br />
+                <span {...metaRule}>Salär</span><br />
+                {chfFormat(hover.connection.compensation.money)}<br />
+                {hover.connection.compensation.description}<br />
+                {hover.connection.compensation.sourceUrl
+                  ? <A href={hover.connection.compensation.sourceUrl}>{hover.connection.compensation.source || 'Quelle'}</A>
+                  : hover.connection.compensation.source
+                }
+              </span>
+            )}
+          </P>
+        </ContextBox>}
         {tree.map(({key: via, values: groups}) => {
           return (
             <div key={via} style={{textAlign: 'center'}}>
@@ -138,6 +160,17 @@ class Connections extends Component {
                     {isOpen && <br />}
                     {isOpen && values.map((connection, i) => (
                       <span key={i}
+                        onMouseOver={e => {
+                          const containerRect = this.containerRef.getBoundingClientRect()
+                          const rect = e.currentTarget.getBoundingClientRect()
+                          this.setState({hover: {
+                            connection,
+                            contextWidth: containerRect.width,
+                            x: window.scrollX + (rect.width / 2 + rect.left - containerRect.left),
+                            y: window.scrollX + (rect.top - containerRect.top) - 15
+                          }})
+                        }}
+                        onMouseOut={() => this.setState({hover: null})}
                         {...connectionStyle}
                         style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
                         {connection.to.name}

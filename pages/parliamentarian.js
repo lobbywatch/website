@@ -50,9 +50,12 @@ const parliamentarianQuery = gql`
         group
         sector
         potency
+        function
         compensation {
           money
           description
+          source
+          sourceUrl
         }
         to {
           ... on Organisation {
