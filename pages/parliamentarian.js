@@ -8,7 +8,7 @@ import withData from '../src/apollo/withData'
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import Connections from '../src/components/Connections'
-import {h3Rule, metaRule} from '../src/components/Styled'
+import {h3Rule, metaRule, A} from '../src/components/Styled'
 import {withT} from '../src/utils/translate'
 import {GREY_LIGHT} from '../src/theme'
 import {css} from 'glamor'
@@ -71,10 +71,12 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {locale}}}) => (
+const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {locale, id}}}) => (
   <Frame locale={locale}>
     <Loader loading={loading} error={error} render={() => {
       const {council, active, firstName, portrait, gender, lastName, canton, partyMembership} = parliamentarian
+      const rawId = id.replace('Parliamentarian-', '')
+      const path = `/${locale}/daten/parlamentarier/${rawId}/${firstName} ${lastName}`
       return (
         <div>
           <Center>
@@ -96,14 +98,11 @@ const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {loca
             </Center>
           </div>
           <Center>
-            <ul>
-              {parliamentarian.connections.map((connection, i) => (
-                <li key={`connection-${i}`}>
-                  {!!connection.via && <span>via {connection.via.name}<br /></span>}
-                  {connection.potency} {connection.to.name}
-                </li>
-              ))}
-            </ul>
+            <p>
+              Original Profil:
+              {' '}<A target='_blank' href={`https://lobbywatch-cms.interactivethings.io${path}`}>Staging</A>
+              {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
+            </p>
           </Center>
         </div>
       )

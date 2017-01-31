@@ -15,6 +15,8 @@ export const Link = ({children, className, ...props}) => (
   <NextLink {...props}><a {...linkRule}>{children}</a></NextLink>
 )
 
+export const A = ({children, ...props}) => <a {...props} {...linkRule}>{children}</a>
+
 export const h1Style = {
   fontSize: 42,
   lineHeight: '50px',
