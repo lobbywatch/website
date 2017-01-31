@@ -70,6 +70,7 @@ const connectionStyle = css({
   fontSize: 14,
   lineHeight: '16px',
   padding: '5px 10px',
+  verticalAlign: 'middle',
   marginRight: 10,
   marginBottom: 10
 })
