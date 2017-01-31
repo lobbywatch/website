@@ -2,12 +2,12 @@ import React, {Component} from 'react'
 import {css} from 'glamor'
 import {GREY_MID} from '../theme'
 import {HEADER_HEIGHT} from './Header'
-import {PADDING, Center} from './Frame'
+import {Center} from './Frame'
 
 const spacerStyle = css({
   position: 'relative',
   minWidth: '100%',
-  minHeight: ['100vh', `calc(100vh - ${HEADER_HEIGHT + PADDING * 2}px)`]
+  minHeight: ['100vh', `calc(100vh - ${HEADER_HEIGHT}px)`]
 })
 const Spacer = ({height, width, children}) => (
   <div {...spacerStyle} style={{minWidth: width, minHeight: height}}>{children}</div>
