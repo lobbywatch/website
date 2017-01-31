@@ -82,13 +82,13 @@ exports.mapParliamentarian = raw => {
       }
       return age
     },
-    partyMembership: {
+    partyMembership: raw.partei ? {
       function: raw.parteifunktion,
       party: {
         name: raw.partei_name,
         abbr: raw.partei
       }
-    },
+    } : null,
     canton: raw.kanton_name,
     active: !councilExitDate,
     council: raw.rat,

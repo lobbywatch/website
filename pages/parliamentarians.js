@@ -7,7 +7,36 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
-import {H1, Link} from '../src/components/Styled'
+import {H1, metaRule} from '../src/components/Styled'
+import {GREY_LIGHT, mediaM} from '../src/theme'
+import {withT} from '../src/utils/translate'
+import {css} from 'glamor'
+import NextLink from 'next/prefetch'
+
+const portraitStyle = css({
+  display: 'inline-block',
+  width: 32,
+  height: 32,
+  borderRadius: '50%',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  float: 'left',
+  marginRight: 10,
+  marginTop: 2
+})
+const aStyle = css({
+  display: 'block',
+  color: 'inherit',
+  textDecoration: 'none',
+  borderBottom: `1px solid ${GREY_LIGHT}`,
+  padding: '12px 0'
+})
+const metaStyle = css(metaRule, {
+  lineHeight: '16px',
+  [mediaM]: {
+    lineHeight: '16px'
+  }
+})
 
 const parliamentarianQuery = gql`
   query parliamentarians($locale: Locale!) {
@@ -15,25 +44,40 @@ const parliamentarianQuery = gql`
       id
       firstName
       lastName
+      portrait
+      council
+      gender
+      active
+      canton
+      partyMembership {
+        party {
+          abbr
+        }
+      }
     }
   }
 `
 
-const Parliamentarian = ({loading, error, parliamentarians, url: {query: {locale}}}) => (
+const Parliamentarian = ({loading, error, t, parliamentarians, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <Loader loading={loading} error={error} render={() => (
       <Center>
         <H1>Parlamentarier</H1>
-        <ul>
-          {parliamentarians.map(({id, firstName, lastName}) => (
-            <li key={id}>
-              <Link as={`/${locale}/daten/parlamentarier/${id}/${firstName} ${lastName}`}
-                href={`/parliamentarian?id=${id}&locale=${locale}`}>
-                {firstName} {lastName}
-              </Link>
-            </li>
-          ))}
-        </ul>
+        {parliamentarians.map(({id, firstName, lastName, portrait, council, gender, active, canton, partyMembership}) => (
+          <NextLink key={id} as={`/${locale}/daten/parlamentarier/${id}/${firstName} ${lastName}`} href={`/parliamentarian?id=${id}&locale=${locale}`}>
+            <a {...aStyle}>
+              <span {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />
+              <span>
+                {firstName} {lastName}<br />
+                <span {...metaStyle}>
+                  {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}
+                  {partyMembership ? `, ${partyMembership.party.abbr}` : ''}
+                  {', '}{canton}
+                </span>
+              </span>
+            </a>
+          </NextLink>
+        ))}
       </Center>
     )} />
   </Frame>
@@ -56,4 +100,4 @@ const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
   }
 })(Parliamentarian)
 
-export default withData(ParliamentarianWithQuery)
+export default withData(withT(ParliamentarianWithQuery, ({url}) => url.query.locale))

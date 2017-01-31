@@ -87,7 +87,7 @@ const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {loca
               </h1>
               <p {...metaStyle}>
                 {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}
-                {', '}{partyMembership.party.abbr}
+                {partyMembership ? `, ${partyMembership.party.abbr}` : ''}
                 {', '}{canton}
               </p>
             </div>
