@@ -8,9 +8,26 @@ import withData from '../src/apollo/withData'
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import Connections from '../src/components/Connections'
-import {h3Rule} from '../src/components/Styled'
+import {h3Rule, metaRule} from '../src/components/Styled'
 import {withT} from '../src/utils/translate'
 import {GREY_LIGHT} from '../src/theme'
+import {css} from 'glamor'
+
+const titleStyle = css(h3Rule, {
+  marginTop: 0,
+  marginBottom: 0
+})
+const metaStyle = css(metaRule, {
+  marginTop: 0
+})
+const portraitStyle = css({
+  display: 'inline-block',
+  width: 64,
+  height: 64,
+  borderRadius: '50%',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center'
+})
 
 const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: ID!) {
@@ -23,10 +40,10 @@ const parliamentarianQuery = gql`
       gender
       council
       active
+      canton
       partyMembership {
-        function
         party {
-          name
+          abbr
         }
       }
       connections {
@@ -57,21 +74,21 @@ const parliamentarianQuery = gql`
 const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {locale}}}) => (
   <Frame locale={locale}>
     <Loader loading={loading} error={error} render={() => {
-      const {council, active, firstName, dateOfBirth, age, portrait, gender, lastName, partyMembership} = parliamentarian
+      const {council, active, firstName, portrait, gender, lastName, canton, partyMembership} = parliamentarian
       return (
         <div>
           <Center>
-            <img src={portrait} />
-            <h1 {...h3Rule}>
-              {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}{' '}
-              {firstName} {lastName}
-            </h1>
-            <dl>
-              <dt>Person</dt>
-              <dd>{dateOfBirth} {age} {gender}</dd>
-              {partyMembership && <dt>{partyMembership.party.name}</dt>}
-              {partyMembership && <dd>{partyMembership.function}</dd>}
-            </dl>
+            <div style={{textAlign: 'center'}}>
+              <div {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />
+              <h1 {...titleStyle}>
+                {firstName} {lastName}
+              </h1>
+              <p {...metaStyle}>
+                {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}
+                {', '}{partyMembership.party.abbr}
+                {', '}{canton}
+              </p>
+            </div>
           </Center>
           <div style={{backgroundColor: GREY_LIGHT}}>
             <Center>
