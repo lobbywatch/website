@@ -121,6 +121,7 @@ type Connection {
   sector: String
   group: String
   potency: Potency
+  function: String
 }
 
 type Parliamentarian implements Person {

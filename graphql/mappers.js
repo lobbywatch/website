@@ -26,6 +26,7 @@ const mapConnection = (from, via, connection) => ({
   sector: connection.branche || connection.interessengruppe_branche,
   group: connection.interessengruppe,
   potency: connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index],
+  function: [connection.art, connection.funktion_im_gremium].filter(Boolean).join(' ') || null,
   compensation: connection.verguetung !== null ? ({
     year: connection.verguetung_jahr && +connection.verguetung_jahr,
     money: +connection.verguetung,
