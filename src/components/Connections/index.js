@@ -8,6 +8,7 @@ import GuestIcon from '../../assets/Guest'
 import ContextBox, {ContextBoxValue} from '../ContextBox'
 import {A} from '../Styled'
 import Legend from './Legend'
+import {withT} from '../../utils/translate'
 
 const swissNumbers = formatLocale({
   decimal: '.',
@@ -80,10 +81,10 @@ const connectionCompensationStyle = css({
   lineHeight: '14px'
 })
 
-const nestData = (state, {data, vias}) => {
+const nestData = (state, {data, vias, t}) => {
   const tree = nest()
     .key(connection => connection.via ? connection.via.name : '')
-    .key(connection => connection.sector || 'Sonstiges')
+    .key(connection => connection.group || t('connections/more/plural'))
     .entries(data)
 
   vias.forEach(via => {
@@ -120,15 +121,15 @@ class Connections extends Component {
   }
   render () {
     const {tree, open, hover} = this.state
-    const {locale} = this.props
+    const {locale, t} = this.props
 
     return (
       <div {...containerStyle} ref={ref => { this.containerRef = ref }}>
         {!!hover && <ContextBox x={hover.x} y={hover.y} contextWidth={hover.contextWidth}>
-          <ContextBoxValue label={'Branche'}>{hover.connection.sector}</ContextBoxValue>
-          <ContextBoxValue label={'Lobbygruppe'}>{hover.connection.group}</ContextBoxValue>
-          <ContextBoxValue label={'Funktion'}>{hover.connection.function}</ContextBoxValue>
-          {!!hover.connection.compensation && (<ContextBoxValue label={'Salär'}>
+          <ContextBoxValue label={t('connections/context/sector')}>{hover.connection.sector}</ContextBoxValue>
+          <ContextBoxValue label={t('connections/context/group')}>{hover.connection.group}</ContextBoxValue>
+          <ContextBoxValue label={t('connections/context/function')}>{hover.connection.function}</ContextBoxValue>
+          {!!hover.connection.compensation && (<ContextBoxValue label={t('connections/context/compensation')}>
             {chfFormat(hover.connection.compensation.money)}<br />
             {hover.connection.compensation.description}<br />
             {hover.connection.compensation.sourceUrl
@@ -188,4 +189,4 @@ class Connections extends Component {
   }
 }
 
-export default Connections
+export default withT(Connections)
