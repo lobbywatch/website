@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react'
 import {css} from 'glamor'
 
-import {WHITE, GREY_DARK} from '../theme'
+import {metaRule} from './Styled'
+import {WHITE, GREY_DARK, GREY_LIGHT} from '../theme'
 
 const boxStyle = css({
   position: 'absolute',
@@ -50,6 +51,32 @@ const notchPosition = {
     left: css({top: -8, transform: 'translateX(-50%) rotate(180deg)', left: '15%'}),
     right: css({top: -8, transform: 'translateX(50%) rotate(180deg)', right: '15%'})
   }
+}
+
+const labledValueStyle = css({
+  fontSize: 14,
+  borderBottom: `1px solid ${GREY_LIGHT}`,
+  paddingBottom: 5,
+  ':last-child': {
+    borderBottom: 'none'
+  }
+})
+
+export const ContextBoxValue = ({label, children}) => {
+  if (!children) {
+    return null
+  }
+  return (
+    <div {...labledValueStyle}>
+      {!!label && <span {...metaRule}>{label}<br /></span>}
+      {children}
+    </div>
+  )
+}
+
+ContextBoxValue.propTypes = {
+  label: PropTypes.string,
+  children: PropTypes.node
 }
 
 const ContextBox = ({orientation: yOrientation, x, y, contextWidth, children}) => {

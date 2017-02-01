@@ -5,8 +5,8 @@ import {formatLocale} from 'd3-format'
 
 import {LW_BLUE_DARK, WHITE, GREY_LIGHT, BLACK, POTENCY_COLORS} from '../../theme'
 import GuestIcon from '../../assets/Guest'
-import ContextBox from '../ContextBox'
-import {A, P, metaRule} from '../Styled'
+import ContextBox, {ContextBoxValue} from '../ContextBox'
+import {A} from '../Styled'
 import Legend from './Legend'
 
 const swissNumbers = formatLocale({
@@ -126,23 +126,17 @@ class Connections extends Component {
     return (
       <div {...containerStyle} ref={ref => { this.containerRef = ref }}>
         {!!hover && <ContextBox x={hover.x} y={hover.y} contextWidth={hover.contextWidth}>
-          <P style={{margin: 0}}>
-            <span {...metaRule}>Branche</span><br /> {hover.connection.sector}<br />
-            <span {...metaRule}>Lobbygruppe</span><br /> {hover.connection.group}<br />
-            <span {...metaRule}>Funktion</span><br /> {hover.connection.function}
-            {!!hover.connection.compensation && (
-              <span>
-                <br />
-                <span {...metaRule}>Salär</span><br />
-                {chfFormat(hover.connection.compensation.money)}<br />
-                {hover.connection.compensation.description}<br />
-                {hover.connection.compensation.sourceUrl
-                  ? <A href={hover.connection.compensation.sourceUrl}>{hover.connection.compensation.source || 'Quelle'}</A>
-                  : hover.connection.compensation.source
-                }
-              </span>
-            )}
-          </P>
+          <ContextBoxValue label={'Branche'}>{hover.connection.sector}</ContextBoxValue>
+          <ContextBoxValue label={'Lobbygruppe'}>{hover.connection.group}</ContextBoxValue>
+          <ContextBoxValue label={'Funktion'}>{hover.connection.function}</ContextBoxValue>
+          {!!hover.connection.compensation && (<ContextBoxValue label={'Salär'}>
+            {chfFormat(hover.connection.compensation.money)}<br />
+            {hover.connection.compensation.description}<br />
+            {hover.connection.compensation.sourceUrl
+              ? <A href={hover.connection.compensation.sourceUrl}>{hover.connection.compensation.source || 'Quelle'}</A>
+              : hover.connection.compensation.source
+            }
+          </ContextBoxValue>)}
         </ContextBox>}
         <Legend locale={locale} />
         {tree.map(({key: via, values: groups}) => {
