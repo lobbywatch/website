@@ -87,7 +87,6 @@ const nestData = (state, {data, vias}) => {
     .entries(data)
 
   vias.forEach(via => {
-    console.log('via', via)
     if (!tree.filter(({key}) => key === via.name)[0]) {
       tree.push({
         key: via.name,
