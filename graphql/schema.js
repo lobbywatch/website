@@ -154,6 +154,7 @@ type Parliamentarian implements Person {
   website: String
   commissions: [Commission!]!
   connections: [Connection!]!
+  guests: [Guest!]!
 }
 `
 

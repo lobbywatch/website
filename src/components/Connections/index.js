@@ -80,11 +80,21 @@ const connectionCompensationStyle = css({
   lineHeight: '14px'
 })
 
-const nestData = (state, {data}) => {
+const nestData = (state, {data, vias}) => {
   const tree = nest()
     .key(connection => connection.via ? connection.via.name : '')
     .key(connection => connection.sector || 'Sonstiges')
     .entries(data)
+
+  vias.forEach(via => {
+    console.log('via', via)
+    if (!tree.filter(({key}) => key === via.name)[0]) {
+      tree.push({
+        key: via.name,
+        values: []
+      })
+    }
+  })
 
   let nextState = {
     tree
@@ -101,16 +111,6 @@ class Connections extends Component {
     super(props)
     this.state = {
       tree: []
-    }
-    this.nestData = ({data}) => {
-      const tree = nest()
-        .key(connection => connection.via ? connection.via.name : '')
-        .key(connection => connection.sector || 'Sonstiges')
-        .entries(data)
-
-      this.setState({
-        tree
-      })
     }
   }
   componentWillMount () {

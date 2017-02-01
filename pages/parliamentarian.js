@@ -46,6 +46,9 @@ const parliamentarianQuery = gql`
           abbr
         }
       }
+      guests {
+        name
+      }
       connections {
         group
         sector
@@ -97,7 +100,7 @@ const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {loca
           </Center>
           <div style={{backgroundColor: GREY_LIGHT}}>
             <Center>
-              <Connections locale={locale} data={parliamentarian.connections} />
+              <Connections locale={locale} data={parliamentarian.connections} vias={parliamentarian.guests} />
             </Center>
           </div>
           <Center>
