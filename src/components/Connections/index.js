@@ -3,10 +3,11 @@ import {css, merge} from 'glamor'
 import {nest} from 'd3-collection'
 import {formatLocale} from 'd3-format'
 
-import {LW_BLUE_DARK, WHITE, GREY_LIGHT, BLACK, POTENCY_COLORS} from '../theme'
-import GuestIcon from '../assets/Guest'
-import ContextBox from './ContextBox'
-import {A, P, metaRule} from './Styled'
+import {LW_BLUE_DARK, WHITE, GREY_LIGHT, BLACK, POTENCY_COLORS} from '../../theme'
+import GuestIcon from '../../assets/Guest'
+import ContextBox from '../ContextBox'
+import {A, P, metaRule} from '../Styled'
+import Legend from './Legend'
 
 const swissNumbers = formatLocale({
   decimal: '.',
@@ -120,6 +121,7 @@ class Connections extends Component {
   }
   render () {
     const {tree, open, hover} = this.state
+    const {locale} = this.props
 
     return (
       <div {...containerStyle} ref={ref => { this.containerRef = ref }}>
@@ -142,6 +144,7 @@ class Connections extends Component {
             )}
           </P>
         </ContextBox>}
+        <Legend locale={locale} />
         {tree.map(({key: via, values: groups}) => {
           return (
             <div key={via} style={{textAlign: 'center'}}>

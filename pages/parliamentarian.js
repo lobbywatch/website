@@ -97,7 +97,7 @@ const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {loca
           </Center>
           <div style={{backgroundColor: GREY_LIGHT}}>
             <Center>
-              <Connections data={parliamentarian.connections} />
+              <Connections locale={locale} data={parliamentarian.connections} />
             </Center>
           </div>
           <Center>
