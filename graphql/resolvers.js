@@ -4,7 +4,8 @@ const gsheets = require('gsheets')
 const {DRUPAL_BASE_URL} = require('../src/constants')
 const {
   mapArticle,
-  mapParliamentarian, parliamentarianIdPrefix
+  mapParliamentarian, parliamentarianIdPrefix,
+  mapGuest, guestIdPrefix
 } = require('./mappers')
 
 const resolveFunctions = {
@@ -68,6 +69,9 @@ const resolveFunctions = {
       if (queriedFields.has('connections')) {
         throw new Error('Connections currently only supported in getParliamentarian')
       }
+      if (queriedFields.has('guests')) {
+        throw new Error('Guests currently only supported in getParliamentarian')
+      }
 
       return Promise.all([
         fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/flat/list&limit=none`),
@@ -96,6 +100,28 @@ const resolveFunctions = {
       return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
         .then(({json}) => {
           return json.data && mapParliamentarian(json.data)
+        })
+    },
+    guests (_, {locale}, context, info) {
+      const queriedFields = new Set(
+        info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
+      )
+
+      if (queriedFields.has('connections')) {
+        throw new Error('Connections currently only supported in getParliamentarian')
+      }
+
+      return Promise.all([
+        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/flat/list&limit=none`)
+      ]).then(([{json: {data: guests}}]) => {
+        return guests.map(mapGuest)
+      })
+    },
+    getGuest (_, {locale, id}) {
+      const rawId = id.replace(guestIdPrefix, '')
+      return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
+        .then(({json}) => {
+          return json.data && mapGuest(json.data)
         })
     },
     translations (_, {locale}) {

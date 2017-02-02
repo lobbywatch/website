@@ -12,7 +12,6 @@ const potencyMap = {
   '1': 'LOW'
 }
 
-const guestIdPrefix = exports.guestIdPrefix = 'Guest-'
 const orgIdPrefix = exports.orgIdPrefix = 'Organisation-'
 const commissionIdPrefix = exports.commissionIdPrefix = 'Commission-'
 
@@ -30,11 +29,27 @@ const mapConnection = (from, via, connection) => ({
   compensation: connection.verguetung !== null ? ({
     year: connection.verguetung_jahr && +connection.verguetung_jahr,
     money: +connection.verguetung,
-    description: connection.verguetung_beschreibung,
-    source: connection.verguetung_quelle,
-    sourceUrl: connection.verguetung_quelle_url
+    description: connection.verguetung_beschreibung
   }) : null
 })
+
+const guestIdPrefix = exports.guestIdPrefix = 'Guest-'
+const mapGuest = exports.mapGuest = raw => {
+  const guest = {
+    id: `${guestIdPrefix}${raw.person_id}`,
+    name: () => `${raw.vorname} ${raw.nachname}`,
+    firstName: raw.vorname,
+    middleName: raw.zweiter_vorname,
+    lastName: raw.nachname,
+    occupation: raw.beruf,
+    gender: raw.geschlecht,
+    function: raw.funktion,
+    parliamentarian: raw.parlamentarier_name,
+    parliamentarianId: raw.parlamentarier_id
+  }
+  guest.connections = (raw.mandate || []).map(connection => mapConnection(guest, null, connection))
+  return guest
+}
 
 const parliamentarianIdPrefix = exports.parliamentarianIdPrefix = 'Parliamentarian-'
 exports.mapParliamentarian = raw => {
@@ -43,19 +58,7 @@ exports.mapParliamentarian = raw => {
   const councilExitDate = raw.im_rat_bis_unix
     ? new Date(+raw.im_rat_bis_unix * 1000) : null
 
-  const guests = (raw.zutrittsberechtigungen || []).map(raw => {
-    const guest = {
-      id: `${guestIdPrefix}${raw.person_id}`,
-      name: () => `${raw.vorname} ${raw.nachname}`,
-      firstName: raw.vorname,
-      middleName: raw.zweiter_vorname,
-      lastName: raw.nachname,
-      occupation: raw.beruf,
-      gender: raw.geschlecht
-    }
-    guest.connections = raw.mandate.map(connection => mapConnection(guest, null, connection))
-    return guest
-  })
+  const guests = (raw.zutrittsberechtigungen || []).map(mapGuest)
 
   const connections = () => {
     const direct = raw.interessenbindungen.map(directConnection => mapConnection(parliamentarian, null, directConnection))

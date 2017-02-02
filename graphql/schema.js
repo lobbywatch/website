@@ -85,8 +85,6 @@ type Compensation {
   # measured in yearly CHF
   money: Int
   description: String
-  source: String
-  sourceUrl: String
 }
 
 enum Potency {
@@ -109,6 +107,11 @@ type Guest implements Person {
   gender: Gender
   # Format: YYYY-MM-DD
   dateOfBirth: String
+  connections: [Connection!]!
+  function: String,
+  # ToDo: Get real parliamentarian object
+  parliamentarian: String!
+  parliamentarianId: ID!
 }
 
 union ConnectionEntity = Parliamentarian | Organisation | Guest
@@ -165,6 +168,8 @@ type RootQuery {
   articles(locale: Locale!, limit: Int = 3, page: Int = 0): [Article]
   parliamentarians(locale: Locale!): [Parliamentarian]
   getParliamentarian(locale: Locale!, id: ID!): Parliamentarian
+  guests(locale: Locale!): [Guest]
+  getGuest(locale: Locale!, id: ID!): Guest
   translations(locale: Locale!): [Translation]
 }
 
