@@ -114,7 +114,7 @@ const resolveFunctions = {
       return Promise.all([
         fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/flat/list&limit=none`)
       ]).then(([{json: {data: guests}}]) => {
-        return guests.map(mapGuest)
+        return (guests || []).map(mapGuest)
       })
     },
     getGuest (_, {locale, id}) {
