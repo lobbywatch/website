@@ -1,6 +1,7 @@
 const fetch = require('./fetch')
 const qs = require('querystring')
 const gsheets = require('gsheets')
+const {ascending} = require('d3-array')
 const {DRUPAL_BASE_URL} = require('../src/constants')
 const {
   mapArticle,
@@ -91,7 +92,13 @@ const resolveFunctions = {
             parliamentarian.in_kommission = commissionIndex[parliamentarian.id]
           })
         }
-        return parliamentarians.map(mapParliamentarian)
+
+        const result = parliamentarians.map(mapParliamentarian)
+
+        // default: sort by lastname
+        result.sort((a, b) => ascending(a.lastName, b.lastName))
+
+        return result
       })
     },
     getParliamentarian (_, {locale, id}) {
@@ -114,7 +121,12 @@ const resolveFunctions = {
       return Promise.all([
         fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/flat/list&limit=none`)
       ]).then(([{json: {data: guests}}]) => {
-        return (guests || []).map(mapGuest)
+        const result = (guests || []).map(mapGuest)
+
+        // default: sort by lastname
+        result.sort((a, b) => ascending(a.lastName, b.lastName))
+
+        return result
       })
     },
     getGuest (_, {locale, id}) {

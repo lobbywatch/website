@@ -68,7 +68,7 @@ const Parliamentarian = ({loading, error, t, parliamentarians, url: {query: {loc
             <a {...aStyle}>
               <span {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />
               <span>
-                {firstName} {lastName}<br />
+                {lastName}, {firstName}<br />
                 <span {...metaStyle}>
                   {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}
                   {partyMembership ? `, ${partyMembership.party.abbr}` : ''}
