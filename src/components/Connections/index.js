@@ -76,10 +76,6 @@ const connectionStyle = css({
   marginRight: 10,
   marginBottom: 10
 })
-const connectionCompensationStyle = css({
-  fontSize: 12,
-  lineHeight: '14px'
-})
 
 const nestData = (state, {data, vias, t}) => {
   const tree = nest()
@@ -130,12 +126,9 @@ class Connections extends Component {
           <ContextBoxValue label={t('connections/context/group')}>{hover.connection.group}</ContextBoxValue>
           <ContextBoxValue label={t('connections/context/function')}>{hover.connection.function}</ContextBoxValue>
           {!!hover.connection.compensation && (<ContextBoxValue label={t('connections/context/compensation')}>
-            {chfFormat(hover.connection.compensation.money)}<br />
-            {hover.connection.compensation.description}<br />
-            {hover.connection.compensation.sourceUrl
-              ? <A href={hover.connection.compensation.sourceUrl}>{hover.connection.compensation.source || 'Quelle'}</A>
-              : hover.connection.compensation.source
-            }
+            {chfFormat(hover.connection.compensation.money)}
+            {' '}{t('connections/context/compensation/periode')}
+            {' '}({hover.connection.compensation.description})
           </ContextBoxValue>)}
         </ContextBox>}
         <Legend locale={locale} />
@@ -172,9 +165,6 @@ class Connections extends Component {
                         {...connectionStyle}
                         style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
                         {connection.to.name}
-                        {!!connection.compensation && (
-                          <span {...connectionCompensationStyle}><br />{chfFormat(connection.compensation.money)}</span>
-                        )}
                       </span>
                     ))}
                     {isOpen && <br />}

@@ -57,8 +57,6 @@ const parliamentarianQuery = gql`
         compensation {
           money
           description
-          source
-          sourceUrl
         }
         to {
           ... on Organisation {
