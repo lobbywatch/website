@@ -103,10 +103,11 @@ const resolveFunctions = {
     getParliamentarian (_, {locale, id}) {
       const rawId = id.replace(parliamentarianIdPrefix, '')
       // ToDo handle inactive – could send `includeInactive=1` but would need permission fixing on php side
-      return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
-        .then(({json}) => {
-          return json.data && mapParliamentarian(json.data)
-        })
+      return Promise.all([
+        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
+      ]).then(([{json: {data: parliamentarian}}]) => {
+        return parliamentarian && mapParliamentarian(parliamentarian)
+      })
     },
     guests (_, {locale}, context, info) {
       const queriedFields = new Set(
@@ -130,10 +131,11 @@ const resolveFunctions = {
     },
     getGuest (_, {locale, id}) {
       const rawId = id.replace(guestIdPrefix, '')
-      return fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
-        .then(({json}) => {
-          return json.data && mapGuest(json.data)
-        })
+      return Promise.all([
+        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
+      ]).then(([{json: {data: guest}}]) => {
+        return guest && mapGuest(guest)
+      })
     },
     translations (_, {locale}, {loaders: {translations}}) {
       return translations.load(locale)
