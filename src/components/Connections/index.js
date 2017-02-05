@@ -6,9 +6,9 @@ import {formatLocale} from 'd3-format'
 import {LW_BLUE_DARK, WHITE, GREY_LIGHT, BLACK, POTENCY_COLORS} from '../../theme'
 import GuestIcon from '../../assets/Guest'
 import ContextBox, {ContextBoxValue} from '../ContextBox'
-import {A} from '../Styled'
 import Legend from './Legend'
 import {withT} from '../../utils/translate'
+import {shallowEqual} from '../../utils/helpers'
 
 const swissNumbers = formatLocale({
   decimal: '.',
@@ -113,7 +113,9 @@ class Connections extends Component {
     this.setState(nestData)
   }
   componentWillReceiveProps (nextProps) {
-    this.setState(nestData(this.state, nextProps))
+    if (!shallowEqual(this.props, nextProps)) {
+      this.setState(nestData(this.state, nextProps))
+    }
   }
   render () {
     const {tree, open, hover} = this.state
