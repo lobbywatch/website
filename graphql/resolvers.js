@@ -1,6 +1,5 @@
 const fetch = require('./fetch')
 const qs = require('querystring')
-const gsheets = require('gsheets')
 const {ascending} = require('d3-array')
 const {DRUPAL_BASE_URL} = require('../src/constants')
 const {
@@ -136,18 +135,8 @@ const resolveFunctions = {
           return json.data && mapGuest(json.data)
         })
     },
-    translations (_, {locale}) {
-      const start = new Date().getTime()
-      return gsheets.getWorksheet('1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg', 'translations')
-        .then(res => {
-          const end = new Date().getTime()
-          console.info('[gsheets]', '1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg', 'translations')
-          console.info(`${end - start}ms`)
-          return res.data.map(translation => ({
-            key: translation.key,
-            value: translation[locale]
-          }))
-        })
+    translations (_, {locale}, {loaders: {translations}}) {
+      return translations.load(locale)
     }
   }
 }
