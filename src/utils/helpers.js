@@ -8,39 +8,24 @@ export const intersperse = (list, separator) => {
   }, [list[0]])
 }
 
-/*!
- * is-primitive <https://github.com/jonschlinkert/is-primitive>
- *
- * Copyright (c) 2014-2015, Jon Schlinkert.
- * Licensed under the MIT License.
- */
+// From react-redux
+// https://github.com/reactjs/react-redux/blob/dab9c85b4b6480f9962688c3ba9ec426508d2879/src/utils/shallowEqual.js
 
-const isPrimitive = (value) => {
-  return value == null || (typeof value !== 'function' && typeof value !== 'object')
-}
+const hasOwn = Object.prototype.hasOwnProperty
+export function shallowEqual (a, b) {
+  if (a === b) return true
 
-/*!
- * is-equal-shallow <https://github.com/jonschlinkert/is-equal-shallow>
- *
- * Copyright (c) 2015, Jon Schlinkert.
- * Licensed under the MIT License.
- */
+  let countA = 0
+  let countB = 0
 
-export const shallowEqual = (a, b) => {
-  if (!a && !b) { return true }
-  if (!a && b || a && !b) { return false }
-
-  let key
-  let numKeysB = 0
-  for (key in b) {
-    numKeysB++
-    if (!isPrimitive(b[key]) || !a.hasOwnProperty(key) || (a[key] !== b[key])) {
-      return false
-    }
+  for (let key in a) {
+    if (hasOwn.call(a, key) && a[key] !== b[key]) return false
+    countA++
   }
-  let numKeysA = 0
-  for (key in a) {
-    numKeysA++
+
+  for (let key in b) {
+    if (hasOwn.call(b, key)) countB++
   }
-  return numKeysA === numKeysB
+
+  return countA === countB
 }

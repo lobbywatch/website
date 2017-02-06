@@ -23,7 +23,12 @@ const chfFormat = swissNumbers.format('$,.0f')
 const containerStyle = css({
   position: 'relative',
   backgroundColor: GREY_LIGHT,
-  padding: '10px 0 0'
+  padding: '0 0 20px'
+})
+const rootStyle = css({
+  position: 'absolute',
+  left: '50%',
+  top: 0
 })
 const bubbleStyle = css({
   display: 'inline-block',
@@ -93,6 +98,7 @@ class Connections extends Component {
     this.nodeRefs = {}
     this.state = {
       nodes: [],
+      links: [],
       open: {}
     }
 
@@ -101,6 +107,7 @@ class Connections extends Component {
 
       const containerRect = this.containerRef.getBoundingClientRect()
 
+      let height = 0
       nodes.forEach(({data}) => {
         const ref = this.nodeRefs[data.id]
         if (ref) {
@@ -109,14 +116,15 @@ class Connections extends Component {
           data.bounds = {
             cx: window.scrollX + (rect.width / 2 + rect.left - containerRect.left),
             y: y,
-            cy: y - (rect.height / 2)
+            cy: y + (rect.height / 2)
           }
+          height = Math.max(height, y + rect.height)
         }
       })
 
       const width = containerRect.width
-      if (width !== this.state.width) {
-        this.setState({width})
+      if (width !== this.state.width || height !== this.state.height) {
+        this.setState({width, height})
       }
     }
   }
@@ -198,7 +206,10 @@ class Connections extends Component {
     }
 
     let nextState = {
+      width: undefined,
+      height: undefined,
       nodes: hierarchy.descendants(),
+      links: hierarchy.links(),
       hierarchy,
       open
     }
@@ -224,9 +235,14 @@ class Connections extends Component {
     window.removeEventListener('resize', this.measure)
   }
   render () {
-    const {nodes, hover, width, open} = this.state
+    const {
+      nodes, links, hover, open,
+      width, height
+    } = this.state
     const {locale, t, vias} = this.props
     let viaI = 0
+
+    const getVisible = parent => !parent || open[parent.data.id]
 
     return (
       <div {...containerStyle} ref={ref => { this.containerRef = ref }}>
@@ -240,17 +256,36 @@ class Connections extends Component {
             {' '}({hover.connection.compensation.description})
           </ContextBoxValue>)}
         </ContextBox>}
-        <Legend locale={locale} />
-        <div style={{textAlign: 'center', 'position': 'relative'}}>
+        <svg width={width} height={height} style={{position: 'absolute', top: 0, left: 0}}>
+          {!!width && links.map(({source, target}, i) => {
+            const visible = getVisible(source.parent) && getVisible(target.parent)
+            if (visible && source.data.bounds && target.data.bounds) {
+              const sBounds = source.data.bounds
+              const tBounds = target.data.bounds
+              return <path key={i} fill='none' stroke={WHITE} strokeWidth={2} d={(
+                'M' + sBounds.cx + ',' + sBounds.cy +
+                'C' + sBounds.cx + ',' + (sBounds.cy + tBounds.cy) / 2 +
+                ' ' + tBounds.cx + ',' + (sBounds.cy + tBounds.cy) / 2 +
+                ' ' + tBounds.cx + ',' + tBounds.cy
+                // 'M' + sBounds.cx + ',' + sBounds.cy +
+                // 'C' + (sBounds.cx + tBounds.cx) / 2 + ',' + sBounds.cy +
+                // ' ' + (sBounds.cx + tBounds.cx) / 2 + ',' + tBounds.cy +
+                // ' ' + tBounds.cx + ',' + tBounds.cy
+              )} />
+            }
+          })}
+        </svg>
+        <div style={{textAlign: 'center', position: 'relative'}}>
+          <Legend locale={locale} />
           {nodes.map(({data, children, parent}) => {
-            const isVisible = !parent || open[parent.data.id]
+            const isVisible = getVisible(parent)
             const isOpen = open[data.id]
             const toggle = () => this.setState({open: {
               ...open,
               [data.id]: !isOpen
             }})
             if (data.type === 'Root') {
-              return <span key={data.id} ref={data.ref} />
+              return <span key={data.id} ref={data.ref} {...rootStyle} />
             }
             if (data.type === 'Group') {
               const indirect = data.parentId !== 'Root'

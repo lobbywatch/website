@@ -6,9 +6,11 @@ import {POTENCY_COLORS, LW_BLUE, mediaM} from '../../theme'
 import {intersperse} from '../../utils/helpers'
 
 const legendContainer = css({
+  paddingTop: 20,
   paddingBottom: 15,
   position: 'relative',
   fontSize: 12,
+  textAlign: 'left',
   [mediaM]: {
     fontSize: 14,
     textAlign: 'right'
