@@ -86,7 +86,7 @@ exports.mapParliamentarian = raw => {
     dateOfBirth: formatDate(dateOfBirth),
     portrait: [
       DRUPAL_IMAGE_BASE_URL,
-      'sites/lobbywatch.ch/app/files/parlamentarier_photos/225x225',
+      'sites/lobbywatch.ch/app/files/parlamentarier_photos/portrait-260',
       `${raw.parlament_number}.jpg`
     ].join('/'),
     age: () => {
