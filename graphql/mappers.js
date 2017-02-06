@@ -1,6 +1,6 @@
 const {timeFormat, timeParse} = require('d3-time-format')
 const {timeYear, timeMonth} = require('d3-time')
-const {DRUPAL_BASE_URL} = require('../src/constants')
+const {DRUPAL_BASE_URL, DRUPAL_IMAGE_BASE_URL} = require('../src/constants')
 
 const parseDate = timeParse('%Y-%m-%d')
 const formatDate = timeFormat('%Y-%m-%d')
@@ -84,7 +84,11 @@ exports.mapParliamentarian = raw => {
     occupation: raw.beruf,
     gender: raw.geschlecht,
     dateOfBirth: formatDate(dateOfBirth),
-    portrait: raw.kleinbild_url,
+    portrait: [
+      DRUPAL_IMAGE_BASE_URL,
+      'sites/lobbywatch.ch/app/files/parlamentarier_photos/225x225',
+      `${raw.parlament_number}.jpg`
+    ].join('/'),
     age: () => {
       const now = new Date()
       let age = timeYear.count(dateOfBirth, now)
