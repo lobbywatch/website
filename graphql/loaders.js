@@ -1,5 +1,17 @@
 const DataLoader = require('dataloader')
 const gsheets = require('gsheets')
+const lru = require('lru-cache')
+
+const createDataLoaderLruCache = (options) => {
+  const cache = lru(options)
+
+  return {
+    get: (k) => cache.get(k),
+    set: (k, v) => cache.set(k, v),
+    delete: (k) => cache.del(k),
+    clear: () => cache.reset()
+  }
+}
 
 const loadTranslations = (locales) => {
   const start = new Date().getTime()
@@ -17,8 +29,15 @@ const loadTranslations = (locales) => {
     })
 }
 
+const cachedTranslations = new DataLoader(loadTranslations, {
+  cacheMap: createDataLoaderLruCache({
+    max: 10,
+    maxAge: 1000 * 30 // ms
+  })
+})
+
 module.exports = () => {
   return {
-    translations: new DataLoader(loadTranslations)
+    translations: cachedTranslations
   }
 }
