@@ -1,4 +1,4 @@
-require('isomorphic-fetch')
+const fetch = require('isomorphic-fetch')
 
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
