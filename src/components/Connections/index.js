@@ -116,7 +116,7 @@ class Connections extends Component {
           data.bounds = {
             cx: window.scrollX + (rect.width / 2 + rect.left - containerRect.left),
             y: y,
-            cy: y + (rect.height / 2)
+            ey: y + rect.height
           }
           height = Math.max(height, y + rect.height)
         }
@@ -263,14 +263,14 @@ class Connections extends Component {
               const sBounds = source.data.bounds
               const tBounds = target.data.bounds
               return <path key={i} fill='none' stroke={WHITE} strokeWidth={2} d={(
-                'M' + sBounds.cx + ',' + sBounds.cy +
-                'C' + sBounds.cx + ',' + (sBounds.cy + tBounds.cy) / 2 +
-                ' ' + tBounds.cx + ',' + (sBounds.cy + tBounds.cy) / 2 +
-                ' ' + tBounds.cx + ',' + tBounds.cy
-                // 'M' + sBounds.cx + ',' + sBounds.cy +
-                // 'C' + (sBounds.cx + tBounds.cx) / 2 + ',' + sBounds.cy +
-                // ' ' + (sBounds.cx + tBounds.cx) / 2 + ',' + tBounds.cy +
-                // ' ' + tBounds.cx + ',' + tBounds.cy
+                'M' + sBounds.cx + ',' + sBounds.ey +
+                'C' + sBounds.cx + ',' + (sBounds.ey + tBounds.y) / 2 +
+                ' ' + tBounds.cx + ',' + (sBounds.ey + tBounds.y) / 2 +
+                ' ' + tBounds.cx + ',' + tBounds.y
+                // 'M' + sBounds.cx + ',' + sBounds.ey +
+                // 'C' + (sBounds.cx + tBounds.cx) / 2 + ',' + sBounds.ey +
+                // ' ' + (sBounds.cx + tBounds.cx) / 2 + ',' + tBounds.y +
+                // ' ' + tBounds.cx + ',' + tBounds.y
               )} />
             }
           })}
