@@ -23,7 +23,7 @@ To deploy the app to Swisscom Application Cloud run following [`cf-cli`](https:/
 
 ```bash
 cf login -a https://api.lyra-836.appcloud.swisscom.com
-cf push lobbywatch-rooster -m 256M -n lobbywatch-rooster
+cf push lobbywatch-rooster
 ```
 
 ### Api only
