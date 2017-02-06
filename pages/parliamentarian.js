@@ -47,6 +47,7 @@ const parliamentarianQuery = gql`
         }
       }
       guests {
+        id
         name
       }
       connections {
