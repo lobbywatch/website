@@ -78,6 +78,13 @@ const connectionStyle = css({
   marginBottom: 10
 })
 
+const hiddenStyle = css({
+  position: 'absolute',
+  left: 0,
+  top: 0,
+  visibility: 'hidden'
+})
+
 const MAX_GROUPS = 5
 
 class Connections extends Component {
@@ -85,7 +92,8 @@ class Connections extends Component {
     super(props)
     this.nodeRefs = {}
     this.state = {
-      nodes: []
+      nodes: [],
+      open: {}
     }
 
     this.measure = () => {
@@ -184,9 +192,15 @@ class Connections extends Component {
 
     const hierarchy = stratify()(nodes)
 
+    const open = {
+      ...state.open,
+      Root: true
+    }
+
     let nextState = {
       nodes: hierarchy.descendants(),
-      hierarchy
+      hierarchy,
+      open
     }
 
     return nextState
@@ -210,7 +224,7 @@ class Connections extends Component {
     window.removeEventListener('resize', this.measure)
   }
   render () {
-    const {nodes, hover, width} = this.state
+    const {nodes, hover, width, open} = this.state
     const {locale, t, vias} = this.props
     let viaI = 0
 
@@ -228,7 +242,13 @@ class Connections extends Component {
         </ContextBox>}
         <Legend locale={locale} />
         <div style={{textAlign: 'center', 'position': 'relative'}}>
-          {nodes.map(({data, children}) => {
+          {nodes.map(({data, children, parent}) => {
+            const isVisible = !parent || open[parent.data.id]
+            const isOpen = open[data.id]
+            const toggle = () => this.setState({open: {
+              ...open,
+              [data.id]: !isOpen
+            }})
             if (data.type === 'Root') {
               return <span key={data.id} ref={data.ref} />
             }
@@ -236,7 +256,11 @@ class Connections extends Component {
               const indirect = data.parentId !== 'Root'
               return (
                 <span key={data.id} ref={data.ref}
-                  className={indirect ? bubbleViaStyle : bubbleStyle}
+                  className={[
+                    (indirect ? bubbleViaStyle : bubbleStyle),
+                    !isVisible && hiddenStyle
+                  ].filter(Boolean).join(' ')}
+                  onClick={toggle}
                   style={{cursor: 'pointer'}}>
                   <span className={indirect ? countViaStyle : countStyle}>{data.count}</span> {data.label}
                 </span>
@@ -250,6 +274,8 @@ class Connections extends Component {
                 {!!isFirst && <br />}
                 <span ref={data.ref}
                   {...bubbleViaStyle}
+                  className={!isVisible && hiddenStyle}
+                  onClick={toggle}
                   style={{cursor: children && children.length ? 'pointer' : ''}}>
                   <GuestIcon className={iconStyle} /> {data.label}
                 </span>
@@ -263,7 +289,8 @@ class Connections extends Component {
                 onMouseOver={() => this.setState({hover: data})}
                 onMouseOut={() => this.setState({hover: null})}
                 {...connectionStyle}
-                style={{backgroundColor: POTENCY_COLORS[connection.potency], position: 'absolute', left: 0, visibility: 'hidden'}}>
+                className={!isVisible && hiddenStyle}
+                style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
                 {connection.to.name}
               </span>)
             }
