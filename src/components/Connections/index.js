@@ -280,10 +280,20 @@ class Connections extends Component {
           {nodes.map(({data, children, parent}) => {
             const isVisible = getVisible(parent)
             const isOpen = open[data.id]
-            const toggle = () => this.setState({open: {
-              ...open,
-              [data.id]: !isOpen
-            }})
+            const toggle = () => {
+              let nextOpen = {
+                ...open,
+                [data.id]: !isOpen
+              }
+              if (isOpen) {
+                children.forEach(({data: childData}) => {
+                  if (nextOpen[childData.id]) {
+                    nextOpen[childData.id] = false
+                  }
+                })
+              }
+              this.setState({open: nextOpen})
+            }
             if (data.type === 'Root') {
               return <span key={data.id} ref={data.ref} {...rootStyle} />
             }
