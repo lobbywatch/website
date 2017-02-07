@@ -9,7 +9,7 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
 import Message from '../src/components/Message'
-import {Link, H1, H2, H3} from '../src/components/Styled'
+import {RouteLink, H1, H2, H3} from '../src/components/Styled'
 
 const indexQuery = gql`
   query index($locale: Locale!) {
@@ -35,11 +35,14 @@ const Index = ({loading, error, articles, blocks, t, url: {query: {locale}}}) =>
         {articles.map((article, i) => (
           <div key={i}>
             <H3>
-              <Link
-                href={`/page?path=${encodeURIComponent(article.url)}&locale=${locale}`}
-                as={article.url}>
+              <RouteLink
+                route='page'
+                params={{
+                  locale,
+                  path: article.url.replace(`/${locale}/`, '').split('/')
+                }}>
                 {article.title}
-              </Link>
+              </RouteLink>
             </H3>
           </div>
         ))}

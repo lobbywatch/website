@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
 import {Center} from './Frame'
-import {Link, Hr, metaStyle} from './Styled'
+import {RouteLink, Hr, metaStyle} from './Styled'
 import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../theme'
 import CreativeCommons from '../assets/CreativeCommons'
 import {getFormatter} from '../utils/translate'
@@ -82,11 +82,14 @@ const Footer = ({loading, error, links, t, locale}) => (
               {
                 links.map((link, i) => (
                   <li key={i}>
-                    <Link
-                      href={`/page?path=${encodeURIComponent(link.href)}&locale=${locale}`}
-                      as={link.href}>
+                    <RouteLink
+                      route='page'
+                      params={{
+                        locale,
+                        path: link.href.replace(`/${locale}/`, '').split('/')
+                      }}>
                       {link.title}
-                    </Link>
+                    </RouteLink>
                   </li>
                 ))
               }

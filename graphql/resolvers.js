@@ -1,7 +1,7 @@
 const fetch = require('./fetch')
 const qs = require('querystring')
 const {ascending} = require('d3-array')
-const {DRUPAL_BASE_URL} = require('../src/constants')
+const {DRUPAL_BASE_URL} = require('../constants')
 const {
   mapArticle,
   mapParliamentarian, parliamentarianIdPrefix,

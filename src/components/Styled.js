@@ -1,5 +1,6 @@
 import React from 'react'
 import NextLink from 'next/prefetch'
+import {Link as NextRouteLink} from '../../routes'
 import {LW_BLUE, GREY_DARK, GREY_LIGHT, mediaM} from '../theme'
 import {css} from 'glamor'
 
@@ -13,6 +14,9 @@ export const linkStyle = {
 export const linkRule = css(linkStyle)
 export const Link = ({children, className, ...props}) => (
   <NextLink {...props}><a {...linkRule}>{children}</a></NextLink>
+)
+export const RouteLink = ({children, className, ...props}) => (
+  <NextRouteLink {...props}><a {...linkRule}>{children}</a></NextRouteLink>
 )
 
 export const A = ({children, ...props}) => <a {...props} {...linkRule}>{children}</a>

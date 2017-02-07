@@ -5,7 +5,7 @@ import {css} from 'glamor'
 import {withT} from '../utils/translate'
 import {Link} from './Styled'
 import {Center} from './Frame'
-import {locales} from '../constants'
+import {locales} from '../../constants'
 import {LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE, mediaM, mediaSOnly} from '../theme'
 import Logo from '../assets/Logo'
 

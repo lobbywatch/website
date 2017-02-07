@@ -11,7 +11,7 @@ import {H1, metaRule} from '../src/components/Styled'
 import {GREY_LIGHT, mediaM} from '../src/theme'
 import {withT} from '../src/utils/translate'
 import {css} from 'glamor'
-import NextLink from 'next/prefetch'
+import {Link as NextRouteLink} from '../routes'
 
 const portraitStyle = css({
   display: 'inline-block',
@@ -64,7 +64,7 @@ const Parliamentarian = ({loading, error, t, parliamentarians, url: {query: {loc
       <Center>
         <H1>Parlamentarier</H1>
         {parliamentarians.map(({id, firstName, lastName, portrait, council, gender, active, canton, partyMembership}) => (
-          <NextLink key={id} as={`/${locale}/daten/parlamentarier/${id}/${firstName} ${lastName}`} href={`/parliamentarian?id=${id}&locale=${locale}`}>
+          <NextRouteLink key={id} route='parliamentarian' params={{locale, id, name: `${firstName} ${lastName}`}}>
             <a {...aStyle}>
               <span {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />
               <span>
@@ -76,7 +76,7 @@ const Parliamentarian = ({loading, error, t, parliamentarians, url: {query: {loc
                 </span>
               </span>
             </a>
-          </NextLink>
+          </NextRouteLink>
         ))}
       </Center>
     )} />
