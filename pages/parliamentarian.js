@@ -52,7 +52,6 @@ const parliamentarianQuery = gql`
       }
       connections {
         group
-        sector
         potency
         function
         compensation {

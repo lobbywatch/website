@@ -128,7 +128,6 @@ type Connection {
   to: ConnectionEntity!
   via: ConnectionEntity
   compensation: Compensation
-  sector: String
   group: String
   potency: Potency
   function: String

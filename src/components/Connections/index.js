@@ -247,7 +247,6 @@ class Connections extends Component {
     return (
       <div {...containerStyle} ref={ref => { this.containerRef = ref }}>
         {!!hover && !!width && <ContextBox x={hover.bounds.cx} y={hover.bounds.y - 15} contextWidth={width}>
-          <ContextBoxValue label={t('connections/context/sector')}>{hover.connection.sector}</ContextBoxValue>
           <ContextBoxValue label={t('connections/context/group')}>{hover.connection.group}</ContextBoxValue>
           <ContextBoxValue label={t('connections/context/function')}>{hover.connection.function}</ContextBoxValue>
           {!!hover.connection.compensation && (<ContextBoxValue label={t('connections/context/compensation')}>
