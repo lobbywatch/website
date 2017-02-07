@@ -17,7 +17,7 @@ const mapParliamentConnection = (from, via, connection) => ({
   via,
   to: {
     id: `${parliamentarianIdPrefix}${connection.parlamentarier_id || connection.id}`,
-    name: connection.parlamentarier_name || connection.name
+    name: connection.name
   },
   group: connection.partei,
   compensation: connection.verguetung !== null ? ({
