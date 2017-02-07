@@ -103,7 +103,7 @@ class Connections extends Component {
     }
 
     this.measure = () => {
-      const {nodes} = this.state
+      const {nodes, open} = this.state
 
       const containerRect = this.containerRef.getBoundingClientRect()
 
@@ -121,6 +121,11 @@ class Connections extends Component {
           height = Math.max(height, y + rect.height)
         }
       })
+
+      // tmp hack to trigger re-render
+      height += Object.keys(open)
+        .map(key => open[key])
+        .filter(Boolean).length
 
       const width = containerRect.width
       if (width !== this.state.width || height !== this.state.height) {
