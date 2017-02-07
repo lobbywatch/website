@@ -8,32 +8,15 @@ import withData from '../src/apollo/withData'
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import Connections from '../src/components/Connections'
-import {h3Rule, metaRule, A} from '../src/components/Styled'
+import DetailHead from '../src/components/DetailHead'
+import {A} from '../src/components/Styled'
 import {withT} from '../src/utils/translate'
 import {GREY_LIGHT} from '../src/theme'
-import {css} from 'glamor'
-
-const titleStyle = css(h3Rule, {
-  marginTop: 0,
-  marginBottom: 0
-})
-const metaStyle = css(metaRule, {
-  marginTop: 0
-})
-const portraitStyle = css({
-  display: 'inline-block',
-  width: 64,
-  height: 64,
-  borderRadius: '50%',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center'
-})
 
 const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: ID!) {
     getParliamentarian(locale: $locale, id: $id) {
-      firstName
-      lastName
+      name
       dateOfBirth
       age
       portrait
@@ -75,54 +58,41 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({loading, error, t, parliamentarian, url: {query: {locale, id}}}) => (
-  <Frame locale={locale}>
-    <Loader loading={loading} error={error} render={() => {
-      const {council, active, firstName, portrait, gender, lastName, canton, partyMembership} = parliamentarian
-      const rawId = id.replace('Parliamentarian-', '')
-      const path = `/${locale}/daten/parlamentarier/${rawId}/${firstName} ${lastName}`
-      return (
-        <div>
-          <Center>
-            <div style={{textAlign: 'center'}}>
-              <div {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />
-              <h1 {...titleStyle}>
-                {firstName} {lastName}
-              </h1>
-              <p {...metaStyle}>
-                {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}
-                {partyMembership ? `, ${partyMembership.party.abbr}` : ''}
-                {', '}{canton}
-              </p>
-            </div>
-          </Center>
-          <div style={{backgroundColor: GREY_LIGHT}}>
-            <Center style={{paddingTop: 0, paddingBottom: 0}}>
-              <Connections locale={locale} data={parliamentarian.connections} vias={parliamentarian.guests} />
-            </Center>
-          </div>
-          <Center>
-            <p>
-              Original Profil:
-              {' '}<A target='_blank' href={`https://lobbywatch-cms.interactivethings.io${path}`}>Staging</A>
-              {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
-            </p>
+const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
+  <Loader loading={loading} error={error} render={() => {
+    const {council, active, name, firstName, lastName, portrait, gender, canton, partyMembership} = parliamentarian
+    const rawId = id.replace('Parliamentarian-', '')
+    const path = `/${locale}/daten/parlamentarier/${rawId}/${firstName} ${lastName}`
+    return (
+      <div>
+        <Center>
+          <DetailHead
+            image={portrait}
+            title={name}
+            subtitle={[
+              t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`),
+              partyMembership && partyMembership.party.abbr,
+              canton
+            ].filter(Boolean).join(', ')} />
+        </Center>
+        <div style={{backgroundColor: GREY_LIGHT}}>
+          <Center style={{paddingTop: 0, paddingBottom: 0}}>
+            <Connections locale={locale} data={parliamentarian.connections} vias={parliamentarian.guests} />
           </Center>
         </div>
-      )
-    }} />
-  </Frame>
+        <Center>
+          <p>
+            Original Profil:
+            {' '}<A target='_blank' href={`https://lobbywatch-cms.interactivethings.io${path}`}>Staging</A>
+            {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
+          </p>
+        </Center>
+      </div>
+    )
+  }} />
 )
 
-const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
-  options: ({url}) => {
-    return {
-      variables: {
-        id: url.query.id,
-        locale: url.query.locale
-      }
-    }
-  },
+const ParliamentarianWithQuery = withT(graphql(parliamentarianQuery, {
   props: ({data, ownProps: {serverContext, t}}) => {
     const notFound = !data.loading && !data.getParliamentarian
     if (serverContext) {
@@ -136,6 +106,12 @@ const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
       parliamentarian: data.getParliamentarian
     }
   }
-})(Parliamentarian)
+})(Parliamentarian))
 
-export default withData(withT(ParliamentarianWithQuery, ({url}) => url.query.locale))
+const Page = ({url: {query: {locale, id}}}) => (
+  <Frame locale={locale}>
+    <ParliamentarianWithQuery locale={locale} id={id} />
+  </Frame>
+)
+
+export default withData(Page)
