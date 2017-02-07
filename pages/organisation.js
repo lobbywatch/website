@@ -13,26 +13,16 @@ import {A} from '../src/components/Styled'
 import {withT} from '../src/utils/translate'
 import {GREY_LIGHT} from '../src/theme'
 
-const parliamentarianQuery = gql`
-  query getParliamentarian($locale: Locale!, $id: ID!) {
-    getParliamentarian(locale: $locale, id: $id) {
-      name
-      dateOfBirth
-      age
-      portrait
-      gender
-      council
-      active
-      canton
-      partyMembership {
-        party {
-          abbr
-        }
-      }
-      guests {
-        id
-        name
-      }
+const orgQuery = gql`
+  query getOrganisation($locale: Locale!, $id: ID!) {
+    getOrganisation(locale: $locale, id: $id) {
+      name,
+      legalForm,
+      location,
+      description,
+      group,
+      uid,
+      website
       connections {
         group
         potency
@@ -42,7 +32,7 @@ const parliamentarianQuery = gql`
           description
         }
         to {
-          ... on Organisation {
+          ... on Parliamentarian {
             id
             name
           }
@@ -58,28 +48,25 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
+const Org = ({loading, error, t, organisation, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {council, active, name, firstName, lastName, portrait, gender, canton, partyMembership} = parliamentarian
+    const {name, group, legalForm, location} = organisation
     const rawId = id.replace('Parliamentarian-', '')
-    const path = `/${locale}/daten/parlamentarier/${rawId}/${firstName} ${lastName}`
+    const path = `/${locale}/daten/organisation/${rawId}/${name}`
     return (
       <div>
         <Center>
           <DetailHead
-            image={portrait}
             title={name}
             subtitle={[
-              t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`),
-              partyMembership && partyMembership.party.abbr,
-              canton
+              group,
+              legalForm,
+              location
             ].filter(Boolean).join(', ')} />
         </Center>
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
-            <Connections locale={locale} data={parliamentarian.connections}
-              intermediate={connection => connection.via ? connection.via.id : ''}
-              intermediates={parliamentarian.guests} />
+            <Connections locale={locale} data={organisation.connections} />
           </Center>
         </div>
         <Center>
@@ -94,9 +81,9 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
   }} />
 )
 
-const ParliamentarianWithQuery = withT(graphql(parliamentarianQuery, {
+const OrgWithQuery = withT(graphql(orgQuery, {
   props: ({data, ownProps: {serverContext, t}}) => {
-    const notFound = !data.loading && !data.getParliamentarian
+    const notFound = !data.loading && !data.getOrganisation
     if (serverContext) {
       if (notFound) {
         serverContext.res.statusCode = 404
@@ -104,15 +91,15 @@ const ParliamentarianWithQuery = withT(graphql(parliamentarianQuery, {
     }
     return {
       loading: data.loading,
-      error: data.error || (notFound && t('parliamentarian/error/404')),
-      parliamentarian: data.getParliamentarian
+      error: data.error || (notFound && t('organisation/error/404')),
+      organisation: data.getOrganisation
     }
   }
-})(Parliamentarian))
+})(Org))
 
 const Page = ({url: {query: {locale, id}}}) => (
   <Frame locale={locale}>
-    <ParliamentarianWithQuery locale={locale} id={id} />
+    <OrgWithQuery locale={locale} id={id} />
   </Frame>
 )
 

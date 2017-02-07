@@ -5,7 +5,7 @@ import {formatLocale} from 'd3-format'
 import {stratify} from 'd3-hierarchy'
 import {descending} from 'd3-array'
 
-import {LW_BLUE_DARK, WHITE, GREY_LIGHT, BLACK, POTENCY_COLORS} from '../../theme'
+import {LW_BLUE_DARK, WHITE, GREY_LIGHT, GREY_DARK, POTENCY_COLORS} from '../../theme'
 import GuestIcon from '../../assets/Guest'
 import ContextBox, {ContextBoxValue} from '../ContextBox'
 import Legend from './Legend'
@@ -73,7 +73,7 @@ const iconStyle = css({
 const connectionStyle = css({
   display: 'inline-block',
   borderRadius: 8,
-  backgroundColor: BLACK,
+  backgroundColor: GREY_DARK,
   color: WHITE,
   fontSize: 14,
   lineHeight: '16px',
@@ -133,10 +133,10 @@ class Connections extends Component {
       }
     }
   }
-  nestData (state, {data, vias, t}) {
+  nestData (state, {data, intermediate, intermediates, t}) {
     const moreKey = t('connections/more/plural')
     const groupTree = nest()
-      .key(connection => connection.via ? connection.via.id : '')
+      .key(intermediate)
       .key(connection => connection.group ? connection.group : moreKey)
       .entries(data)
 
@@ -185,7 +185,7 @@ class Connections extends Component {
           ? rootAccumulator.concat(viaNodes) // after via
           : viaNodes.concat(rootAccumulator) // before via
       },
-      vias.map(via => ({
+      intermediates.map(via => ({
         id: via.id,
         parentId: 'Root',
         type: 'Guest',
@@ -244,7 +244,7 @@ class Connections extends Component {
       nodes, links, hover, open,
       width, height
     } = this.state
-    const {locale, t, vias} = this.props
+    const {locale, t, intermediates} = this.props
     let viaI = 0
 
     const getVisible = parent => !parent || open[parent.data.id]
@@ -257,7 +257,7 @@ class Connections extends Component {
           {!!hover.connection.compensation && (<ContextBoxValue label={t('connections/context/compensation')}>
             {chfFormat(hover.connection.compensation.money)}
             {' '}{t('connections/context/compensation/periode')}
-            {' '}({hover.connection.compensation.description})
+            {!!hover.connection.compensation.description && ` (${hover.connection.compensation.description})`}
           </ContextBoxValue>)}
         </ContextBox>}
         <svg width={width} height={height} style={{position: 'absolute', top: 0, left: 0}}>
@@ -318,7 +318,7 @@ class Connections extends Component {
             if (data.type === 'Guest') {
               let isFirst = viaI === 0
               viaI += 1
-              let isLast = viaI === vias.length
+              let isLast = viaI === intermediates.length
               return (<span key={data.id}>
                 {!!isFirst && <br />}
                 <span ref={data.ref}
@@ -348,6 +348,11 @@ class Connections extends Component {
       </div>
     )
   }
+}
+
+Connections.defaultProps = {
+  intermediate: () => '',
+  intermediates: []
 }
 
 export default withT(Connections)

@@ -30,6 +30,9 @@ app.prepare().then(() => {
   server.get(`/${localeSegment}/daten/parlamentarier/:id/:name`, (req, res) => {
     app.render(req, res, '/parliamentarian', {locale: req.params.locale, id: req.params.id})
   })
+  server.get(`/${localeSegment}/daten/organisation/:id/:name`, (req, res) => {
+    app.render(req, res, '/organisation', {locale: req.params.locale, id: req.params.id})
+  })
   server.get(`/${localeSegment}/*`, (req, res) => {
     app.render(req, res, '/page', {locale: req.params.locale, path: req.path})
   })
