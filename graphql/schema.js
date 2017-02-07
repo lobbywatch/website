@@ -96,6 +96,13 @@ enum Potency {
 type Organisation {
   id: ID!
   name: String
+  legalForm: String
+  location: String
+  description: String
+  group: String
+  uid: String
+  website: String
+  connections: [Connection!]
 }
 type Guest implements Person {
   id: ID!
@@ -170,6 +177,7 @@ type RootQuery {
   getParliamentarian(locale: Locale!, id: ID!): Parliamentarian
   guests(locale: Locale!): [Guest]
   getGuest(locale: Locale!, id: ID!): Guest
+  getOrganisation(locale: Locale!, id: ID!): Organisation
   translations(locale: Locale!): [Translation]
 }
 

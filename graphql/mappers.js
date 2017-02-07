@@ -12,17 +12,59 @@ const potencyMap = {
   '1': 'LOW'
 }
 
+const mapParliamentConnection = (from, via, connection) => ({
+  from: () => from,
+  via,
+  to: {
+    id: `${parliamentarianIdPrefix}${connection.parlamentarier_id || connection.id}`,
+    name: connection.parlamentarier_name || connection.name
+  },
+  group: connection.partei,
+  compensation: connection.verguetung !== null ? ({
+    year: connection.verguetung_jahr && +connection.verguetung_jahr,
+    money: +connection.verguetung,
+    description: connection.verguetung_beschreibung
+  }) : null
+})
+
 const orgIdPrefix = exports.orgIdPrefix = 'Organisation-'
+exports.mapOrg = raw => {
+  const connections = () => {
+    const direct = raw.parlamentarier.map(directConnection => {
+      return mapParliamentConnection(org, null, directConnection)
+    })
+    let indirect = []
+    raw.zutrittsberechtigte.forEach(guest => {
+      if (guest.parlamentarier) {
+        indirect.push(mapParliamentConnection(org, mapGuest(guest), guest.parlamentarier))
+      }
+    })
+    return direct.concat(indirect)
+  }
+
+  const org = {
+    id: `${orgIdPrefix}${raw.id}`,
+    name: raw.name,
+    legalForm: raw.rechtsform,
+    location: raw.ort,
+    description: raw.beschreibung,
+    group: raw.interessengruppe,
+    uid: raw.uid,
+    website: raw.homepage,
+    connections
+  }
+  return org
+}
+
 const commissionIdPrefix = exports.commissionIdPrefix = 'Commission-'
 
-const mapConnection = (from, via, connection) => ({
+const mapMandate = (from, via, connection) => ({
   from: () => from,
   via,
   to: {
     id: `${orgIdPrefix}${connection.organisation_id}`,
     name: connection.organisation_name
   },
-  sector: connection.branche || connection.interessengruppe_branche,
   group: connection.interessengruppe,
   potency: connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index],
   function: [connection.beschreibung || connection.art, connection.funktion_im_gremium].filter(Boolean).join(', ') || null,
@@ -47,7 +89,7 @@ const mapGuest = exports.mapGuest = raw => {
     parliamentarian: raw.parlamentarier_name,
     parliamentarianId: raw.parlamentarier_id
   }
-  guest.connections = (raw.mandate || []).map(connection => mapConnection(guest, null, connection))
+  guest.connections = (raw.mandate || []).map(connection => mapMandate(guest, null, connection))
   return guest
 }
 
@@ -61,7 +103,7 @@ exports.mapParliamentarian = raw => {
   const guests = (raw.zutrittsberechtigungen || []).map(mapGuest)
 
   const connections = () => {
-    const direct = raw.interessenbindungen.map(directConnection => mapConnection(parliamentarian, null, directConnection))
+    const direct = raw.interessenbindungen.map(directConnection => mapMandate(parliamentarian, null, directConnection))
     let indirect = []
     guests.forEach(guest => {
       guest.connections.forEach(indirectConnection => {

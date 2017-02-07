@@ -5,7 +5,8 @@ const {DRUPAL_BASE_URL} = require('../src/constants')
 const {
   mapArticle,
   mapParliamentarian, parliamentarianIdPrefix,
-  mapGuest, guestIdPrefix
+  mapGuest, guestIdPrefix,
+  mapOrg, orgIdPrefix
 } = require('./mappers')
 
 const resolveFunctions = {
@@ -135,6 +136,14 @@ const resolveFunctions = {
         fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
       ]).then(([{json: {data: guest}}]) => {
         return guest && mapGuest(guest)
+      })
+    },
+    getOrganisation (_, {locale, id}) {
+      const rawId = id.replace(orgIdPrefix, '')
+      return Promise.all([
+        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/organisation/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
+      ]).then(([{json: {data: org}}]) => {
+        return org && mapOrg(org)
       })
     },
     translations (_, {locale}, {loaders: {translations}}) {
