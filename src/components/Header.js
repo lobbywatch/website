@@ -2,7 +2,7 @@ import React, {PropTypes, Component} from 'react'
 import RawLink from 'next/prefetch'
 import {css} from 'glamor'
 
-import {withT} from '../utils/translate'
+import {withT} from './Message'
 import {Link} from './Styled'
 import {Center} from './Frame'
 import {locales} from '../../constants'

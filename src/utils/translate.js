@@ -1,7 +1,6 @@
-import gql from 'graphql-tag'
-import {graphql} from 'react-apollo'
+// exports instead of named export for graphql server
 
-export const getFormatter = translations => {
+exports.getFormatter = translations => {
   if (!Array.isArray(translations)) {
     return () => ''
   }
@@ -20,27 +19,3 @@ export const getFormatter = translations => {
     return message
   }
 }
-
-export const translationsQuery = gql`
-  query translations($locale: Locale!) {
-    translations(locale: $locale) {
-      key
-      value
-    }
-  }
-`
-
-export const withT = (Component, getLocale = ownProps => ownProps.locale) => graphql(translationsQuery, {
-  options: (ownProps) => {
-    return {
-      variables: {
-        locale: getLocale(ownProps)
-      }
-    }
-  },
-  props: ({data}) => {
-    return {
-      t: getFormatter(data.translations)
-    }
-  }
-})(Component)

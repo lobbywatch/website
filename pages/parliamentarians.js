@@ -9,7 +9,7 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import {H1, metaRule} from '../src/components/Styled'
 import {GREY_LIGHT, mediaM} from '../src/theme'
-import {withT} from '../src/utils/translate'
+import {withT} from '../src/components/Message'
 import {css} from 'glamor'
 import {Link as NextRouteLink} from '../routes'
 

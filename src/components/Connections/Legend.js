@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react'
 import {css} from 'glamor'
-import {withT} from '../../utils/translate'
+import {withT} from '../Message'
 
 import {POTENCY_COLORS, LW_BLUE, mediaM} from '../../theme'
 import {intersperse} from '../../utils/helpers'

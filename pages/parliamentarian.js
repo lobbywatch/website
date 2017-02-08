@@ -10,7 +10,7 @@ import Frame, {Center} from '../src/components/Frame'
 import Connections from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {A} from '../src/components/Styled'
-import {withT} from '../src/utils/translate'
+import {withT} from '../src/components/Message'
 import {GREY_LIGHT} from '../src/theme'
 
 const parliamentarianQuery = gql`

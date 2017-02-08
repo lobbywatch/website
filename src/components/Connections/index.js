@@ -9,7 +9,7 @@ import {LW_BLUE_DARK, WHITE, GREY_LIGHT, GREY_DARK, POTENCY_COLORS} from '../../
 import GuestIcon from '../../assets/Guest'
 import ContextBox, {ContextBoxValue} from '../ContextBox'
 import Legend from './Legend'
-import {withT} from '../../utils/translate'
+import {withT} from '../Message'
 import {shallowEqual} from '../../utils/helpers'
 
 const swissNumbers = formatLocale({

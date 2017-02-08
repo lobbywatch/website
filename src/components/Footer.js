@@ -8,7 +8,6 @@ import {Center} from './Frame'
 import {RouteLink, Hr, metaStyle} from './Styled'
 import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../theme'
 import CreativeCommons from '../assets/CreativeCommons'
-import {getFormatter} from '../utils/translate'
 import Message from './Message'
 import Loader from './Loader'
 
@@ -71,7 +70,7 @@ const ccTextStyle = css({
   }
 })
 
-const Footer = ({loading, error, links, t, locale}) => (
+const Footer = ({loading, error, links, locale}) => (
   <div {...footerStyle}>
     <Center>
       <Loader height={300} loading={loading} error={error} render={() => (
@@ -120,8 +119,7 @@ const FooterWithQuery = graphql(metaQuery, {
     return {
       loading: data.loading,
       error: data.error,
-      links: data.meta && data.meta.links,
-      t: getFormatter(data.translations)
+      links: data.meta && data.meta.links
     }
   }
 })(Footer)
