@@ -39,7 +39,10 @@ const Index = ({loading, error, articles, blocks, t, url: {query: {locale}}}) =>
                 route='page'
                 params={{
                   locale,
-                  path: article.url.replace(`/${locale}/`, '').split('/')
+                  path: article.url
+                    .replace(`/${locale}/`, '')
+                    .replace('/de/', '')
+                    .split('/')
                 }}>
                 {article.title}
               </RouteLink>
