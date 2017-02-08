@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <title>avatar/24/ic_avatar_company_24dp</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="avatar/24/ic_avatar_company_24dp">
+            <circle id="Oval" fill="#112233" cx="12" cy="12" r="12"></circle>
+            <g id="business-16px_building" transform="translate(6.000000, 6.000000)" fill="#FFFFFF">
+                <g id="Group">
+                    <path d="M11.25,6.75 L9.75,6.75 L9.75,2.25 C9.75,1.8 9.45,1.5 9,1.5 L6.75,1.5 L6.75,0 L5.25,0 L5.25,1.5 L3,1.5 C2.55,1.5 2.25,1.8 2.25,2.25 L2.25,6.75 L0.75,6.75 C0.3,6.75 0,7.05 0,7.5 L0,11.25 C0,11.7 0.3,12 0.75,12 L11.25,12 C11.7,12 12,11.7 12,11.25 L12,7.5 C12,7.05 11.7,6.75 11.25,6.75 Z M3.75,7.5 L3.75,3 L8.25,3 L8.25,7.5 L8.25,10.5 L6.75,10.5 L6.75,8.25 L5.25,8.25 L5.25,10.5 L3.75,10.5 L3.75,7.5 Z" id="Shape"></path>
+                    <rect id="Rectangle-path" x="5.25" y="4.5" width="1.5" height="1.5"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

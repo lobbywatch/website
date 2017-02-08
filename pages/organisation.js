@@ -16,12 +16,13 @@ import {GREY_LIGHT} from '../src/theme'
 const orgQuery = gql`
   query getOrganisation($locale: Locale!, $id: ID!) {
     getOrganisation(locale: $locale, id: $id) {
-      name,
-      legalForm,
-      location,
-      description,
-      group,
-      uid,
+      __typename
+      name
+      legalForm
+      location
+      description
+      group
+      uid
       website
       connections {
         group
@@ -55,13 +56,14 @@ const orgQuery = gql`
 
 const Org = ({loading, error, t, organisation, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {name, group, legalForm, location} = organisation
-    const rawId = id.replace('Parliamentarian-', '')
+    const {__typename, name, group, legalForm, location} = organisation
+    const rawId = id.replace(`${__typename}-`, '')
     const path = `/${locale}/daten/organisation/${rawId}/${name}`
     return (
       <div>
         <Center>
           <DetailHead
+            type={__typename}
             title={name}
             subtitle={[
               group,

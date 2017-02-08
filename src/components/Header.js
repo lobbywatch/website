@@ -3,14 +3,14 @@ import RawLink from 'next/prefetch'
 import {css} from 'glamor'
 
 import {withT} from './Message'
-import {Link} from './Styled'
+import {RouteLink} from './Styled'
 import {Center} from './Frame'
 import {locales} from '../../constants'
 import {LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE, mediaM, mediaSOnly} from '../theme'
 import Logo from '../assets/Logo'
 
 export const HEADER_HEIGHT = 75
-const ITEM_MARGIN_RIGHT = 5
+const ITEM_MARGIN_LEFT = 15
 const menuStyle = css({
   [mediaSOnly]: {
     display: 'flex',
@@ -38,7 +38,7 @@ const menuStyle = css({
     whiteSpace: 'none',
     position: 'absolute',
     top: 30,
-    right: 20 - ITEM_MARGIN_RIGHT
+    right: 20
   }
 })
 
@@ -57,7 +57,7 @@ const listItemStyle = css({
   },
   [mediaM]: {
     float: 'left',
-    marginRight: ITEM_MARGIN_RIGHT,
+    marginLeft: ITEM_MARGIN_LEFT,
     position: 'relative'
   },
   '& a, & a:visited': {
@@ -74,7 +74,7 @@ const listItemSeparatorStyle = css({
     backgroundColor: WHITE,
     verticalAlign: 'middle',
     marginRight: 25,
-    marginLeft: 25 - ITEM_MARGIN_RIGHT,
+    marginLeft: 25 - ITEM_MARGIN_LEFT,
     opacity: 0.2,
     width: 1,
     height: 24
@@ -84,10 +84,10 @@ const listItemSeparatorStyle = css({
 const Menu = ({items, expanded}) => (
   <nav {...menuStyle} role='navigation' aria-expanded={expanded}>
     <ul {...listStyle}>
-      {items.map(({label, href, as, separator}, i) => (
+      {items.map(({label, route, params, separator}, i) => (
         <li {...listItemStyle} key={i}>
           {separator && <span {...listItemSeparatorStyle} />}
-          <Link href={href} as={as}>{label}</Link>
+          <RouteLink route={route} params={params}>{label}</RouteLink>
         </li>
       ))}
     </ul>
@@ -96,8 +96,8 @@ const Menu = ({items, expanded}) => (
 
 Menu.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
-    as: PropTypes.string,
-    href: PropTypes.string.isRequired,
+    params: PropTypes.object,
+    route: PropTypes.string.isRequired,
     label: PropTypes.node.isRequired,
     separator: PropTypes.bool
   })),
@@ -194,16 +194,21 @@ class Header extends Component {
     const menuItems = [
       {
         label: t('menu/parliamentarians'),
-        href: `/parliamentarians?locale=${currentLocale}`,
-        as: `/${currentLocale}/daten/parlamentarier`
+        route: 'parliamentarians',
+        params: {locale: currentLocale}
+      },
+      {
+        label: t('menu/lobbygroups'),
+        route: 'lobbygroups',
+        params: {locale: currentLocale}
       }
     ]
     const localeLinks = locales
       .filter(locale => locale !== currentLocale)
       .map((locale, i) => ({
         separator: i === 0,
-        href: `/index?locale=${locale}`,
-        as: `/${locale}`,
+        route: 'index',
+        params: {locale},
         label: t(`menu/locales/${locale}`, {}, locale)
       }))
 

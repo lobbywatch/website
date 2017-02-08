@@ -125,6 +125,7 @@ type LobbyGroup {
   id: ID!
   name: String!
   description: String
+  sector: String
   commissions: [Commission!]!
   connections: [Connection]
 }

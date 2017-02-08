@@ -16,6 +16,7 @@ import {GREY_LIGHT} from '../src/theme'
 const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: ID!) {
     getParliamentarian(locale: $locale, id: $id) {
+      __typename
       name
       dateOfBirth
       age
@@ -60,13 +61,14 @@ const parliamentarianQuery = gql`
 
 const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {councilTitle, name, firstName, lastName, portrait, canton, partyMembership} = parliamentarian
-    const rawId = id.replace('Parliamentarian-', '')
+    const {__typename, councilTitle, name, firstName, lastName, portrait, canton, partyMembership} = parliamentarian
+    const rawId = id.replace(`${__typename}-`, '')
     const path = `/${locale}/daten/parlamentarier/${rawId}/${firstName} ${lastName}`
     return (
       <div>
         <Center>
           <DetailHead
+            type={__typename}
             image={portrait}
             title={name}
             subtitle={[

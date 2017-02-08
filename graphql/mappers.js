@@ -16,6 +16,7 @@ const lobbyGroupIdPrefix = exports.lobbyGroupIdPrefix = 'LobbyGroup'
 exports.mapLobbyGroup = (raw, t) => ({
   id: `${lobbyGroupIdPrefix}${raw.id}`,
   name: raw.name,
+  sector: raw.branche,
   description: raw.beschreibung,
   commissions: [
     {

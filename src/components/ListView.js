@@ -5,11 +5,7 @@ import {GREY_LIGHT, mediaM} from '../theme'
 import {css} from 'glamor'
 import {Link as NextRouteLink} from '../../routes'
 
-import Guest from '../assets/Guest'
-
-const Icons = {
-  Guest
-}
+import Icons from '../assets/TypeIcons'
 
 const symbolStyle = css({
   display: 'inline-block',
@@ -48,7 +44,7 @@ const ListView = ({locale, items, title, subtitle}) => {
           <NextRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id, name}}>
             <a {...aStyle}>
               {!!portrait && <span {...symbolStyle} {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />}
-              {!portrait && <Icon className={symbolStyle} size={32} />}
+              {!portrait && !!Icon && <Icon className={symbolStyle} size={32} />}
               <span>
                 {title(item)}<br />
                 <span {...metaStyle}>
