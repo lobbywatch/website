@@ -28,7 +28,7 @@ const mapParliamentConnection = (from, via, connection) => ({
 })
 
 const orgIdPrefix = exports.orgIdPrefix = 'Organisation-'
-exports.mapOrg = raw => {
+exports.mapOrg = (raw, t) => {
   const connections = () => {
     const direct = raw.parlamentarier.map(directConnection => {
       return mapParliamentConnection(org, null, directConnection)
@@ -39,7 +39,15 @@ exports.mapOrg = raw => {
         indirect.push(mapParliamentConnection(org, mapGuest(guest), guest.parlamentarier))
       }
     })
-    return direct.concat(indirect)
+    let relations = raw.beziehungen.map(connection => ({
+      from: org,
+      to: {
+        id: `${orgIdPrefix}${connection.ziel_organisation_id}`,
+        name: connection.ziel_organisation_name
+      },
+      group: t(`connections/organisation/${connection.art}`)
+    }))
+    return direct.concat(indirect).concat(relations)
   }
 
   const org = {

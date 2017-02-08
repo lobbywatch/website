@@ -95,7 +95,7 @@ enum Potency {
 
 type Organisation {
   id: ID!
-  name: String
+  name: String!
   legalForm: String
   location: String
   description: String

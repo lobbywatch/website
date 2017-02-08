@@ -90,8 +90,6 @@ const hiddenStyle = css({
   visibility: 'hidden'
 })
 
-const MAX_GROUPS = 5
-
 class Connections extends Component {
   constructor (props) {
     super(props)
@@ -133,7 +131,7 @@ class Connections extends Component {
       }
     }
   }
-  nestData (state, {data, intermediate, intermediates, t}) {
+  nestData (state, {data, intermediate, intermediates, maxGroups, t}) {
     const moreKey = t('connections/more/plural')
     const groupTree = nest()
       .key(intermediate)
@@ -149,8 +147,8 @@ class Connections extends Component {
           values: []
         }
         const groups = viaLevel.values.filter(group => group.key !== moreKey)
-        const moreGroups = groups.slice(MAX_GROUPS)
-        let visibleGroups = groups.slice(0, MAX_GROUPS)
+        const moreGroups = maxGroups ? groups.slice(maxGroups) : []
+        let visibleGroups = groups.slice(0, maxGroups)
         if (moreGroups.length) {
           more.values = more.values.concat(moreGroups.reduce(
             (rest, {values}) => rest.concat(values),
@@ -352,7 +350,8 @@ class Connections extends Component {
 
 Connections.defaultProps = {
   intermediate: () => '',
-  intermediates: []
+  intermediates: [],
+  maxGroups: undefined
 }
 
 export default withT(Connections)

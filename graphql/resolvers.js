@@ -2,6 +2,7 @@ const fetch = require('./fetch')
 const qs = require('querystring')
 const {ascending} = require('d3-array')
 const {DRUPAL_BASE_URL} = require('../constants')
+const {getFormatter} = require('../src/utils/translate')
 const {
   mapArticle,
   mapParliamentarian, parliamentarianIdPrefix,
@@ -138,12 +139,13 @@ const resolveFunctions = {
         return guest && mapGuest(guest)
       })
     },
-    getOrganisation (_, {locale, id}) {
+    getOrganisation (_, {locale, id}, {loaders: {translations}}) {
       const rawId = id.replace(orgIdPrefix, '')
       return Promise.all([
-        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/organisation/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
-      ]).then(([{json: {data: org}}]) => {
-        return org && mapOrg(org)
+        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/organisation/aggregated/id/${encodeURIComponent(rawId)}&limit=none`),
+        translations.load(locale).then(getFormatter)
+      ]).then(([{json: {data: org}}, t]) => {
+        return org && mapOrg(org, t)
       })
     },
     translations (_, {locale}, {loaders: {translations}}) {

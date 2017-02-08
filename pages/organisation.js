@@ -36,6 +36,10 @@ const orgQuery = gql`
             id
             name
           }
+          ... on Organisation {
+            id
+            name
+          }
         }
         via {
           ... on Guest {
