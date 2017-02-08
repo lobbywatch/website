@@ -12,6 +12,25 @@ const potencyMap = {
   '1': 'LOW'
 }
 
+const lobbyGroupIdPrefix = 'LobbyGroup'
+exports.mapLobbyGroup = (raw, t) => ({
+  id: `${lobbyGroupIdPrefix}${raw.id}`,
+  name: raw.name,
+  description: raw.beschreibung,
+  commissions: [
+    {
+      id: `${commissionIdPrefix}${raw.kommission1_id}`,
+      name: raw.kommission1_name,
+      abbr: raw.kommission1_abkuerzung
+    },
+    {
+      id: `${commissionIdPrefix}${raw.kommission2_id}`,
+      name: raw.kommission2_name,
+      abbr: raw.kommission2_abkuerzung
+    }
+  ].filter(c => c.name)
+})
+
 const mapParliamentConnection = (from, via, connection) => ({
   from: () => from,
   via,

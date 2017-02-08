@@ -7,7 +7,8 @@ const {
   mapArticle,
   mapParliamentarian, parliamentarianIdPrefix,
   mapGuest, guestIdPrefix,
-  mapOrg, orgIdPrefix
+  mapOrg, orgIdPrefix,
+  mapLobbyGroup
 } = require('./mappers')
 
 const resolveFunctions = {
@@ -148,6 +149,25 @@ const resolveFunctions = {
         translations.load(locale).then(getFormatter)
       ]).then(([{json: {data: org}}, t]) => {
         return org && mapOrg(org, t)
+      })
+    },
+    lobbyGroups (_, {locale}, {loaders: {translations}}, info) {
+      const queriedFields = new Set(
+        info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
+      )
+
+      if (queriedFields.has('connections')) {
+        throw new Error('Connections currently only supported in getParliamentarian')
+      }
+
+      return Promise.all([
+        translations.load(locale).then(getFormatter),
+        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/interessengruppe/flat/list&limit=none`)
+      ]).then(([t, {json: {data: lobbyGroups}}]) => {
+        // default: sort by name
+        lobbyGroups.sort((a, b) => ascending(a.name, b.name))
+
+        return lobbyGroups.map(l => mapLobbyGroup(l, t))
       })
     },
     translations (_, {locale}, {loaders: {translations}}) {

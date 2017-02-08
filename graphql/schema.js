@@ -121,7 +121,15 @@ type Guest implements Person {
   parliamentarianId: ID!
 }
 
-union ConnectionEntity = Parliamentarian | Organisation | Guest
+type LobbyGroup {
+  id: ID!
+  name: String!
+  description: String
+  commissions: [Commission!]!
+  connections: [Connection]
+}
+
+union ConnectionEntity = Parliamentarian | Organisation | Guest | LobbyGroup
 
 type Connection {
   from: ConnectionEntity!
@@ -172,13 +180,14 @@ const queryDefinitions = `
 type RootQuery {
   meta(locale: Locale!): Meta
   page(path: String!): Page
-  articles(locale: Locale!, limit: Int = 3, page: Int = 0): [Article]
-  parliamentarians(locale: Locale!): [Parliamentarian]
+  articles(locale: Locale!, limit: Int = 3, page: Int = 0): [Article!]!
+  parliamentarians(locale: Locale!): [Parliamentarian!]!
   getParliamentarian(locale: Locale!, id: ID!): Parliamentarian
-  guests(locale: Locale!): [Guest]
+  guests(locale: Locale!): [Guest!]!
   getGuest(locale: Locale!, id: ID!): Guest
   getOrganisation(locale: Locale!, id: ID!): Organisation
-  translations(locale: Locale!): [Translation]
+  lobbyGroups(locale: Locale!): [LobbyGroup!]!
+  translations(locale: Locale!): [Translation!]!
 }
 
 schema {
