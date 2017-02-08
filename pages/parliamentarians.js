@@ -4,44 +4,18 @@ import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
 import withData from '../src/apollo/withData'
+import {H1} from '../src/components/Styled'
+import Message from '../src/components/Message'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
-import {H1, metaRule} from '../src/components/Styled'
-import {GREY_LIGHT, mediaM} from '../src/theme'
-import {withT} from '../src/components/Message'
-import {css} from 'glamor'
-import {Link as NextRouteLink} from '../routes'
+import ListView from '../src/components/ListView'
 
-const portraitStyle = css({
-  display: 'inline-block',
-  width: 32,
-  height: 32,
-  borderRadius: '50%',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  float: 'left',
-  marginRight: 10,
-  marginTop: 2
-})
-const aStyle = css({
-  display: 'block',
-  color: 'inherit',
-  textDecoration: 'none',
-  borderBottom: `1px solid ${GREY_LIGHT}`,
-  padding: '12px 0'
-})
-const metaStyle = css(metaRule, {
-  lineHeight: '16px',
-  [mediaM]: {
-    lineHeight: '16px'
-  }
-})
-
-const parliamentarianQuery = gql`
+const parliamentariansQuery = gql`
   query parliamentarians($locale: Locale!) {
     parliamentarians(locale: $locale) {
       id
+      name
       firstName
       lastName
       portrait
@@ -56,39 +30,23 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({loading, error, t, parliamentarians, url: {query: {locale}}}) => (
-  <Frame locale={locale}>
-    <Loader loading={loading} error={error} render={() => (
-      <Center>
-        <H1>Parlamentarier</H1>
-        {parliamentarians.map(({id, firstName, lastName, portrait, councilTitle, canton, partyMembership}) => (
-          <NextRouteLink key={id} route='parliamentarian' params={{locale, id, name: `${firstName} ${lastName}`}}>
-            <a {...aStyle}>
-              <span {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />
-              <span>
-                {lastName}, {firstName}<br />
-                <span {...metaStyle}>
-                  {councilTitle}
-                  {partyMembership ? `, ${partyMembership.party.abbr}` : ''}
-                  {', '}{canton}
-                </span>
-              </span>
-            </a>
-          </NextRouteLink>
-        ))}
-      </Center>
-    )} />
-  </Frame>
+const Parliamentarians = ({loading, error, parliamentarians, locale}) => (
+  <Loader loading={loading} error={error} render={() => (
+    <Center>
+      <H1><Message id='menu/parliamentarians' locale={locale} /></H1>
+      <ListView locale={locale}
+        items={parliamentarians}
+        title={({lastName, firstName}) => `${lastName}, ${firstName}`}
+        subtitle={({councilTitle, partyMembership, canton}) => [
+          councilTitle,
+          partyMembership && partyMembership.party.abbr,
+          canton
+        ].filter(Boolean).join(', ')} />
+    </Center>
+  )} />
 )
 
-const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
-  options: ({url: {query: {locale}}}) => {
-    return {
-      variables: {
-        locale
-      }
-    }
-  },
+const ParliamentariansWithQuery = graphql(parliamentariansQuery, {
   props: ({data}) => {
     return {
       loading: data.loading,
@@ -96,6 +54,12 @@ const ParliamentarianWithQuery = graphql(parliamentarianQuery, {
       parliamentarians: data.parliamentarians
     }
   }
-})(Parliamentarian)
+})(Parliamentarians)
 
-export default withData(withT(ParliamentarianWithQuery, ({url}) => url.query.locale))
+const Page = ({url: {query: {locale, id}}}) => (
+  <Frame locale={locale}>
+    <ParliamentariansWithQuery locale={locale} />
+  </Frame>
+)
+
+export default withData(Page)
