@@ -32,6 +32,7 @@ const orgQuery = gql`
           description
         }
         to {
+          __typename
           ... on Parliamentarian {
             id
             name

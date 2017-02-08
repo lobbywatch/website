@@ -42,6 +42,7 @@ const parliamentarianQuery = gql`
           description
         }
         to {
+          __typename
           ... on Organisation {
             id
             name

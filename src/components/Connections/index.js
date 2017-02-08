@@ -11,6 +11,7 @@ import ContextBox, {ContextBoxValue} from '../ContextBox'
 import Legend from './Legend'
 import {withT} from '../Message'
 import {shallowEqual} from '../../utils/helpers'
+import {Link as NextRouteLink} from '../../../routes'
 
 const swissNumbers = formatLocale({
   decimal: '.',
@@ -72,6 +73,7 @@ const iconStyle = css({
 
 const connectionStyle = css({
   display: 'inline-block',
+  textDecoration: 'none',
   borderRadius: 8,
   backgroundColor: GREY_DARK,
   color: WHITE,
@@ -209,6 +211,7 @@ class Connections extends Component {
     }
 
     let nextState = {
+      hover: null,
       width: undefined,
       height: undefined,
       nodes: hierarchy.descendants(),
@@ -332,14 +335,20 @@ class Connections extends Component {
             if (data.type === 'Connection') {
               const {connection} = data
               // return null
-              return (<span key={data.id} ref={data.ref}
-                onMouseOver={() => this.setState({hover: data})}
-                onMouseOut={() => this.setState({hover: null})}
-                {...connectionStyle}
-                className={!isVisible && hiddenStyle}
-                style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
-                {connection.to.name}
-              </span>)
+              return (
+                <NextRouteLink key={data.id}
+                  route={connection.to.__typename.toLowerCase()}
+                  params={{locale, id: connection.to.id, name: connection.to.name}}>
+                  <a ref={data.ref}
+                    onMouseOver={() => this.setState({hover: data})}
+                    onMouseOut={() => this.setState({hover: null})}
+                    {...connectionStyle}
+                    className={!isVisible && hiddenStyle}
+                    style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
+                    {connection.to.name}
+                  </a>
+                </NextRouteLink>
+              )
             }
           })}
         </div>
