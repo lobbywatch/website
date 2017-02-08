@@ -20,8 +20,7 @@ const parliamentarianQuery = gql`
       dateOfBirth
       age
       portrait
-      gender
-      council
+      councilTitle
       active
       canton
       partyMembership {
@@ -61,7 +60,7 @@ const parliamentarianQuery = gql`
 
 const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {council, active, name, firstName, lastName, portrait, gender, canton, partyMembership} = parliamentarian
+    const {councilTitle, name, firstName, lastName, portrait, canton, partyMembership} = parliamentarian
     const rawId = id.replace('Parliamentarian-', '')
     const path = `/${locale}/daten/parlamentarier/${rawId}/${firstName} ${lastName}`
     return (
@@ -71,7 +70,7 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
             image={portrait}
             title={name}
             subtitle={[
-              t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`),
+              councilTitle,
               partyMembership && partyMembership.party.abbr,
               canton
             ].filter(Boolean).join(', ')} />

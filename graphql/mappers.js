@@ -102,7 +102,7 @@ const mapGuest = exports.mapGuest = raw => {
 }
 
 const parliamentarianIdPrefix = exports.parliamentarianIdPrefix = 'Parliamentarian-'
-exports.mapParliamentarian = raw => {
+exports.mapParliamentarian = (raw, t) => {
   const dateOfBirth = parseDate(raw.geburtstag)
   const councilJoinDate = new Date(+raw.im_rat_seit_unix * 1000)
   const councilExitDate = raw.im_rat_bis_unix
@@ -158,6 +158,12 @@ exports.mapParliamentarian = raw => {
     canton: raw.kanton_name,
     active: !councilExitDate,
     council: raw.rat,
+    councilTitle: () => {
+      return t(
+        'parliamentarian/council/title/' +
+        `${parliamentarian.council}-${parliamentarian.gender}${parliamentarian.active ? '' : '-Ex'}`
+      )
+    },
     councilTenure: () => {
       const end = councilExitDate || (new Date())
       return timeMonth.count(councilJoinDate, end)

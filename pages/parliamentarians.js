@@ -45,9 +45,7 @@ const parliamentarianQuery = gql`
       firstName
       lastName
       portrait
-      council
-      gender
-      active
+      councilTitle
       canton
       partyMembership {
         party {
@@ -63,14 +61,14 @@ const Parliamentarian = ({loading, error, t, parliamentarians, url: {query: {loc
     <Loader loading={loading} error={error} render={() => (
       <Center>
         <H1>Parlamentarier</H1>
-        {parliamentarians.map(({id, firstName, lastName, portrait, council, gender, active, canton, partyMembership}) => (
+        {parliamentarians.map(({id, firstName, lastName, portrait, councilTitle, canton, partyMembership}) => (
           <NextRouteLink key={id} route='parliamentarian' params={{locale, id, name: `${firstName} ${lastName}`}}>
             <a {...aStyle}>
               <span {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />
               <span>
                 {lastName}, {firstName}<br />
                 <span {...metaStyle}>
-                  {t(`parliamentarian/council/title/${council}-${gender}${active ? '' : '-Ex'}`)}
+                  {councilTitle}
                   {partyMembership ? `, ${partyMembership.party.abbr}` : ''}
                   {', '}{canton}
                 </span>

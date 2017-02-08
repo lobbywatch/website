@@ -63,7 +63,7 @@ const resolveFunctions = {
       return fetch(`${DRUPAL_BASE_URL}/${encodeURIComponent(locale)}?${qs.encode(query)}`)
         .then(({json}) => json.list.map(mapArticle))
     },
-    parliamentarians (_, {locale}, context, info) {
+    parliamentarians (_, {locale}, {loaders: {translations}}, info) {
       const queriedFields = new Set(
         info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
       )
@@ -76,9 +76,10 @@ const resolveFunctions = {
       }
 
       return Promise.all([
+        translations.load(locale).then(getFormatter),
         fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/flat/list&limit=none`),
         queriedFields.has('commissions') && fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/relation/in_kommission_liste/flat/list&limit=none`)
-      ]).then(([{json: {data: parliamentarians}}, commissions]) => {
+      ]).then(([t, {json: {data: parliamentarians}}, commissions]) => {
         if (commissions) {
           const commissionIndex = commissions.json.data.reduce(
             (index, commission) => {
@@ -94,7 +95,7 @@ const resolveFunctions = {
           })
         }
 
-        const result = parliamentarians.map(mapParliamentarian)
+        const result = parliamentarians.map(p => mapParliamentarian(p, t))
 
         // default: sort by lastname
         result.sort((a, b) => ascending(a.lastName, b.lastName))
@@ -102,13 +103,14 @@ const resolveFunctions = {
         return result
       })
     },
-    getParliamentarian (_, {locale, id}) {
+    getParliamentarian (_, {locale, id}, {loaders: {translations}}) {
       const rawId = id.replace(parliamentarianIdPrefix, '')
       // ToDo handle inactive – could send `includeInactive=1` but would need permission fixing on php side
       return Promise.all([
-        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
-      ]).then(([{json: {data: parliamentarian}}]) => {
-        return parliamentarian && mapParliamentarian(parliamentarian)
+        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}&limit=none`),
+        translations.load(locale).then(getFormatter)
+      ]).then(([{json: {data: parliamentarian}}, t]) => {
+        return parliamentarian && mapParliamentarian(parliamentarian, t)
       })
     },
     guests (_, {locale}, context, info) {

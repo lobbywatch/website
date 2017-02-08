@@ -150,6 +150,7 @@ type Parliamentarian implements Person {
   canton: String!
   active: Boolean!
   council: Council!
+  councilTitle: String!
   # In number of months
   councilTenure: Int
   # Format: YYYY-MM-DD
