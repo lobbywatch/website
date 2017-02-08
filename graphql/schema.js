@@ -187,6 +187,7 @@ type RootQuery {
   getGuest(locale: Locale!, id: ID!): Guest
   getOrganisation(locale: Locale!, id: ID!): Organisation
   lobbyGroups(locale: Locale!): [LobbyGroup!]!
+  getLobbyGroup(locale: Locale!, id: ID!): LobbyGroup
   translations(locale: Locale!): [Translation!]!
 }
 

@@ -8,7 +8,7 @@ const {
   mapParliamentarian, parliamentarianIdPrefix,
   mapGuest, guestIdPrefix,
   mapOrg, orgIdPrefix,
-  mapLobbyGroup
+  mapLobbyGroup, lobbyGroupIdPrefix
 } = require('./mappers')
 
 const resolveFunctions = {
@@ -168,6 +168,15 @@ const resolveFunctions = {
         lobbyGroups.sort((a, b) => ascending(a.name, b.name))
 
         return lobbyGroups.map(l => mapLobbyGroup(l, t))
+      })
+    },
+    getLobbyGroup (_, {locale, id}, {loaders: {translations}}, info) {
+      const rawId = id.replace(lobbyGroupIdPrefix, '')
+      return Promise.all([
+        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/interessengruppe/aggregated/id/${encodeURIComponent(rawId)}&limit=none`),
+        translations.load(locale).then(getFormatter)
+      ]).then(([{json: {data: lobbyGroup}}, t]) => {
+        return lobbyGroup && mapLobbyGroup(lobbyGroup, t)
       })
     },
     translations (_, {locale}, {loaders: {translations}}) {

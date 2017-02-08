@@ -12,7 +12,7 @@ const potencyMap = {
   '1': 'LOW'
 }
 
-const lobbyGroupIdPrefix = 'LobbyGroup'
+const lobbyGroupIdPrefix = exports.lobbyGroupIdPrefix = 'LobbyGroup'
 exports.mapLobbyGroup = (raw, t) => ({
   id: `${lobbyGroupIdPrefix}${raw.id}`,
   name: raw.name,
