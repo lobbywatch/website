@@ -198,6 +198,11 @@ class Header extends Component {
         params: {locale: currentLocale}
       },
       {
+        label: t('menu/guests'),
+        route: 'guests',
+        params: {locale: currentLocale}
+      },
+      {
         label: t('menu/lobbygroups'),
         route: 'lobbygroups',
         params: {locale: currentLocale}

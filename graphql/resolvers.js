@@ -114,19 +114,23 @@ const resolveFunctions = {
         return parliamentarian && mapParliamentarian(parliamentarian, t)
       })
     },
-    guests (_, {locale}, context, info) {
+    guests (_, {locale}, {loaders: {translations}}, info) {
       const queriedFields = new Set(
         info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
       )
 
       if (queriedFields.has('connections')) {
-        throw new Error('Connections currently only supported in getParliamentarian')
+        throw new Error('Connections currently only supported in getGuest')
+      }
+      if (queriedFields.has('parliamentarian')) {
+        throw new Error('Parliamentarian currently only supported in getGuest')
       }
 
       return Promise.all([
+        translations.load(locale).then(getFormatter),
         fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/flat/list&limit=none`)
-      ]).then(([{json: {data: guests}}]) => {
-        const result = (guests || []).map(mapGuest)
+      ]).then(([t, {json: {data: guests}}]) => {
+        const result = (guests || []).map(g => mapGuest(g, t))
 
         // default: sort by lastname
         result.sort((a, b) => ascending(a.lastName, b.lastName))
@@ -134,12 +138,13 @@ const resolveFunctions = {
         return result
       })
     },
-    getGuest (_, {locale, id}) {
+    getGuest (_, {locale, id}, {loaders: {translations}}) {
       const rawId = id.replace(guestIdPrefix, '')
       return Promise.all([
+        translations.load(locale).then(getFormatter),
         fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
-      ]).then(([{json: {data: guest}}]) => {
-        return guest && mapGuest(guest)
+      ]).then(([t, {json: {data: guest}}]) => {
+        return guest && mapGuest(guest, t)
       })
     },
     getOrganisation (_, {locale, id}, {loaders: {translations}}) {

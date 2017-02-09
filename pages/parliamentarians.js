@@ -14,6 +14,7 @@ import ListView from '../src/components/ListView'
 const parliamentariansQuery = gql`
   query parliamentarians($locale: Locale!) {
     parliamentarians(locale: $locale) {
+      __typename
       id
       name
       firstName

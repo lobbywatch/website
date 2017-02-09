@@ -102,7 +102,7 @@ exports.mapOrg = (raw, t) => {
     let indirect = []
     raw.zutrittsberechtigte.forEach(guest => {
       if (guest.parlamentarier) {
-        indirect.push(mapParliamentConnection(org, mapGuest(guest), guest.parlamentarier, t))
+        indirect.push(mapParliamentConnection(org, mapGuest(guest, t), guest.parlamentarier, t))
       }
     })
     let relations = raw.beziehungen.map(connection => ({
@@ -150,7 +150,7 @@ const mapMandate = (from, via, connection) => ({
 })
 
 const guestIdPrefix = exports.guestIdPrefix = 'Guest-'
-const mapGuest = exports.mapGuest = raw => {
+const mapGuest = exports.mapGuest = (raw, t) => {
   const guest = {
     id: `${guestIdPrefix}${raw.person_id}`,
     name: () => `${raw.vorname} ${raw.nachname}`,
@@ -160,21 +160,20 @@ const mapGuest = exports.mapGuest = raw => {
     occupation: raw.beruf,
     gender: raw.geschlecht,
     function: raw.funktion,
-    parliamentarian: raw.parlamentarier_name,
-    parliamentarianId: raw.parlamentarier_id
+    parliamentarian: () => mapParliamentarian(raw.parlamentarier, t)
   }
   guest.connections = (raw.mandate || []).map(connection => mapMandate(guest, null, connection))
   return guest
 }
 
 const parliamentarianIdPrefix = exports.parliamentarianIdPrefix = 'Parliamentarian-'
-exports.mapParliamentarian = (raw, t) => {
+const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
   const dateOfBirth = parseDate(raw.geburtstag)
   const councilJoinDate = new Date(+raw.im_rat_seit_unix * 1000)
   const councilExitDate = raw.im_rat_bis_unix
     ? new Date(+raw.im_rat_bis_unix * 1000) : null
 
-  const guests = (raw.zutrittsberechtigungen || []).map(mapGuest)
+  const guests = (raw.zutrittsberechtigungen || []).map(g => mapGuest(g, t))
 
   const connections = () => {
     const direct = raw.interessenbindungen.map(directConnection => mapMandate(parliamentarian, null, directConnection))

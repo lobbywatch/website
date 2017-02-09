@@ -49,7 +49,7 @@ const ListView = ({locale, items, title, subtitle}) => {
               <span>
                 {title(item)}<br />
                 <span {...metaStyle}>
-                  {subtitle(item)}
+                  {subtitle(item) || ' '}
                 </span>
               </span>
             </a>

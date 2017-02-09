@@ -116,9 +116,7 @@ type Guest implements Person {
   dateOfBirth: String
   connections: [Connection!]!
   function: String,
-  # ToDo: Get real parliamentarian object
-  parliamentarian: String!
-  parliamentarianId: ID!
+  parliamentarian: Parliamentarian!
 }
 
 type LobbyGroup {

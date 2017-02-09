@@ -11,42 +11,44 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import ListView from '../src/components/ListView'
 
-const lobbyGroupsQuery = gql`
-  query lobbyGroups($locale: Locale!) {
-    lobbyGroups(locale: $locale) {
+const guestsQuery = gql`
+  query guests($locale: Locale!) {
+    guests(locale: $locale) {
       __typename
       id
       name
-      sector
+      firstName
+      lastName
+      function
     }
   }
 `
 
-const LobbyGroups = ({loading, error, lobbyGroups, locale}) => (
+const Guests = ({loading, error, guests, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
-      <H1><Message id='menu/lobbygroups' locale={locale} /></H1>
+      <H1><Message id='menu/guests' locale={locale} /></H1>
       <ListView locale={locale}
-        items={lobbyGroups}
-        title={({name}) => name}
-        subtitle={({sector}) => sector} />
+        items={guests}
+        title={({firstName, lastName}) => `${lastName}, ${firstName}`}
+        subtitle={(guest) => guest['function']} />
     </Center>
   )} />
 )
 
-const LobbyGroupsWithQuery = graphql(lobbyGroupsQuery, {
+const GuestsWithQuery = graphql(guestsQuery, {
   props: ({data}) => {
     return {
       loading: data.loading,
       error: data.error,
-      lobbyGroups: data.lobbyGroups
+      guests: data.guests
     }
   }
-})(LobbyGroups)
+})(Guests)
 
 const Page = ({url: {query: {locale, id}}}) => (
   <Frame locale={locale}>
-    <LobbyGroupsWithQuery locale={locale} />
+    <GuestsWithQuery locale={locale} />
   </Frame>
 )
 

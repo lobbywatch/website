@@ -13,26 +13,16 @@ import {A} from '../src/components/Styled'
 import {withT} from '../src/components/Message'
 import {GREY_LIGHT} from '../src/theme'
 
-const parliamentarianQuery = gql`
-  query getParliamentarian($locale: Locale!, $id: ID!) {
-    getParliamentarian(locale: $locale, id: $id) {
+const guestQuery = gql`
+  query getGuest($locale: Locale!, $id: ID!) {
+    getGuest(locale: $locale, id: $id) {
       __typename
       name
-      dateOfBirth
-      age
-      portrait
-      councilTitle
-      active
-      canton
-      partyMembership {
-        party {
-          abbr
-        }
-      }
-      guests {
-        id
+      occupation
+      parliamentarian {
         name
       }
+      function
       connections {
         group
         potency
@@ -59,31 +49,29 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
+const Guest = ({loading, error, t, guest, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {__typename, councilTitle, name, portrait, canton, partyMembership} = parliamentarian
+    const {__typename, parliamentarian, name} = guest
     const rawId = id.replace(`${__typename}-`, '')
-    const path = `/${locale}/daten/parlamentarier/${rawId}/${name}`
+    const path = `/${locale}/daten/zutrittsberechtigter/${rawId}/${name}`
     return (
       <div>
         <Center>
           <DetailHead
             type={__typename}
-            image={portrait}
             title={name}
             subtitle={[
-              councilTitle,
-              partyMembership && partyMembership.party.abbr,
-              canton
+              guest.function,
+              t('guest/invited-by', {
+                parliamentarian: parliamentarian.name
+              })
             ].filter(Boolean).join(', ')} />
         </Center>
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
             <Connections locale={locale}
-              data={parliamentarian.connections}
-              maxGroups={5}
-              intermediate={connection => connection.via ? connection.via.id : ''}
-              intermediates={parliamentarian.guests} />
+              data={guest.connections}
+              maxGroups={5} />
           </Center>
         </div>
         <Center>
@@ -98,9 +86,9 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
   }} />
 )
 
-const ParliamentarianWithQuery = withT(graphql(parliamentarianQuery, {
+const GuestWithQuery = withT(graphql(guestQuery, {
   props: ({data, ownProps: {serverContext, t}}) => {
-    const notFound = !data.loading && !data.getParliamentarian
+    const notFound = !data.loading && !data.getGuest
     if (serverContext) {
       if (notFound) {
         serverContext.res.statusCode = 404
@@ -108,15 +96,15 @@ const ParliamentarianWithQuery = withT(graphql(parliamentarianQuery, {
     }
     return {
       loading: data.loading,
-      error: data.error || (notFound && t('parliamentarian/error/404')),
-      parliamentarian: data.getParliamentarian
+      error: data.error || (notFound && t('guest/error/404')),
+      guest: data.getGuest
     }
   }
-})(Parliamentarian))
+})(Guest))
 
 const Page = ({url: {query: {locale, id}}}) => (
   <Frame locale={locale}>
-    <ParliamentarianWithQuery locale={locale} id={id} />
+    <GuestWithQuery locale={locale} id={id} />
   </Frame>
 )
 
