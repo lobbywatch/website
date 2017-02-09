@@ -12,14 +12,14 @@ const potencyMap = {
   '1': 'LOW'
 }
 
-const mapParliamentConnection = (from, via, connection) => ({
+const mapParliamentConnection = (from, via, connection, t) => ({
   from: () => from,
   via,
   to: {
     id: `${parliamentarianIdPrefix}${connection.parlamentarier_id || connection.id}`,
     name: connection.name
   },
-  group: connection.partei,
+  group: connection.partei || t('connections/party/none'),
   compensation: connection.verguetung !== null ? ({
     year: connection.verguetung_jahr && +connection.verguetung_jahr,
     money: +connection.verguetung,
@@ -64,7 +64,7 @@ exports.mapLobbyGroup = (raw, t) => {
           id: `${parliamentarianIdPrefix}${parliamentarian.id}`,
           name: parliamentarian.name
         },
-        group: parliamentarian.partei
+        group: parliamentarian.partei || t('connections/party/none')
       }
     })
 
@@ -97,12 +97,12 @@ const orgIdPrefix = exports.orgIdPrefix = 'Organisation-'
 exports.mapOrg = (raw, t) => {
   const connections = () => {
     const direct = raw.parlamentarier.map(directConnection => {
-      return mapParliamentConnection(org, null, directConnection)
+      return mapParliamentConnection(org, null, directConnection, t)
     })
     let indirect = []
     raw.zutrittsberechtigte.forEach(guest => {
       if (guest.parlamentarier) {
-        indirect.push(mapParliamentConnection(org, mapGuest(guest), guest.parlamentarier))
+        indirect.push(mapParliamentConnection(org, mapGuest(guest), guest.parlamentarier, t))
       }
     })
     let relations = raw.beziehungen.map(connection => ({
