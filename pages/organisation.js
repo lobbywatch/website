@@ -54,6 +54,11 @@ const orgQuery = gql`
   }
 `
 
+const CONNECTION_WEIGHTS = {
+  Parliamentarian: 1000,
+  Organisation: 0.1
+}
+
 const Org = ({loading, error, t, organisation, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
     const {__typename, name, group, legalForm, location} = organisation
@@ -73,7 +78,10 @@ const Org = ({loading, error, t, organisation, locale, id}) => (
         </Center>
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
-            <Connections locale={locale} data={organisation.connections} />
+            <Connections
+              locale={locale}
+              data={organisation.connections}
+              connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
           </Center>
         </div>
         <Center>

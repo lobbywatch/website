@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {PropTypes, Component} from 'react'
 import {css, merge} from 'glamor'
 import {nest} from 'd3-collection'
 import {formatLocale} from 'd3-format'
@@ -133,7 +133,7 @@ class Connections extends Component {
       }
     }
   }
-  nestData (state, {data, intermediate, intermediates, maxGroups, t}) {
+  nestData (state, {data, intermediate, intermediates, maxGroups, connectionWeight, t}) {
     const moreKey = t('connections/more/plural')
     const groupTree = nest()
       .key(intermediate)
@@ -142,7 +142,7 @@ class Connections extends Component {
 
     const nodes = groupTree.reduce(
       (rootAccumulator, viaLevel) => {
-        viaLevel.values.sort((a, b) => descending(a.values.length, b.values.length))
+        viaLevel.values.sort((a, b) => descending(a.values.map(connectionWeight), b.values.map(connectionWeight)))
 
         const more = viaLevel.values.find(group => group.key === moreKey) || {
           key: moreKey,
@@ -361,10 +361,15 @@ class Connections extends Component {
   }
 }
 
+Connections.propTypes = {
+  connectionWeight: PropTypes.func.isRequired // weight for sorting, default 1
+}
+
 Connections.defaultProps = {
   intermediate: () => '',
   intermediates: [],
-  maxGroups: undefined
+  maxGroups: undefined,
+  connectionWeight: () => 1
 }
 
 export default withT(Connections)
