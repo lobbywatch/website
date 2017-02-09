@@ -3,7 +3,7 @@ import {css, cssFor} from 'glamor'
 export const globalWithMediaQueries = (selector, styles) => {
   const plainStyles = {}
   Object.keys(styles).forEach(key => {
-    if (key.match(/^@media/)) {
+    if (key.indexOf('@media') === 0) {
       const mediaStyle = styles[key]
       const className = css(mediaStyle).toString()
       const mediaCss = cssFor(mediaStyle)
