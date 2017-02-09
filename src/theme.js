@@ -9,8 +9,8 @@ export const GREY_LIGHT = '#ddd'
 export const GREY_SOFT = '#f2f2f2'
 export const WHITE = '#fff'
 
-export const breakpointS = [0, 640]
-export const breakpointM = [641, 1024]
+export const breakpointS = [0, 780]
+export const breakpointM = [781, 1024]
 export const breakpointL = [1025, 1440]
 
 // em for best browser support http://zellwk.com/blog/media-query-units/
