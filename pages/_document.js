@@ -5,13 +5,10 @@ import {renderStatic} from 'glamor/server'
 import 'glamor/reset'
 
 export default class MyDocument extends Document {
-  static async getInitialProps (ctx) {
-    let props
-    const {css} = renderStatic(() => {
-      props = Document.getInitialProps(ctx)
-      return props.html
-    })
-    return {...props, css}
+  static async getInitialProps ({renderPage}) {
+    const page = renderPage()
+    const styles = renderStatic(() => page.html)
+    return { ...page, ...styles }
   }
 
   render () {

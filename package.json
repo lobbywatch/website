@@ -39,10 +39,12 @@
     "gsheets": "^2.0.0",
     "isomorphic-fetch": "^2.2.1",
     "lru-cache": "^4.0.2",
-    "next": "^2.0.0-beta.18",
+    "next": "^2.0.0-beta.23",
     "next-routes": "^1.0.11",
     "querystring": "^0.2.0",
+    "react": "^15.4.2",
     "react-apollo": "^0.8.1",
+    "react-dom": "^15.4.2",
     "redux": "^3.6.0"
   },
   "devDependencies": {
