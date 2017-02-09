@@ -12,26 +12,6 @@ const potencyMap = {
   '1': 'LOW'
 }
 
-const lobbyGroupIdPrefix = exports.lobbyGroupIdPrefix = 'LobbyGroup'
-exports.mapLobbyGroup = (raw, t) => ({
-  id: `${lobbyGroupIdPrefix}${raw.id}`,
-  name: raw.name,
-  sector: raw.branche,
-  description: raw.beschreibung,
-  commissions: [
-    {
-      id: `${commissionIdPrefix}${raw.kommission1_id}`,
-      name: raw.kommission1_name,
-      abbr: raw.kommission1_abkuerzung
-    },
-    {
-      id: `${commissionIdPrefix}${raw.kommission2_id}`,
-      name: raw.kommission2_name,
-      abbr: raw.kommission2_abkuerzung
-    }
-  ].filter(c => c.name)
-})
-
 const mapParliamentConnection = (from, via, connection) => ({
   from: () => from,
   via,
@@ -46,6 +26,72 @@ const mapParliamentConnection = (from, via, connection) => ({
     description: connection.verguetung_beschreibung
   }) : null
 })
+
+const lobbyGroupIdPrefix = exports.lobbyGroupIdPrefix = 'LobbyGroup-'
+exports.mapLobbyGroup = (raw, t) => {
+  const connections = () => {
+    const organisations = raw.organisationen.map(connection => ({
+      from: lobbyGroup,
+      to: {
+        id: `${orgIdPrefix}${connection.id}`,
+        name: connection.name
+      },
+      group: t('connections/organisation/generic')
+    }))
+
+    const parliamentarians = raw.connections.map(connection => {
+      let via
+      if (connection.zwischen_organisation_id) {
+        // we could support multiple vias here: zutrittsberechtigter?, zwischen_organisation, connector_organisation
+        via = raw.zwischen_organisationen
+          .find(org => org.id === connection.zwischen_organisation_id)
+      } else {
+        // we could support multiple vias here: zutrittsberechtigter?, connector_organisation
+        via = raw.organisationen
+          .find(org => org.id === connection.connector_organisation_id)
+      }
+      via = via && [via].map(org => ({
+        id: `${orgIdPrefix}${org.id}`,
+        name: org.name
+      }))[0]
+
+      const parliamentarian = raw.parlamentarier.find(p => p.id === connection.parlamentarier_id)
+
+      return {
+        from: lobbyGroup,
+        via,
+        to: {
+          id: `${parliamentarianIdPrefix}${parliamentarian.id}`,
+          name: parliamentarian.name
+        },
+        group: parliamentarian.partei
+      }
+    })
+
+    return organisations.concat(parliamentarians)
+  }
+
+  const lobbyGroup = {
+    id: `${lobbyGroupIdPrefix}${raw.id}`,
+    name: raw.name,
+    sector: raw.branche,
+    description: raw.beschreibung,
+    commissions: [
+      {
+        id: `${commissionIdPrefix}${raw.kommission1_id}`,
+        name: raw.kommission1_name,
+        abbr: raw.kommission1_abkuerzung
+      },
+      {
+        id: `${commissionIdPrefix}${raw.kommission2_id}`,
+        name: raw.kommission2_name,
+        abbr: raw.kommission2_abkuerzung
+      }
+    ].filter(c => c.name),
+    connections
+  }
+  return lobbyGroup
+}
 
 const orgIdPrefix = exports.orgIdPrefix = 'Organisation-'
 exports.mapOrg = (raw, t) => {

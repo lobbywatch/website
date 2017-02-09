@@ -40,8 +40,9 @@ const ListView = ({locale, items, title, subtitle}) => {
       {items.map((item) => {
         const {__typename, id, name, portrait} = item
         const Icon = Icons[__typename]
+        const rawId = id.replace(`${__typename}-`, '')
         return (
-          <NextRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id, name}}>
+          <NextRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
             <a {...aStyle}>
               {!!portrait && <span {...symbolStyle} {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />}
               {!portrait && !!Icon && <Icon className={symbolStyle} size={32} />}

@@ -2,16 +2,17 @@ import React from 'react'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
+import {nest} from 'd3-collection'
 
 import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
-// import Connections from '../src/components/Connections'
+import Connections from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {A} from '../src/components/Styled'
 import {withT} from '../src/components/Message'
-// import {GREY_LIGHT} from '../src/theme'
+import {GREY_LIGHT} from '../src/theme'
 
 const lobbyGroupQuery = gql`
   query getLobbyGroup($locale: Locale!, $id: ID!) {
@@ -19,9 +20,41 @@ const lobbyGroupQuery = gql`
       __typename
       id
       name
+      connections {
+        group
+        to {
+          __typename
+          ... on Organisation {
+            id
+            name
+          }
+          ... on Parliamentarian {
+            id
+            name
+          }
+        }
+        via {
+          ... on Organisation {
+            id
+            name
+          }
+        }
+      }
     }
   }
 `
+
+const groupConnections = (connections) => {
+  const groups = nest()
+    .key(connection => connection.to.id)
+    .entries(connections)
+
+  return groups.map(({values}) => ({
+    ...values[0],
+    via: undefined,
+    vias: values.map(value => value.via)
+  }))
+}
 
 const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
@@ -36,6 +69,12 @@ const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
             title={name}
             subtitle={''} />
         </Center>
+        <div style={{backgroundColor: GREY_LIGHT}}>
+          <Center style={{paddingTop: 0, paddingBottom: 0}}>
+            <Connections locale={locale}
+              data={groupConnections(lobbyGroup.connections)} />
+          </Center>
+        </div>
         <Center>
           <p>
             Original Profil:

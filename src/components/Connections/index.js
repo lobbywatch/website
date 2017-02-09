@@ -338,7 +338,11 @@ class Connections extends Component {
               return (
                 <NextRouteLink key={data.id}
                   route={connection.to.__typename.toLowerCase()}
-                  params={{locale, id: connection.to.id, name: connection.to.name}}>
+                  params={{
+                    locale,
+                    id: connection.to.id.replace(`${connection.to.__typename}-`, ''),
+                    name: connection.to.name
+                  }}>
                   <a ref={data.ref}
                     onMouseOver={() => this.setState({hover: data})}
                     onMouseOut={() => this.setState({hover: null})}
