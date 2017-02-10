@@ -33,11 +33,9 @@ const Page = ({loading, error, title, content, url: {query: {locale}}}) => (
 
 const PageWithQuery = graphql(pageQuery, {
   options: ({url}) => {
-    // workaround until next-routes support multi segment params
-    const path = url.query.path.replace(/,/g, '/')
     return {
       variables: {
-        path: `/${url.query.locale}/${path}`
+        path: `/${url.query.locale}/${url.query.path}`
       }
     }
   },
