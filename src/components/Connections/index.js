@@ -41,7 +41,8 @@ const bubbleStyle = css({
   padding: '8px 16px',
   marginRight: 10,
   marginBottom: 10,
-  minHeight: 40
+  minHeight: 40,
+  zIndex: 1
 })
 const bubbleViaStyle = merge(bubbleStyle, {
   color: LW_BLUE_DARK,
@@ -95,7 +96,6 @@ const hiddenStyle = css({
 class Connections extends Component {
   constructor (props) {
     super(props)
-    this.nodeRefs = {}
     this.state = {
       nodes: [],
       links: [],
@@ -103,34 +103,26 @@ class Connections extends Component {
     }
 
     this.measure = () => {
-      const {nodes, open} = this.state
+      const {nodes} = this.state
 
       const containerRect = this.containerRef.getBoundingClientRect()
 
-      let height = 0
-      nodes.forEach(({data}) => {
-        const ref = this.nodeRefs[data.id]
-        if (ref) {
-          const rect = ref.getBoundingClientRect()
-          const y = window.scrollX + (rect.top - containerRect.top)
-          data.bounds = {
-            cx: window.scrollX + (rect.width / 2 + rect.left - containerRect.left),
-            y: y,
-            ey: y + rect.height
-          }
-          height = Math.max(height, y + rect.height)
+      nodes.forEach(({data, ref}) => {
+        ref.style.removeProperty('position')
+        ref.style.removeProperty('left')
+        ref.style.removeProperty('top')
+        const rect = ref.getBoundingClientRect()
+        data.measurements = {
+          width: Math.ceil(rect.width),
+          height: Math.ceil(rect.height)
         }
       })
 
-      // tmp hack to trigger re-render
-      height += Object.keys(open)
-        .map(key => open[key])
-        .filter(Boolean).length
-
       const width = containerRect.width
-      if (width !== this.state.width || height !== this.state.height) {
-        this.setState({width, height})
+      if (width !== this.state.width) {
+        this.setState({width})
       }
+      this.layout()
     }
   }
   nestData (state, {data, intermediate, intermediates, maxGroups, connectionWeight, t}) {
@@ -140,7 +132,7 @@ class Connections extends Component {
       .key(connection => connection.group ? connection.group : moreKey)
       .entries(data)
 
-    const nodes = groupTree.reduce(
+    const nodeData = groupTree.reduce(
       (rootAccumulator, viaLevel) => {
         viaLevel.values.sort((a, b) => descending(a.values.map(connectionWeight), b.values.map(connectionWeight)))
 
@@ -192,18 +184,24 @@ class Connections extends Component {
         label: via.name
       }))
     )
-    nodes.unshift({
+    nodeData.unshift({
       id: 'Root',
       type: 'Root'
     })
 
+    const hierarchy = stratify()(nodeData)
+    const nodes = hierarchy.descendants()
     nodes.forEach(node => {
-      node.ref = ref => {
-        this.nodeRefs[node.id] = ref
+      node.setRef = ref => {
+        node.ref = ref
       }
     })
-
-    const hierarchy = stratify()(nodes)
+    const links = hierarchy.links()
+    links.forEach((link, i) => {
+      link.setRef = ref => {
+        link.ref = ref
+      }
+    })
 
     const open = {
       ...state.open,
@@ -213,14 +211,111 @@ class Connections extends Component {
     let nextState = {
       hover: null,
       width: undefined,
-      height: undefined,
-      nodes: hierarchy.descendants(),
-      links: hierarchy.links(),
+      nodes,
+      links,
       hierarchy,
       open
     }
 
     return nextState
+  }
+  layout () {
+    const {
+      hierarchy,
+      nodes, links,
+      width, open
+    } = this.state
+
+    const MARGIN = 10
+
+    let y = 48
+    let x = 0
+    let row = 0
+    const nextRow = (rowHeight) => {
+      x = 0
+      y += rowHeight + MARGIN
+      row += 1
+    }
+    const visit = (node) => {
+      const isOpen = open[node.data.id]
+      if (isOpen) {
+        let lastType
+        let rowHeight = 0
+        let rowChildren = []
+        let openChildren = []
+        const newRow = () => {
+          const xLeftOver = width - x
+          const xPush = xLeftOver / 2 // center
+          rowChildren.forEach(rowChild => {
+            rowChild.x += xPush
+          })
+          nextRow(rowHeight)
+          rowHeight = 0
+          rowChildren = []
+          if (openChildren.length) {
+            openChildren.forEach(visit)
+            openChildren = []
+          }
+        }
+        node.children.forEach(child => {
+          const measurements = child.data.measurements
+
+          if (
+            (x + measurements.width > width) ||
+            (lastType && lastType !== child.data.type)
+          ) {
+            newRow()
+          }
+
+          child.x = x
+          child.y = y
+          child.row = row
+          rowHeight = Math.max(measurements.height, rowHeight)
+          rowChildren.push(child)
+          x += measurements.width + MARGIN
+          if (open[child.data.id]) {
+            openChildren.push(child)
+          }
+          lastType = child.data.type
+        })
+        newRow()
+      }
+    }
+    visit(hierarchy)
+    hierarchy.y = 0
+    hierarchy.x = width / 2
+
+    nodes.forEach(({x, y, data, ref}) => {
+      ref.style.position = 'absolute'
+      ref.style.left = `${x}px`
+      ref.style.top = `${y}px`
+      ref.style.margin = '0'
+    })
+
+    links.forEach(({ref, source, target}) => {
+      if (ref) {
+        const {x: sx, y: sy, data: {measurements: sMeasurements}} = source
+        const scx = sx + sMeasurements.width / 2
+        const sey = sy + sMeasurements.height
+        const {x: tx, y: ty, data: {measurements: tMeasurements}} = target
+        const tcx = tx + tMeasurements.width / 2
+
+        ref.setAttribute('d', (
+          'M' + scx + ',' + sey +
+          'C' + scx + ',' + (sey + ty) / 2 +
+          ' ' + tcx + ',' + (sey + ty) / 2 +
+          ' ' + tcx + ',' + ty
+          // 'M' + scx + ',' + sey +
+          // 'C' + (scx + tcx) / 2 + ',' + sey +
+          // ' ' + (scx + tcx) / 2 + ',' + ty +
+          // ' ' + tcx + ',' + ty
+        ))
+      }
+    })
+
+    const height = y + 20
+    this.containerRef.style.height = `${height}px`
+    this.svgRef.style.height = `${height}px`
   }
   componentWillMount () {
     this.setState(this.nestData)
@@ -235,7 +330,11 @@ class Connections extends Component {
     this.measure()
   }
   componentDidUpdate () {
-    this.measure()
+    if (!this.state.width) {
+      this.measure()
+    } else {
+      this.layout()
+    }
   }
   componentWillUnmount () {
     window.removeEventListener('resize', this.measure)
@@ -243,7 +342,7 @@ class Connections extends Component {
   render () {
     const {
       nodes, links, hover, open,
-      width, height
+      width
     } = this.state
     const {locale, t, intermediates} = this.props
     let viaI = 0
@@ -252,37 +351,28 @@ class Connections extends Component {
 
     return (
       <div {...containerStyle} ref={ref => { this.containerRef = ref }}>
-        {!!hover && !!width && <ContextBox x={hover.bounds.cx} y={hover.bounds.y - 15} contextWidth={width}>
-          <ContextBoxValue label={t('connections/context/group')}>{hover.connection.group}</ContextBoxValue>
-          <ContextBoxValue label={t('connections/context/function')}>{hover.connection.function}</ContextBoxValue>
-          {!!hover.connection.compensation && (<ContextBoxValue label={t('connections/context/compensation')}>
-            {chfFormat(hover.connection.compensation.money)}
+        {!!hover && !!width && <ContextBox x={hover.x + hover.data.measurements.width / 2} y={hover.y - 15} contextWidth={width}>
+          <ContextBoxValue label={t('connections/context/group')}>{hover.data.connection.group}</ContextBoxValue>
+          <ContextBoxValue label={t('connections/context/function')}>{hover.data.connection.function}</ContextBoxValue>
+          {!!hover.data.connection.compensation && (<ContextBoxValue label={t('connections/context/compensation')}>
+            {chfFormat(hover.data.connection.compensation.money)}
             {' '}{t('connections/context/compensation/periode')}
-            {!!hover.connection.compensation.description && ` (${hover.connection.compensation.description})`}
+            {!!hover.data.connection.compensation.description && ` (${hover.data.connection.compensation.description})`}
           </ContextBoxValue>)}
         </ContextBox>}
-        <svg width={width} height={height} style={{position: 'absolute', top: 0, left: 0}}>
-          {!!width && links.map(({source, target}, i) => {
+        <svg width={width} ref={ref => { this.svgRef = ref }} style={{position: 'absolute', top: 0, left: 0}}>
+          {!!width && links.map(({source, target, setRef}, i) => {
             const visible = getVisible(source.parent) && getVisible(target.parent)
-            if (visible && source.data.bounds && target.data.bounds) {
-              const sBounds = source.data.bounds
-              const tBounds = target.data.bounds
-              return <path key={i} fill='none' stroke={WHITE} strokeWidth={2} d={(
-                'M' + sBounds.cx + ',' + sBounds.ey +
-                'C' + sBounds.cx + ',' + (sBounds.ey + tBounds.y) / 2 +
-                ' ' + tBounds.cx + ',' + (sBounds.ey + tBounds.y) / 2 +
-                ' ' + tBounds.cx + ',' + tBounds.y
-                // 'M' + sBounds.cx + ',' + sBounds.ey +
-                // 'C' + (sBounds.cx + tBounds.cx) / 2 + ',' + sBounds.ey +
-                // ' ' + (sBounds.cx + tBounds.cx) / 2 + ',' + tBounds.y +
-                // ' ' + tBounds.cx + ',' + tBounds.y
-              )} />
+            if (visible) {
+              return <path key={i} ref={setRef}
+                fill='none' stroke={WHITE} strokeWidth={2} />
             }
           })}
         </svg>
         <div style={{textAlign: 'center', position: 'relative'}}>
           <Legend locale={locale} />
-          {nodes.map(({data, children, parent}) => {
+          {nodes.map((node) => {
+            const {data, setRef, children, parent} = node
             const isVisible = getVisible(parent)
             const isOpen = open[data.id]
             const toggle = () => {
@@ -300,12 +390,12 @@ class Connections extends Component {
               this.setState({open: nextOpen})
             }
             if (data.type === 'Root') {
-              return <span key={data.id} ref={data.ref} {...rootStyle} />
+              return <span key={data.id} ref={setRef} {...rootStyle} />
             }
             if (data.type === 'Group') {
               const indirect = data.parentId !== 'Root'
               return (
-                <span key={data.id} ref={data.ref}
+                <span key={data.id} ref={setRef}
                   className={[
                     (indirect ? bubbleViaStyle : bubbleStyle),
                     !isVisible && hiddenStyle
@@ -322,7 +412,7 @@ class Connections extends Component {
               let isLast = viaI === intermediates.length
               return (<span key={data.id}>
                 {!!isFirst && <br />}
-                <span ref={data.ref}
+                <span ref={setRef}
                   {...bubbleViaStyle}
                   className={!isVisible && hiddenStyle}
                   onClick={toggle}
@@ -334,7 +424,6 @@ class Connections extends Component {
             }
             if (data.type === 'Connection') {
               const {connection} = data
-              // return null
               return (
                 <NextRouteLink key={data.id}
                   route={connection.to.__typename.toLowerCase()}
@@ -343,8 +432,8 @@ class Connections extends Component {
                     id: connection.to.id.replace(`${connection.to.__typename}-`, ''),
                     name: connection.to.name
                   }}>
-                  <a ref={data.ref}
-                    onMouseOver={() => this.setState({hover: data})}
+                  <a ref={setRef}
+                    onMouseOver={() => this.setState({hover: node})}
                     onMouseOut={() => this.setState({hover: null})}
                     {...connectionStyle}
                     className={!isVisible && hiddenStyle}
