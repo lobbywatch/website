@@ -6,6 +6,13 @@ const cleanKeywords = keywords => keywords
   .filter(Boolean)
   .map(keyword => keyword.toLowerCase())
 
+const BOOSTS = {
+  Parliamentarian: 1,
+  Guest: 0.5,
+  Organisation: 0,
+  LobbyGroup: 0
+}
+
 module.exports.loadSearch = (locales) => {
   return Promise.all(locales.map(locale => {
     return Promise.all([
@@ -69,21 +76,29 @@ module.exports.loadSearch = (locales) => {
       })))
 
       return (term, t) => {
-        const terms = term.split(/\s+/).map(term => term.toLowerCase())
+        const terms = term.split(/\s+/)
+          .map(term => term.trim().toLowerCase())
+          .filter(Boolean)
         return index.map(item => {
+          let matchedTerms = 0
           const match = item.keywords.reduce(
-            (sum, keyword) => {
+            (sum, keyword, keywordIndex) => {
               terms.forEach(term => {
-                if (keyword.indexOf(term) !== -1) {
-                  sum += term === keyword ? 10 : 1
+                const index = keyword.indexOf(term)
+                if (index !== -1) {
+                  matchedTerms += 1
+                  let score = term === keyword ? 15 : 6
+                  score /= index + 1
+                  score -= keywordIndex
+                  sum += Math.max(score, 0)
                 }
               })
               return sum
             },
             0
           )
-          if (match) {
-            return [match, item]
+          if (matchedTerms >= terms.length && match > 0) {
+            return [match + BOOSTS[item.type], item]
           }
         }).filter(Boolean)
         .sort((a, b) => descending(a[0], b[0]))
