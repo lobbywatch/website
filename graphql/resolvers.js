@@ -5,12 +5,12 @@ const {
   mapArticle,
   mapParliamentarian, parliamentarianIdPrefix,
   mapGuest, guestIdPrefix,
-  mapOrg, orgIdPrefix,
+  mapOrganisation, orgIdPrefix,
   mapLobbyGroup, lobbyGroupIdPrefix
 } = require('./mappers')
 
 const resolveFunctions = {
-  ConnectionEntity: {
+  Entity: {
     __resolveType (data, context, info) {
       const [type] = data.id.split('-')
       return info.schema.getType(type)
@@ -151,7 +151,7 @@ const resolveFunctions = {
         api.data(locale, `data/interface/v1/json/table/organisation/aggregated/id/${encodeURIComponent(rawId)}`),
         translations.load(locale).then(getFormatter)
       ]).then(([{json: {data: org}}, t]) => {
-        return org && mapOrg(org, t)
+        return org && mapOrganisation(org, t)
       })
     },
     lobbyGroups (_, {locale}, {loaders: {translations}}, info) {
@@ -181,6 +181,13 @@ const resolveFunctions = {
       ]).then(([{json: {data: lobbyGroup}}, t]) => {
         return lobbyGroup && mapLobbyGroup(lobbyGroup, t)
       })
+    },
+    search (_, {locale, term}, {loaders: {translations, search}}) {
+      return Promise.all([
+        translations.load(locale).then(getFormatter),
+        search.load(locale)
+      ])
+        .then(([t, search]) => search(term, t))
     },
     translations (_, {locale}, {loaders: {translations}}) {
       return translations.load(locale)

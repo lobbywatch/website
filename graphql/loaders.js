@@ -1,6 +1,7 @@
 const DataLoader = require('dataloader')
 const gsheets = require('gsheets')
 const lru = require('lru-cache')
+const {loadSearch} = require('./search')
 
 const createDataLoaderLruCache = (options) => {
   const cache = lru(options)
@@ -31,13 +32,21 @@ const loadTranslations = (locales) => {
 
 const cachedTranslations = new DataLoader(loadTranslations, {
   cacheMap: createDataLoaderLruCache({
-    max: 10,
+    max: 2,
     maxAge: 30 * 1000 // ms
+  })
+})
+
+const cachedSearch = new DataLoader(loadSearch, {
+  cacheMap: createDataLoaderLruCache({
+    max: 2,
+    maxAge: 5 * 60 * 1000 // ms
   })
 })
 
 module.exports = () => {
   return {
-    translations: cachedTranslations
+    translations: cachedTranslations,
+    search: cachedSearch
   }
 }

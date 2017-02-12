@@ -94,7 +94,7 @@ exports.mapLobbyGroup = (raw, t) => {
 }
 
 const orgIdPrefix = exports.orgIdPrefix = 'Organisation-'
-exports.mapOrg = (raw, t) => {
+exports.mapOrganisation = (raw, t) => {
   const connections = () => {
     const direct = raw.parlamentarier.map(directConnection => {
       return mapParliamentConnection(org, null, directConnection, t)

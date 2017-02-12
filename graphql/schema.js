@@ -128,12 +128,12 @@ type LobbyGroup {
   connections: [Connection]
 }
 
-union ConnectionEntity = Parliamentarian | Organisation | Guest | LobbyGroup
+union Entity = Parliamentarian | Organisation | Guest | LobbyGroup
 
 type Connection {
-  from: ConnectionEntity!
-  to: ConnectionEntity!
-  via: ConnectionEntity
+  from: Entity!
+  to: Entity!
+  via: Entity
   compensation: Compensation
   group: String
   potency: Potency
@@ -187,6 +187,7 @@ type RootQuery {
   getOrganisation(locale: Locale!, id: ID!): Organisation
   lobbyGroups(locale: Locale!): [LobbyGroup!]!
   getLobbyGroup(locale: Locale!, id: ID!): LobbyGroup
+  search(locale: Locale!, term: String!): [Entity!]!
   translations(locale: Locale!): [Translation!]!
 }
 
