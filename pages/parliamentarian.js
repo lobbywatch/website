@@ -9,14 +9,16 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import Connections from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
-import {A} from '../src/components/Styled'
-import {withT} from '../src/components/Message'
+import {A, Meta} from '../src/components/Styled'
+import Message, {withT} from '../src/components/Message'
 import {GREY_LIGHT} from '../src/theme'
 
 const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: ID!) {
     getParliamentarian(locale: $locale, id: $id) {
       __typename
+      updated
+      published
       name
       dateOfBirth
       age
@@ -61,7 +63,10 @@ const parliamentarianQuery = gql`
 
 const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {__typename, councilTitle, name, portrait, canton, partyMembership} = parliamentarian
+    const {
+      __typename, councilTitle, name, portrait, canton, partyMembership,
+      updated, published
+    } = parliamentarian
     const rawId = id.replace(`${__typename}-`, '')
     const path = `/${locale}/daten/parlamentarier/${rawId}/${name}`
     return (
@@ -87,11 +92,15 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
           </Center>
         </div>
         <Center>
-          <p>
+          <Meta>
             Original Profil:
             {' '}<A target='_blank' href={`https://lobbywatch-cms.interactivethings.io${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
-          </p>
+            <br />
+            <Message locale={locale} id='updated' replacements={{date: updated}} />
+            <br />
+            <Message locale={locale} id='published' replacements={{date: published}} />
+          </Meta>
         </Center>
       </div>
     )

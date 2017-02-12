@@ -34,7 +34,7 @@ type Article {
   title: String
   image: String
   content: String
-  # YYYY-MM-DD HH-MM
+  # DD.MM.YYYY HH:MM
   created: String
   categories: [String!]!
   tags: [String!]!
@@ -55,7 +55,7 @@ interface Person {
   lastName: String
   occupation: String
   gender: Gender
-  # Format: YYYY-MM-DD
+  # Format: DD.MM.YYYY
   dateOfBirth: String
 }
 
@@ -95,6 +95,8 @@ enum Potency {
 
 type Organisation {
   id: ID!
+  updated: String!
+  published: String!
   name: String!
   legalForm: String
   location: String
@@ -106,13 +108,15 @@ type Organisation {
 }
 type Guest implements Person {
   id: ID!
+  updated: String!
+  published: String!
   name: String!
   firstName: String!
   middleName: String
   lastName: String!
   occupation: String
   gender: Gender
-  # Format: YYYY-MM-DD
+  # Format: DD.MM.YYYY
   dateOfBirth: String
   connections: [Connection!]!
   function: String,
@@ -121,6 +125,8 @@ type Guest implements Person {
 
 type LobbyGroup {
   id: ID!
+  updated: String!
+  published: String!
   name: String!
   description: String
   sector: String
@@ -142,6 +148,8 @@ type Connection {
 
 type Parliamentarian implements Person {
   id: ID!
+  updated: String!
+  published: String!
   name: String!
   parliamentId: ID!
   firstName: String!
@@ -149,7 +157,7 @@ type Parliamentarian implements Person {
   lastName: String!
   occupation: String
   gender: Gender
-  # Format: YYYY-MM-DD
+  # Format: DD.MM.YYYY
   dateOfBirth: String
   age: Int
   portrait: String
@@ -160,9 +168,9 @@ type Parliamentarian implements Person {
   councilTitle: String!
   # In number of months
   councilTenure: Int
-  # Format: YYYY-MM-DD
+  # Format: DD.MM.YYYY
   councilJoinDate: String!
-  # Format: YYYY-MM-DD
+  # Format: DD.MM.YYYY
   councilExitDate: String
   # Number of people
   represents: Int

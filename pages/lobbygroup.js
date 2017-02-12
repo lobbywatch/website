@@ -10,14 +10,16 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import Connections from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
-import {A} from '../src/components/Styled'
-import {withT} from '../src/components/Message'
+import {A, Meta} from '../src/components/Styled'
+import Message, {withT} from '../src/components/Message'
 import {GREY_LIGHT} from '../src/theme'
 
 const lobbyGroupQuery = gql`
   query getLobbyGroup($locale: Locale!, $id: ID!) {
     getLobbyGroup(locale: $locale, id: $id) {
       __typename
+      updated
+      published
       id
       name
       connections {
@@ -63,7 +65,7 @@ const groupConnections = (connections) => {
 
 const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {__typename, name} = lobbyGroup
+    const {__typename, name, updated, published} = lobbyGroup
     const rawId = id.replace(`${__typename}-`, '')
     const path = `/${locale}/daten/lobbygruppe/${rawId}/${name}`
     return (
@@ -82,11 +84,15 @@ const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
           </Center>
         </div>
         <Center>
-          <p>
+          <Meta>
             Original Profil:
             {' '}<A target='_blank' href={`https://lobbywatch-cms.interactivethings.io${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
-          </p>
+            <br />
+            <Message locale={locale} id='updated' replacements={{date: updated}} />
+            <br />
+            <Message locale={locale} id='published' replacements={{date: published}} />
+          </Meta>
         </Center>
       </div>
     )

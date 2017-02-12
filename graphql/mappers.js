@@ -3,8 +3,8 @@ const {timeYear, timeMonth} = require('d3-time')
 const {DRUPAL_BASE_URL, DRUPAL_IMAGE_BASE_URL} = require('../constants')
 
 const parseDate = timeParse('%Y-%m-%d')
-const formatDate = timeFormat('%Y-%m-%d')
-const formatTime = timeFormat('%Y-%m-%d %H:%M')
+const formatDate = timeFormat('%d.%m.%Y')
+const formatTime = timeFormat('%d.%m.%Y %H:%M')
 
 const potencyMap = {
   '3': 'HIGH',
@@ -73,6 +73,8 @@ exports.mapLobbyGroup = (raw, t) => {
 
   const lobbyGroup = {
     id: `${lobbyGroupIdPrefix}${raw.id}`,
+    updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
+    published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
     sector: raw.branche,
     description: raw.beschreibung,
@@ -118,6 +120,8 @@ exports.mapOrganisation = (raw, t) => {
 
   const org = {
     id: `${orgIdPrefix}${raw.id}`,
+    updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
+    published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
     legalForm: raw.rechtsform,
     location: raw.ort,
@@ -153,6 +157,8 @@ const guestIdPrefix = exports.guestIdPrefix = 'Guest-'
 const mapGuest = exports.mapGuest = (raw, t) => {
   const guest = {
     id: `${guestIdPrefix}${raw.person_id}`,
+    updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
+    published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: () => `${raw.vorname} ${raw.nachname}`,
     firstName: raw.vorname,
     middleName: raw.zweiter_vorname,
@@ -191,6 +197,8 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
 
   const parliamentarian = {
     id: `${parliamentarianIdPrefix}${raw.id}`,
+    updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
+    published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: () => `${raw.vorname} ${raw.nachname}`,
     parliamentId: raw.parlament_biografie_id,
     firstName: raw.vorname,

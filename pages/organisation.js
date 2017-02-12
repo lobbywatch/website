@@ -9,14 +9,16 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import Connections from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
-import {A} from '../src/components/Styled'
-import {withT} from '../src/components/Message'
+import {A, Meta} from '../src/components/Styled'
+import Message, {withT} from '../src/components/Message'
 import {GREY_LIGHT} from '../src/theme'
 
 const orgQuery = gql`
   query getOrganisation($locale: Locale!, $id: ID!) {
     getOrganisation(locale: $locale, id: $id) {
       __typename
+      updated
+      published
       name
       legalForm
       location
@@ -61,7 +63,7 @@ const CONNECTION_WEIGHTS = {
 
 const Org = ({loading, error, t, organisation, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {__typename, name, group, legalForm, location} = organisation
+    const {__typename, updated, published, name, group, legalForm, location} = organisation
     const rawId = id.replace(`${__typename}-`, '')
     const path = `/${locale}/daten/organisation/${rawId}/${name}`
     return (
@@ -85,11 +87,15 @@ const Org = ({loading, error, t, organisation, locale, id}) => (
           </Center>
         </div>
         <Center>
-          <p>
+          <Meta>
             Original Profil:
             {' '}<A target='_blank' href={`https://lobbywatch-cms.interactivethings.io${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
-          </p>
+            <br />
+            <Message locale={locale} id='updated' replacements={{date: updated}} />
+            <br />
+            <Message locale={locale} id='published' replacements={{date: published}} />
+          </Meta>
         </Center>
       </div>
     )

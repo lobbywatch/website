@@ -22,6 +22,7 @@ const drupal = (locale, path, query) => {
 const data = (locale, path, query) => {
   const fullQuery = Object.assign({
     q: [encodeURIComponent(locale), path].join('/'),
+    includeMetaData: 1,
     limit: 'none'
   }, query)
   return fetch(`${DRUPAL_BASE_URL}/data.php?${qs.encode(fullQuery)}`, options)
