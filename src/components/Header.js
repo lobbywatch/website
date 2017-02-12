@@ -199,16 +199,22 @@ const searchBoxStyle = css({
 })
 
 const searchInputStyle = css({
+  appearance: 'none',
   width: '100%',
   border: `1px solid ${GREY_LIGHT}`,
+  textOverflow: 'ellipsis',
   height: 40,
   paddingLeft: 8,
-  paddingRight: 8,
+  paddingRight: 8 + 21 + 5,
   borderRadius: 4,
   [mediaM]: {
     height: 56,
     paddingLeft: 16,
-    paddingRight: 16
+    paddingRight: 16 + 21 + 5
+  },
+  '::placeholder': {
+    color: GREY_LIGHT,
+    textOverflow: 'ellipsis'
   },
   ':focus': {
     outline: 'none',
