@@ -1,16 +1,16 @@
 module.exports = {
   webpack: (config) => {
-    const entryFactory = config.entry;
+    const entryFactory = config.entry
     config.entry = () => (
       entryFactory()
         .then((entry) => {
           entry['main.js'] = [
             'babel-polyfill',
-            entry['main.js'],
-          ];
-          return entry;
+            entry['main.js']
+          ]
+          return entry
         })
-    );
-    return config;
-  },
-};
+    )
+    return config
+  }
+}
