@@ -44,6 +44,11 @@ const lobbyGroupQuery = gql`
   }
 `
 
+const CONNECTION_WEIGHTS = {
+  Parliamentarian: 0.1,
+  Organisation: 1000
+}
+
 const groupConnections = (connections) => {
   const groups = nest()
     .key(connection => connection.to.id)
@@ -72,7 +77,8 @@ const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
             <Connections locale={locale}
-              data={groupConnections(lobbyGroup.connections)} />
+              data={groupConnections(lobbyGroup.connections)}
+              connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
           </Center>
         </div>
         <Center>
