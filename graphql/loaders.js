@@ -2,6 +2,7 @@ const DataLoader = require('dataloader')
 const gsheets = require('gsheets')
 const lru = require('lru-cache')
 const {loadSearch} = require('./search')
+const api = require('./api')
 
 const createDataLoaderLruCache = (options) => {
   const cache = lru(options)
@@ -44,9 +45,23 @@ const cachedSearch = new DataLoader(loadSearch, {
   })
 })
 
+const loadMeta = (locales) => {
+  return Promise.all(
+    locales.map(locale => api.drupal(locale, 'daten/meta').then(({json}) => json))
+  )
+}
+
+const cachedMeta = new DataLoader(loadMeta, {
+  cacheMap: createDataLoaderLruCache({
+    max: 2,
+    maxAge: 5 * 60 * 1000 // ms
+  })
+})
+
 module.exports = () => {
   return {
     translations: cachedTranslations,
-    search: cachedSearch
+    search: cachedSearch,
+    meta: cachedMeta
   }
 }

@@ -17,9 +17,8 @@ const resolveFunctions = {
     }
   },
   RootQuery: {
-    meta (_, {locale}) {
-      return api.drupal(locale, 'daten/meta')
-        .then(({json}) => json)
+    meta (_, {locale}, {loaders: {meta}}) {
+      return meta.load(locale)
     },
     page (_, {locale, path}) {
       const query = {
