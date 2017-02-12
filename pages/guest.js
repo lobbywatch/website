@@ -102,8 +102,8 @@ const GuestWithQuery = withT(graphql(guestQuery, {
   }
 })(Guest))
 
-const Page = ({url: {query: {locale, id}}}) => (
-  <Frame locale={locale}>
+const Page = ({url, url: {query: {locale, id}}}) => (
+  <Frame url={url}>
     <GuestWithQuery locale={locale} id={id} />
   </Frame>
 )

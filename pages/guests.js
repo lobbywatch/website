@@ -46,8 +46,8 @@ const GuestsWithQuery = graphql(guestsQuery, {
   }
 })(Guests)
 
-const Page = ({url: {query: {locale, id}}}) => (
-  <Frame locale={locale}>
+const Page = ({url, url: {query: {locale, id}}}) => (
+  <Frame url={url}>
     <GuestsWithQuery locale={locale} />
   </Frame>
 )

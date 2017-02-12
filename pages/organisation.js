@@ -112,8 +112,8 @@ const OrgWithQuery = withT(graphql(orgQuery, {
   }
 })(Org))
 
-const Page = ({url: {query: {locale, id}}}) => (
-  <Frame locale={locale}>
+const Page = ({url, url: {query: {locale, id}}}) => (
+  <Frame url={url}>
     <OrgWithQuery locale={locale} id={id} />
   </Frame>
 )

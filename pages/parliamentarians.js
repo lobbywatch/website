@@ -57,8 +57,8 @@ const ParliamentariansWithQuery = graphql(parliamentariansQuery, {
   }
 })(Parliamentarians)
 
-const Page = ({url: {query: {locale, id}}}) => (
-  <Frame locale={locale}>
+const Page = ({url, url: {query: {locale}}}) => (
+  <Frame url={url}>
     <ParliamentariansWithQuery locale={locale} />
   </Frame>
 )

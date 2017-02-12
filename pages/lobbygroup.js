@@ -103,8 +103,8 @@ const LobbyGroupWithQuery = withT(graphql(lobbyGroupQuery, {
   }
 })(LobbyGroup))
 
-const Page = ({url: {query: {locale, id}}}) => (
-  <Frame locale={locale}>
+const Page = ({url, url: {query: {locale, id}}}) => (
+  <Frame url={url}>
     <LobbyGroupWithQuery locale={locale} id={id} />
   </Frame>
 )

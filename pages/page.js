@@ -20,8 +20,8 @@ const pageQuery = gql`
   }
 `
 
-const Page = ({loading, error, title, content, url: {query: {locale}}}) => (
-  <Frame locale={locale}>
+const Page = ({loading, error, title, content, url, url: {query: {locale}}}) => (
+  <Frame url={url}>
     <Loader loading={loading} error={error} render={() => (
       <Center>
         <H1>{title}</H1>

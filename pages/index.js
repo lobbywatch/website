@@ -27,8 +27,8 @@ const indexQuery = gql`
   }
 `
 
-const Index = ({loading, error, articles, blocks, t, url: {query: {locale}}}) => (
-  <Frame locale={locale}>
+const Index = ({loading, error, articles, blocks, t, url, url: {query: {locale}}}) => (
+  <Frame url={url}>
     <Loader loading={loading} error={error} render={() => (
       <Center>
         <H1><Message id='index/blog/title' locale={locale} /></H1>
