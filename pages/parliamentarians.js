@@ -35,14 +35,7 @@ const Parliamentarians = ({loading, error, parliamentarians, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
       <H1><Message id='menu/parliamentarians' locale={locale} /></H1>
-      <ListView locale={locale}
-        items={parliamentarians}
-        title={({lastName, firstName}) => `${lastName}, ${firstName}`}
-        subtitle={({councilTitle, partyMembership, canton}) => [
-          councilTitle,
-          partyMembership && partyMembership.party.abbr,
-          canton
-        ].filter(Boolean).join(', ')} />
+      <ListView locale={locale} items={parliamentarians} />
     </Center>
   )} />
 )

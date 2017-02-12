@@ -60,6 +60,38 @@ const ListView = ({locale, items, title, subtitle}) => {
   )
 }
 
+ListView.defaultProps = {
+  title: (item) => {
+    switch (item.__typename) {
+      case 'Parliamentarian':
+      case 'Guest':
+        return `${item.lastName}, ${item.firstName}`
+      default:
+        return item.name
+    }
+  },
+  subtitle: (item) => {
+    switch (item.__typename) {
+      case 'Parliamentarian':
+        return [
+          item.councilTitle,
+          item.partyMembership && item.partyMembership.party.abbr,
+          item.canton
+        ].filter(Boolean).join(', ')
+      case 'Guest':
+        return item['function']
+      case 'LobbyGroup':
+        return item.sector
+      case 'Organisation':
+        return [
+          item.group,
+          item.legalForm,
+          item.location
+        ].filter(Boolean).join(', ')
+    }
+  }
+}
+
 ListView.propTypes = {
   locale: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(PropTypes.shape({

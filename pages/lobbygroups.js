@@ -26,10 +26,7 @@ const LobbyGroups = ({loading, error, lobbyGroups, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
       <H1><Message id='menu/lobbygroups' locale={locale} /></H1>
-      <ListView locale={locale}
-        items={lobbyGroups}
-        title={({name}) => name}
-        subtitle={({sector}) => sector} />
+      <ListView locale={locale} items={lobbyGroups} />
     </Center>
   )} />
 )

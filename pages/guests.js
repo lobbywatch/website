@@ -28,10 +28,7 @@ const Guests = ({loading, error, guests, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
       <H1><Message id='menu/guests' locale={locale} /></H1>
-      <ListView locale={locale}
-        items={guests}
-        title={({firstName, lastName}) => `${lastName}, ${firstName}`}
-        subtitle={(guest) => guest['function']} />
+      <ListView locale={locale} items={guests} />
     </Center>
   )} />
 )
