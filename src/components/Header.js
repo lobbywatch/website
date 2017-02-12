@@ -1,13 +1,15 @@
 import React, {PropTypes, Component} from 'react'
-import RawLink from 'next/prefetch'
 import {css} from 'glamor'
 
 import {withT} from './Message'
 import {RouteLink} from './Styled'
 import {Center} from './Frame'
 import {locales} from '../../constants'
-import {LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE, mediaM, mediaSOnly} from '../theme'
+import {Link as NextRouteLink, Router as RoutesRouter} from '../../routes'
+import Router from 'next/router'
+import {LW_BLUE_LIGHT, LW_BLUE_DARK, GREY_LIGHT, GREY_MID, WHITE, mediaM, mediaSOnly} from '../theme'
 import Logo from '../assets/Logo'
+import SearchIcon from '../assets/Search'
 
 export const HEADER_HEIGHT = 75
 const ITEM_MARGIN_LEFT = 15
@@ -181,6 +183,55 @@ const barStyle = css({
   zIndex: 10
 })
 
+const searchContainerStyle = css({
+  paddingTop: HEADER_HEIGHT,
+  backgroundColor: LW_BLUE_DARK,
+  paddingBottom: 20,
+  [mediaM]: {
+    paddingTop: HEADER_HEIGHT + 20,
+    paddingBottom: 40
+  }
+})
+const searchBoxStyle = css({
+  margin: '0 auto',
+  maxWidth: 600,
+  position: 'relative'
+})
+
+const searchInputStyle = css({
+  width: '100%',
+  border: `1px solid ${GREY_LIGHT}`,
+  height: 40,
+  paddingLeft: 8,
+  paddingRight: 8,
+  borderRadius: 4,
+  [mediaM]: {
+    height: 56,
+    paddingLeft: 16,
+    paddingRight: 16
+  },
+  ':focus': {
+    outline: 'none',
+    borderColor: GREY_MID
+  },
+  '::-ms-clear': {
+    width: 0,
+    height: 0
+  }
+})
+
+const searchIconStyle = css({
+  position: 'absolute',
+  top: '50%',
+  marginTop: -10,
+  right: 8,
+  [mediaM]: {
+    right: 16
+  }
+})
+
+let beforeSearch
+
 class Header extends Component {
   constructor (props, context) {
     super(props, context)
@@ -188,9 +239,21 @@ class Header extends Component {
       expanded: false
     }
   }
+  componentDidMount () {
+    const isSearchRoute = Router.route === '/search'
+    if (
+      isSearchRoute ||
+      (beforeSearch && beforeSearch.route === Router.route)
+    ) {
+      this.searchInput.focus()
+      if (!isSearchRoute) {
+        beforeSearch = null
+      }
+    }
+  }
   render () {
     const {expanded} = this.state
-    const {locale: currentLocale, t} = this.props
+    const {locale: currentLocale, t, term} = this.props
     const menuItems = [
       {
         label: t('menu/parliamentarians'),
@@ -217,21 +280,65 @@ class Header extends Component {
         label: t(`menu/locales/${locale}`, {}, locale)
       }))
 
+    const onSearch = (event) => {
+      const term = event.target.value
+      const params = {
+        locale: currentLocale,
+        term
+      }
+
+      if (!term.length) {
+        if (beforeSearch) {
+          RoutesRouter.replaceRoute(
+            beforeSearch.route.replace(/^\//, ''),
+            beforeSearch.params
+          )
+        } else {
+          RoutesRouter.replaceRoute('index', {
+            locale: currentLocale
+          })
+        }
+        return
+      }
+      if (Router.route !== '/search') {
+        beforeSearch = {
+          route: Router.route,
+          params: Router.query
+        }
+        RoutesRouter.pushRoute('search', params)
+      } else {
+        RoutesRouter.replaceRoute('search', params)
+      }
+    }
+
     return (
-      <div style={{paddingBottom: HEADER_HEIGHT + 10}}>
+      <div>
         <div {...barStyle}>
           <Center style={{position: 'relative'}}>
-            <RawLink href={`/index?locale=${currentLocale}`} as={`/${currentLocale}`}>
+            <NextRouteLink route='index' params={{locale: currentLocale}}>
               <a {...titleStyle}>
                 <Logo size={32} style={{verticalAlign: 'middle', marginRight: 10}} />Lobbywatch
               </a>
-            </RawLink>
+            </NextRouteLink>
             <Menu expanded={expanded} items={menuItems.concat(localeLinks)} />
             <button onClick={() => this.setState({expanded: !expanded})} {...toggleStyle} aria-controls={'primary-menu'} title={''} aria-expanded={expanded}>
               <span />
               <span />
               <span />
             </button>
+          </Center>
+        </div>
+        <div {...searchContainerStyle}>
+          <Center style={{paddingTop: 0, paddingBottom: 0}}>
+            <div {...searchBoxStyle}>
+              <input {...searchInputStyle}
+                type='text'
+                ref={ref => { this.searchInput = ref }}
+                onChange={onSearch}
+                value={term || ''}
+                placeholder={t('search/placeholder')} />
+              <SearchIcon className={searchIconStyle} />
+            </div>
           </Center>
         </div>
       </div>
