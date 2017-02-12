@@ -32,7 +32,7 @@ const loadTranslations = (locales) => {
 const cachedTranslations = new DataLoader(loadTranslations, {
   cacheMap: createDataLoaderLruCache({
     max: 10,
-    maxAge: 1000 * 30 // ms
+    maxAge: 30 * 1000 // ms
   })
 })
 

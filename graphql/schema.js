@@ -178,7 +178,7 @@ type Parliamentarian implements Person {
 const queryDefinitions = `
 type RootQuery {
   meta(locale: Locale!): Meta
-  page(path: String!): Page
+  page(locale: Locale!, path: String!): Page
   articles(locale: Locale!, limit: Int = 3, page: Int = 0): [Article!]!
   parliamentarians(locale: Locale!): [Parliamentarian!]!
   getParliamentarian(locale: Locale!, id: ID!): Parliamentarian

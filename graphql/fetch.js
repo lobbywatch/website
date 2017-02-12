@@ -17,14 +17,7 @@ const checkStatus = (response) => {
     })
 }
 
-const defaultOptions = {
-  headers: {
-    Accept: 'application/json',
-    Authorization: `Basic ${(new Buffer('lobbywatch:#IchBinKeineTentakelPuppe')).toString('base64')}`
-  }
-}
-
-module.exports = (url, options = defaultOptions) => {
+module.exports = (url, options) => {
   const start = new Date().getTime()
   return fetch(url, options)
     .then(response => {

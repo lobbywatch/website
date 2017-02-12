@@ -11,8 +11,8 @@ import RawHtml from '../src/components/RawHtml'
 import {H1} from '../src/components/Styled'
 
 const pageQuery = gql`
-  query page($path: String!) {
-    page(path: $path) {
+  query page($locale: Locale!, $path: String!) {
+    page(locale: $locale, path: $path) {
       statusCode,
       title,
       content
@@ -35,7 +35,8 @@ const PageWithQuery = graphql(pageQuery, {
   options: ({url}) => {
     return {
       variables: {
-        path: `/${url.query.locale}/${url.query.path}`
+        locale: url.query.locale,
+        path: url.query.path
       }
     }
   },

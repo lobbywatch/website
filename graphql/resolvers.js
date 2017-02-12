@@ -1,7 +1,5 @@
-const fetch = require('./fetch')
-const qs = require('querystring')
+const api = require('./api')
 const {ascending} = require('d3-array')
-const {DRUPAL_BASE_URL} = require('../constants')
 const {getFormatter} = require('../src/utils/translate')
 const {
   mapArticle,
@@ -20,16 +18,16 @@ const resolveFunctions = {
   },
   RootQuery: {
     meta (_, {locale}) {
-      return fetch(`${DRUPAL_BASE_URL}/${encodeURIComponent(locale)}/daten/meta`)
+      return api.drupal(locale, 'daten/meta')
         .then(({json}) => json)
     },
-    page (_, {path}) {
+    page (_, {locale, path}) {
       const query = {
         'load-entity-refs': 'taxonomy_term,file',
         'max-depth': 1
       }
       const segments = path.split('/').filter(Boolean).map(encodeURIComponent)
-      return fetch(`${DRUPAL_BASE_URL}/${segments.join('/')}?${qs.encode(query)}`)
+      return api.drupal(locale, segments.join('/'), query)
         .then(
           ({json, response}) => ({
             statusCode: response.status,
@@ -61,7 +59,7 @@ const resolveFunctions = {
         direction: 'DESC'
       }
 
-      return fetch(`${DRUPAL_BASE_URL}/${encodeURIComponent(locale)}?${qs.encode(query)}`)
+      return api.drupal(locale, '', query)
         .then(({json}) => json.list.map(mapArticle))
     },
     parliamentarians (_, {locale}, {loaders: {translations}}, info) {
@@ -78,8 +76,8 @@ const resolveFunctions = {
 
       return Promise.all([
         translations.load(locale).then(getFormatter),
-        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/flat/list&limit=none`),
-        queriedFields.has('commissions') && fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/relation/in_kommission_liste/flat/list&limit=none`)
+        api.data(locale, 'data/interface/v1/json/table/parlamentarier/flat/list'),
+        queriedFields.has('commissions') && api.data(locale, 'data/interface/v1/json/relation/in_kommission_liste/flat/list')
       ]).then(([t, {json: {data: parliamentarians}}, commissions]) => {
         if (commissions) {
           const commissionIndex = commissions.json.data.reduce(
@@ -108,7 +106,7 @@ const resolveFunctions = {
       const rawId = id.replace(parliamentarianIdPrefix, '')
       // ToDo handle inactive – could send `includeInactive=1` but would need permission fixing on php side
       return Promise.all([
-        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}&limit=none`),
+        api.data(locale, `data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}`),
         translations.load(locale).then(getFormatter)
       ]).then(([{json: {data: parliamentarian}}, t]) => {
         return parliamentarian && mapParliamentarian(parliamentarian, t)
@@ -128,7 +126,7 @@ const resolveFunctions = {
 
       return Promise.all([
         translations.load(locale).then(getFormatter),
-        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/flat/list&limit=none`)
+        api.data(locale, 'data/interface/v1/json/table/zutrittsberechtigung/flat/list')
       ]).then(([t, {json: {data: guests}}]) => {
         const result = (guests || []).map(g => mapGuest(g, t))
 
@@ -142,7 +140,7 @@ const resolveFunctions = {
       const rawId = id.replace(guestIdPrefix, '')
       return Promise.all([
         translations.load(locale).then(getFormatter),
-        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(rawId)}&limit=none`)
+        api.data(locale, `data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(rawId)}`)
       ]).then(([t, {json: {data: guest}}]) => {
         return guest && mapGuest(guest, t)
       })
@@ -150,7 +148,7 @@ const resolveFunctions = {
     getOrganisation (_, {locale, id}, {loaders: {translations}}) {
       const rawId = id.replace(orgIdPrefix, '')
       return Promise.all([
-        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/organisation/aggregated/id/${encodeURIComponent(rawId)}&limit=none`),
+        api.data(locale, `data/interface/v1/json/table/organisation/aggregated/id/${encodeURIComponent(rawId)}`),
         translations.load(locale).then(getFormatter)
       ]).then(([{json: {data: org}}, t]) => {
         return org && mapOrg(org, t)
@@ -167,7 +165,7 @@ const resolveFunctions = {
 
       return Promise.all([
         translations.load(locale).then(getFormatter),
-        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/interessengruppe/flat/list&limit=none`)
+        api.data(locale, 'data/interface/v1/json/table/interessengruppe/flat/list')
       ]).then(([t, {json: {data: lobbyGroups}}]) => {
         // default: sort by name
         lobbyGroups.sort((a, b) => ascending(a.name, b.name))
@@ -178,7 +176,7 @@ const resolveFunctions = {
     getLobbyGroup (_, {locale, id}, {loaders: {translations}}, info) {
       const rawId = id.replace(lobbyGroupIdPrefix, '')
       return Promise.all([
-        fetch(`${DRUPAL_BASE_URL}/data.php?q=${encodeURIComponent(locale)}/data/interface/v1/json/table/interessengruppe/aggregated/id/${encodeURIComponent(rawId)}&limit=none`),
+        api.data(locale, `data/interface/v1/json/table/interessengruppe/aggregated/id/${encodeURIComponent(rawId)}`),
         translations.load(locale).then(getFormatter)
       ]).then(([{json: {data: lobbyGroup}}, t]) => {
         return lobbyGroup && mapLobbyGroup(lobbyGroup, t)
