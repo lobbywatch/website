@@ -231,6 +231,7 @@ const searchIconStyle = css({
 })
 
 let beforeSearch
+let isFocused
 
 class Header extends Component {
   constructor (props, context) {
@@ -243,7 +244,7 @@ class Header extends Component {
     const isSearchRoute = Router.route === '/search'
     if (
       isSearchRoute ||
-      (beforeSearch && beforeSearch.route === Router.route)
+      (isFocused && beforeSearch && beforeSearch.route === Router.route)
     ) {
       this.searchInput.focus()
       if (!isSearchRoute) {
@@ -335,6 +336,8 @@ class Header extends Component {
                 type='text'
                 ref={ref => { this.searchInput = ref }}
                 onChange={onSearch}
+                onFocus={() => { isFocused = true }}
+                onBlur={() => { isFocused = false }}
                 value={term || ''}
                 placeholder={t('search/placeholder')} />
               <SearchIcon className={searchIconStyle} />
