@@ -8,7 +8,7 @@ const boxStyle = css({
   position: 'absolute',
   backgroundColor: WHITE,
   color: GREY_DARK,
-  boxShadow: '0 2px 24px 0 rgba(0,0,0,0.50)',
+  boxShadow: '0 2px 24px 0 rgba(0,0,0,0.25)',
   fontSize: 14,
   lineHeight: '1.1em',
   padding: '8px 12px',
