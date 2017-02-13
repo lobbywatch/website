@@ -26,7 +26,10 @@ module.exports.loadSearch = (locales) => {
         ].join(',')
       }),
       api.data(locale, 'data/interface/v1/json/table/zutrittsberechtigung/flat/list', {
-        select_fields: 'person_id,vorname,nachname,beruf,geschlecht,funktion,zweiter_vorname'
+        select_fields: [
+          'person_id', 'vorname', 'nachname', 'beruf', 'geschlecht', 'funktion', 'zweiter_vorname',
+          'bis_unix'
+        ].join(',')
       }),
       api.data(locale, 'data/interface/v1/json/table/interessengruppe/flat/list'),
       api.data(locale, 'data/interface/v1/json/table/organisation/flat/list', {
