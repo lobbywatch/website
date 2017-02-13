@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react'
-import {h3Rule, metaRule} from './Styled'
+import {h1Rule, metaRule} from './Styled'
 
 import Icons from '../assets/TypeIcons'
 import {css} from 'glamor'
 
-const titleStyle = css(h3Rule, {
+const titleStyle = css(h1Rule, {
   marginTop: 0,
   marginBottom: 0
 })
