@@ -76,6 +76,10 @@ module.exports.loadSearch = (locales) => {
       })))
 
       return (term, t) => {
+        if (!term.length) {
+          return []
+        }
+
         const terms = term.split(/\s+/)
           .map(term => term.trim().toLowerCase())
           .filter(Boolean)

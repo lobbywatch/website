@@ -4,8 +4,8 @@ import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
 import withData from '../src/apollo/withData'
-// import {H1} from '../src/components/Styled'
-// import Message from '../src/components/Message'
+import {H1, P} from '../src/components/Styled'
+import Message from '../src/components/Message'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
@@ -52,10 +52,19 @@ const searchQuery = gql`
   }
 `
 
-const Search = ({loading, error, search, locale}) => (
+const NoResults = ({locale}) => (
+  <H1><Message locale={locale} id='search/no-result' /></H1>
+)
+const Hint = ({locale}) => (
+  <P><Message locale={locale} id='search/hint' /></P>
+)
+
+const Search = ({loading, error, term, results, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
-      <ListView locale={locale} items={search} />
+      <ListView locale={locale} items={results} />
+      {!results.length && !!term.length && <NoResults locale={locale} />}
+      {!results.length && !term.length && <Hint locale={locale} />}
     </Center>
   )} />
 )
@@ -65,7 +74,7 @@ const SearchWithQuery = graphql(searchQuery, {
     return {
       loading: data.loading,
       error: data.error,
-      search: data.search
+      results: data.search
     }
   }
 })(Search)
