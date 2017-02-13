@@ -56,11 +56,17 @@ const groupConnections = (connections) => {
     .key(connection => connection.to.id)
     .entries(connections)
 
-  return groups.map(({values}) => ({
-    ...values[0],
-    via: undefined,
-    vias: values.map(value => value.via)
-  }))
+  return groups.map(({values}) => {
+    let vias = values.map(value => value.via)
+    if (!vias.filter(Boolean).length) {
+      vias = undefined
+    }
+    return {
+      ...values[0],
+      via: undefined,
+      vias
+    }
+  })
 }
 
 const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (

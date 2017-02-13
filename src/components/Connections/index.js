@@ -152,6 +152,16 @@ class Connections extends Component {
             {' '}{t('connections/context/compensation/periode')}
             {!!hover.data.connection.compensation.description && ` (${hover.data.connection.compensation.description})`}
           </ContextBoxValue>)}
+          {!!hover.data.connection.vias && (<ContextBoxValue label={t('connections/context/vias')}>
+            <span>
+              {hover.data.connection.vias.map((via, i) => {
+                if (!via) {
+                  return <span key={i}>{t('connections/context/vias/direct')}<br /></span>
+                }
+                return <span key={i}>{via.name}<br /></span>
+              })}
+            </span>
+          </ContextBoxValue>)}
         </ContextBox>}
         <svg width={width} ref={ref => { this.svgRef = ref }} style={{position: 'absolute', top: 0, left: 0}}>
           {!!width && links.map(({source, target, setRef}, i) => {

@@ -2,6 +2,7 @@ import React from 'react'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
+import {nest} from 'd3-collection'
 
 import withData from '../src/apollo/withData'
 
@@ -61,6 +62,24 @@ const CONNECTION_WEIGHTS = {
   Organisation: 0.1
 }
 
+const groupConnections = (connections) => {
+  const groups = nest()
+    .key(connection => connection.to.id)
+    .entries(connections)
+
+  return groups.map(({values}) => {
+    let vias = values.map(value => value.via)
+    if (!vias.filter(Boolean).length) {
+      vias = undefined
+    }
+    return {
+      ...values[0],
+      via: undefined,
+      vias
+    }
+  })
+}
+
 const Org = ({loading, error, t, organisation, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
     const {__typename, updated, published, name, group, legalForm, location} = organisation
@@ -82,7 +101,7 @@ const Org = ({loading, error, t, organisation, locale, id}) => (
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
             <Connections
               locale={locale}
-              data={organisation.connections}
+              data={groupConnections(organisation.connections)}
               connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
           </Center>
         </div>
