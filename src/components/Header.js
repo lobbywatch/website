@@ -289,10 +289,9 @@ class Header extends Component {
 
     const onSearch = (event) => {
       const term = event.target.value
-      const params = {
-        locale: currentLocale,
-        term
-      }
+
+      const href = `/search?locale=${encodeURIComponent(currentLocale)}&term=${encodeURIComponent(term)}`
+      const as = `/${encodeURIComponent(currentLocale)}/search?term=${encodeURIComponent(term)}`
 
       if (!term.length) {
         if (beforeSearch) {
@@ -312,9 +311,9 @@ class Header extends Component {
           route: Router.route,
           params: Router.query
         }
-        RoutesRouter.pushRoute('search', params)
+        Router.push(href, as)
       } else {
-        RoutesRouter.replaceRoute('search', params)
+        Router.replace(href, as)
       }
     }
 
