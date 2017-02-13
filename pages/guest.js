@@ -71,7 +71,7 @@ const Guest = ({loading, error, t, guest, locale, id}) => (
         </Center>
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
-            <Connections locale={locale}
+            <Connections locale={locale} potency
               data={guest.connections}
               maxGroups={5} />
           </Center>

@@ -4,11 +4,15 @@ import {withT} from '../Message'
 
 import {POTENCY_COLORS, LW_BLUE, mediaM} from '../../theme'
 import {intersperse} from '../../utils/helpers'
+import {Link as RawRouteLink} from '../../../routes'
 
 const legendContainer = css({
   paddingTop: 20,
-  paddingBottom: 15,
-  position: 'relative',
+  paddingBottom: 20,
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
   fontSize: 12,
   textAlign: 'left',
   [mediaM]: {
@@ -24,6 +28,7 @@ const legendContainer = css({
 
 const legendLabel = css({
   color: LW_BLUE,
+  textDecoration: 'none',
   [mediaM]: {
     marginRight: 10
   }
@@ -44,9 +49,16 @@ const legendBubble = css({
   borderRadius: '50%'
 })
 
-const Legend = ({t}) => (
+const Legend = ({t, locale}) => (
   <div {...legendContainer}>
-    <span {...legendLabel}>{t('connections/legend/title')}</span>
+    <RawRouteLink
+      route='page'
+      params={{
+        locale,
+        path: t('connections/legend/path').split('/')
+      }}>
+      <a {...legendLabel}>{t('connections/legend/title')}</a>
+    </RawRouteLink>
 
     <span {...legendValues}>
       {intersperse(Object.keys(POTENCY_COLORS).map(key => (

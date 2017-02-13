@@ -1,3 +1,5 @@
+export const START_Y = 55
+
 export default ({
   hierarchy,
   nodes, links,
@@ -5,7 +7,7 @@ export default ({
 }) => {
   const MARGIN = 10
 
-  let y = 48
+  let y = START_Y
   let x = 0
   let row = 0
   const nextRow = (rowHeight) => {

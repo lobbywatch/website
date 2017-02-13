@@ -84,7 +84,7 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
         </Center>
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
-            <Connections locale={locale}
+            <Connections locale={locale} potency
               data={parliamentarian.connections}
               maxGroups={5}
               intermediate={connection => connection.via ? connection.via.id : ''}

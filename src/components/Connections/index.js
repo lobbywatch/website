@@ -7,8 +7,8 @@ import Legend from './Legend'
 import {withT} from '../Message'
 import {shallowEqual} from '../../utils/helpers'
 import {chfFormat} from '../../utils/formats'
-import {Link as NextRouteLink} from '../../../routes'
-import layout from './layout'
+import {Link as RawRouteLink} from '../../../routes'
+import layout, {START_Y} from './layout'
 import nest from './nest'
 import * as style from './style'
 
@@ -137,7 +137,7 @@ class Connections extends Component {
       nodes, links, hover, open,
       width
     } = this.state
-    const {locale, t, intermediates} = this.props
+    const {locale, t, intermediates, potency} = this.props
     let viaI = 0
 
     const getVisible = parent => !parent || open[parent.data.id]
@@ -162,8 +162,8 @@ class Connections extends Component {
             }
           })}
         </svg>
-        <div style={{textAlign: 'center', position: 'relative'}}>
-          <Legend locale={locale} />
+        <div style={{textAlign: 'center', position: 'relative', paddingTop: START_Y}}>
+          {potency && <Legend locale={locale} />}
           {nodes.map((node) => {
             const {data, setRef, children, parent} = node
             const isVisible = getVisible(parent)
@@ -218,7 +218,7 @@ class Connections extends Component {
             if (data.type === 'Connection') {
               const {connection} = data
               return (
-                <NextRouteLink key={data.id}
+                <RawRouteLink key={data.id}
                   route={connection.to.__typename.toLowerCase()}
                   params={{
                     locale,
@@ -233,7 +233,7 @@ class Connections extends Component {
                     style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
                     {connection.to.name}
                   </a>
-                </NextRouteLink>
+                </RawRouteLink>
               )
             }
           })}
@@ -244,10 +244,12 @@ class Connections extends Component {
 }
 
 Connections.propTypes = {
+  potency: PropTypes.bool.isRequired,
   connectionWeight: PropTypes.func.isRequired // weight for sorting, default 1
 }
 
 Connections.defaultProps = {
+  potency: false,
   intermediate: () => '',
   intermediates: [],
   maxGroups: undefined,
