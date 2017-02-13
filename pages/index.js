@@ -8,13 +8,16 @@ import withData from '../src/apollo/withData'
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
-import Message from '../src/components/Message'
-import {RouteLink, H1, H2, H3} from '../src/components/Styled'
+import Card, {Grid, GridItem} from '../src/components/Card'
+import {H2} from '../src/components/Styled'
 
 const indexQuery = gql`
   query index($locale: Locale!) {
-    articles(locale: $locale) {
-      title,
+    articles(locale: $locale, limit: 2) {
+      created
+      image
+      content
+      title
       url
     }
     meta(locale: $locale) {
@@ -31,24 +34,11 @@ const Index = ({loading, error, articles, blocks, t, url, url: {query: {locale}}
   <Frame url={url}>
     <Loader loading={loading} error={error} render={() => (
       <Center>
-        <H1><Message id='index/blog/title' locale={locale} /></H1>
-        {articles.map((article, i) => (
-          <div key={i}>
-            <H3>
-              <RouteLink
-                route='page'
-                params={{
-                  locale,
-                  path: article.url
-                    .replace(`/${locale}/`, '')
-                    .replace('/de/', '')
-                    .split('/')
-                }}>
-                {article.title}
-              </RouteLink>
-            </H3>
-          </div>
-        ))}
+        <Grid>
+          {articles.map((article, i) => (
+            <GridItem key={i}><Card locale={locale} {...article} /></GridItem>
+          ))}
+        </Grid>
         {
           blocks.filter(block => block.key === 'block_8')
             .map(block => (

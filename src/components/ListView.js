@@ -3,7 +3,7 @@ import React, {PropTypes} from 'react'
 import {metaRule} from './Styled'
 import {GREY_LIGHT, mediaM} from '../theme'
 import {css} from 'glamor'
-import {Link as NextRouteLink} from '../../routes'
+import {Link as RawRouteLink} from '../../routes'
 
 import Icons from '../assets/TypeIcons'
 
@@ -42,7 +42,7 @@ const ListView = ({locale, items, title, subtitle}) => {
         const Icon = Icons[__typename]
         const rawId = id.replace(`${__typename}-`, '')
         return (
-          <NextRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
+          <RawRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
             <a {...aStyle}>
               {!!portrait && <span {...symbolStyle} {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />}
               {!portrait && !!Icon && <Icon className={symbolStyle} size={32} />}
@@ -53,7 +53,7 @@ const ListView = ({locale, items, title, subtitle}) => {
                 </span>
               </span>
             </a>
-          </NextRouteLink>
+          </RawRouteLink>
         )
       })}
     </div>

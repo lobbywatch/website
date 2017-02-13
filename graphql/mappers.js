@@ -259,6 +259,14 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
 }
 
 exports.mapArticle = raw => {
+  let image = (
+    raw.field_image &&
+    raw.field_image[0] &&
+    raw.field_image[0].url
+  )
+  if (image) {
+    image = image.replace('lobbywatch-cms.interactivethings.io/sites/default/', 'lobbywatch.ch/sites/lobbywatch.ch/')
+  }
   return Object.assign({}, raw, {
     url: raw.url.replace(DRUPAL_BASE_URL, ''),
     created: raw.created ? formatTime(+raw.created * 1000) : null,
@@ -269,12 +277,6 @@ exports.mapArticle = raw => {
       .map(tag => tag.name),
     lobbyGroups: (raw.field_lobby_group || [])
       .map(group => group.name),
-    image: (
-      (
-        raw.field_image &&
-        raw.field_image[0] &&
-        raw.field_image[0].url
-      ) || undefined
-    )
+    image: image
   })
 }

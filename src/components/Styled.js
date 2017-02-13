@@ -1,7 +1,7 @@
 import React from 'react'
 import NextLink from 'next/prefetch'
 import {Link as NextRouteLink} from '../../routes'
-import {LW_BLUE, GREY_DARK, GREY_LIGHT, mediaM} from '../theme'
+import {LW_BLUE, GREY_DARK, GREY_LIGHT, WHITE, mediaM} from '../theme'
 import {css} from 'glamor'
 
 export const linkStyle = {
@@ -20,6 +20,24 @@ export const RouteLink = ({children, className, ...props}) => (
 )
 
 export const A = ({children, ...props}) => <a {...props} {...linkRule}>{children}</a>
+
+export const buttonLinkStyle = {
+  display: 'inline-block',
+  textAlign: 'center',
+  textDecoration: 'none',
+  backgroundColor: LW_BLUE,
+  color: WHITE,
+  borderRadius: 4,
+  minWidth: 160,
+  padding: 11
+}
+export const buttonLinkRule = css(buttonLinkStyle)
+export const ButtonLink = ({children, className, ...props}) => (
+  <NextLink {...props}><a {...buttonLinkRule}>{children}</a></NextLink>
+)
+export const ButtonRouteLink = ({children, className, ...props}) => (
+  <NextRouteLink {...props}><a {...buttonLinkRule}>{children}</a></NextRouteLink>
+)
 
 export const h1Style = {
   fontSize: 32,
