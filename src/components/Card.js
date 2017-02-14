@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {h1Rule, metaRule, ButtonRouteLink, P} from './Styled'
+import {h2Rule, metaRule, ButtonRouteLink, P} from './Styled'
 import Message from './Message'
 
 import {css} from 'glamor'
@@ -20,6 +20,7 @@ export const Grid = ({children}) => (
 
 const gridItemStyle = css({
   padding: PADDING,
+  width: '100%',
   [mediaM]: {
     width: '50%'
   }
@@ -55,7 +56,7 @@ const shadeStyle = css({
   right: 0,
   backgroundColor: 'rgba(0,0,0,0.3)'
 })
-const titleStyle = css(h1Rule, {
+const titleStyle = css(h2Rule, {
   position: 'relative',
   marginTop: 0,
   marginBottom: 0,

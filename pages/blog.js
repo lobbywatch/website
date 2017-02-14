@@ -8,9 +8,9 @@ import withData from '../src/apollo/withData'
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import Card, {Grid, GridItem} from '../src/components/Card'
-import {Link} from '../src/components/Styled'
+import {H1} from '../src/components/Styled'
 import Message from '../src/components/Message'
-import {intersperse} from '../src/utils/helpers'
+import PageNavigation from '../src/components/PageNavigation'
 
 const blogQuery = gql`
   query blog($locale: Locale!, $page: Int!) {
@@ -31,23 +31,21 @@ const blogQuery = gql`
 const Blog = ({loading, error, articles, blocks, page, url, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
+      <H1><Message id='blog/title' locale={locale} /></H1>
       <Grid>
         {articles.list.map((article, i) => (
           <GridItem key={i}><Card locale={locale} {...article} /></GridItem>
         ))}
       </Grid>
-      {intersperse([
-        page > 0 && (<Link
-          to={`/blog?page=${page - 1}&locale=${locale}`}
-          as={`/${locale}/blog${page - 1 > 0 ? `?page=${page - 1}` : ''}`}>
-          <Message locale={locale} id='blog/prev' />
-        </Link>),
-        page < articles.pages && (<Link
-          to={`/blog?page=${page + 1}&locale=${locale}`}
-          as={`/${locale}/blog?page=${page + 1}`}>
-          <Message locale={locale} id='blog/next' />
-        </Link>)
-      ].filter(Boolean), ' – ')}
+      <PageNavigation locale={locale}
+        prev={page > 0 && ({
+          to: `/blog?page=${page - 1}&locale=${locale}`,
+          as: `/${locale}/blog${page - 1 > 0 ? `?page=${page - 1}` : ''}`
+        })}
+        next={page < articles.pages && ({
+          to: `/blog?page=${page + 1}&locale=${locale}`,
+          as: `/${locale}/blog?page=${page + 1}`
+        })} />
     </Center>
   )} />
 )
