@@ -4,10 +4,7 @@ import {css} from 'glamor'
 
 import Header from './Header'
 import Footer from './Footer'
-import SocialMedia from './SocialMedia'
-import Newsletter from './Newsletter'
-import {Clear} from './Styled'
-import {BLACK, mediaM} from '../theme'
+import {BLACK} from '../theme'
 
 export const PADDING = 20
 const centerStyle = css({
@@ -32,19 +29,6 @@ const bodyGrowerStyle = css({
   flexGrow: 1
 })
 
-const columnPadding = 10
-const columnContainerStyle = css({
-  margin: `0 ${-columnPadding}px`
-})
-const columnStyle = css({
-  padding: `0 ${columnPadding}px`,
-  margin: '25px 0',
-  [mediaM]: {
-    float: 'left',
-    width: '50%'
-  }
-})
-
 const Frame = ({url: {query: {locale, term}}, children}) => (
   <div {...containerStyle}>
     <div {...bodyGrowerStyle}>
@@ -53,12 +37,6 @@ const Frame = ({url: {query: {locale, term}}, children}) => (
       </Head>
       <Header locale={locale} term={term} />
       {children}
-      <Center>
-        <Clear {...columnContainerStyle}>
-          <div {...columnStyle}><SocialMedia locale={locale} /></div>
-          <div {...columnStyle}><Newsletter locale={locale} /></div>
-        </Clear>
-      </Center>
     </div>
     <Footer locale={locale} />
   </div>

@@ -6,6 +6,8 @@ import {graphql} from 'react-apollo'
 import {stratify} from 'd3-hierarchy'
 
 import {Center} from './Frame'
+import SocialMedia from './SocialMedia'
+import Newsletter from './Newsletter'
 import {RouteLink, Hr, metaStyle, Strong, Clear} from './Styled'
 import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../theme'
 import CreativeCommons from '../assets/CreativeCommons'
@@ -80,6 +82,19 @@ const ccTextStyle = css({
   }
 })
 
+const columnPadding = 10
+const columnContainerStyle = css({
+  margin: `0 ${-columnPadding}px`
+})
+const columnStyle = css({
+  padding: `0 ${columnPadding}px`,
+  margin: '25px 0',
+  [mediaM]: {
+    float: 'left',
+    width: '50%'
+  }
+})
+
 const groupLinks = (links) => {
   return stratify()([
     {id: 'MenuLink-Root'},
@@ -88,38 +103,46 @@ const groupLinks = (links) => {
 }
 
 const Footer = ({loading, error, links, locale}) => (
-  <div {...footerStyle}>
-    <Center>
-      <Loader height={300} loading={loading} error={error} render={() => (
-        <div>
-          <Clear style={{margin: `0 -${footerColumnPadding}px`}}>
-            {groupLinks(links).map(({data, children}) => (
-              <div key={data.id} {...footerColumnStyle}>
-                <Strong>{data.title}</Strong>
-                <ul {...footerListStyle}>
-                  {
-                    children.map(({data: {id, title, path}}) => (
-                      <li key={id}>
-                        <RouteLink {...pathToRoute(locale, path)}>
-                          {title}
-                        </RouteLink>
-                      </li>
-                    ))
-                  }
-                </ul>
-              </div>
-            ))}
-          </Clear>
-          <Hr />
-          <div {...ccContainerStyle}>
-            <CreativeCommons className={ccLogoStyle} />
-            <p {...ccTextStyle}>
-              <Message id='footer/cc' locale={locale} raw />
-            </p>
+  <div>
+  <Center>
+    <Clear {...columnContainerStyle}>
+      <div {...columnStyle}><SocialMedia locale={locale} /></div>
+      <div {...columnStyle}><Newsletter locale={locale} /></div>
+    </Clear>
+  </Center>
+    <div {...footerStyle}>
+      <Center>
+        <Loader height={300} loading={loading} error={error} render={() => (
+          <div>
+            <Clear style={{margin: `0 -${footerColumnPadding}px`}}>
+              {groupLinks(links).map(({data, children}) => (
+                <div key={data.id} {...footerColumnStyle}>
+                  <Strong>{data.title}</Strong>
+                  <ul {...footerListStyle}>
+                    {
+                      children.map(({data: {id, title, path}}) => (
+                        <li key={id}>
+                          <RouteLink {...pathToRoute(locale, path)}>
+                            {title}
+                          </RouteLink>
+                        </li>
+                      ))
+                    }
+                  </ul>
+                </div>
+              ))}
+            </Clear>
+            <Hr />
+            <div {...ccContainerStyle}>
+              <CreativeCommons className={ccLogoStyle} />
+              <p {...ccTextStyle}>
+                <Message id='footer/cc' locale={locale} raw />
+              </p>
+            </div>
           </div>
-        </div>
-      )} />
-    </Center>
+        )} />
+      </Center>
+    </div>
   </div>
 )
 
