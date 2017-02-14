@@ -4,6 +4,7 @@ import {css} from 'glamor'
 
 import Header from './Header'
 import Footer from './Footer'
+import SocialMedia from './SocialMedia'
 import {BLACK} from '../theme'
 
 export const PADDING = 20
@@ -37,6 +38,9 @@ const Frame = ({url: {query: {locale, term}}, children}) => (
       </Head>
       <Header locale={locale} term={term} />
       {children}
+      <Center>
+        <SocialMedia locale={locale} />
+      </Center>
     </div>
     <Footer locale={locale} />
   </div>

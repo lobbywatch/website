@@ -11,6 +11,7 @@ import RawHtml from '../src/components/RawHtml'
 import Message from '../src/components/Message'
 import Card, {Grid, GridItem} from '../src/components/Card'
 import {H2, RouteLink} from '../src/components/Styled'
+import {GREY_SOFT} from '../src/theme'
 
 const indexQuery = gql`
   query index($locale: Locale!) {
@@ -37,28 +38,34 @@ const indexQuery = gql`
 const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) => (
   <Frame url={url}>
     <Loader loading={loading} error={error} render={() => (
-      <Center>
-        <Grid>
-          {articles.map((article, i) => (
-            <GridItem key={i}><Card locale={locale} {...article} /></GridItem>
-          ))}
-        </Grid>
-        <div style={{margin: '10px 0'}}>
-          <RouteLink route='blog' params={{locale}}>
-            <Message id='index/blog/link' locale={locale} />
-          </RouteLink>
-        </div>
-        {
-          blocks.filter(block => block.key === 'block_8')
-            .map(block => (
-              <div key={block.key}>
-                <H2>{block.title}</H2>
+      <div>
+        <Center>
+          <Grid>
+            {articles.map((article, i) => (
+              <GridItem key={i}><Card locale={locale} {...article} /></GridItem>
+            ))}
+          </Grid>
+          <div style={{margin: '10px 0'}}>
+            <RouteLink route='blog' params={{locale}}>
+              <Message id='index/blog/link' locale={locale} />
+            </RouteLink>
+          </div>
+        </Center>
+        <div style={{backgroundColor: GREY_SOFT}}>
+          <Center>
+            {
+              blocks.filter(block => block.key === 'block_8')
+                .map(block => (
+                  <div key={block.key}>
+                    <H2>{block.title}</H2>
 
-                <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
-              </div>
-            ))
-        }
-      </Center>
+                    <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
+                  </div>
+                ))
+            }
+          </Center>
+        </div>
+      </div>
     )} />
   </Frame>
 )

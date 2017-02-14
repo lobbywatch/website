@@ -81,6 +81,12 @@ export const smallStyle = {
 export const smallRule = css(smallStyle)
 export const Small = ({children, ...props}) => <small {...props} {...smallRule}>{children}</small>
 
+export const strongStyle = {
+  fontWeight: 700
+}
+export const strongRule = css(strongStyle)
+export const Strong = ({children, ...props}) => <strong {...props} {...strongRule}>{children}</strong>
+
 export const metaStyle = {
   fontSize: 12,
   lineHeight: '20px',
