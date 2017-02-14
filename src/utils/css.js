@@ -15,7 +15,7 @@ export const globalWithMediaQueries = (selector, styles) => {
       css.insert(
         `${key}{${selector}{` +
         mediaCss.replace(expectedSelector, '') +
-        '}}'
+        '}'
       )
     } else {
       plainStyles[key] = styles[key]

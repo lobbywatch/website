@@ -56,7 +56,7 @@ const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) 
             {
               blocks
                 .map(block => (
-                  <div key={block.key}>
+                  <div key={block.key} style={{textAlign: 'center'}}>
                     <H1>{block.title}</H1>
                     <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
                   </div>
