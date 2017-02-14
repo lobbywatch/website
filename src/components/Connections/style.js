@@ -5,7 +5,7 @@ import {LW_BLUE_DARK, WHITE, GREY_LIGHT, GREY_DARK} from '../../theme'
 export const container = css({
   position: 'relative',
   backgroundColor: GREY_LIGHT,
-  padding: '0 0 20px'
+  padding: '0 0 60px'
 })
 export const root = css({
   position: 'absolute',
@@ -72,4 +72,11 @@ export const hidden = css({
   left: 0,
   top: 0,
   visibility: 'hidden'
+})
+
+export const metaBox = css({
+  position: 'absolute',
+  right: 0,
+  bottom: 10,
+  textAlign: 'right'
 })

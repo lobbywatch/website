@@ -72,6 +72,8 @@ const Guest = ({loading, error, t, guest, locale, id}) => (
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
             <Connections locale={locale} potency
+              updated={updated}
+              published={published}
               data={guest.connections}
               maxGroups={5} />
           </Center>
@@ -81,10 +83,6 @@ const Guest = ({loading, error, t, guest, locale, id}) => (
             Original Profil:
             {' '}<A target='_blank' href={`https://lobbywatch-cms.interactivethings.io${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
-            <br />
-            <Message locale={locale} id='updated' replacements={{date: updated}} />
-            <br />
-            <Message locale={locale} id='published' replacements={{date: published}} />
           </Meta>
         </Center>
       </div>

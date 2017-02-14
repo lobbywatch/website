@@ -64,7 +64,7 @@ export default ({
   hierarchy.y = 0
   hierarchy.x = width / 2
 
-  const height = y + 20
+  const height = y + 60
 
-  return height
+  return Math.max(height, window.innerHeight * 0.5)
 }

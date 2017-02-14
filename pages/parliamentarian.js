@@ -87,6 +87,8 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
             <Connections locale={locale} potency
               data={parliamentarian.connections}
               maxGroups={5}
+              updated={updated}
+              published={published}
               intermediate={connection => connection.via ? connection.via.id : ''}
               intermediates={parliamentarian.guests} />
           </Center>
@@ -96,10 +98,6 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
             Original Profil:
             {' '}<A target='_blank' href={`https://lobbywatch-cms.interactivethings.io${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
-            <br />
-            <Message locale={locale} id='updated' replacements={{date: updated}} />
-            <br />
-            <Message locale={locale} id='published' replacements={{date: published}} />
           </Meta>
         </Center>
       </div>

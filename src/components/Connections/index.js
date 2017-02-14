@@ -3,9 +3,10 @@ import React, {PropTypes, Component} from 'react'
 import {WHITE, POTENCY_COLORS} from '../../theme'
 import GuestIcon from '../../assets/Guest'
 import ContextBox, {ContextBoxValue} from '../ContextBox'
+import {metaRule} from '../Styled'
 import Legend from './Legend'
-import {withT} from '../Message'
-import {shallowEqual} from '../../utils/helpers'
+import Message, {withT} from '../Message'
+import {shallowEqual, intersperse} from '../../utils/helpers'
 import {chfFormat} from '../../utils/formats'
 import {Link as RawRouteLink} from '../../../routes'
 import layout, {START_Y} from './layout'
@@ -137,7 +138,12 @@ class Connections extends Component {
       nodes, links, hover, open,
       width
     } = this.state
-    const {locale, t, intermediates, potency} = this.props
+    const {
+      locale, t,
+      intermediates,
+      potency,
+      updated, published
+    } = this.props
     let viaI = 0
 
     const getVisible = parent => !parent || open[parent.data.id]
@@ -163,6 +169,12 @@ class Connections extends Component {
             </span>
           </ContextBoxValue>)}
         </ContextBox>}
+        <div {...style.metaBox} {...metaRule}>
+          {intersperse([
+            !!updated && <Message key='updated' locale={locale} id='updated' replacements={{date: updated}} />,
+            !!published && <Message key='published' locale={locale} id='published' replacements={{date: published}} />
+          ], <br key='br' />)}
+        </div>
         <svg width={width} ref={ref => { this.svgRef = ref }} style={{position: 'absolute', top: 0, left: 0}}>
           {!!width && links.map(({source, target, setRef}, i) => {
             const visible = getVisible(source.parent) && getVisible(target.parent)

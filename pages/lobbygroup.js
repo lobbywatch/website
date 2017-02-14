@@ -85,6 +85,8 @@ const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
             <Connections locale={locale}
+              updated={updated}
+              published={published}
               data={groupConnections(lobbyGroup.connections)}
               connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
           </Center>
@@ -94,10 +96,6 @@ const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
             Original Profil:
             {' '}<A target='_blank' href={`https://lobbywatch-cms.interactivethings.io${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
-            <br />
-            <Message locale={locale} id='updated' replacements={{date: updated}} />
-            <br />
-            <Message locale={locale} id='published' replacements={{date: published}} />
           </Meta>
         </Center>
       </div>
