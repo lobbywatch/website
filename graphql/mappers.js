@@ -269,7 +269,7 @@ exports.mapArticle = raw => {
     image = image.replace('lobbywatch-cms.interactivethings.io/sites/default/', 'lobbywatch.ch/sites/lobbywatch.ch/')
   }
   return Object.assign({}, raw, {
-    url: raw.url.replace(DRUPAL_BASE_URL, ''),
+    path: raw.url.replace(DRUPAL_BASE_URL, ''),
     author: raw.field_author,
     created: raw.created ? formatTime(+raw.created * 1000) : null,
     content: raw.body.value,
@@ -281,5 +281,17 @@ exports.mapArticle = raw => {
     lobbyGroups: (raw.field_lobby_group || [])
       .map(group => group.name),
     image: image
+  })
+}
+
+exports.mapMeta = raw => {
+  return Object.assign({}, raw, {
+    links: raw.links.map(link => ({
+      title: link.title,
+      path: link.href.replace(DRUPAL_BASE_URL, '')
+    })),
+    blocks: ({region}) => region
+      ? raw.blocks.filter(block => block.region === region)
+      : raw.blocks
   })
 }

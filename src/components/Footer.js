@@ -10,13 +10,14 @@ import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../theme'
 import CreativeCommons from '../assets/CreativeCommons'
 import Message from './Message'
 import Loader from './Loader'
+import {pathToRoute} from '../../routes'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {
     meta(locale: $locale) {
       links {
         title,
-        href
+        path
       }
     }
   }
@@ -81,12 +82,7 @@ const Footer = ({loading, error, links, locale}) => (
               {
                 links.map((link, i) => (
                   <li key={i}>
-                    <RouteLink
-                      route='page'
-                      params={{
-                        locale,
-                        path: link.href.replace(`/${locale}/`, '').split('/')
-                      }}>
+                    <RouteLink {...pathToRoute(locale, link.path)}>
                       {link.title}
                     </RouteLink>
                   </li>

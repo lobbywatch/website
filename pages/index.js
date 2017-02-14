@@ -10,7 +10,7 @@ import Frame, {Center} from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
 import Message from '../src/components/Message'
 import Card, {Grid, GridItem} from '../src/components/Card'
-import {H2, RouteLink} from '../src/components/Styled'
+import {H1, RouteLink} from '../src/components/Styled'
 import {GREY_SOFT} from '../src/theme'
 
 const indexQuery = gql`
@@ -22,11 +22,11 @@ const indexQuery = gql`
         lead
         title
         author
-        url
+        path
       }
     }
     meta(locale: $locale) {
-      blocks {
+      blocks(region: "rooster_home") {
         key
         title
         content
@@ -54,10 +54,10 @@ const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) 
         <div style={{backgroundColor: GREY_SOFT}}>
           <Center>
             {
-              blocks.filter(block => block.key === 'block_8')
+              blocks
                 .map(block => (
                   <div key={block.key}>
-                    <H2>{block.title}</H2>
+                    <H1>{block.title}</H1>
 
                     <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
                   </div>

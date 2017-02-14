@@ -13,16 +13,17 @@ type Translation {
 const cmsTypes = `
 type MenuLink {
   title: String
-  href: String
+  path: String
 }
 type Block {
+  region: String
   key: String
   title: String
   content: String
 }
 type Meta {
-  blocks: [Block]
-  links: [MenuLink]
+  blocks(region: String): [Block!]!
+  links: [MenuLink!]!
 }
 type Page {
   statusCode: Int
@@ -30,7 +31,7 @@ type Page {
   content: String
 }
 type Article {
-  url: String
+  path: String
   title: String
   image: String
   author: String

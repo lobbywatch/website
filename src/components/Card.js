@@ -4,7 +4,7 @@ import Message from './Message'
 
 import {css} from 'glamor'
 import {WHITE, GREY_SOFT, GREY_LIGHT, mediaM} from '../theme'
-import {Link as RawRouteLink} from '../../routes'
+import {Link as RawRouteLink, pathToRoute} from '../../routes'
 import {locales} from '../../constants'
 
 const PADDING = 10
@@ -73,17 +73,10 @@ const pStyle = css({
   flexGrow: 1
 })
 
-const Card = ({image, url, title, author, created, lead, locale}) => {
+const Card = ({image, path, title, author, created, lead, locale}) => {
   return (
     <div {...containerStyle}>
-      <RawRouteLink route='page'
-        params={{
-          locale,
-          path: url
-            .replace(`/${locale}/`, '')
-            .replace('/de/', '')
-            .split('/')
-        }}>
+      <RawRouteLink {...pathToRoute(locale, path)}>
         <a {...headStyle} style={{backgroundImage: image && `url(${image})`}}>
           <span {...shadeStyle} />
           <h2 {...titleStyle}>{title}</h2>
@@ -95,14 +88,7 @@ const Card = ({image, url, title, author, created, lead, locale}) => {
         </span>
         <P className={pStyle}>{lead}</P>
         <div style={{textAlign: 'center'}}>
-          <ButtonRouteLink route='page'
-            params={{
-              locale,
-              path: url
-                .replace(`/${locale}/`, '')
-                .replace('/de/', '')
-                .split('/')
-            }}>
+          <ButtonRouteLink {...pathToRoute(locale, path)}>
             <Message id='card/read' locale={locale} />
           </ButtonRouteLink>
         </div>
@@ -113,7 +99,7 @@ const Card = ({image, url, title, author, created, lead, locale}) => {
 
 Card.propTypes = {
   locale: PropTypes.oneOf(locales).isRequired,
-  url: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   created: PropTypes.string.isRequired,
   lead: PropTypes.string.isRequired,

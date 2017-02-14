@@ -3,7 +3,7 @@ const {ascending} = require('d3-array')
 const qs = require('querystring')
 const {getFormatter} = require('../src/utils/translate')
 const {
-  mapArticle,
+  mapArticle, mapMeta,
   mapParliamentarian, parliamentarianIdPrefix,
   mapGuest, guestIdPrefix,
   mapOrganisation, orgIdPrefix,
@@ -19,7 +19,7 @@ const resolveFunctions = {
   },
   RootQuery: {
     meta (_, {locale}, {loaders: {meta}}) {
-      return meta.load(locale)
+      return meta.load(locale).then(mapMeta)
     },
     page (_, {locale, path}) {
       const query = {

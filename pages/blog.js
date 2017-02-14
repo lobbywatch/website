@@ -22,7 +22,7 @@ const blogQuery = gql`
         lead
         title
         author
-        url
+        path
       }
     }
   }
