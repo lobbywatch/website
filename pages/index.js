@@ -8,17 +8,21 @@ import withData from '../src/apollo/withData'
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
+import Message from '../src/components/Message'
 import Card, {Grid, GridItem} from '../src/components/Card'
-import {H2} from '../src/components/Styled'
+import {H2, RouteLink} from '../src/components/Styled'
 
 const indexQuery = gql`
   query index($locale: Locale!) {
     articles(locale: $locale, limit: 2) {
-      created
-      image
-      content
-      title
-      url
+      list {
+        created
+        image
+        lead
+        title
+        author
+        url
+      }
     }
     meta(locale: $locale) {
       blocks {
@@ -30,7 +34,7 @@ const indexQuery = gql`
   }
 `
 
-const Index = ({loading, error, articles, blocks, t, url, url: {query: {locale}}}) => (
+const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) => (
   <Frame url={url}>
     <Loader loading={loading} error={error} render={() => (
       <Center>
@@ -39,6 +43,11 @@ const Index = ({loading, error, articles, blocks, t, url, url: {query: {locale}}
             <GridItem key={i}><Card locale={locale} {...article} /></GridItem>
           ))}
         </Grid>
+        <div style={{margin: '10px 0'}}>
+          <RouteLink route='blog' params={{locale}}>
+            <Message id='index/blog/link' locale={locale} />
+          </RouteLink>
+        </div>
         {
           blocks.filter(block => block.key === 'block_8')
             .map(block => (
@@ -66,7 +75,7 @@ const IndexWithQuery = graphql(indexQuery, {
     return {
       loading: data.loading,
       error: data.error,
-      articles: data.articles,
+      articles: data.articles && data.articles.list,
       blocks: data.meta && data.meta.blocks
     }
   }

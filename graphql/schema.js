@@ -33,12 +33,18 @@ type Article {
   url: String
   title: String
   image: String
+  author: String
   content: String
+  lead: String
   # DD.MM.YYYY HH:MM
   created: String
   categories: [String!]!
   tags: [String!]!
   lobbyGroups: [String!]!
+}
+type ArticleList {
+  pages: Int!
+  list: [Article!]!
 }
 `
 
@@ -187,7 +193,7 @@ const queryDefinitions = `
 type RootQuery {
   meta(locale: Locale!): Meta
   page(locale: Locale!, path: String!): Page
-  articles(locale: Locale!, limit: Int = 3, page: Int = 0): [Article!]!
+  articles(locale: Locale!, limit: Int = 2, page: Int = 0): ArticleList!
   parliamentarians(locale: Locale!): [Parliamentarian!]!
   getParliamentarian(locale: Locale!, id: ID!): Parliamentarian
   guests(locale: Locale!): [Guest!]!

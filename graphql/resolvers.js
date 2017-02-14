@@ -1,5 +1,6 @@
 const api = require('./api')
 const {ascending} = require('d3-array')
+const qs = require('querystring')
 const {getFormatter} = require('../src/utils/translate')
 const {
   mapArticle,
@@ -59,7 +60,13 @@ const resolveFunctions = {
       }
 
       return api.drupal(locale, '', query)
-        .then(({json}) => json.list.map(mapArticle))
+        .then(({json}) => {
+          const last = qs.decode(json.last.split('?')[1])
+          return {
+            pages: +last.page,
+            list: json.list.map(mapArticle)
+          }
+        })
     },
     parliamentarians (_, {locale}, {loaders: {translations}}, info) {
       const queriedFields = new Set(

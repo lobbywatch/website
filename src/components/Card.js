@@ -1,6 +1,5 @@
 import React, {PropTypes} from 'react'
-import {h1Rule, metaRule, ButtonRouteLink} from './Styled'
-import RawHtml from './RawHtml'
+import {h1Rule, metaRule, ButtonRouteLink, P} from './Styled'
 import Message from './Message'
 
 import {css} from 'glamor'
@@ -10,6 +9,9 @@ import {locales} from '../../constants'
 
 const PADDING = 10
 const gridStyle = css({
+  display: 'flex',
+  justifyContent: 'space-between',
+  flexWrap: 'wrap',
   margin: `0 -${PADDING}px`
 })
 export const Grid = ({children}) => (
@@ -19,7 +21,6 @@ export const Grid = ({children}) => (
 const gridItemStyle = css({
   padding: PADDING,
   [mediaM]: {
-    float: 'left',
     width: '50%'
   }
 })
@@ -30,17 +31,20 @@ export const GridItem = ({children}) => (
 const containerStyle = css({
   overflow: 'hidden',
   borderRadius: '4px',
-  backgroundColor: GREY_SOFT
+  backgroundColor: GREY_SOFT,
+  minHeight: '100%',
+  display: 'flex',
+  flexDirection: 'column'
 })
 const headStyle = css({
-  display: 'block',
   textDecoration: 'none',
   backgroundSize: 'cover',
   backgroundPosition: 'center',
   backgroundColor: GREY_LIGHT,
   minHeight: 160,
   padding: 16,
-  position: 'relative'
+  position: 'relative',
+  display: 'flex'
 })
 const shadeStyle = css({
   display: 'block',
@@ -55,13 +59,20 @@ const titleStyle = css(h1Rule, {
   position: 'relative',
   marginTop: 0,
   marginBottom: 0,
-  color: WHITE
+  color: WHITE,
+  alignSelf: 'flex-end'
 })
 const bodyStyle = css({
-  padding: 16
+  padding: 16,
+  flexGrow: 1,
+  display: 'flex',
+  flexDirection: 'column'
+})
+const pStyle = css({
+  flexGrow: 1
 })
 
-const Card = ({image, url, title, created, content, locale}) => {
+const Card = ({image, url, title, author, created, lead, locale}) => {
   return (
     <div {...containerStyle}>
       <RawRouteLink route='page'
@@ -79,11 +90,9 @@ const Card = ({image, url, title, created, content, locale}) => {
       </RawRouteLink>
       <div {...bodyStyle}>
         <span {...metaRule}>
-          {created}
+          {[created, author].filter(Boolean).join(' – ')}
         </span>
-        <div style={{height: 108, marginBottom: 10, overflow: 'hidden', textOverflow: 'ellipsis'}}>
-          <RawHtml dangerouslySetInnerHTML={{__html: content}} />
-        </div>
+        <P className={pStyle}>{lead}</P>
         <div style={{textAlign: 'center'}}>
           <ButtonRouteLink route='page'
             params={{
@@ -106,7 +115,7 @@ Card.propTypes = {
   url: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   created: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  lead: PropTypes.string.isRequired,
   image: PropTypes.string
 }
 

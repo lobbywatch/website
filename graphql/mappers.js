@@ -1,5 +1,6 @@
 const {timeFormat, timeParse} = require('d3-time-format')
 const {timeYear, timeMonth} = require('d3-time')
+const striptags = require('striptags')
 const {DRUPAL_BASE_URL, DRUPAL_IMAGE_BASE_URL} = require('../constants')
 
 const parseDate = timeParse('%Y-%m-%d')
@@ -269,8 +270,10 @@ exports.mapArticle = raw => {
   }
   return Object.assign({}, raw, {
     url: raw.url.replace(DRUPAL_BASE_URL, ''),
+    author: raw.field_author,
     created: raw.created ? formatTime(+raw.created * 1000) : null,
     content: raw.body.value,
+    lead: striptags(raw.body.value).trim().split('\n')[0],
     categories: (raw.field_category || [])
       .map(category => category.name),
     tags: (raw.field_tags || [])
