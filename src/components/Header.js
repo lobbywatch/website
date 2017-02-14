@@ -3,7 +3,7 @@ import {css, merge} from 'glamor'
 
 import {withT} from './Message'
 import {RouteLink, inputStyle} from './Styled'
-import {Center} from './Frame'
+import {Center, PADDING} from './Frame'
 import {locales} from '../../constants'
 import {Link as NextRouteLink, Router as RoutesRouter} from '../../routes'
 import Router from 'next/router'
@@ -180,6 +180,7 @@ const barStyle = css({
   right: 0,
   height: HEADER_HEIGHT,
   backgroundColor: LW_BLUE_DARK,
+  padding: PADDING,
   zIndex: 10
 })
 
@@ -301,19 +302,17 @@ class Header extends Component {
     return (
       <div>
         <div {...barStyle}>
-          <Center style={{position: 'relative'}}>
-            <NextRouteLink route='index' params={{locale: currentLocale}}>
-              <a {...titleStyle}>
-                <Logo size={32} style={{verticalAlign: 'middle', marginRight: 10}} />Lobbywatch
-              </a>
-            </NextRouteLink>
-            <Menu expanded={expanded} items={menuItems.concat(localeLinks)} />
-            <button onClick={() => this.setState({expanded: !expanded})} {...toggleStyle} aria-controls={'primary-menu'} title={''} aria-expanded={expanded}>
-              <span />
-              <span />
-              <span />
-            </button>
-          </Center>
+          <NextRouteLink route='index' params={{locale: currentLocale}}>
+            <a {...titleStyle}>
+              <Logo size={32} style={{verticalAlign: 'middle', marginRight: 10}} />Lobbywatch
+            </a>
+          </NextRouteLink>
+          <Menu expanded={expanded} items={menuItems.concat(localeLinks)} />
+          <button onClick={() => this.setState({expanded: !expanded})} {...toggleStyle} aria-controls={'primary-menu'} title={''} aria-expanded={expanded}>
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
         <div {...searchContainerStyle}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
