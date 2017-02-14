@@ -2,18 +2,14 @@ import React from 'react'
 import {css} from 'glamor'
 
 import Message from './Message'
+import {Clear} from './Styled'
 import RawLink from 'next/link'
 import {GREY_LIGHT, GREY_DARK, mediaM} from '../theme'
 import Arrow from '../assets/Arrow'
 
 const containerStyle = css({
   borderTop: `1px solid ${GREY_LIGHT}`,
-  marginTop: 30,
-  ':after': {
-    content: '""',
-    display: 'table',
-    clear: 'both'
-  }
+  marginTop: 30
 })
 const aStyle = css({
   display: 'block',
@@ -42,7 +38,7 @@ const iconStyle = css({
 })
 
 const Nav = ({locale, prev, next}) => (
-  <div {...containerStyle}>
+  <Clear {...containerStyle}>
     {!!prev && <RawLink {...prev}>
       <a {...leftStyle} {...aStyle}>
         <Arrow className={iconStyle} color={GREY_DARK} direction='left' />
@@ -59,7 +55,7 @@ const Nav = ({locale, prev, next}) => (
         <Arrow className={iconStyle} color={GREY_DARK} />
       </a>
     </RawLink>}
-  </div>
+  </Clear>
 )
 
 export default Nav

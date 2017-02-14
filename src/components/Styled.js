@@ -145,3 +145,13 @@ export const submitStyle = {
 }
 export const submitRule = merge(inputStyle, submitStyle)
 export const Submit = ({children, ...props}) => <input type='submit' {...props} {...submitRule} />
+
+export const clearStyle = {
+  ':after': {
+    content: '""',
+    display: 'table',
+    clear: 'both'
+  }
+}
+export const clearRule = css(clearStyle)
+export const Clear = ({children, ...props}) => <div {...props} {...clearRule}>{children}</div>

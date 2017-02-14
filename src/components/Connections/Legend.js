@@ -5,6 +5,7 @@ import {withT} from '../Message'
 import {POTENCY_COLORS, LW_BLUE, mediaM} from '../../theme'
 import {intersperse} from '../../utils/helpers'
 import {Link as RawRouteLink} from '../../../routes'
+import {Clear} from '../Styled'
 
 const legendContainer = css({
   paddingTop: 20,
@@ -18,11 +19,6 @@ const legendContainer = css({
   [mediaM]: {
     fontSize: 14,
     textAlign: 'right'
-  },
-  ':after': {
-    content: '""',
-    display: 'table',
-    clear: 'both'
   }
 })
 
@@ -50,7 +46,7 @@ const legendBubble = css({
 })
 
 const Legend = ({t, locale}) => (
-  <div {...legendContainer}>
+  <Clear {...legendContainer}>
     <RawRouteLink
       route='page'
       params={{
@@ -67,7 +63,7 @@ const Legend = ({t, locale}) => (
         </span>
       )), ' ')}
     </span>
-  </div>
+  </Clear>
 )
 
 Legend.propTypes = {
