@@ -1,11 +1,12 @@
 import {css, merge} from 'glamor'
 
 import {LW_BLUE_DARK, WHITE, GREY_LIGHT, GREY_DARK} from '../../theme'
+import {PADDING_BOTTOM} from './layout'
 
 export const container = css({
   position: 'relative',
   backgroundColor: GREY_LIGHT,
-  padding: '0 0 60px'
+  padding: `0 0 ${PADDING_BOTTOM}px`
 })
 export const root = css({
   position: 'absolute',

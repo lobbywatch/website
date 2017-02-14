@@ -1,4 +1,5 @@
 export const START_Y = 55
+export const PADDING_BOTTOM = 60
 
 export default ({
   hierarchy,
@@ -6,32 +7,38 @@ export default ({
   width, open
 }) => {
   const MARGIN = 10
+  const Y_SPACE = 10
+  const Y_SPACE_BIG = 30
 
   let y = START_Y
   let x = 0
   let row = 0
-  const nextRow = (rowHeight) => {
+  let lastType
+  const nextRow = (rowHeight, bigSpace) => {
     x = 0
-    y += rowHeight + MARGIN
+    y += rowHeight + (
+      bigSpace
+      ? Y_SPACE_BIG : Y_SPACE
+    )
     row += 1
   }
   const visit = (node) => {
     const isOpen = open[node.data.id]
     if (isOpen) {
-      let lastType
       let rowHeight = 0
       let rowChildren = []
       let openChildren = []
-      const newRow = () => {
+      const newRow = (newType) => {
         const xLeftOver = width - x
         const xPush = xLeftOver / 2 // center
         rowChildren.forEach(rowChild => {
           rowChild.x += xPush
         })
-        nextRow(rowHeight)
+        nextRow(rowHeight, newType || openChildren.length)
         rowHeight = 0
         rowChildren = []
         if (openChildren.length) {
+          lastType = null
           openChildren.forEach(visit)
           openChildren = []
         }
@@ -39,11 +46,12 @@ export default ({
       node.children.forEach(child => {
         const measurements = child.data.measurements
 
+        const newType = lastType && lastType !== child.data.type
         if (
           (x + measurements.width > width) ||
-          (lastType && lastType !== child.data.type)
+          newType
         ) {
-          newRow()
+          newRow(newType)
         }
 
         child.x = x
@@ -57,14 +65,14 @@ export default ({
         }
         lastType = child.data.type
       })
-      newRow()
+      newRow(true)
     }
   }
   visit(hierarchy)
   hierarchy.y = 0
   hierarchy.x = width / 2
 
-  const height = y + 60
+  const height = y + PADDING_BOTTOM
 
   return Math.max(height, window.innerHeight * 0.5)
 }
