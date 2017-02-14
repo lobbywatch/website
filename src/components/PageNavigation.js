@@ -9,7 +9,7 @@ import Arrow from '../assets/Arrow'
 
 const containerStyle = css({
   borderTop: `1px solid ${GREY_LIGHT}`,
-  marginTop: 30
+  marginTop: 10
 })
 const aStyle = css({
   display: 'block',
@@ -37,25 +37,30 @@ const iconStyle = css({
   verticalAlign: '-2px'
 })
 
-const Nav = ({locale, prev, next}) => (
+const Nav = ({locale, prev, prevMessageId, next, nextMessageId}) => (
   <Clear {...containerStyle}>
     {!!prev && <RawLink {...prev}>
       <a {...leftStyle} {...aStyle}>
         <Arrow className={iconStyle} color={GREY_DARK} direction='left' />
         <span {...leftTextStyle}>
           {' '}
-          <Message locale={locale} id='page/prev' />
+          <Message locale={locale} id={prevMessageId} />
         </span>
       </a>
     </RawLink>}
     {!!next && <RawLink {...next}>
       <a {...rightStyle} {...aStyle}>
-        <Message locale={locale} id='page/next' />
+        <Message locale={locale} id={nextMessageId} />
         {' '}
         <Arrow className={iconStyle} color={GREY_DARK} />
       </a>
     </RawLink>}
   </Clear>
 )
+
+Nav.defaultProps = {
+  prevMessageId: 'page/prev',
+  nextMessageId: 'page/next'
+}
 
 export default Nav

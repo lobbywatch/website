@@ -6,6 +6,7 @@ import {graphql} from 'react-apollo'
 import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
+import PageNavigation from '../src/components/PageNavigation'
 import Frame, {Center} from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
 import Message from '../src/components/Message'
@@ -45,11 +46,13 @@ const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) 
               <GridItem key={i}><Card locale={locale} {...article} /></GridItem>
             ))}
           </Grid>
-          <div style={{margin: '10px 0'}}>
-            <RouteLink route='blog' params={{locale}}>
-              <Message id='index/blog/link' locale={locale} />
-            </RouteLink>
-          </div>
+          <PageNavigation
+            locale={locale}
+            next={{
+              to: `/blog?locale=${locale}`,
+              as: `/${locale}/blog`
+            }}
+            nextMessageId='index/blog/link' />
         </Center>
         <div style={{backgroundColor: GREY_SOFT}}>
           <Center>
