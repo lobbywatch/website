@@ -1,13 +1,13 @@
 import React, {PropTypes, Component} from 'react'
-import {css} from 'glamor'
+import {css, merge} from 'glamor'
 
 import {withT} from './Message'
-import {RouteLink} from './Styled'
+import {RouteLink, inputStyle} from './Styled'
 import {Center} from './Frame'
 import {locales} from '../../constants'
 import {Link as NextRouteLink, Router as RoutesRouter} from '../../routes'
 import Router from 'next/router'
-import {LW_BLUE_LIGHT, LW_BLUE_DARK, GREY_LIGHT, GREY_MID, WHITE, mediaM, mediaSOnly} from '../theme'
+import {LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE, mediaM, mediaSOnly} from '../theme'
 import Logo from '../assets/Logo'
 import SearchIcon from '../assets/Search'
 
@@ -198,31 +198,12 @@ const searchBoxStyle = css({
   position: 'relative'
 })
 
-const searchInputStyle = css({
-  appearance: 'none',
-  width: '100%',
-  border: `1px solid ${GREY_LIGHT}`,
-  textOverflow: 'ellipsis',
-  height: 40,
-  paddingLeft: 8,
+const searchInputStyle = merge(inputStyle, {
+  backgroundColor: WHITE,
   paddingRight: 8 + 21 + 5,
-  borderRadius: 4,
   [mediaM]: {
     height: 56,
-    paddingLeft: 16,
     paddingRight: 16 + 21 + 5
-  },
-  '::placeholder': {
-    color: GREY_LIGHT,
-    textOverflow: 'ellipsis'
-  },
-  ':focus': {
-    outline: 'none',
-    borderColor: GREY_MID
-  },
-  '::-ms-clear': {
-    width: 0,
-    height: 0
   }
 })
 

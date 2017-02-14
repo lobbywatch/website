@@ -1,8 +1,8 @@
 import React from 'react'
 import NextLink from 'next/prefetch'
 import {Link as NextRouteLink} from '../../routes'
-import {LW_BLUE, GREY_DARK, GREY_LIGHT, WHITE, mediaM} from '../theme'
-import {css} from 'glamor'
+import {LW_BLUE, GREY_DARK, GREY_LIGHT, GREY_MID, WHITE, GREY_SOFT, mediaM} from '../theme'
+import {css, merge} from 'glamor'
 
 export const linkStyle = {
   textDecoration: 'none',
@@ -106,3 +106,42 @@ export const hrStyle = {
 }
 export const hrRule = css(hrStyle)
 export const Hr = ({children, ...props}) => <hr {...props} {...hrRule} />
+
+export const inputStyle = {
+  appearance: 'none',
+  width: '100%',
+  border: `1px solid ${GREY_LIGHT}`,
+  textOverflow: 'ellipsis',
+  paddingLeft: 8,
+  paddingRight: 8,
+  height: 40,
+  borderRadius: 4,
+  backgroundColor: GREY_SOFT,
+  [mediaM]: {
+    paddingLeft: 16,
+    paddingRight: 16
+  },
+  '::placeholder': {
+    color: GREY_LIGHT,
+    textOverflow: 'ellipsis'
+  },
+  ':focus': {
+    outline: 'none',
+    borderColor: GREY_MID
+  },
+  '::-ms-clear': {
+    width: 0,
+    height: 0
+  }
+}
+export const inputRule = css(inputStyle)
+export const Input = ({children, ...props}) => <input {...props} {...inputRule} />
+
+export const submitStyle = {
+  backgroundColor: LW_BLUE,
+  color: WHITE,
+  border: 'none',
+  cursor: 'pointer'
+}
+export const submitRule = merge(inputStyle, submitStyle)
+export const Submit = ({children, ...props}) => <input type='submit' {...props} {...submitRule} />
