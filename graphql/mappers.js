@@ -287,6 +287,8 @@ exports.mapArticle = raw => {
 exports.mapMeta = raw => {
   return Object.assign({}, raw, {
     links: raw.links.map(link => ({
+      id: `MenuLink-${link.id}`,
+      parentId: +link.parentId ? `MenuLink-${link.parentId}` : 'MenuLink-Root',
       title: link.title,
       path: link.href.replace(DRUPAL_BASE_URL, '')
     })),

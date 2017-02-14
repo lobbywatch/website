@@ -12,6 +12,8 @@ type Translation {
 
 const cmsTypes = `
 type MenuLink {
+  id: ID!
+  parentId: ID!
   title: String
   path: String
 }
