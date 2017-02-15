@@ -22,7 +22,7 @@ export default ({
     )
     row += 1
   }
-  const visit = (node) => {
+  const visit = (node, align = 0.5) => {
     const isOpen = open[node.data.id]
     if (isOpen) {
       let rowHeight = 0
@@ -30,7 +30,7 @@ export default ({
       let openChildren = []
       const newRow = (newType) => {
         const xLeftOver = width - x
-        const xPush = xLeftOver / 2 // center
+        const xPush = xLeftOver * align // center
         rowChildren.forEach(rowChild => {
           rowChild.x += xPush
         })
@@ -39,7 +39,16 @@ export default ({
         rowChildren = []
         if (openChildren.length) {
           lastType = null
-          openChildren.forEach(visit)
+          openChildren.forEach(c => {
+            let align = 0.5
+            const cx = c.x + c.data.measurements.width / 2
+            if (cx > width * 0.7) {
+              align = 1
+            } else if (cx < width * 0.3) {
+              align = 0
+            }
+            visit(c, align)
+          })
           openChildren = []
         }
       }
