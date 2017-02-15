@@ -86,7 +86,7 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
             <Connections locale={locale} potency
               data={parliamentarian.connections}
-              maxGroups={5}
+              maxGroups={7}
               updated={updated}
               published={published}
               intermediate={connection => connection.via ? connection.via.id : ''}

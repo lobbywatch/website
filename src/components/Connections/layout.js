@@ -23,6 +23,9 @@ export default ({
     row += 1
   }
   const visit = (node, align = 0.5) => {
+    if (!node.children) {
+      return
+    }
     const isOpen = open[node.data.id]
     if (isOpen) {
       let rowHeight = 0
