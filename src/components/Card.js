@@ -43,7 +43,7 @@ const headStyle = css({
   backgroundPosition: 'center',
   backgroundColor: GREY_LIGHT,
   minHeight: 160,
-  padding: 16,
+  padding: '16px 24px',
   position: 'relative',
   display: 'flex'
 })
@@ -64,7 +64,7 @@ const titleStyle = css(h2Rule, {
   alignSelf: 'flex-end'
 })
 const bodyStyle = css({
-  padding: 16,
+  padding: '16px 24px',
   flexGrow: 1,
   display: 'flex',
   flexDirection: 'column'

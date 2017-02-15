@@ -10,7 +10,7 @@ import Frame, {Center} from '../src/components/Frame'
 import Connections from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {Meta, A} from '../src/components/Styled'
-import Message, {withT} from '../src/components/Message'
+import {withT} from '../src/components/Message'
 import {GREY_LIGHT} from '../src/theme'
 
 const guestQuery = gql`

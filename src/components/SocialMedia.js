@@ -4,7 +4,7 @@ import FacebookIcon from '../assets/Facebook'
 import TwitterIcon from '../assets/Twitter'
 import GooglePlusIcon from '../assets/GooglePlus'
 import RSSIcon from '../assets/RSS'
-import {mediaM} from '../theme'
+import {mediaM, mediaSOnly} from '../theme'
 
 import Message from './Message'
 import {Strong} from './Styled'
@@ -14,16 +14,25 @@ const flexIconsStyle = css({
   display: 'flex',
   justifyContent: 'space-between',
   width: '100%',
-  marginTop: 10,
-  maxWidth: 280,
+  maxWidth: 240,
+  [mediaSOnly]: {
+    marginLeft: 'auto',
+    marginRight: 'auto'
+  }
+})
+
+const titleStyle = css({
+  display: 'block',
+  marginBottom: 20,
+  textAlign: 'center',
   [mediaM]: {
-    maxWidth: 210
+    textAlign: 'left'
   }
 })
 
 const SocialMedia = ({locale}) => (
   <div>
-    <Strong><Message locale={locale} id='social/title' /></Strong>
+    <Strong {...titleStyle}><Message locale={locale} id='social/title' /></Strong>
     <div {...flexIconsStyle}>
       <a target='_blank' href='https://www.facebook.com/lobbywatch'><FacebookIcon /></a>
       <a target='_blank' href='https://twitter.com/Lobbywatch_CH'><TwitterIcon /></a>

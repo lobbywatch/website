@@ -171,8 +171,8 @@ class Connections extends Component {
         </ContextBox>}
         <div {...style.metaBox} {...metaRule}>
           {intersperse([
-            !!updated && <Message key='updated' locale={locale} id='updated' replacements={{date: updated}} />,
-            !!published && <Message key='published' locale={locale} id='published' replacements={{date: published}} />
+            !!published && <Message key='published' locale={locale} id='published' replacements={{date: published}} />,
+            !!updated && <Message key='updated' locale={locale} id='updated' replacements={{date: updated}} />
           ], <br key='br' />)}
         </div>
         <svg width={width} ref={ref => { this.svgRef = ref }} style={{position: 'absolute', top: 0, left: 0}}>

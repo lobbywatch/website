@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react'
 import {css} from 'glamor'
 
 import {metaRule} from './Styled'
-import {WHITE, GREY_DARK, GREY_LIGHT} from '../theme'
+import {WHITE, GREY_DARK, GREY_LIGHT, BLACK} from '../theme'
 
 const boxStyle = css({
   position: 'absolute',
@@ -11,10 +11,10 @@ const boxStyle = css({
   boxShadow: '0 2px 24px 0 rgba(0,0,0,0.25)',
   fontSize: 14,
   lineHeight: '1.1em',
-  padding: '8px 12px',
+  padding: '12px 16px',
   pointerEvents: 'none',
   zIndex: 10,
-  minWidth: 150,
+  minWidth: 200,
   borderRadius: 4
 })
 
@@ -56,9 +56,13 @@ const notchPosition = {
 const labledValueStyle = css({
   fontSize: 14,
   borderBottom: `1px solid ${GREY_LIGHT}`,
-  paddingBottom: 5,
+  paddingBottom: 10,
+  marginBottom: 5,
+  color: BLACK,
   ':last-child': {
-    borderBottom: 'none'
+    borderBottom: 'none',
+    paddingBottom: 5,
+    marginBottom: 0
   }
 })
 

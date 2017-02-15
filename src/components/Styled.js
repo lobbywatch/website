@@ -1,7 +1,7 @@
 import React from 'react'
 import NextLink from 'next/prefetch'
 import {Link as NextRouteLink} from '../../routes'
-import {LW_BLUE, GREY_DARK, GREY_LIGHT, GREY_MID, WHITE, GREY_SOFT, mediaM} from '../theme'
+import {LW_BLUE, LW_BLUE_HOVER, GREY_DARK, GREY_LIGHT, GREY_MID, WHITE, GREY_SOFT, mediaM} from '../theme'
 import {css, merge} from 'glamor'
 
 export const linkStyle = {
@@ -9,6 +9,9 @@ export const linkStyle = {
   color: LW_BLUE,
   ':visited': {
     color: LW_BLUE
+  },
+  ':hover': {
+    color: LW_BLUE_HOVER
   }
 }
 export const linkRule = css(linkStyle)
@@ -29,7 +32,10 @@ export const buttonLinkStyle = {
   color: WHITE,
   borderRadius: 4,
   minWidth: 160,
-  padding: 11
+  padding: 11,
+  ':hover': {
+    backgroundColor: LW_BLUE_HOVER
+  }
 }
 export const buttonLinkRule = css(buttonLinkStyle)
 export const ButtonLink = ({children, className, ...props}) => (
@@ -141,7 +147,10 @@ export const submitStyle = {
   backgroundColor: LW_BLUE,
   color: WHITE,
   border: 'none',
-  cursor: 'pointer'
+  cursor: 'pointer',
+  ':hover': {
+    backgroundColor: LW_BLUE_HOVER
+  }
 }
 export const submitRule = merge(inputStyle, submitStyle)
 export const Submit = ({children, ...props}) => <input type='submit' {...props} {...submitRule} />

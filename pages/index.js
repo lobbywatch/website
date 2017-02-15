@@ -6,12 +6,11 @@ import {graphql} from 'react-apollo'
 import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
-import PageNavigation from '../src/components/PageNavigation'
 import Frame, {Center} from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
 import Message from '../src/components/Message'
 import Card, {Grid, GridItem} from '../src/components/Card'
-import {H1, RouteLink} from '../src/components/Styled'
+import {H1, Link} from '../src/components/Styled'
 import {GREY_SOFT} from '../src/theme'
 
 const indexQuery = gql`
@@ -41,18 +40,22 @@ const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) 
     <Loader loading={loading} error={error} render={() => (
       <div>
         <Center>
+          <H1 style={{textAlign: 'center'}}>
+            <Message id='index/blog/title' locale={locale} />
+          </H1>
           <Grid>
             {articles.map((article, i) => (
               <GridItem key={i}><Card locale={locale} {...article} /></GridItem>
             ))}
           </Grid>
-          <PageNavigation
-            locale={locale}
-            next={{
+          <div style={{textAlign: 'center', margin: '20px 0'}}>
+            <Link {...{
               to: `/blog?locale=${locale}`,
               as: `/${locale}/blog`
-            }}
-            nextMessageId='index/blog/link' />
+            }}>
+              <Message locale={locale} id='index/blog/link' />
+            </Link>
+          </div>
         </Center>
         <div style={{backgroundColor: GREY_SOFT}}>
           <Center>

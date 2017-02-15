@@ -1,6 +1,6 @@
 import {css, merge} from 'glamor'
 
-import {LW_BLUE_DARK, WHITE, GREY_LIGHT, GREY_DARK} from '../../theme'
+import {LW_BLUE_DARK, WHITE, GREY_LIGHT, GREY_DARK, mediaM} from '../../theme'
 import {PADDING_BOTTOM} from './layout'
 
 export const container = css({
@@ -78,6 +78,11 @@ export const hidden = css({
 export const metaBox = css({
   position: 'absolute',
   right: 0,
+  left: 0,
   bottom: 10,
-  textAlign: 'right'
+  textAlign: 'center',
+  lineHeight: '16px',
+  [mediaM]: {
+    lineHeight: '20px'
+  }
 })

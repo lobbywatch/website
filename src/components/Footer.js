@@ -104,12 +104,12 @@ const groupLinks = (links) => {
 
 const Footer = ({loading, error, links, locale}) => (
   <div>
-  <Center>
-    <Clear {...columnContainerStyle}>
-      <div {...columnStyle}><SocialMedia locale={locale} /></div>
-      <div {...columnStyle}><Newsletter locale={locale} /></div>
-    </Clear>
-  </Center>
+    <Center>
+      <Clear {...columnContainerStyle}>
+        <div {...columnStyle}><SocialMedia locale={locale} /></div>
+        <div {...columnStyle}><Newsletter locale={locale} /></div>
+      </Clear>
+    </Center>
     <div {...footerStyle}>
       <Center>
         <Loader height={300} loading={loading} error={error} render={() => (

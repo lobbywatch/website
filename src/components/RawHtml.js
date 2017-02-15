@@ -15,6 +15,9 @@ globalWithMediaQueries('.RawHtml h3, .RawHtml h4, .RawHtml h5, .RawHtml h6', h3S
 globalWithMediaQueries('.RawHtml p', pStyle)
 globalWithMediaQueries('.RawHtml small', smallStyle)
 globalWithMediaQueries('.RawHtml hr', hrStyle)
+globalWithMediaQueries('.RawHtml ul', {
+  lineHeight: '24px'
+})
 
 globalWithMediaQueries('.RawHtml a.button', buttonLinkStyle)
 
@@ -36,6 +39,9 @@ globalWithMediaQueries('.RawHtml .grid .item a.button', {
   width: '100%',
   paddingTop: 40,
   paddingBottom: 20,
+  fontSize: 24,
+  lineHeight: '32px',
+  fontWeight: 300,
   boxShadow: '0 8px 16px 0 rgba(0,0,0,0.20)'
 })
 globalWithMediaQueries('.RawHtml a.button.donate-member:before, .RawHtml a.button.donate-patron:before', {

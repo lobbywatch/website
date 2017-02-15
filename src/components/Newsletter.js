@@ -6,20 +6,29 @@ import {withT} from './Message'
 import {Strong, Input, Submit, P} from './Styled'
 import {css} from 'glamor'
 import {MAILCHIMP_BASE_URL, MAILCHIMP_U, MAILCHIMP_ID_FOR_LOCALE} from '../../constants'
+import {mediaM} from '../theme'
 
 const flexIconsStyle = css({
   display: 'flex',
   justifyContent: 'space-between',
   width: '100%',
-  marginTop: 10,
   '& input[type=email], & input[type=text]': {
     width: 'auto',
-    flexGrow: 2
+    flexGrow: 2,
+    minWidth: 0
   },
   '& input[type=submit]': {
-    marginLeft: 20,
+    marginLeft: 8,
     width: 'auto',
     flexGrow: 1
+  }
+})
+const titleStyle = css({
+  display: 'block',
+  marginBottom: 20,
+  textAlign: 'center',
+  [mediaM]: {
+    textAlign: 'left'
   }
 })
 
@@ -71,7 +80,7 @@ class Newsletter extends Component {
 
     return (
       <div>
-        <Strong>{t('newsletter/title')}</Strong>
+        <Strong {...titleStyle}>{t('newsletter/title')}</Strong>
         <form {...flexIconsStyle} target='_blank' onSubmit={e => this.onSubmit(e)} action={`${MAILCHIMP_BASE_URL}/subscribe/post`} method='POST'>
           <input type='hidden' name='u' value={MAILCHIMP_U} />
           <input type='hidden' name='id' value={MAILCHIMP_ID_FOR_LOCALE[locale]} />

@@ -1,4 +1,5 @@
 export const LW_BLUE = '#0077D7'
+export const LW_BLUE_HOVER = '#005FAC'
 export const LW_BLUE_DARK = '#112233'
 export const LW_BLUE_LIGHT = '#74D7FF'
 

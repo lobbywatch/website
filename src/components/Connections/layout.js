@@ -1,4 +1,4 @@
-export const START_Y = 55
+export const START_Y = 70
 export const PADDING_BOTTOM = 60
 
 export default ({
