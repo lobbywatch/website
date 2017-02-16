@@ -50,7 +50,7 @@ const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) 
           </Grid>
           <div style={{textAlign: 'center', margin: '20px 0'}}>
             <Link {...{
-              to: `/blog?locale=${locale}`,
+              href: `/blog?locale=${locale}`,
               as: `/${locale}/blog`
             }}>
               <Message locale={locale} id='index/blog/link' />
