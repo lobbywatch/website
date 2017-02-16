@@ -55,6 +55,7 @@ const notchPosition = {
 
 const labledValueStyle = css({
   fontSize: 14,
+  lineHeight: '20px',
   borderBottom: `1px solid ${GREY_LIGHT}`,
   paddingBottom: 10,
   marginBottom: 5,

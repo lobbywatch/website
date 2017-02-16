@@ -26,6 +26,19 @@ const parliamentarianQuery = gql`
       councilTitle
       active
       canton
+      represents
+      councilJoinDate
+      councilTenure
+      age
+      occupation
+      civilStatus
+      children
+      website
+      parliamentId
+      commissions {
+        name
+        abbr
+      }
       partyMembership {
         party {
           abbr

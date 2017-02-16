@@ -7,3 +7,4 @@ const swissNumbers = formatLocale({
   currency: ['', '\u00a0CHF']
 })
 export const chfFormat = swissNumbers.format('$,.0f')
+export const numberFormat = swissNumbers.format(',')

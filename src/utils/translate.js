@@ -9,7 +9,7 @@ exports.getFormatter = translations => {
     accumulator[translation.key] = translation.value
     return accumulator
   }, {})
-  return (key, replacements, emptyValue) => {
+  const formatter = (key, replacements, emptyValue) => {
     let message = index[key] || (emptyValue !== undefined ? emptyValue : `[missing translation '${key}']`)
     if (replacements) {
       Object.keys(replacements).forEach(replacementKey => {
@@ -18,4 +18,16 @@ exports.getFormatter = translations => {
     }
     return message
   }
+  const first = formatter.first = (keys, replacements, emptyValue) => {
+    const key = keys.find(k => index[k] !== undefined) || keys[keys.length - 1]
+    return formatter(key, replacements, emptyValue)
+  }
+  formatter.pluralize = (baseKey, replacements, emptyValue) => {
+    return first([
+      `${baseKey}/${replacements.count}`,
+      `${baseKey}/other`
+    ], replacements, emptyValue)
+  }
+
+  return formatter
 }
