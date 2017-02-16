@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import {h1Rule, metaRule} from './Styled'
+import {withT} from './Message'
 
 import Icons from '../assets/TypeIcons'
 import {css} from 'glamor'
@@ -22,26 +23,60 @@ const imageStyle = css({
   backgroundPosition: 'center'
 })
 
-const DetailHead = ({image, title, subtitle, type}) => {
-  const Icon = Icons[type]
+const DetailHead = ({data, t, image, title, subtitle}) => {
+  const Icon = Icons[data.__typename]
+  const img = image(data)
   return (
     <div style={{textAlign: 'center'}}>
-      {!!image && <div {...symbolStyle} {...imageStyle} style={{backgroundImage: `url(${image})`}} />}
-      {!image && !!Icon && <Icon className={symbolStyle} size={64} />}
+      {!!img && <div {...symbolStyle} {...imageStyle} style={{backgroundImage: `url(${img})`}} />}
+      {!img && !!Icon && <Icon className={symbolStyle} size={64} />}
       <h1 {...titleStyle}>
-        {title}
+        {title(data, t)}
       </h1>
       <p {...metaStyle}>
-        {subtitle}
+        {subtitle(data, t)}
       </p>
     </div>
   )
 }
 
-DetailHead.propTypes = {
-  title: PropTypes.node.isRequired,
-  subtitle: PropTypes.node.isRequired,
-  image: PropTypes.string
+DetailHead.defaultProps = {
+  image: d => d.portrait,
+  title: d => d.name,
+  subtitle: (d, t) => {
+    switch (d.__typename) {
+      case 'Parliamentarian':
+        return [
+          d.councilTitle,
+          d.partyMembership && d.partyMembership.party.abbr,
+          d.canton
+        ].filter(Boolean).join(', ')
+      case 'Guest':
+        return [
+          d.function,
+          t('guest/invited-by', {
+            parliamentarian: d.parliamentarian.name
+          })
+        ].filter(Boolean).join(', ')
+      case 'LobbyGroup':
+        return d.sector
+      case 'Organisation':
+        return [
+          d.group,
+          d.legalForm,
+          d.location
+        ].filter(Boolean).join(', ')
+    }
+  }
 }
 
-export default DetailHead
+DetailHead.propTypes = {
+  title: PropTypes.func.isRequired,
+  subtitle: PropTypes.func.isRequired,
+  data: PropTypes.shape({
+    __typename: PropTypes.string.isRequired
+  }).isRequired,
+  image: PropTypes.func.isRequired
+}
+
+export default withT(DetailHead)

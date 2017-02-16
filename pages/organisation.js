@@ -82,20 +82,13 @@ const groupConnections = (connections) => {
 
 const Org = ({loading, error, t, organisation, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {__typename, updated, published, name, group, legalForm, location} = organisation
+    const {__typename, updated, published, name} = organisation
     const rawId = id.replace(`${__typename}-`, '')
     const path = `/${locale}/daten/organisation/${rawId}/${name}`
     return (
       <div>
         <Center>
-          <DetailHead
-            type={__typename}
-            title={name}
-            subtitle={[
-              group,
-              legalForm,
-              location
-            ].filter(Boolean).join(', ')} />
+          <DetailHead locale={locale} data={organisation} />
         </Center>
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>

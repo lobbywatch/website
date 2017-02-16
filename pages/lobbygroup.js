@@ -22,6 +22,7 @@ const lobbyGroupQuery = gql`
       published
       id
       name
+      sector
       connections {
         group
         to {
@@ -77,10 +78,7 @@ const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
     return (
       <div>
         <Center>
-          <DetailHead
-            type={__typename}
-            title={name}
-            subtitle={''} />
+          <DetailHead locale={locale} data={lobbyGroup} />
         </Center>
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>

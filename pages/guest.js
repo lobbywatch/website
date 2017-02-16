@@ -53,21 +53,13 @@ const guestQuery = gql`
 
 const Guest = ({loading, error, t, guest, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {__typename, updated, published, parliamentarian, name} = guest
+    const {__typename, updated, published, name} = guest
     const rawId = id.replace(`${__typename}-`, '')
     const path = `/${locale}/daten/zutrittsberechtigter/${rawId}/${name}`
     return (
       <div>
         <Center>
-          <DetailHead
-            type={__typename}
-            title={name}
-            subtitle={[
-              guest.function,
-              t('guest/invited-by', {
-                parliamentarian: parliamentarian.name
-              })
-            ].filter(Boolean).join(', ')} />
+          <DetailHead locale={locale} data={guest} />
         </Center>
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>

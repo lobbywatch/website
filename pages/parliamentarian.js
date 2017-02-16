@@ -64,23 +64,14 @@ const parliamentarianQuery = gql`
 const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
     const {
-      __typename, councilTitle, name, portrait, canton, partyMembership,
-      updated, published
+      __typename, name, updated, published
     } = parliamentarian
     const rawId = id.replace(`${__typename}-`, '')
     const path = `/${locale}/daten/parlamentarier/${rawId}/${name}`
     return (
       <div>
         <Center>
-          <DetailHead
-            type={__typename}
-            image={portrait}
-            title={name}
-            subtitle={[
-              councilTitle,
-              partyMembership && partyMembership.party.abbr,
-              canton
-            ].filter(Boolean).join(', ')} />
+          <DetailHead locale={locale} data={parliamentarian} />
         </Center>
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
