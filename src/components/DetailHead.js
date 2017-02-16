@@ -176,7 +176,7 @@ DetailHead.defaultProps = {
       case 'Organisation':
         return [
           ['website', formatWebsite],
-          ['uid', () => <A href={`https://www.uid.admin.ch/Detail.aspx?uid_id=${d.uid}`} target='_blank'>
+          ['uid', () => d.uid && <A href={`https://www.uid.admin.ch/Detail.aspx?uid_id=${d.uid}`} target='_blank'>
             {d.uid}
           </A>],
           ['description']
