@@ -1,9 +1,10 @@
 import React, {PropTypes, Component} from 'react'
-import {A, Clear, h1Rule, metaRule} from './Styled'
+import {A, RouteLink, Clear, h1Rule, metaRule} from './Styled'
 import {withT} from './Message'
 import {ContextBoxValue} from './ContextBox'
 
 import {numberFormat} from '../utils/formats'
+import {intersperse} from '../utils/helpers'
 import {GREY_LIGHT} from '../theme'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
@@ -110,7 +111,7 @@ const formatWebsite = value => {
 DetailHead.defaultProps = {
   image: d => d.portrait,
   title: d => d.name,
-  subtitle: (d, t) => {
+  subtitle: (d, t, locale) => {
     switch (d.__typename) {
       case 'Parliamentarian':
         return [
@@ -121,12 +122,16 @@ DetailHead.defaultProps = {
       case 'Guest':
         return (<span>
           {
-            [
+            intersperse([
               d.function,
-              t('guest/invited-by', {
-                parliamentarian: d.parliamentarian.name
-              })
-            ].filter(Boolean).join(', ')}
+              <span>
+                {t(`guest/${d.gender}/invited`)}
+                {' '}
+                <RouteLink route='parliamentarian' params={{locale, id: d.parliamentarian.id, name: d.parliamentarian.name}}>
+                  {d.parliamentarian.name}
+                </RouteLink>
+              </span>
+            ].filter(Boolean), ', ')}
           <br />
           {d.occupation}
         </span>)

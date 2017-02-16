@@ -21,7 +21,9 @@ const guestQuery = gql`
       published
       name
       occupation
+      gender
       parliamentarian {
+        id
         name
       }
       function
