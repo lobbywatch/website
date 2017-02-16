@@ -99,6 +99,7 @@ const formatCommissions = value => !!value.length && value.map((c, i) => (
 ))
 
 const formatWebsite = value => {
+  if (!value) return null
   const label = value
     .replace(/^https?:\/\//, '')
     .replace(/\/$/, '')
