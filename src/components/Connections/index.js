@@ -11,6 +11,7 @@ import {chfFormat} from '../../utils/formats'
 import {Link as RawRouteLink} from '../../../routes'
 import layout, {START_Y} from './layout'
 import nest from './nest'
+import {set} from 'd3-collection'
 import * as style from './style'
 
 class Connections extends Component {
@@ -19,7 +20,7 @@ class Connections extends Component {
     this.state = {
       nodes: [],
       links: [],
-      open: {}
+      open: set()
     }
 
     this.measure = () => {
@@ -60,18 +61,12 @@ class Connections extends Component {
       }
     })
 
-    const open = {
-      ...state.open,
-      Root: true
-    }
-
     let nextState = {
       hover: null,
       width: undefined,
       nodes,
       links,
-      hierarchy,
-      open
+      hierarchy
     }
 
     return nextState
@@ -146,7 +141,7 @@ class Connections extends Component {
     } = this.props
     let viaI = 0
 
-    const getVisible = parent => !parent || open[parent.data.id]
+    const getVisible = parent => !parent || parent.data.id === 'Root' || open.has(parent.data.id)
 
     return (
       <div {...style.container} ref={ref => { this.containerRef = ref }}>
@@ -189,18 +184,14 @@ class Connections extends Component {
           {nodes.map((node) => {
             const {data, setRef, children, parent} = node
             const isVisible = getVisible(parent)
-            const isOpen = open[data.id]
+            const isOpen = open.has(data.id)
             const toggle = () => {
-              let nextOpen = {
-                ...open,
-                [data.id]: !isOpen
-              }
-              if (isOpen) {
-                children.forEach(({data: childData}) => {
-                  if (nextOpen[childData.id]) {
-                    nextOpen[childData.id] = false
-                  }
-                })
+              const isParentOpen = open.has(parent.data.id)
+              let nextOpen = isParentOpen ? set([parent.data.id]) : set()
+              if (!isOpen) {
+                nextOpen.add(data.id)
+              } else {
+                nextOpen.remove(data.id)
               }
               this.setState({open: nextOpen})
             }
