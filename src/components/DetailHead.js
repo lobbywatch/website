@@ -83,7 +83,7 @@ class DetailHead extends Component {
             {
               detailFields.map(([key, renderer]) => (
                 <ContextBoxValue key={key} label={t(`detail/label/${key}`)}>
-                  {renderer ? renderer(data[key]) : data[key]}
+                  {renderer ? renderer(data[key], data) : data[key]}
                 </ContextBoxValue>
               ))
             }
@@ -92,6 +92,18 @@ class DetailHead extends Component {
       </div>
     )
   }
+}
+
+const formatCommissions = value => !!value.length && value.map((c, i) => (
+  <span key={i}>{c.name} ({c.abbr})<br /></span>
+))
+
+const formatWebsite = value => {
+  const label = value
+    .replace(/^https?:\/\//, '')
+    .replace(/\/$/, '')
+
+  return <A href={value} target='_blank'>{label}</A>
 }
 
 DetailHead.defaultProps = {
@@ -106,12 +118,17 @@ DetailHead.defaultProps = {
           d.canton
         ].filter(Boolean).join(', ')
       case 'Guest':
-        return [
-          d.function,
-          t('guest/invited-by', {
-            parliamentarian: d.parliamentarian.name
-          })
-        ].filter(Boolean).join(', ')
+        return (<span>
+          {
+            [
+              d.function,
+              t('guest/invited-by', {
+                parliamentarian: d.parliamentarian.name
+              })
+            ].filter(Boolean).join(', ')}
+          <br />
+          {d.occupation}
+        </span>)
       case 'LobbyGroup':
         return d.sector
       case 'Organisation':
@@ -144,11 +161,24 @@ DetailHead.defaultProps = {
               d.children !== null && t.pluralize('detail/value/children', {count: d.children})
             ].filter(Boolean).join(', ')
           }],
-          ['website'],
+          ['website', formatWebsite],
           ['profile', () => <A href={`https://www.parlament.ch/${locale}/biografie?CouncillorId=${d.parliamentId}`} target='_blank'>
             {d.name} ({d.parliamentId})
           </A>],
-          ['commissions', () => d.commissions.map((c, i) => <span key={i}>{c.name} ({c.abbr})<br /></span>)]
+          ['commissions', formatCommissions]
+        ]
+      case 'LobbyGroup':
+        return [
+          ['description'],
+          ['commissions', formatCommissions]
+        ]
+      case 'Organisation':
+        return [
+          ['website', formatWebsite],
+          ['uid', () => <A href={`https://www.uid.admin.ch/Detail.aspx?uid_id=${d.uid}`} target='_blank'>
+            {d.uid}
+          </A>],
+          ['description']
         ]
       default:
         return []

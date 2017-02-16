@@ -23,6 +23,11 @@ const lobbyGroupQuery = gql`
       id
       name
       sector
+      description
+      commissions {
+        name
+        abbr
+      }
       connections {
         group
         to {
