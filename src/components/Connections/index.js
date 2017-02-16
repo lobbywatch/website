@@ -75,14 +75,16 @@ class Connections extends Component {
     const height = layout(this.state)
 
     const {nodes, links, open} = this.state
-    nodes.forEach(({x, y, data, ref, parent}) => {
+    nodes.forEach(({x, y, data, ref, parent, depth}) => {
       ref.style.position = 'absolute'
       ref.style.left = `${x}px`
       ref.style.top = `${y}px`
       ref.style.margin = '0'
       if (open.size()) {
-        ref.style.opacity = open.has(data.id) || parent && open.has(parent.data.id)
-          ? 1 : 0.2
+        ref.style.opacity = (
+          open.has(data.id) ||
+          (parent && open.has(parent.data.id) && depth > open.size())
+        ) ? 1 : 0.2
       } else {
         ref.style.opacity = 1
       }
