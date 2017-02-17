@@ -95,7 +95,7 @@ class Connections extends Component {
       if (ref) {
         if (openSize) {
           ref.style.opacity = (
-            (source.depth === 1 || open.has(source.data.id)) &&
+            (source.depth === 0 || open.has(source.data.id)) &&
             (open.has(target.data.id) || target.depth > openSize)
           ) ? 1 : 0.2
         } else {
