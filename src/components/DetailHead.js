@@ -140,8 +140,8 @@ DetailHead.defaultProps = {
       case 'Organisation':
         return intersperse(
           d.lobbyGroups
-            .map(lobbyGroup => (
-              <RouteLink route='lobbygroup' params={{locale, id: lobbyGroup.id, name: lobbyGroup.name}}>
+            .map((lobbyGroup, i) => (
+              <RouteLink key={i} route='lobbygroup' params={{locale, id: lobbyGroup.id, name: lobbyGroup.name}}>
                 {lobbyGroup.name}
               </RouteLink>
             ))
