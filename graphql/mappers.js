@@ -124,7 +124,7 @@ exports.mapOrganisation = (raw, t) => {
     updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
-    legalForm: raw.rechtsform,
+    legalForm: t(`organisation/legalForm/${raw.rechtsform}`),
     location: raw.ort,
     description: raw.beschreibung,
     group: raw.interessengruppe,
@@ -137,8 +137,8 @@ exports.mapOrganisation = (raw, t) => {
 
 const commissionIdPrefix = exports.commissionIdPrefix = 'Commission-'
 
-const mapMandate = (from, via, connection) => ({
-  from: () => from,
+const mapMandate = (origin, via, connection, t) => ({
+  from: () => origin,
   via,
   to: {
     id: `${orgIdPrefix}${connection.organisation_id}`,
@@ -146,7 +146,25 @@ const mapMandate = (from, via, connection) => ({
   },
   group: connection.interessengruppe,
   potency: connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index],
-  function: [connection.beschreibung || connection.art, connection.funktion_im_gremium].filter(Boolean).join(', ') || null,
+  function: () => {
+    if (connection.beschreibung) {
+      return connection.beschreibung
+    }
+    let translated = t.first([
+      `connection/function/${connection.rechtsform}-${connection.art}-${connection.funktion_im_gremium}-${origin.gender}`,
+      `connection/function/${connection.art}-${connection.funktion_im_gremium}`
+    ], {}, null)
+    if (translated === null) {
+      translated = [
+        connection.art && t(`connection/art/${connection.art}`, {}, connection.art),
+        connection.funktion_im_gremium && connection.funktion_im_gremium !== connection.art && t.first([
+          `connection/funktion_im_gremium/${connection.funktion_im_gremium}-${origin.gender}`,
+          `connection/funktion_im_gremium/${connection.funktion_im_gremium}`
+        ], {}, connection.funktion_im_gremium)
+      ].filter(Boolean).join(', ')
+    }
+    return translated
+  },
   compensation: connection.verguetung !== null ? ({
     year: connection.verguetung_jahr && +connection.verguetung_jahr,
     money: +connection.verguetung,
@@ -169,7 +187,7 @@ const mapGuest = exports.mapGuest = (raw, t) => {
     function: raw.funktion,
     parliamentarian: () => mapParliamentarian(raw.parlamentarier, t)
   }
-  guest.connections = (raw.mandate || []).map(connection => mapMandate(guest, null, connection))
+  guest.connections = (raw.mandate || []).map(connection => mapMandate(guest, null, connection, t))
   return guest
 }
 
@@ -183,7 +201,7 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
   const guests = (raw.zutrittsberechtigungen || []).map(g => mapGuest(g, t))
 
   const connections = () => {
-    const direct = raw.interessenbindungen.map(directConnection => mapMandate(parliamentarian, null, directConnection))
+    const direct = raw.interessenbindungen.map(directConnection => mapMandate(parliamentarian, null, directConnection, t))
     let indirect = []
     guests.forEach(guest => {
       guest.connections.forEach(indirectConnection => {
