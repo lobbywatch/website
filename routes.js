@@ -1,8 +1,5 @@
 const nextRoutes = require('next-routes')
-const NextLink = require('next/prefetch').default
-const routes = module.exports = nextRoutes({
-  WrapLink: NextLink
-})
+const routes = module.exports = nextRoutes()
 const {locales} = require('./constants')
 
 const localeSegment = `:locale(${locales.join('|')})`
