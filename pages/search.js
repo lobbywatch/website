@@ -41,7 +41,10 @@ const searchQuery = gql`
         name
         legalForm
         location
-        group
+        lobbyGroups {
+          id
+          name
+        }
       }
       ... on LobbyGroup {
         id

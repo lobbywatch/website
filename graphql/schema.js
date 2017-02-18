@@ -110,10 +110,10 @@ type Organisation {
   legalForm: String
   location: String
   description: String
-  group: String
   uid: String
   website: String
-  connections: [Connection!]
+  lobbyGroups: [LobbyGroup!]!
+  connections: [Connection!]!
 }
 type Guest implements Person {
   id: ID!

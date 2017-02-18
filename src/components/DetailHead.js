@@ -138,11 +138,20 @@ DetailHead.defaultProps = {
       case 'LobbyGroup':
         return d.sector
       case 'Organisation':
-        return [
-          d.group,
-          d.legalForm,
-          d.location
-        ].filter(Boolean).join(', ')
+        return intersperse(
+          d.lobbyGroups
+            .map(lobbyGroup => (
+              <RouteLink route='lobbygroup' params={{locale, id: lobbyGroup.id, name: lobbyGroup.name}}>
+                {lobbyGroup.name}
+              </RouteLink>
+            ))
+            .concat([
+              d.legalForm,
+              d.location
+            ])
+            .filter(Boolean),
+          ', '
+        )
     }
   },
   details: (d, t, locale) => {

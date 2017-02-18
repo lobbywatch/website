@@ -122,7 +122,11 @@ exports.mapOrganisation = (raw, t) => {
     legalForm: t(`organisation/legalForm/${raw.rechtsform}`),
     location: raw.ort,
     description: raw.beschreibung,
-    group: raw.interessengruppe,
+    lobbyGroups: [
+      {name: raw.interessengruppe, id: raw.interessengruppe_id},
+      {name: raw.interessengruppe2, id: raw.interessengruppe2_id},
+      {name: raw.interessengruppe3, id: raw.interessengruppe3_id}
+    ].filter(l => l.name),
     uid: raw.uid,
     website: raw.homepage,
     connections

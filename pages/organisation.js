@@ -24,9 +24,12 @@ const orgQuery = gql`
       legalForm
       location
       description
-      group
       uid
       website
+      lobbyGroups {
+        id
+        name
+      }
       connections {
         group
         potency

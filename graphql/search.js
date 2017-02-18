@@ -33,7 +33,13 @@ module.exports.loadSearch = (locales) => {
       }),
       api.data(locale, 'data/interface/v1/json/table/interessengruppe/flat/list'),
       api.data(locale, 'data/interface/v1/json/table/organisation/flat/list', {
-        select_fields: 'name_de,name_fr,rechtsform,ort,interessengruppe,uid'
+        select_fields: [
+          'name_de', 'name_fr', 'rechtsform', 'ort',
+          'interessengruppe', 'interessengruppe_id',
+          'interessengruppe2', 'interessengruppe2_id',
+          'interessengruppe3', 'interessengruppe3_id',
+          'uid'
+        ].join(',')
       })
     ]).then(([
       {json: {data: parliamentarians}},
@@ -74,7 +80,9 @@ module.exports.loadSearch = (locales) => {
         keywords: cleanKeywords([
           organisation.name,
           organisation.uid,
-          organisation.interessengruppe
+          organisation.interessengruppe,
+          organisation.interessengruppe2,
+          organisation.interessengruppe3
         ])
       })))
 

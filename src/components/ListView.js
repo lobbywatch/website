@@ -89,11 +89,13 @@ ListView.defaultProps = {
       case 'LobbyGroup':
         return item.sector
       case 'Organisation':
-        return [
-          item.group,
-          item.legalForm,
-          item.location
-        ].filter(Boolean).join(', ')
+        return item.lobbyGroups
+          .map(lobbyGroup => lobbyGroup.name)
+          .concat([
+            item.legalForm,
+            item.location
+          ])
+          .filter(Boolean).join(', ')
     }
   }
 }
