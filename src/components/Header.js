@@ -62,7 +62,7 @@ const listItemStyle = css({
     marginLeft: ITEM_MARGIN_LEFT,
     position: 'relative'
   },
-  '& a, & a:visited': {
+  '& a, & a:visited, & a:hover': {
     color: LW_BLUE_LIGHT
   }
 })

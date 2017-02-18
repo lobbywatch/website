@@ -128,7 +128,7 @@ export const inputStyle = {
     paddingRight: 16
   },
   '::placeholder': {
-    color: GREY_LIGHT,
+    color: GREY_MID,
     textOverflow: 'ellipsis'
   },
   ':focus': {

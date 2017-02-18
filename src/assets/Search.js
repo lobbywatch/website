@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react'
-import {GREY_LIGHT} from '../theme'
+import {GREY_MID} from '../theme'
 
 const Icon = ({size, color, style, className}) => (
   <svg width={size} height={size} style={style} className={className} viewBox='0 0 21 21'>
@@ -12,7 +12,7 @@ const Icon = ({size, color, style, className}) => (
 
 Icon.defaultProps = {
   size: 21,
-  color: GREY_LIGHT
+  color: GREY_MID
 }
 Icon.propTypes = {
   size: PropTypes.number.isRequired,
