@@ -20,12 +20,7 @@ const mapParliamentConnection = (from, via, connection, t) => ({
     id: `${parliamentarianIdPrefix}${connection.parlamentarier_id || connection.id}`,
     name: connection.name
   },
-  group: connection.partei || t('connections/party/none'),
-  compensation: connection.verguetung !== null ? ({
-    year: connection.verguetung_jahr && +connection.verguetung_jahr,
-    money: +connection.verguetung,
-    description: connection.verguetung_beschreibung
-  }) : null
+  group: connection.partei || t('connections/party/none')
 })
 
 const lobbyGroupIdPrefix = exports.lobbyGroupIdPrefix = 'LobbyGroup-'
