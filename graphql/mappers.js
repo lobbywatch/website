@@ -283,7 +283,7 @@ exports.mapArticle = raw => {
     raw.field_image[0].url
   )
   if (image) {
-    image = image.replace('lobbywatch-cms.interactivethings.io/sites/default/', 'lobbywatch.ch/sites/lobbywatch.ch/')
+    image = image.replace('lw.preus.se/sites/default/', 'lobbywatch.ch/sites/lobbywatch.ch/')
   }
   return Object.assign({}, raw, {
     path: raw.url.replace(DRUPAL_BASE_URL, ''),

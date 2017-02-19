@@ -1,6 +1,6 @@
 exports.locales = ['de', 'fr']
 exports.EXPRESS_PORT = typeof process !== 'undefined' && process.env.PORT || 3000
-exports.DRUPAL_BASE_URL = 'https://lobbywatch-cms.interactivethings.io'
+exports.DRUPAL_BASE_URL = 'https://lw.preus.se'
 exports.DRUPAL_IMAGE_BASE_URL = 'https://lobbywatch.ch'
 
 const location = typeof window !== 'undefined' && window.location

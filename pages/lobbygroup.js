@@ -13,6 +13,7 @@ import DetailHead from '../src/components/DetailHead'
 import {A, Meta} from '../src/components/Styled'
 import {withT} from '../src/components/Message'
 import {GREY_LIGHT} from '../src/theme'
+import {DRUPAL_BASE_URL} from '../constants'
 
 const lobbyGroupQuery = gql`
   query getLobbyGroup($locale: Locale!, $id: ID!) {
@@ -97,7 +98,7 @@ const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
         <Center>
           <Meta>
             Original Profil:
-            {' '}<A target='_blank' href={`https://lobbywatch-cms.interactivethings.io${path}`}>Staging</A>
+            {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
           </Meta>
         </Center>
