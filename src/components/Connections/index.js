@@ -156,7 +156,6 @@ class Connections extends Component {
     const {
       locale, t,
       intermediates,
-      directness,
       potency,
       updated, published,
       hoverValues
@@ -169,10 +168,21 @@ class Connections extends Component {
     return (
       <div {...style.container} ref={ref => { this.containerRef = ref }}>
         {!!hover && !!width && <ContextBox x={hover.x + hover.data.measurements.width / 2} y={hover.y + hover.data.measurements.height + 12} contextWidth={width}>
-          {hoverValues.map(([key, render], i) => !key
-            ? render(hover, this.props)
-            : <ContextBoxValue key={i} label={t(key)}>{render(hover, this.props)}</ContextBoxValue>
-          )}
+          {hoverValues.map(([key, test, render], i) => {
+            const hasValue = test(hover, this.props)
+            if (!hasValue) {
+              return null
+            }
+            const content = render ? render(hover, this.props) : hasValue
+            if (!key) {
+              return content
+            }
+            return (
+              <ContextBoxValue key={i} label={t(key)}>
+                {content}
+              </ContextBoxValue>
+            )
+          })}
         </ContextBox>}
         <div {...style.metaBox} {...metaRule}>
           {intersperse([
@@ -263,6 +273,10 @@ class Connections extends Component {
             }
             if (data.type === 'Connection') {
               const {connection} = data
+              const canHover = !!hoverValues
+                .map(([_, test]) => test(node, this.props))
+                .filter(Boolean)
+                .length
               return (
                 <RawRouteLink key={data.id}
                   route={connection.to.__typename.toLowerCase()}
@@ -272,8 +286,8 @@ class Connections extends Component {
                     name: connection.to.name
                   }}>
                   <a ref={setRef}
-                    onMouseOver={() => this.setState({hover: node})}
-                    onMouseOut={() => this.setState({hover: null})}
+                    onMouseOver={canHover ? () => this.setState({hover: node}) : undefined}
+                    onMouseOut={canHover ? () => this.setState({hover: null}) : undefined}
                     className={[
                       connection.indirect ? style.connectionIndirect : style.connection,
                       !isVisible && style.hidden
@@ -293,33 +307,36 @@ class Connections extends Component {
 
 export const hoverValues = [
   ['connections/context/function', ({data}) => data.connection['function']],
-  ['connections/context/compensation', (hover, {t}) => {
-    if (!hover.data.connection.compensation) {
-      return
-    }
-    return (
+  [
+    'connections/context/compensation',
+    ({data: {connection: {compensation}}}) => !!compensation,
+    ({data: {connection: {compensation}}}, {t}) => (
       <span>
-        {chfFormat(hover.data.connection.compensation.money)}
+        {chfFormat(compensation.money)}
         {' '}{t('connections/context/compensation/periode')}
-        {!!hover.data.connection.compensation.description && ` (${hover.data.connection.compensation.description})`}
+        {!!compensation.description && ` (${compensation.description})`}
       </span>
     )
-  }],
-  [null, ({data: {connection: {paths}}}, {t, directness}) => !!paths && paths.map((path, i) => (
-    <ContextBoxValue key={`paths-${i}`}
-      label={t(`connections/context/paths/${path.length > directness ? 'indirect' : 'direct'}`)}>
-      <span>
-        {path.map((via, ii) => {
-          const Icon = Icons[via.to.__typename]
-          return <span key={ii} {...style.pathSegment}>
-            <Icon className={style.pathSegmentIcon} size={16} />
-            {via.to.name}<br />
-            {!!via['function'] && <span {...metaRule}>{via.function}<br /></span>}
-          </span>
-        })}
-      </span>
-    </ContextBoxValue>
-  ))]
+  ],
+  [
+    null,
+    ({data: {connection: {paths}}}) => !!paths,
+    ({data: {connection: {paths}}}, {t, directness}) => paths.map((path, i) => (
+      <ContextBoxValue key={`paths-${i}`}
+        label={t(`connections/context/paths/${path.length > directness ? 'indirect' : 'direct'}`)}>
+        <span>
+          {path.map((via, ii) => {
+            const Icon = Icons[via.to.__typename]
+            return <span key={ii} {...style.pathSegment}>
+              <Icon className={style.pathSegmentIcon} size={16} />
+              {via.to.name}<br />
+              {!!via['function'] && <span {...metaRule}>{via.function}<br /></span>}
+            </span>
+          })}
+        </span>
+      </ContextBoxValue>
+    ))
+  ]
 ]
 
 Connections.propTypes = {
