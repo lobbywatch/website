@@ -221,6 +221,7 @@ const commissionIdPrefix = exports.commissionIdPrefix = 'Commission-'
 
 const mapMandate = (origin, connection, t) => ({
   from: () => origin,
+  vias: [],
   to: {
     id: `${orgIdPrefix}${connection.organisation_id}`,
     name: connection.organisation_name
@@ -270,7 +271,6 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
       guest.connections.forEach(indirectConnection => {
         indirect.push(Object.assign({}, indirectConnection, {
           from: parliamentarian,
-          via: guest,
           vias: [{
             from: parliamentarian,
             to: guest,

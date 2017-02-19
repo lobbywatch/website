@@ -64,10 +64,13 @@ const parliamentarianQuery = gql`
             name
           }
         }
-        via {
-          ... on Guest {
-            id
-            name
+        vias {
+          __typename
+          to {
+            ... on Guest {
+              id
+              name
+            }
           }
         }
       }
@@ -94,7 +97,7 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
               maxGroups={7}
               updated={updated}
               published={published}
-              intermediate={connection => connection.via ? connection.via.id : ''}
+              intermediate={connection => connection.vias.length ? connection.vias[0].to.id : ''}
               intermediates={parliamentarian.guests} />
           </Center>
         </div>
