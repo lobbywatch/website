@@ -14,6 +14,8 @@ import nest from './nest'
 import {set} from 'd3-collection'
 import * as style from './style'
 
+import Icons from '../../assets/TypeIcons'
+
 class Connections extends Component {
   constructor (props) {
     super(props)
@@ -308,7 +310,9 @@ export const hoverValues = [
       label={t(`connections/context/paths/${path.length > directness ? 'indirect' : 'direct'}`)}>
       <span>
         {path.map((via, ii) => {
-          return <span key={ii}>
+          const Icon = Icons[via.to.__typename]
+          return <span key={ii} {...style.pathSegment}>
+            <Icon className={style.pathSegmentIcon} size={16} />
             {via.to.name}<br />
             {!!via['function'] && <span {...metaRule}>{via.function}<br /></span>}
           </span>

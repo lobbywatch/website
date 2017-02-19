@@ -91,3 +91,16 @@ export const metaBox = css({
     lineHeight: '20px'
   }
 })
+
+export const pathSegment = css({
+  position: 'relative',
+  display: 'block',
+  paddingLeft: 20
+})
+
+export const pathSegmentIcon = css({
+  position: 'absolute',
+  top: 2,
+  left: 0
+})
+
