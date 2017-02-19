@@ -283,7 +283,7 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
   }
 
   const parliamentarian = {
-    id: `${parliamentarianIdPrefix}${raw.id}`,
+    id: `${parliamentarianIdPrefix}${raw.parlamentarier_id || raw.id}`,
     updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: () => `${raw.vorname} ${raw.nachname}`,
