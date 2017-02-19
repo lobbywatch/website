@@ -149,6 +149,7 @@ type Connection {
   from: Entity!
   to: Entity!
   via: Entity
+  vias: [Connection!]!
   compensation: Compensation
   group: String
   potency: Potency

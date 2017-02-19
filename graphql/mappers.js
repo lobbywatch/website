@@ -23,48 +23,111 @@ const mapParliamentConnection = (from, via, connection, t) => ({
   group: connection.partei || t('connections/party/none')
 })
 
+const mapFunction = (t, {beschreibung, art, funktion_im_gremium: funktion, rechtsform, gender}) => {
+  if (beschreibung) {
+    return beschreibung
+  }
+  let translated = t.first([
+    `connection/function/${rechtsform}-${art}-${funktion}-${gender}`,
+    `connection/function/${art}-${funktion}`
+  ], {}, null)
+  if (translated === null) {
+    translated = [
+      art && t(`connection/art/${art}`, {}, art),
+      funktion && funktion !== art && t.first([
+        `connection/funktion_im_gremium/${funktion}-${gender}`,
+        `connection/funktion_im_gremium/${funktion}`
+      ], {}, funktion)
+    ].filter(Boolean).join(', ')
+  }
+  return translated
+}
+
 const lobbyGroupIdPrefix = exports.lobbyGroupIdPrefix = 'LobbyGroup-'
 exports.mapLobbyGroup = (raw, t) => {
   const connections = () => {
     const organisations = raw.organisationen.map(connection => ({
       from: lobbyGroup,
+      vias: [],
       to: {
         id: `${orgIdPrefix}${connection.id}`,
         name: connection.name
       },
-      group: t('connections/organisation/generic')
+      group: t('connections/organisation')
     }))
 
     const parliamentarians = raw.connections.map(connection => {
-      let via
-      if (connection.zwischen_organisation_id) {
-        // we could support multiple vias here: zutrittsberechtigter?, zwischen_organisation, connector_organisation
-        via = raw.zwischen_organisationen
-          .find(org => org.id === connection.zwischen_organisation_id)
-      } else {
-        // we could support multiple vias here: zutrittsberechtigter?, connector_organisation
-        via = raw.organisationen
-          .find(org => org.id === connection.connector_organisation_id)
-      }
-      via = via && [via].map(org => ({
-        id: `${orgIdPrefix}${org.id}`,
-        name: org.name
-      }))[0]
+      const parliamentarian = mapParliamentarian(
+        raw.parlamentarier.find(p => p.id === connection.parlamentarier_id),
+        t
+      )
 
-      const parliamentarian = raw.parlamentarier.find(p => p.id === connection.parlamentarier_id)
+      const connectorOrganisation = mapOrganisation(
+        raw.organisationen
+          .find(org => org.id === connection.connector_organisation_id),
+        t
+      )
+      const intermediateOrganisation = connection.zwischen_organisation_id && mapOrganisation(
+        raw.zwischen_organisationen
+          .find(org => org.id === connection.zwischen_organisation_id),
+        t
+      )
+
+      let directFunction
+      if (!intermediateOrganisation && !connection.person_id) {
+        directFunction = () => mapFunction(t, Object.assign({}, connection, {
+          rechtsform: connectorOrganisation.legalFormId,
+          gender: parliamentarian.gender
+        }))
+      }
+      const vias = [
+        {
+          from: lobbyGroup,
+          to: connectorOrganisation,
+          function: directFunction
+        }
+      ]
+      if (intermediateOrganisation) {
+        vias.push({
+          from: connectorOrganisation,
+          to: intermediateOrganisation,
+          function: t(`connections/art/${connection.zwischen_organisation_art}`)
+        })
+      }
+      if (connection.person_id) {
+        const rawGuest = raw.zutrittsberechtigte
+            .find(g => g.person_id === connection.person_id)
+        if (!rawGuest) {
+          console.error(
+            `Can't find ${connection.zutrittsberechtigter} (${connection.person_id}) in data.zutrittsberechtigte of ${lobbyGroup.id}`
+          )
+          // can happen when e.g. the guest is not published yet
+          // kill the connection
+          return null
+        }
+        const guest = mapGuest(rawGuest, t)
+        const org = intermediateOrganisation || connectorOrganisation
+        vias.push({
+          from: org,
+          to: guest,
+          function: () => mapFunction(t, Object.assign({}, connection, {
+            rechtsform: org.legalFormId,
+            gender: guest.gender
+          }))
+        })
+      }
 
       return {
         from: lobbyGroup,
-        via,
-        to: {
-          id: `${parliamentarianIdPrefix}${parliamentarian.id}`,
-          name: parliamentarian.name
-        },
-        group: parliamentarian.partei || t('connections/party/none')
+        vias,
+        to: parliamentarian,
+        group: parliamentarian.partyMembership
+          ? parliamentarian.partyMembership.party.abbr
+          : t('connections/party/none')
       }
     })
 
-    return organisations.concat(parliamentarians)
+    return organisations.concat(parliamentarians).filter(Boolean)
   }
 
   const lobbyGroup = {
@@ -92,7 +155,7 @@ exports.mapLobbyGroup = (raw, t) => {
 }
 
 const orgIdPrefix = exports.orgIdPrefix = 'Organisation-'
-exports.mapOrganisation = (raw, t) => {
+const mapOrganisation = exports.mapOrganisation = (raw, t) => {
   const connections = () => {
     const direct = raw.parlamentarier.map(directConnection => {
       return mapParliamentConnection(org, null, directConnection, t)
@@ -109,7 +172,7 @@ exports.mapOrganisation = (raw, t) => {
         id: `${orgIdPrefix}${connection.ziel_organisation_id}`,
         name: connection.ziel_organisation_name
       },
-      group: t(`connections/organisation/${connection.art}`)
+      group: t(`connections/groups/${connection.art}`)
     }))
     return direct.concat(indirect).concat(relations)
   }
@@ -120,6 +183,7 @@ exports.mapOrganisation = (raw, t) => {
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
     legalForm: t(`organisation/legalForm/${raw.rechtsform}`),
+    legalFormId: raw.rechtsform,
     location: raw.ort,
     description: raw.beschreibung,
     lobbyGroups: [
@@ -136,34 +200,15 @@ exports.mapOrganisation = (raw, t) => {
 
 const commissionIdPrefix = exports.commissionIdPrefix = 'Commission-'
 
-const mapMandate = (origin, via, connection, t) => ({
+const mapMandate = (origin, connection, t) => ({
   from: () => origin,
-  via,
   to: {
     id: `${orgIdPrefix}${connection.organisation_id}`,
     name: connection.organisation_name
   },
   group: connection.interessengruppe,
   potency: connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index],
-  function: () => {
-    if (connection.beschreibung) {
-      return connection.beschreibung
-    }
-    let translated = t.first([
-      `connection/function/${connection.rechtsform}-${connection.art}-${connection.funktion_im_gremium}-${origin.gender}`,
-      `connection/function/${connection.art}-${connection.funktion_im_gremium}`
-    ], {}, null)
-    if (translated === null) {
-      translated = [
-        connection.art && t(`connection/art/${connection.art}`, {}, connection.art),
-        connection.funktion_im_gremium && connection.funktion_im_gremium !== connection.art && t.first([
-          `connection/funktion_im_gremium/${connection.funktion_im_gremium}-${origin.gender}`,
-          `connection/funktion_im_gremium/${connection.funktion_im_gremium}`
-        ], {}, connection.funktion_im_gremium)
-      ].filter(Boolean).join(', ')
-    }
-    return translated
-  },
+  function: () => mapFunction(t, Object.assign({gender: origin.gender}, connection)),
   compensation: connection.verguetung !== null ? ({
     year: connection.verguetung_jahr && +connection.verguetung_jahr,
     money: +connection.verguetung,
@@ -186,7 +231,7 @@ const mapGuest = exports.mapGuest = (raw, t) => {
     function: raw.funktion,
     parliamentarian: () => mapParliamentarian(raw.parlamentarier, t)
   }
-  guest.connections = (raw.mandate || []).map(connection => mapMandate(guest, null, connection, t))
+  guest.connections = (raw.mandate || []).map(connection => mapMandate(guest, connection, t))
   return guest
 }
 
@@ -200,13 +245,18 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
   const guests = (raw.zutrittsberechtigungen || []).map(g => mapGuest(g, t))
 
   const connections = () => {
-    const direct = raw.interessenbindungen.map(directConnection => mapMandate(parliamentarian, null, directConnection, t))
+    const direct = raw.interessenbindungen.map(directConnection => mapMandate(parliamentarian, directConnection, t))
     let indirect = []
     guests.forEach(guest => {
       guest.connections.forEach(indirectConnection => {
         indirect.push(Object.assign({}, indirectConnection, {
-          from: () => parliamentarian,
-          via: guest
+          from: parliamentarian,
+          via: guest,
+          vias: [{
+            from: parliamentarian,
+            to: guest,
+            function: guest['function']
+          }]
         }))
       })
     })

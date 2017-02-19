@@ -1,13 +1,46 @@
 import {nest} from 'd3-collection'
 import {stratify} from 'd3-hierarchy'
-import {descending} from 'd3-array'
+import {descending, ascending} from 'd3-array'
 
-export default ({data, intermediate, intermediates, maxGroups, connectionWeight, t}) => {
+const groupConnections = (connections, directness) => {
+  const groups = nest()
+    .key(connection => connection.to.id)
+    .entries(connections)
+
+  return groups.map(({values}) => {
+    let paths = values
+      .map(value => value.vias.length && value.vias)
+      .filter(Boolean)
+    paths.sort((a, b) => ascending(a.length, b.length))
+    if (!paths.length) {
+      paths = undefined
+    }
+    return {
+      ...values[0],
+      paths,
+      indirect: paths && paths[0].length > directness
+    }
+  })
+}
+
+export default ({
+  data, groupByDestination, directness,
+  intermediate, intermediates,
+  maxGroups, connectionWeight,
+  t
+}) => {
+  let connectionData
+  if (groupByDestination) {
+    connectionData = groupConnections(data, directness)
+  } else {
+    connectionData = data
+  }
+
   const moreKey = t('connections/more/plural')
   const groupTree = nest()
     .key(intermediate)
     .key(connection => connection.group ? connection.group : moreKey)
-    .entries(data)
+    .entries(connectionData)
 
   const nodeData = groupTree.reduce(
     (rootAccumulator, viaLevel) => {

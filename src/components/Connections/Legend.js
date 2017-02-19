@@ -1,8 +1,7 @@
 import React, {PropTypes} from 'react'
-import {css} from 'glamor'
-import {withT} from '../Message'
+import {css, merge} from 'glamor'
 
-import {POTENCY_COLORS, LW_BLUE, mediaM} from '../../theme'
+import {LW_BLUE, GREY_DARK, mediaM} from '../../theme'
 import {intersperse} from '../../utils/helpers'
 import {Link as RawRouteLink} from '../../../routes'
 import {Clear} from '../Styled'
@@ -23,11 +22,14 @@ const legendContainer = css({
 })
 
 const legendLabel = css({
-  color: LW_BLUE,
-  textDecoration: 'none',
+  color: GREY_DARK,
   [mediaM]: {
     marginRight: 10
   }
+})
+const legendLink = merge(legendLabel, {
+  textDecoration: 'none',
+  color: LW_BLUE
 })
 const legendValues = css({
   float: 'right'
@@ -45,21 +47,22 @@ const legendBubble = css({
   borderRadius: '50%'
 })
 
-const Legend = ({t, locale}) => (
+const Legend = ({locale, title, pagePath, items}) => (
   <Clear {...legendContainer}>
-    <RawRouteLink
+    {!!pagePath && <RawRouteLink
       route='page'
       params={{
         locale,
-        path: t('connections/legend/path').split('/')
+        path: pagePath
       }}>
-      <a {...legendLabel}>{t('connections/legend/title')}</a>
-    </RawRouteLink>
+      <a {...legendLink}>{title}</a>
+    </RawRouteLink>}
+    {!pagePath && <span {...legendLabel}>{title}</span>}
 
     <span {...legendValues}>
-      {intersperse(Object.keys(POTENCY_COLORS).map(key => (
-        <span key={key} {...legendValue} style={{color: POTENCY_COLORS[key]}}>
-          <span {...legendBubble} style={{backgroundColor: POTENCY_COLORS[key]}} />{t(`connections/legend/${key}`)}
+      {intersperse(items.map(({label, color, textColor, border}, i) => (
+        <span key={i} {...legendValue} style={{color: textColor || color}}>
+          <span {...legendBubble} style={{backgroundColor: color, border}} />{label}
         </span>
       )), ' ')}
     </span>
@@ -67,7 +70,13 @@ const Legend = ({t, locale}) => (
 )
 
 Legend.propTypes = {
-  t: PropTypes.func.isRequired
+  title: PropTypes.string.isRequired,
+  pagePath: PropTypes.array,
+  locale: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired
+  }))
 }
 
-export default withT(Legend)
+export default Legend

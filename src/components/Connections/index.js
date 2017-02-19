@@ -1,6 +1,6 @@
 import React, {PropTypes, Component} from 'react'
 
-import {WHITE, POTENCY_COLORS} from '../../theme'
+import {WHITE, BLACK, GREY_DARK, POTENCY_COLORS} from '../../theme'
 import GuestIcon from '../../assets/Guest'
 import ContextBox, {ContextBoxValue} from '../ContextBox'
 import {metaRule} from '../Styled'
@@ -154,12 +154,14 @@ class Connections extends Component {
     const {
       locale, t,
       intermediates,
+      directness,
       potency,
       updated, published
     } = this.props
     let viaI = 0
 
     const getVisible = parent => !parent || parent.data.id === 'Root' || open.has(parent.data.id)
+    const hasIndirect = !!nodes.find(({data}) => data && data.connection && data.connection.indirect)
 
     return (
       <div {...style.container} ref={ref => { this.containerRef = ref }}>
@@ -171,16 +173,18 @@ class Connections extends Component {
             {' '}{t('connections/context/compensation/periode')}
             {!!hover.data.connection.compensation.description && ` (${hover.data.connection.compensation.description})`}
           </ContextBoxValue>)}
-          {!!hover.data.connection.vias && (<ContextBoxValue label={t('connections/context/vias')}>
-            <span>
-              {hover.data.connection.vias.map((via, i) => {
-                if (!via) {
-                  return <span key={i}>{t('connections/context/vias/direct')}<br /></span>
-                }
-                return <span key={i}>{via.name}<br /></span>
-              })}
-            </span>
-          </ContextBoxValue>)}
+          {!!hover.data.connection.paths && hover.data.connection.paths.map((path, i) => (
+            <ContextBoxValue key={i} label={t(`connections/context/paths/${path.length > directness ? 'indirect' : 'direct'}`)}>
+              <span>
+                {path.map((via, ii) => {
+                  return <span key={ii}>
+                    {via.to.name}<br />
+                    {!!via['function'] && <span>- {via.function}<br /></span>}
+                  </span>
+                })}
+              </span>
+            </ContextBoxValue>
+          ))}
         </ContextBox>}
         <div {...style.metaBox} {...metaRule}>
           {intersperse([
@@ -198,7 +202,30 @@ class Connections extends Component {
           })}
         </svg>
         <div style={{textAlign: 'center', position: 'relative', paddingTop: START_Y}}>
-          {potency && <Legend locale={locale} />}
+          {potency && <Legend
+            locale={locale}
+            title={t('connections/legend/title')}
+            pagePath={t('connections/legend/path').split('/')}
+            items={Object.keys(POTENCY_COLORS).map(key => ({
+              label: t(`connections/legend/${key}`),
+              color: POTENCY_COLORS[key]
+            }))} />}
+          {hasIndirect && <Legend
+            locale={locale}
+            title={t('connections/legend/type/title')}
+            items={[
+              {
+                color: GREY_DARK,
+                textColor: BLACK,
+                label: t('connections/legend/direct')
+              },
+              {
+                color: WHITE,
+                label: t('connections/legend/indirect'),
+                border: `1px solid ${GREY_DARK}`,
+                textColor: BLACK
+              }
+            ]} />}
           {nodes.map((node) => {
             const {data, setRef, children, parent} = node
             const isVisible = getVisible(parent)
@@ -259,8 +286,10 @@ class Connections extends Component {
                   <a ref={setRef}
                     onMouseOver={() => this.setState({hover: node})}
                     onMouseOut={() => this.setState({hover: null})}
-                    {...style.connection}
-                    className={!isVisible && style.hidden}
+                    className={[
+                      connection.indirect ? style.connectionIndirect : style.connection,
+                      !isVisible && style.hidden
+                    ].filter(Boolean).join(' ')}
                     style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
                     {connection.to.name}
                   </a>
@@ -275,14 +304,18 @@ class Connections extends Component {
 }
 
 Connections.propTypes = {
+  directness: PropTypes.number.isRequired,
+  groupByDestination: PropTypes.bool.isRequired,
   potency: PropTypes.bool.isRequired,
   connectionWeight: PropTypes.func.isRequired // weight for sorting, default 1
 }
 
 Connections.defaultProps = {
+  directness: 0,
   potency: false,
   intermediate: () => '',
   intermediates: [],
+  groupByDestination: false,
   maxGroups: undefined,
   connectionWeight: () => 1
 }

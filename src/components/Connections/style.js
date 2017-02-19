@@ -67,6 +67,11 @@ export const connection = css({
   marginRight: 10,
   marginBottom: 10
 })
+export const connectionIndirect = merge(connection, {
+  backgroundColor: WHITE,
+  color: GREY_DARK,
+  border: `1px solid ${GREY_DARK}`
+})
 
 export const hidden = css({
   position: 'absolute',

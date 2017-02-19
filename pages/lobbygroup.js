@@ -2,7 +2,6 @@ import React from 'react'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
-import {nest} from 'd3-collection'
 
 import withData from '../src/apollo/withData'
 
@@ -42,10 +41,17 @@ const lobbyGroupQuery = gql`
             name
           }
         }
-        via {
-          ... on Organisation {
-            id
-            name
+        vias {
+          function
+          to {
+            ... on Organisation {
+              id
+              name
+            }
+            ... on Guest {
+              id
+              name
+            }
           }
         }
       }
@@ -56,24 +62,6 @@ const lobbyGroupQuery = gql`
 const CONNECTION_WEIGHTS = {
   Parliamentarian: 0.1,
   Organisation: 1000
-}
-
-const groupConnections = (connections) => {
-  const groups = nest()
-    .key(connection => connection.to.id)
-    .entries(connections)
-
-  return groups.map(({values}) => {
-    let vias = values.map(value => value.via)
-    if (!vias.filter(Boolean).length) {
-      vias = undefined
-    }
-    return {
-      ...values[0],
-      via: undefined,
-      vias
-    }
-  })
 }
 
 const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
@@ -89,9 +77,11 @@ const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
         <div style={{backgroundColor: GREY_LIGHT}}>
           <Center style={{paddingTop: 0, paddingBottom: 0}}>
             <Connections locale={locale}
+              directness={1}
               updated={updated}
               published={published}
-              data={groupConnections(lobbyGroup.connections)}
+              data={lobbyGroup.connections}
+              groupByDestination
               connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
           </Center>
         </div>
