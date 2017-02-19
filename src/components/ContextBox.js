@@ -85,17 +85,18 @@ ContextBoxValue.propTypes = {
 }
 
 const ContextBox = ({orientation: yOrientation, x, y, contextWidth, children}) => {
+  const maxWidth = Math.min(400, contextWidth)
   let xOrientation = 'center'
-  if (contextWidth - x < 100) {
+  if (contextWidth - x < maxWidth / 2) {
     xOrientation = 'right'
-  } else if (x < 100) {
+  } else if (x < maxWidth / 2) {
     xOrientation = 'left'
   }
 
   return (
     <div {...boxStyle}
       className={boxPosition[yOrientation][xOrientation]}
-      style={{left: x, top: y}}>
+      style={{left: x, top: y, maxWidth}}>
       <div>
         {children}
       </div>
