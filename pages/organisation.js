@@ -50,10 +50,14 @@ const orgQuery = gql`
             name
           }
         }
-        via {
-          ... on Guest {
-            id
-            name
+        vias {
+          __typename
+          function
+          to {
+            ... on Guest {
+              id
+              name
+            }
           }
         }
       }
@@ -64,24 +68,6 @@ const orgQuery = gql`
 const CONNECTION_WEIGHTS = {
   Parliamentarian: 1000,
   Organisation: 0.1
-}
-
-const groupConnections = (connections) => {
-  const groups = nest()
-    .key(connection => connection.to.id)
-    .entries(connections)
-
-  return groups.map(({values}) => {
-    let vias = values.map(value => value.via)
-    if (!vias.filter(Boolean).length) {
-      vias = undefined
-    }
-    return {
-      ...values[0],
-      via: undefined,
-      vias
-    }
-  })
 }
 
 const Org = ({loading, error, t, organisation, locale, id}) => (
@@ -100,7 +86,8 @@ const Org = ({loading, error, t, organisation, locale, id}) => (
               locale={locale}
               updated={updated}
               published={published}
-              data={groupConnections(organisation.connections)}
+              data={organisation.connections}
+              groupByDestination
               connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
           </Center>
         </div>
