@@ -25,9 +25,9 @@ const boxPosition = {
     right: css({transform: 'translateX(-85%) translateY(-100%)'})
   },
   below: {
-    center: css({transform: 'translateX(-50%) translateY(0%)'}),
-    left: css({transform: 'translateX(-15%) translateY(0%)'}),
-    right: css({transform: 'translateX(-85%) translateY(0%)'})
+    center: css({transform: 'translateX(-50%) translateY(0)'}),
+    left: css({transform: 'translateX(-15%) translateY(0)'}),
+    right: css({transform: 'translateX(-85%) translateY(0)'})
   }
 }
 
@@ -46,7 +46,7 @@ const notchPosition = {
     left: css({bottom: -8, transform: 'translateX(-50%)', left: '15%'}),
     right: css({bottom: -8, transform: 'translateX(50%)', right: '15%'})
   },
-  bottom: {
+  below: {
     center: css({top: -8, transform: 'translateX(-50%) rotate(180deg)', left: '50%'}),
     left: css({top: -8, transform: 'translateX(-50%) rotate(180deg)', left: '15%'}),
     right: css({top: -8, transform: 'translateX(50%) rotate(180deg)', right: '15%'})
@@ -106,7 +106,7 @@ const ContextBox = ({orientation: yOrientation, x, y, contextWidth, children}) =
 }
 
 ContextBox.defaultProps = {
-  orientation: 'top'
+  orientation: 'below'
 }
 ContextBox.propTypes = {
   x: PropTypes.number.isRequired,

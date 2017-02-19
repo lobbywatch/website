@@ -156,7 +156,8 @@ class Connections extends Component {
       intermediates,
       directness,
       potency,
-      updated, published
+      updated, published,
+      hoverValues
     } = this.props
     let viaI = 0
 
@@ -165,26 +166,11 @@ class Connections extends Component {
 
     return (
       <div {...style.container} ref={ref => { this.containerRef = ref }}>
-        {!!hover && !!width && <ContextBox x={hover.x + hover.data.measurements.width / 2} y={hover.y - 15} contextWidth={width}>
-          <ContextBoxValue label={t('connections/context/group')}>{hover.data.connection.group}</ContextBoxValue>
-          <ContextBoxValue label={t('connections/context/function')}>{hover.data.connection.function}</ContextBoxValue>
-          {!!hover.data.connection.compensation && (<ContextBoxValue label={t('connections/context/compensation')}>
-            {chfFormat(hover.data.connection.compensation.money)}
-            {' '}{t('connections/context/compensation/periode')}
-            {!!hover.data.connection.compensation.description && ` (${hover.data.connection.compensation.description})`}
-          </ContextBoxValue>)}
-          {!!hover.data.connection.paths && hover.data.connection.paths.map((path, i) => (
-            <ContextBoxValue key={i} label={t(`connections/context/paths/${path.length > directness ? 'indirect' : 'direct'}`)}>
-              <span>
-                {path.map((via, ii) => {
-                  return <span key={ii}>
-                    {via.to.name}<br />
-                    {!!via['function'] && <span>- {via.function}<br /></span>}
-                  </span>
-                })}
-              </span>
-            </ContextBoxValue>
-          ))}
+        {!!hover && !!width && <ContextBox x={hover.x + hover.data.measurements.width / 2} y={hover.y + hover.data.measurements.height + 12} contextWidth={width}>
+          {hoverValues.map(([key, render], i) => !key
+            ? render(hover, this.props)
+            : <ContextBoxValue key={i} label={t(key)}>{render(hover, this.props)}</ContextBoxValue>
+          )}
         </ContextBox>}
         <div {...style.metaBox} {...metaRule}>
           {intersperse([
@@ -303,11 +289,41 @@ class Connections extends Component {
   }
 }
 
+export const hoverValues = [
+  ['connections/context/function', ({data}) => data.connection['function']],
+  ['connections/context/compensation', (hover, {t}) => {
+    if (!hover.data.connection.compensation) {
+      return
+    }
+    return (
+      <span>
+        {chfFormat(hover.data.connection.compensation.money)}
+        {' '}{t('connections/context/compensation/periode')}
+        {!!hover.data.connection.compensation.description && ` (${hover.data.connection.compensation.description})`}
+      </span>
+    )
+  }],
+  [null, ({data: {connection: {paths}}}, {t, directness}) => !!paths && paths.map((path, i) => (
+    <ContextBoxValue key={`paths-${i}`}
+      label={t(`connections/context/paths/${path.length > directness ? 'indirect' : 'direct'}`)}>
+      <span>
+        {path.map((via, ii) => {
+          return <span key={ii}>
+            {via.to.name}<br />
+            {!!via['function'] && <span {...metaRule}>{via.function}<br /></span>}
+          </span>
+        })}
+      </span>
+    </ContextBoxValue>
+  ))]
+]
+
 Connections.propTypes = {
   directness: PropTypes.number.isRequired,
   groupByDestination: PropTypes.bool.isRequired,
   potency: PropTypes.bool.isRequired,
-  connectionWeight: PropTypes.func.isRequired // weight for sorting, default 1
+  connectionWeight: PropTypes.func.isRequired, // weight for sorting, default 1
+  hoverValues: PropTypes.arrayOf(PropTypes.array).isRequired
 }
 
 Connections.defaultProps = {
@@ -317,7 +333,8 @@ Connections.defaultProps = {
   intermediates: [],
   groupByDestination: false,
   maxGroups: undefined,
-  connectionWeight: () => 1
+  connectionWeight: () => 1,
+  hoverValues
 }
 
 export default withT(Connections)

@@ -7,7 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
-import Connections from '../src/components/Connections'
+import Connections, {hoverValues} from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {A, Meta} from '../src/components/Styled'
 import {withT} from '../src/components/Message'
@@ -98,7 +98,13 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
               updated={updated}
               published={published}
               intermediate={connection => connection.vias.length ? connection.vias[0].to.id : ''}
-              intermediates={parliamentarian.guests} />
+              intermediates={parliamentarian.guests}
+              hoverValues={hoverValues.concat([
+                [
+                  'connections/context/lobbygroup',
+                  hover => hover.data.connection.group !== hover.parent.data.label && hover.data.connection.group
+                ]
+              ])} />
           </Center>
         </div>
         <Center>
