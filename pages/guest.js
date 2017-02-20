@@ -7,7 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
-import Connections from '../src/components/Connections'
+import Connections, {hoverValues} from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {Meta, A} from '../src/components/Styled'
 import {withT} from '../src/components/Message'
@@ -64,7 +64,13 @@ const Guest = ({loading, error, t, guest, locale, id}) => (
               updated={updated}
               published={published}
               data={guest.connections}
-              maxGroups={5} />
+              maxGroups={7}
+              hoverValues={hoverValues.concat([
+                [
+                  'connections/context/lobbygroup',
+                  hover => hover.data.connection.group !== hover.parent.data.label && hover.data.connection.group
+                ]
+              ])} />
           </Center>
         </div>
         <Center>
