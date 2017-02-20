@@ -95,11 +95,11 @@ export const Strong = ({children, ...props}) => <strong {...props} {...strongRul
 
 export const metaStyle = {
   fontSize: 12,
-  lineHeight: '20px',
+  lineHeight: '14px',
   color: GREY_DARK,
   [mediaM]: {
     fontSize: 14,
-    lineHeight: '24px'
+    lineHeight: '18px'
   }
 }
 export const metaRule = css(metaStyle)
