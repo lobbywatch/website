@@ -6,9 +6,6 @@ export const initClient = (headers) => {
     ssrMode: !process.browser,
     headers,
     dataIdFromObject: (result) => {
-      if (result.id) {
-        return result.id
-      }
       return null
     },
     queryDeduplication: true,
