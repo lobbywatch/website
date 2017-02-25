@@ -1,33 +1,11 @@
 import React, {PropTypes} from 'react'
-import {h2Rule, metaRule, ButtonRouteLink, P} from './Styled'
+import {h2Rule, metaRule, ButtonRouteLink, P, TextCenter} from './Styled'
 import Message from './Message'
 
 import {css} from 'glamor'
-import {WHITE, GREY_SOFT, GREY_LIGHT, mediaM} from '../theme'
+import {WHITE, GREY_SOFT, GREY_LIGHT} from '../theme'
 import {Link as RawRouteLink, pathToRoute} from '../../routes'
 import {locales} from '../../constants'
-
-const PADDING = 10
-const gridStyle = css({
-  display: 'flex',
-  justifyContent: 'space-between',
-  flexWrap: 'wrap',
-  margin: `0 -${PADDING}px`
-})
-export const Grid = ({children}) => (
-  <div {...gridStyle}>{children}</div>
-)
-
-const gridItemStyle = css({
-  padding: PADDING,
-  width: '100%',
-  [mediaM]: {
-    width: '50%'
-  }
-})
-export const GridItem = ({children}) => (
-  <div {...gridItemStyle}>{children}</div>
-)
 
 const containerStyle = css({
   overflow: 'hidden',
@@ -87,11 +65,11 @@ const Card = ({image, path, title, author, created, lead, locale}) => {
           {[created, author].filter(Boolean).join(' – ')}
         </span>
         <P className={pStyle}>{lead}</P>
-        <div style={{textAlign: 'center'}}>
+        <TextCenter>
           <ButtonRouteLink {...pathToRoute(locale, path)}>
             <Message id='card/read' locale={locale} />
           </ButtonRouteLink>
-        </div>
+        </TextCenter>
       </div>
     </div>
   )

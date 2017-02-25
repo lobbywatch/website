@@ -45,6 +45,11 @@ export const ButtonRouteLink = ({children, className, ...props}) => (
   <NextRouteLink {...props}><a {...buttonLinkRule}>{children}</a></NextRouteLink>
 )
 
+const textCenterRule = css({
+  textAlign: 'center'
+})
+export const TextCenter = ({children, ...props}) => <div {...props} {...textCenterRule}>{children}</div>
+
 export const h1Style = {
   fontSize: 32,
   lineHeight: '40px',

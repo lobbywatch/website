@@ -4,6 +4,7 @@ import {metaRule} from './Styled'
 import {LW_BLUE, GREY_LIGHT, mediaM} from '../theme'
 import {css} from 'glamor'
 import {Link as RawRouteLink} from '../../routes'
+import Grid, {GridItem} from './Grid'
 
 import Icons from '../assets/TypeIcons'
 
@@ -23,6 +24,7 @@ const portraitStyle = css({
 const aStyle = css({
   display: 'block',
   color: 'inherit',
+  minHeight: '100%',
   textDecoration: 'none',
   borderBottom: `1px solid ${GREY_LIGHT}`,
   padding: '12px 0',
@@ -40,29 +42,42 @@ const metaStyle = css(metaRule, {
   }
 })
 
-const ListView = ({locale, items, title, subtitle}) => {
+const ListView = ({locale, items, title, subtitle, maxWidth}) => {
+  const elements = items.map((item) => {
+    const {__typename, id, name, portrait} = item
+    const Icon = Icons[__typename]
+    const rawId = id.replace(`${__typename}-`, '')
+    return (
+      <RawRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
+        <a {...aStyle}>
+          {!!portrait && <span {...symbolStyle} {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />}
+          {!portrait && !!Icon && <Icon className={symbolStyle} size={32} />}
+          <span>
+            {title(item)}<br />
+            <span {...metaStyle}>
+              {subtitle(item) || ' '}
+            </span>
+          </span>
+        </a>
+      </RawRouteLink>
+    )
+  })
+
+  if (maxWidth) {
+    return (
+      <div style={{maxWidth, margin: '0 auto'}}>
+        {elements}
+      </div>
+    )
+  }
   return (
-    <div>
-      {items.map((item) => {
-        const {__typename, id, name, portrait} = item
-        const Icon = Icons[__typename]
-        const rawId = id.replace(`${__typename}-`, '')
-        return (
-          <RawRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
-            <a {...aStyle}>
-              {!!portrait && <span {...symbolStyle} {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />}
-              {!portrait && !!Icon && <Icon className={symbolStyle} size={32} />}
-              <span>
-                {title(item)}<br />
-                <span {...metaStyle}>
-                  {subtitle(item) || ' '}
-                </span>
-              </span>
-            </a>
-          </RawRouteLink>
-        )
-      })}
-    </div>
+    <Grid>
+      {elements.map(element => (
+        <GridItem key={element.key} paddingBottom={0}>
+          {element}
+        </GridItem>
+      ))}
+    </Grid>
   )
 }
 

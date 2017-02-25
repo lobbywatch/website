@@ -1,5 +1,5 @@
 import React, {PropTypes, Component} from 'react'
-import {A, RouteLink, Clear, h1Rule, metaRule} from './Styled'
+import {A, RouteLink, Clear, h1Rule, metaRule, TextCenter} from './Styled'
 import {withT} from './Message'
 import {ContextBoxValue} from './ContextBox'
 
@@ -60,7 +60,7 @@ class DetailHead extends Component {
     const img = image(data, t, locale)
     const detailFields = details(data, t, locale)
     return (
-      <div style={{textAlign: 'center'}}>
+      <TextCenter>
         {!!img && <div {...symbolStyle} {...imageStyle} style={{backgroundImage: `url(${img})`}} />}
         {!img && !!Icon && <Icon className={symbolStyle} size={64} />}
         <h1 {...titleStyle}>
@@ -90,7 +90,7 @@ class DetailHead extends Component {
             }
           </div>
         </Clear>}
-      </div>
+      </TextCenter>
     )
   }
 }

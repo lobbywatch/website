@@ -9,7 +9,8 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import RawHtml from '../src/components/RawHtml'
 import Message from '../src/components/Message'
-import Card, {Grid, GridItem} from '../src/components/Card'
+import Card from '../src/components/Card'
+import Grid, {GridItem} from '../src/components/Grid'
 import {H1, Link} from '../src/components/Styled'
 import {GREY_SOFT} from '../src/theme'
 
@@ -48,7 +49,7 @@ const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) 
               <GridItem key={i}><Card locale={locale} {...article} /></GridItem>
             ))}
           </Grid>
-          <div style={{textAlign: 'center', margin: '20px 0'}}>
+          <div style={{textAlign: 'center', margin: '10px 0 20px'}}>
             <Link {...{
               href: `/blog?locale=${locale}`,
               as: `/${locale}/blog`

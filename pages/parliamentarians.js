@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
 import withData from '../src/apollo/withData'
-import {H1} from '../src/components/Styled'
+import {H1, TextCenter} from '../src/components/Styled'
 import Message from '../src/components/Message'
 
 import Loader from '../src/components/Loader'
@@ -34,7 +34,9 @@ const parliamentariansQuery = gql`
 const Parliamentarians = ({loading, error, parliamentarians, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
-      <H1><Message id='menu/parliamentarians' locale={locale} /></H1>
+      <TextCenter>
+        <H1><Message id='menu/parliamentarians' locale={locale} /></H1>
+      </TextCenter>
       <ListView locale={locale} items={parliamentarians} />
     </Center>
   )} />

@@ -4,7 +4,7 @@ import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 
 import withData from '../src/apollo/withData'
-import {H1} from '../src/components/Styled'
+import {H1, TextCenter} from '../src/components/Styled'
 import Message from '../src/components/Message'
 
 import Loader from '../src/components/Loader'
@@ -25,7 +25,9 @@ const lobbyGroupsQuery = gql`
 const LobbyGroups = ({loading, error, lobbyGroups, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
-      <H1><Message id='menu/lobbygroups' locale={locale} /></H1>
+      <TextCenter>
+        <H1><Message id='menu/lobbygroups' locale={locale} /></H1>
+      </TextCenter>
       <ListView locale={locale} items={lobbyGroups} />
     </Center>
   )} />

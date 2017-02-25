@@ -193,9 +193,10 @@ const searchContainerStyle = css({
     paddingBottom: 40
   }
 })
+export const SEARCH_MAX_WIDTH = 600
 const searchBoxStyle = css({
   margin: '0 auto',
-  maxWidth: 600,
+  maxWidth: SEARCH_MAX_WIDTH,
   position: 'relative'
 })
 

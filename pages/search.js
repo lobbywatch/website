@@ -6,6 +6,7 @@ import {graphql} from 'react-apollo'
 import withData from '../src/apollo/withData'
 import {H1, P} from '../src/components/Styled'
 import Message from '../src/components/Message'
+import {SEARCH_MAX_WIDTH} from '../src/components/Header'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
@@ -65,7 +66,7 @@ const Hint = ({locale}) => (
 const Search = ({loading, error, term, results, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
-      <ListView locale={locale} items={results} />
+      <ListView locale={locale} items={results} maxWidth={SEARCH_MAX_WIDTH} />
       {!results.length && !!term.length && <NoResults locale={locale} />}
       {!results.length && !term.length && <Hint locale={locale} />}
     </Center>
