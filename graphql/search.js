@@ -35,9 +35,9 @@ module.exports.loadSearch = (locales) => {
       api.data(locale, 'data/interface/v1/json/table/organisation/flat/list', {
         select_fields: [
           'name_de', 'name_fr', 'rechtsform', 'ort',
-          'interessengruppe', 'interessengruppe_id',
-          'interessengruppe2', 'interessengruppe2_id',
-          'interessengruppe3', 'interessengruppe3_id',
+          'interessengruppe_de', 'interessengruppe_fr', 'interessengruppe_id',
+          'interessengruppe2_de', 'interessengruppe2_fr', 'interessengruppe2_id',
+          'interessengruppe3_de', 'interessengruppe3_fr', 'interessengruppe3_id',
           'uid'
         ].join(',')
       })
