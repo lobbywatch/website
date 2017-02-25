@@ -3,7 +3,7 @@ const {ascending} = require('d3-array')
 const qs = require('querystring')
 const {getFormatter} = require('../src/utils/translate')
 const {
-  mapArticle, mapMeta,
+  mapPage, mapMeta,
   mapParliamentarian, parliamentarianIdPrefix,
   mapGuest, guestIdPrefix,
   mapOrganisation, orgIdPrefix,
@@ -29,11 +29,7 @@ const resolveFunctions = {
       const segments = path.split('/').filter(Boolean).map(encodeURIComponent)
       return api.drupal(locale, segments.join('/'), query)
         .then(
-          ({json, response}) => ({
-            statusCode: response.status,
-            title: json.title,
-            content: json.body.value
-          }),
+          ({json, response}) => mapPage(json, response.status),
           error => {
             if (error.response && error.response.status === 404) {
               return {
@@ -64,7 +60,7 @@ const resolveFunctions = {
           const last = qs.decode(json.last.split('?')[1])
           return {
             pages: +last.page,
-            list: json.list.map(mapArticle)
+            list: json.list.map(mapPage)
           }
         })
     },

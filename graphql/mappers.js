@@ -345,7 +345,7 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
   return parliamentarian
 }
 
-exports.mapArticle = raw => {
+exports.mapPage = (raw, statusCode) => {
   let image = (
     raw.field_image &&
     raw.field_image[0] &&
@@ -355,7 +355,9 @@ exports.mapArticle = raw => {
     image = image.replace('lw.preus.se/sites/default/', 'lobbywatch.ch/sites/lobbywatch.ch/')
   }
   return Object.assign({}, raw, {
+    statusCode,
     path: raw.url.replace(DRUPAL_BASE_URL, ''),
+    nodeId: raw.nid,
     author: raw.field_author,
     created: raw.created ? formatTime(+raw.created * 1000) : null,
     content: raw.body.value,

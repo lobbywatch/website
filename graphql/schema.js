@@ -29,11 +29,8 @@ type Meta {
 }
 type Page {
   statusCode: Int
-  title: String
-  content: String
-}
-type Article {
   path: String
+  nodeId: ID
   title: String
   image: String
   author: String
@@ -41,13 +38,13 @@ type Article {
   lead: String
   # DD.MM.YYYY HH:MM
   created: String
-  categories: [String!]!
-  tags: [String!]!
-  lobbyGroups: [String!]!
+  categories: [String!]
+  tags: [String!]
+  lobbyGroups: [String!]
 }
 type ArticleList {
   pages: Int!
-  list: [Article!]!
+  list: [Page!]!
 }
 `
 
