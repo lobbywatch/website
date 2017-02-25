@@ -19,17 +19,17 @@ const resolveFunctions = {
   },
   RootQuery: {
     meta (_, {locale}, {loaders: {meta}}) {
-      return meta.load(locale).then(mapMeta)
+      return meta.load(locale).then(data => mapMeta(locale, data))
     },
     page (_, {locale, path}) {
       const query = {
         'load-entity-refs': 'taxonomy_term,file',
         'max-depth': 1
       }
-      const segments = path.split('/').filter(Boolean).map(encodeURIComponent)
+      const segments = path.map(encodeURIComponent)
       return api.drupal(locale, segments.join('/'), query)
         .then(
-          ({json, response}) => mapPage(json, response.status),
+          ({json, response}) => mapPage(locale, json, response.status),
           error => {
             if (error.response && error.response.status === 404) {
               return {
@@ -60,7 +60,7 @@ const resolveFunctions = {
           const last = qs.decode(json.last.split('?')[1])
           return {
             pages: +last.page,
-            list: json.list.map(mapPage)
+            list: json.list.map(article => mapPage(locale, article))
           }
         })
     },

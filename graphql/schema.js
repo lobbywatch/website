@@ -15,7 +15,7 @@ type MenuLink {
   id: ID!
   parentId: ID!
   title: String
-  path: String
+  path: [String!]
 }
 type Block {
   region: String
@@ -29,7 +29,7 @@ type Meta {
 }
 type Page {
   statusCode: Int
-  path: String
+  path: [String!]
   nodeId: ID
   title: String
   image: String
@@ -192,7 +192,7 @@ type Parliamentarian implements Person {
 const queryDefinitions = `
 type RootQuery {
   meta(locale: Locale!): Meta
-  page(locale: Locale!, path: String!): Page
+  page(locale: Locale!, path: [String!]!): Page
   articles(locale: Locale!, limit: Int = 2, page: Int = 0): ArticleList!
   parliamentarians(locale: Locale!): [Parliamentarian!]!
   getParliamentarian(locale: Locale!, id: ID!): Parliamentarian

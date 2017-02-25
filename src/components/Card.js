@@ -4,7 +4,7 @@ import Message from './Message'
 
 import {css} from 'glamor'
 import {WHITE, GREY_SOFT, GREY_LIGHT} from '../theme'
-import {Link as RawRouteLink, pathToRoute} from '../../routes'
+import {Link as RawRouteLink} from '../../routes'
 import {locales} from '../../constants'
 
 const containerStyle = css({
@@ -54,7 +54,7 @@ const pStyle = css({
 const Card = ({image, path, title, author, created, lead, locale}) => {
   return (
     <div {...containerStyle}>
-      <RawRouteLink {...pathToRoute(locale, path)}>
+      <RawRouteLink route='page' params={{locale, path}}>
         <a {...headStyle} style={{backgroundImage: image && `url(${image})`}}>
           <span {...shadeStyle} />
           <h2 {...titleStyle}>{title}</h2>
@@ -66,7 +66,7 @@ const Card = ({image, path, title, author, created, lead, locale}) => {
         </span>
         <P className={pStyle}>{lead}</P>
         <TextCenter>
-          <ButtonRouteLink {...pathToRoute(locale, path)}>
+          <ButtonRouteLink route='page' params={{locale, path}}>
             <Message id='card/read' locale={locale} />
           </ButtonRouteLink>
         </TextCenter>
@@ -77,7 +77,7 @@ const Card = ({image, path, title, author, created, lead, locale}) => {
 
 Card.propTypes = {
   locale: PropTypes.oneOf(locales).isRequired,
-  path: PropTypes.string.isRequired,
+  path: PropTypes.arrayOf(PropTypes.string).isRequired,
   title: PropTypes.string.isRequired,
   created: PropTypes.string.isRequired,
   lead: PropTypes.string.isRequired,

@@ -13,7 +13,6 @@ import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../theme'
 import CreativeCommons from '../assets/CreativeCommons'
 import Message from './Message'
 import Loader from './Loader'
-import {pathToRoute} from '../../routes'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {
@@ -122,7 +121,7 @@ const Footer = ({loading, error, links, locale}) => (
                     {
                       children.map(({data: {id, title, path}}) => (
                         <li key={id}>
-                          <RouteLink {...pathToRoute(locale, path)}>
+                          <RouteLink route={path.length ? 'page' : 'index'} params={{locale, path}}>
                             {title}
                           </RouteLink>
                         </li>

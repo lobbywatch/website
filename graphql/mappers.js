@@ -345,7 +345,17 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
   return parliamentarian
 }
 
-exports.mapPage = (raw, statusCode) => {
+const toPathArray = (locale, path) => {
+  return path.replace(DRUPAL_BASE_URL, '')
+    .split('/')
+    .filter(Boolean)
+    .filter((segment, i) => !(
+      i === 0 &&
+      segment === locale
+    ))
+}
+
+exports.mapPage = (locale, raw, statusCode) => {
   let image = (
     raw.field_image &&
     raw.field_image[0] &&
@@ -356,7 +366,7 @@ exports.mapPage = (raw, statusCode) => {
   }
   return Object.assign({}, raw, {
     statusCode,
-    path: raw.url.replace(DRUPAL_BASE_URL, ''),
+    path: toPathArray(locale, raw.url),
     nodeId: raw.nid,
     author: raw.field_author,
     created: raw.created ? formatTime(+raw.created * 1000) : null,
@@ -372,13 +382,13 @@ exports.mapPage = (raw, statusCode) => {
   })
 }
 
-exports.mapMeta = raw => {
+exports.mapMeta = (locale, raw) => {
   return Object.assign({}, raw, {
     links: raw.links.map(link => ({
       id: `MenuLink-${link.id}`,
       parentId: +link.parentId ? `MenuLink-${link.parentId}` : 'MenuLink-Root',
       title: link.title,
-      path: link.href.replace(DRUPAL_BASE_URL, '')
+      path: toPathArray(locale, link.href)
     })),
     blocks: ({region}) => region
       ? raw.blocks.filter(block => block.region === region)
