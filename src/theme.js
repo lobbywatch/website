@@ -26,3 +26,6 @@ export const POTENCY_COLORS = {
   MEDIUM: '#005599',
   LOW: LW_BLUE
 }
+
+export const HEADER_HEIGHT = 75
+export const FRAME_PADDING = 20

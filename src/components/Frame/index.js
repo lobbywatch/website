@@ -4,12 +4,11 @@ import {css} from 'glamor'
 
 import Header from './Header'
 import Footer from './Footer'
-import {BLACK} from '../../theme'
+import {BLACK, FRAME_PADDING} from '../../theme'
 
-export const PADDING = 20
 const centerStyle = css({
   maxWidth: 800,
-  padding: PADDING,
+  padding: FRAME_PADDING,
   margin: '0 auto'
 })
 export const Center = ({children, ...props}) => <div {...props} {...centerStyle}>{children}</div>

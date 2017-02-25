@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {css} from 'glamor'
-import {GREY_MID} from '../theme'
-import {HEADER_HEIGHT} from './Frame/Header'
+import {GREY_MID, HEADER_HEIGHT} from '../theme'
 import {Center} from './Frame'
 
 const spacerStyle = css({
