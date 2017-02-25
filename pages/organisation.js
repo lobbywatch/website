@@ -2,7 +2,6 @@ import React from 'react'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
-import {nest} from 'd3-collection'
 
 import withData from '../src/apollo/withData'
 
