@@ -15,19 +15,34 @@ const pageQuery = gql`
   query page($locale: Locale!, $path: [String!]!) {
     page(locale: $locale, path: $path) {
       path
-      statusCode,
-      title,
+      nodeId
+      statusCode
+      title
       content
     }
   }
 `
 
-const Page = ({loading, error, title, content, url, url: {query: {locale}}}) => (
-  <Frame url={url}>
+const Page = ({loading, error, page, url, url: {query: {locale}}}) => (
+  <Frame url={url} localizeRoute={(locale) => {
+    if (!page || !page.nodeId) {
+      return {
+        route: 'index',
+        params: {locale}
+      }
+    }
+    return {
+      route: 'page',
+      params: {
+        locale,
+        path: ['node', page.nodeId]
+      }
+    }
+  }}>
     <Loader loading={loading} error={error} render={() => (
       <Center>
-        <H1>{title}</H1>
-        <RawHtml dangerouslySetInnerHTML={{__html: content}} />
+        <H1>{page.title}</H1>
+        <RawHtml dangerouslySetInnerHTML={{__html: page.content}} />
       </Center>
     )} />
   </Frame>
@@ -71,7 +86,7 @@ const PageWithQuery = graphql(pageQuery, {
     return {
       loading: data.loading,
       error: data.error,
-      ...page
+      page
     }
   }
 })(Page)

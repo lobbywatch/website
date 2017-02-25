@@ -28,13 +28,13 @@ const bodyGrowerStyle = css({
   flexGrow: 1
 })
 
-const Frame = ({url: {query: {locale, term}}, children}) => (
+const Frame = ({url, url: {query: {locale, term}}, children, localizeRoute}) => (
   <div {...containerStyle}>
     <div {...bodyGrowerStyle}>
       <Head>
         <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700' rel='stylesheet' />
       </Head>
-      <Header locale={locale} term={term} />
+      <Header locale={locale} term={term} url={url} localizeRoute={localizeRoute} />
       {children}
     </div>
     <Footer locale={locale} />

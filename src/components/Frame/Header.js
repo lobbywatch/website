@@ -96,7 +96,10 @@ class Header extends Component {
   }
   render () {
     const {expanded} = this.state
-    const {locale: currentLocale, t, term} = this.props
+    const {
+      locale: currentLocale, t, term,
+      url, localizeRoute
+    } = this.props
     const menuItems = [
       {
         label: t('menu/parliamentarians'),
@@ -114,14 +117,25 @@ class Header extends Component {
         params: {locale: currentLocale}
       }
     ]
+
     const localeLinks = locales
       .filter(locale => locale !== currentLocale)
-      .map((locale, i) => ({
-        separator: i === 0,
-        route: 'index',
-        params: {locale},
-        label: t(`menu/locales/${locale}`, {}, locale)
-      }))
+      .map((locale, i) => {
+        const localizedRoute = localizeRoute
+          ? localizeRoute(locale)
+          : {
+            route: url.pathname.replace(/^\//, ''),
+            params: {
+              ...url.query,
+              locale
+            }
+          }
+        return {
+          separator: i === 0,
+          label: t(`menu/locales/${locale}`, {}, locale),
+          ...localizedRoute
+        }
+      })
 
     const onSearch = (event) => {
       const term = event.target.value
