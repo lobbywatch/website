@@ -9,6 +9,7 @@ import Message from '../src/components/Message'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import ListView from '../src/components/ListView'
 
 const guestsQuery = gql`
@@ -27,6 +28,10 @@ const guestsQuery = gql`
 const Guests = ({loading, error, guests, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
+      <MetaTags locale={locale} fromT={t => ({
+        title: t('menu/guests'),
+        description: t('guests/meta/description', {count: guests.length})
+      })} />
       <TextCenter>
         <H1><Message id='menu/guests' locale={locale} /></H1>
       </TextCenter>

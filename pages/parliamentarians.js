@@ -9,6 +9,7 @@ import Message from '../src/components/Message'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import ListView from '../src/components/ListView'
 
 const parliamentariansQuery = gql`
@@ -34,6 +35,10 @@ const parliamentariansQuery = gql`
 const Parliamentarians = ({loading, error, parliamentarians, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
+      <MetaTags locale={locale} fromT={t => ({
+        title: t('menu/parliamentarians'),
+        description: t('parliamentarians/meta/description', {count: parliamentarians.length})
+      })} />
       <TextCenter>
         <H1><Message id='menu/parliamentarians' locale={locale} /></H1>
       </TextCenter>

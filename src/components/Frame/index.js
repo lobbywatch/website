@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {PropTypes} from 'react'
 import Head from 'next/head'
 import {css} from 'glamor'
 
@@ -28,7 +28,7 @@ const bodyGrowerStyle = css({
   flexGrow: 1
 })
 
-const Frame = ({url, url: {query: {locale, term}}, children, localizeRoute}) => (
+const Frame = ({url, url: {query: {locale, term}}, localizeRoute, children}) => (
   <div {...containerStyle}>
     <div {...bodyGrowerStyle}>
       <Head>
@@ -40,5 +40,13 @@ const Frame = ({url, url: {query: {locale, term}}, children, localizeRoute}) => 
     <Footer locale={locale} />
   </div>
 )
+
+Frame.propTypes = {
+  children: PropTypes.node,
+  localizeRoute: PropTypes.func,
+  url: PropTypes.shape({
+    query: PropTypes.object.isRequired
+  }).isRequired
+}
 
 export default Frame

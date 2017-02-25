@@ -7,6 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import RawHtml from '../src/components/RawHtml'
 import Message from '../src/components/Message'
 import Card from '../src/components/Card'
@@ -40,6 +41,10 @@ const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) 
   <Frame url={url}>
     <Loader loading={loading} error={error} render={() => (
       <div>
+        <MetaTags locale={locale} fromT={t => ({
+          title: '',
+          description: t('index/meta/description')
+        })} />
         <Center>
           <H1 style={{textAlign: 'center'}}>
             <Message id='index/blog/title' locale={locale} />

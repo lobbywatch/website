@@ -7,6 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import Connections, {hoverValues} from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {Meta, A} from '../src/components/Styled'
@@ -55,6 +56,7 @@ const Guest = ({loading, error, t, guest, locale, id}) => (
     const path = `/${locale}/daten/zutrittsberechtigter/${rawId}/${name}`
     return (
       <div>
+        <MetaTags locale={locale} data={guest} />
         <Center>
           <DetailHead locale={locale} data={guest} />
         </Center>

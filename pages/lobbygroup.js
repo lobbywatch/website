@@ -7,6 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import Connections from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {A, Meta} from '../src/components/Styled'
@@ -72,6 +73,7 @@ const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
     const path = `/${locale}/daten/lobbygruppe/${rawId}/${name}`
     return (
       <div>
+        <MetaTags locale={locale} data={lobbyGroup} />
         <Center>
           <DetailHead locale={locale} data={lobbyGroup} />
         </Center>

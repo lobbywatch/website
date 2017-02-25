@@ -7,6 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import Card from '../src/components/Card'
 import Grid, {GridItem} from '../src/components/Grid'
 import {H1} from '../src/components/Styled'
@@ -32,6 +33,10 @@ const blogQuery = gql`
 const Blog = ({loading, error, articles, blocks, page, url, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
+      <MetaTags locale={locale} fromT={t => ({
+        title: t('blog/title'),
+        description: t('blog/meta/description')
+      })} />
       <H1><Message id='blog/title' locale={locale} /></H1>
       <Grid>
         {articles.list.map((article, i) => (

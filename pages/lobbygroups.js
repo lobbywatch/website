@@ -9,6 +9,7 @@ import Message from '../src/components/Message'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import ListView from '../src/components/ListView'
 
 const lobbyGroupsQuery = gql`
@@ -25,6 +26,10 @@ const lobbyGroupsQuery = gql`
 const LobbyGroups = ({loading, error, lobbyGroups, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
+      <MetaTags locale={locale} fromT={t => ({
+        title: t('menu/lobbygroups'),
+        description: t('lobbygroups/meta/description', {count: lobbyGroups.length})
+      })} />
       <TextCenter>
         <H1><Message id='menu/lobbygroups' locale={locale} /></H1>
       </TextCenter>

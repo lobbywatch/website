@@ -7,6 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import Connections, {hoverValues} from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {A, Meta} from '../src/components/Styled'
@@ -87,6 +88,7 @@ const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
     const path = `/${locale}/daten/parlamentarier/${rawId}/${name}`
     return (
       <div>
+        <MetaTags locale={locale} data={parliamentarian} />
         <Center>
           <DetailHead locale={locale} data={parliamentarian} />
         </Center>

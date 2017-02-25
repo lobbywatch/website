@@ -10,6 +10,7 @@ import {SEARCH_MAX_WIDTH} from '../src/components/Frame/Header'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import ListView from '../src/components/ListView'
 
 const searchQuery = gql`
@@ -66,6 +67,10 @@ const Hint = ({locale}) => (
 const Search = ({loading, error, term, results, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
+      <MetaTags locale={locale} fromT={t => ({
+        title: t('search/meta/title'),
+        description: t.pluralize('search/meta/description', {count: results.length, term})
+      })} />
       <ListView locale={locale} items={results} maxWidth={SEARCH_MAX_WIDTH} />
       {!results.length && !!term.length && <NoResults locale={locale} />}
       {!results.length && !term.length && <Hint locale={locale} />}

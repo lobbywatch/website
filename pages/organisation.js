@@ -7,6 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import Connections from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {A, Meta} from '../src/components/Styled'
@@ -76,6 +77,7 @@ const Org = ({loading, error, t, organisation, locale, id}) => (
     const path = `/${locale}/daten/organisation/${rawId}/${name}`
     return (
       <div>
+        <MetaTags locale={locale} data={organisation} />
         <Center>
           <DetailHead locale={locale} data={organisation} />
         </Center>

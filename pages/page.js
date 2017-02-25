@@ -7,6 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
+import MetaTags from '../src/components/MetaTags'
 import RawHtml from '../src/components/RawHtml'
 import {H1} from '../src/components/Styled'
 import {Router as RoutesRouter} from '../routes'
@@ -19,6 +20,8 @@ const pageQuery = gql`
       statusCode
       title
       content
+      lead
+      image
     }
   }
 `
@@ -41,6 +44,7 @@ const Page = ({loading, error, page, url, url: {query: {locale}}}) => (
   }}>
     <Loader loading={loading} error={error} render={() => (
       <Center>
+        <MetaTags locale={locale} title={page.title} description={page.lead} image={page.image} />
         <H1>{page.title}</H1>
         <RawHtml dangerouslySetInnerHTML={{__html: page.content}} />
       </Center>
