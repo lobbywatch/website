@@ -9,7 +9,7 @@
   ],
   "description": "Lobbywatch 2017",
   "scripts": {
-    "dev": "nodemon -w server.js -w graphql server.js",
+    "dev": "nodemon -w server.js -w routes.js -w graphql server.js",
     "build": "next build",
     "postinstall": "./bin/build.sh",
     "start": "NODE_ENV=production node server.js",
