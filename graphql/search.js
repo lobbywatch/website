@@ -21,7 +21,7 @@ module.exports.loadSearch = (locales) => {
           'parlament_number', 'vorname', 'zweiter_vorname', 'nachname',
           'beruf', 'geschlecht', 'geburtstag',
           'parteifunktion', 'partei_name', 'partei',
-          'kanton_name_de', 'kanton_name_fr', 'rat',
+          'kanton_name_de', 'kanton_name_fr', 'ratstyp',
           'im_rat_bis_unix', 'im_rat_seit_unix'
         ].join(',')
       }),
