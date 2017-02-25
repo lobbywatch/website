@@ -1,6 +1,6 @@
 {
   "name": "lobbywatch-rooster",
-  "version": "0.1.0",
+  "version": "0.9.0",
   "engines": {
     "node": "6.9.x"
   },

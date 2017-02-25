@@ -2,7 +2,7 @@
 
 > 2017 is the year of the Rooster, starting from January 28th, and ending on February 15th, 2018.
 
-A Lobbywatch Prototype build with React.js and the [next.js](https://github.com/zeit/next.js/) Framework.
+Lobbywatch.ch build with React.js and the [Next.js](https://github.com/zeit/next.js/) Framework.
 
 ## Prerequisites
 
