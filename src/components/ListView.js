@@ -8,13 +8,14 @@ import Grid, {GridItem} from './Grid'
 
 import Icons from '../assets/TypeIcons'
 
+const SYMBOL_SIZE = 32
 const symbolStyle = css({
-  display: 'inline-block',
-  width: 32,
-  height: 32,
-  float: 'left',
-  marginRight: 10,
-  marginTop: 2
+  position: 'absolute',
+  top: 12 + 1,
+  left: 0,
+  display: 'block',
+  width: SYMBOL_SIZE,
+  height: SYMBOL_SIZE
 })
 const portraitStyle = css({
   borderRadius: '50%',
@@ -27,7 +28,10 @@ const aStyle = css({
   minHeight: '100%',
   textDecoration: 'none',
   borderBottom: `1px solid ${GREY_LIGHT}`,
-  padding: '12px 0',
+  paddingTop: 12,
+  paddingBottom: 12,
+  paddingLeft: SYMBOL_SIZE + 10,
+  position: 'relative',
   ':hover': {
     color: LW_BLUE
   }
@@ -51,7 +55,7 @@ const ListView = ({locale, items, title, subtitle, maxWidth}) => {
       <RawRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
         <a {...aStyle}>
           {!!portrait && <span {...symbolStyle} {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />}
-          {!portrait && !!Icon && <Icon className={symbolStyle} size={32} />}
+          {!portrait && !!Icon && <Icon className={symbolStyle} size={SYMBOL_SIZE} />}
           <span>
             {title(item)}<br />
             <span {...metaStyle}>
