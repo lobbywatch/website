@@ -1,15 +1,15 @@
 import React, {PropTypes, Component} from 'react'
 import {css, merge} from 'glamor'
 
-import {withT} from './Message'
-import {RouteLink, inputStyle} from './Styled'
-import {Center, PADDING} from './Frame'
-import {locales} from '../../constants'
-import {Link as NextRouteLink, Router as RoutesRouter} from '../../routes'
+import {withT} from '../Message'
+import {RouteLink, inputStyle} from '../Styled'
+import {Center, PADDING} from './index'
+import {locales} from '../../../constants'
+import {Link as NextRouteLink, Router as RoutesRouter} from '../../../routes'
 import Router from 'next/router'
-import {LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE, mediaM, mediaSOnly} from '../theme'
-import Logo from '../assets/Logo'
-import SearchIcon from '../assets/Search'
+import {LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE, mediaM, mediaSOnly} from '../../theme'
+import Logo from '../../assets/Logo'
+import SearchIcon from '../../assets/Search'
 
 export const HEADER_HEIGHT = 75
 const ITEM_MARGIN_LEFT = 15

@@ -1,13 +1,13 @@
 import React from 'react'
-import {DRUPAL_BASE_URL} from '../../constants'
-import FacebookIcon from '../assets/Facebook'
-import TwitterIcon from '../assets/Twitter'
-import GooglePlusIcon from '../assets/GooglePlus'
-import RSSIcon from '../assets/RSS'
-import {mediaM, mediaSOnly} from '../theme'
+import {DRUPAL_BASE_URL} from '../../../constants'
+import FacebookIcon from '../../assets/Facebook'
+import TwitterIcon from '../../assets/Twitter'
+import GooglePlusIcon from '../../assets/GooglePlus'
+import RSSIcon from '../../assets/RSS'
+import {mediaM, mediaSOnly} from '../../theme'
 
-import Message from './Message'
-import {Strong} from './Styled'
+import Message from '../Message'
+import {Strong} from '../Styled'
 import {css} from 'glamor'
 
 const flexIconsStyle = css({

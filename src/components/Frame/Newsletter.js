@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
-import jsonp from '../utils/jsonp'
+import jsonp from '../../utils/jsonp'
 import qs from 'querystring'
 
-import {withT} from './Message'
-import {Strong, Input, Submit, P} from './Styled'
+import {withT} from '../Message'
+import {Strong, Input, Submit, P} from '../Styled'
 import {css} from 'glamor'
-import {MAILCHIMP_BASE_URL, MAILCHIMP_U, MAILCHIMP_ID_FOR_LOCALE} from '../../constants'
-import {mediaM} from '../theme'
+import {MAILCHIMP_BASE_URL, MAILCHIMP_U, MAILCHIMP_ID_FOR_LOCALE} from '../../../constants'
+import {mediaM} from '../../theme'
 
 const flexIconsStyle = css({
   display: 'flex',

@@ -5,14 +5,14 @@ import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
 import {stratify} from 'd3-hierarchy'
 
-import {Center} from './Frame'
+import {Center} from './index'
 import SocialMedia from './SocialMedia'
 import Newsletter from './Newsletter'
-import {RouteLink, Hr, metaStyle, Strong, Clear} from './Styled'
-import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../theme'
-import CreativeCommons from '../assets/CreativeCommons'
-import Message from './Message'
-import Loader from './Loader'
+import {RouteLink, Hr, metaStyle, Strong, Clear} from '../Styled'
+import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../../theme'
+import CreativeCommons from '../../assets/CreativeCommons'
+import Message from '../Message'
+import Loader from '../Loader'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {

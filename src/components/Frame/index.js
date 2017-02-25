@@ -4,7 +4,7 @@ import {css} from 'glamor'
 
 import Header from './Header'
 import Footer from './Footer'
-import {BLACK} from '../theme'
+import {BLACK} from '../../theme'
 
 export const PADDING = 20
 const centerStyle = css({

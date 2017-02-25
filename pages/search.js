@@ -6,7 +6,7 @@ import {graphql} from 'react-apollo'
 import withData from '../src/apollo/withData'
 import {H1, P} from '../src/components/Styled'
 import Message from '../src/components/Message'
-import {SEARCH_MAX_WIDTH} from '../src/components/Header'
+import {SEARCH_MAX_WIDTH} from '../src/components/Frame/Header'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
