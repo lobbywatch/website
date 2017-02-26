@@ -49,7 +49,7 @@ const guestQuery = gql`
   }
 `
 
-const Guest = ({loading, error, t, guest, locale, id}) => (
+const Guest = ({loading, error, guest, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
     const {__typename, updated, published, name} = guest
     const rawId = id.replace(`${__typename}-`, '')

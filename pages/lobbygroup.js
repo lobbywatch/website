@@ -66,7 +66,7 @@ const CONNECTION_WEIGHTS = {
   Organisation: 1000
 }
 
-const LobbyGroup = ({loading, error, t, lobbyGroup, locale, id}) => (
+const LobbyGroup = ({loading, error, lobbyGroup, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
     const {__typename, name, updated, published} = lobbyGroup
     const rawId = id.replace(`${__typename}-`, '')

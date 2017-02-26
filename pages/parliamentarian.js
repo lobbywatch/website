@@ -79,7 +79,7 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({loading, error, t, parliamentarian, locale, id}) => (
+const Parliamentarian = ({loading, error, parliamentarian, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
     const {
       __typename, name, updated, published

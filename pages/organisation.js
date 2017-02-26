@@ -70,7 +70,7 @@ const CONNECTION_WEIGHTS = {
   Organisation: 0.1
 }
 
-const Org = ({loading, error, t, organisation, locale, id}) => (
+const Org = ({loading, error, organisation, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
     const {__typename, updated, published, name} = organisation
     const rawId = id.replace(`${__typename}-`, '')
