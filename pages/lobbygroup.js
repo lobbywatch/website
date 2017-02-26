@@ -7,7 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
-import MetaTags from '../src/components/MetaTags'
+import MetaTags, {GooglePreview} from '../src/components/MetaTags'
 import Connections from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {A, Meta} from '../src/components/Styled'
@@ -66,7 +66,7 @@ const CONNECTION_WEIGHTS = {
   Organisation: 1000
 }
 
-const LobbyGroup = ({loading, error, lobbyGroup, locale, id}) => (
+const LobbyGroup = ({loading, error, lobbyGroup, t, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
     const {__typename, name, updated, published} = lobbyGroup
     const rawId = id.replace(`${__typename}-`, '')
@@ -94,6 +94,7 @@ const LobbyGroup = ({loading, error, lobbyGroup, locale, id}) => (
             {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
           </Meta>
+          <GooglePreview data={lobbyGroup} t={t} path={path} />
         </Center>
       </div>
     )

@@ -7,7 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
-import MetaTags from '../src/components/MetaTags'
+import MetaTags, {GooglePreview} from '../src/components/MetaTags'
 import Connections, {hoverValues} from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {Meta, A} from '../src/components/Styled'
@@ -49,7 +49,7 @@ const guestQuery = gql`
   }
 `
 
-const Guest = ({loading, error, guest, locale, id}) => (
+const Guest = ({loading, error, guest, t, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
     const {__typename, updated, published, name} = guest
     const rawId = id.replace(`${__typename}-`, '')
@@ -81,6 +81,7 @@ const Guest = ({loading, error, guest, locale, id}) => (
             {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
           </Meta>
+          <GooglePreview data={guest} t={t} path={path} />
         </Center>
       </div>
     )

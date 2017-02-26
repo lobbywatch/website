@@ -7,7 +7,7 @@ import withData from '../src/apollo/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
-import MetaTags from '../src/components/MetaTags'
+import MetaTags, {GooglePreview} from '../src/components/MetaTags'
 import Connections, {hoverValues} from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {A, Meta} from '../src/components/Styled'
@@ -23,6 +23,7 @@ const parliamentarianQuery = gql`
       published
       name
       dateOfBirth
+      gender
       age
       portrait
       councilTitle
@@ -79,7 +80,7 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({loading, error, parliamentarian, locale, id}) => (
+const Parliamentarian = ({loading, error, parliamentarian, t, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
     const {
       __typename, name, updated, published
@@ -115,6 +116,7 @@ const Parliamentarian = ({loading, error, parliamentarian, locale, id}) => (
             {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
           </Meta>
+          <GooglePreview data={parliamentarian} t={t} path={path} />
         </Center>
       </div>
     )
