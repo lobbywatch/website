@@ -44,7 +44,6 @@ const lobbyGroupQuery = gql`
         }
         vias {
           __typename
-          function
           to {
             ... on Organisation {
               id

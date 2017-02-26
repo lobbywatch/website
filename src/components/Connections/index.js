@@ -325,12 +325,11 @@ export const hoverValues = [
       <ContextBoxValue key={`paths-${i}`}
         label={t(`connections/context/paths/${path.length > directness ? 'indirect' : 'direct'}`)}>
         <span>
-          {path.map((via, ii) => {
+          {[].concat(path).reverse().map((via, ii) => {
             const Icon = Icons[via.to.__typename]
             return <span key={ii} {...style.pathSegment}>
               <Icon className={style.pathSegmentIcon} size={16} />
               {via.to.name}<br />
-              {!!via['function'] && <span {...metaRule}>{via.function}<br /></span>}
             </span>
           })}
         </span>
