@@ -16,10 +16,10 @@ export const linkStyle = {
 }
 export const linkRule = css(linkStyle)
 export const Link = ({children, className, ...props}) => (
-  <NextLink prefetch {...props}><a {...linkRule}>{children}</a></NextLink>
+  <NextLink {...props}><a {...linkRule}>{children}</a></NextLink>
 )
 export const RouteLink = ({children, className, ...props}) => (
-  <NextRouteLink prefetch {...props}><a {...linkRule}>{children}</a></NextRouteLink>
+  <NextRouteLink {...props}><a {...linkRule}>{children}</a></NextRouteLink>
 )
 
 export const A = ({children, ...props}) => <a {...props} {...linkRule}>{children}</a>

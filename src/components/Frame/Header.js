@@ -171,7 +171,7 @@ class Header extends Component {
     return (
       <div>
         <div {...barStyle}>
-          <NextRouteLink route='index' params={{locale: currentLocale}}>
+          <NextRouteLink prefetch route='index' params={{locale: currentLocale}}>
             <a {...titleStyle}>
               <Logo size={32} style={{verticalAlign: 'middle', marginRight: 10}} />Lobbywatch
             </a>

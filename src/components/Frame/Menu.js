@@ -84,7 +84,7 @@ const Menu = ({items, expanded, id}) => (
       {items.map(({label, route, params, separator}, i) => (
         <li {...listItemStyle} key={i}>
           {separator && <span {...listItemSeparatorStyle} />}
-          <RouteLink route={route} params={params}>{label}</RouteLink>
+          <RouteLink prefetch route={route} params={params}>{label}</RouteLink>
         </li>
       ))}
     </ul>

@@ -52,7 +52,7 @@ const ListView = ({locale, items, title, subtitle, maxWidth}) => {
     const Icon = Icons[__typename]
     const rawId = id.replace(`${__typename}-`, '')
     return (
-      <RawRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
+      <RawRouteLink key={id} prefetch route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
         <a {...aStyle}>
           {!!portrait && <span {...symbolStyle} {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />}
           {!portrait && !!Icon && <Icon className={symbolStyle} size={SYMBOL_SIZE} />}
