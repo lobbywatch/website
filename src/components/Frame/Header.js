@@ -163,7 +163,7 @@ class Header extends Component {
         }
         Router.push(href, as)
       } else {
-        Router.replace(href, as)
+        Router.replace(href, as, {shallow: true})
       }
     }
 
