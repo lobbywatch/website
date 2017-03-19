@@ -2,9 +2,31 @@ const {descending} = require('d3-array')
 const api = require('./api')
 const mappers = require('./mappers')
 
+const diacritics = [
+  {base: 'a', letters: ['ä', 'â', 'à']},
+  {base: 'c', letters: ['ç']},
+  {base: 'e', letters: ['é', 'ê', 'è', 'ë']},
+  {base: 'i', letters: ['î', 'ï']},
+  {base: 'o', letters: ['ö', 'ô']},
+  {base: 'u', letters: ['ü', 'ù', 'û']},
+  {base: 'ss', letters: ['ß']}
+]
+
+const diacriticsMap = diacritics.reduce(
+  (map, diacritic) => {
+    diacritic.letters.forEach(letter => {
+      map[letter] = diacritic.base
+    })
+    return map
+  },
+  {}
+)
+
+const normalize = keyword => keyword.toLowerCase()
+  .replace(/[^\u0000-\u007E]/g, a => diacriticsMap[a] || a)
 const cleanKeywords = keywords => keywords
   .filter(Boolean)
-  .map(keyword => keyword.toLowerCase())
+  .map(keyword => normalize(keyword))
 
 const BOOSTS = {
   Parliamentarian: 1,
@@ -92,7 +114,7 @@ module.exports.loadSearch = (locales) => {
         }
 
         const terms = term.split(/\s+/)
-          .map(term => term.trim().toLowerCase())
+          .map(term => normalize(term.trim()))
           .filter(Boolean)
         return index.map(item => {
           let matchedTerms = 0
