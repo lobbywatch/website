@@ -93,6 +93,7 @@ class Header extends Component {
         beforeSearch = null
       }
     }
+    Router.prefetch('/search')
   }
   render () {
     const {expanded} = this.state
