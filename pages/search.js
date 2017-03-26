@@ -2,8 +2,7 @@ import React from 'react'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
-
-import withData from '../src/apollo/withData'
+import withData from '../lib/withData'
 import {H1, P} from '../src/components/Styled'
 import Message from '../src/components/Message'
 import {SEARCH_MAX_WIDTH} from '../src/components/Frame/Header'

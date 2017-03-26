@@ -2,8 +2,7 @@ import React from 'react'
 
 import gql from 'graphql-tag'
 import {graphql} from 'react-apollo'
-
-import withData from '../src/apollo/withData'
+import withData from '../lib/withData'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
