@@ -22,7 +22,7 @@ npm run dev
 To deploy the app to Swisscom Application Cloud run following [`cf-cli`](https://docs.developer.swisscom.com/cf-cli/install-go-cli.html) commands:
 
 ```bash
-cf login -a https://api.lyra-836.appcloud.swisscom.com
+cf login -a https://api.lyra-836.appcloud.swisscom.com --sso
 cf push lobbywatch-rooster
 ```
 
