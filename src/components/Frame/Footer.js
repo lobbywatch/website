@@ -98,7 +98,7 @@ const groupLinks = (links) => {
   return stratify()([
     {id: 'MenuLink-Root'},
     ...links
-  ]).children
+  ]).children || []
 }
 
 const Footer = ({loading, error, links, locale}) => (
