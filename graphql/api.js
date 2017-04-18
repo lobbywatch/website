@@ -1,6 +1,6 @@
 const fetch = require('./fetch')
 const qs = require('querystring')
-const {DRUPAL_BASE_URL} = require('../constants')
+const {DRUPAL_BASE_URL, DRUPAL_DATA_BASE_URL} = require('../constants')
 
 const options = {
   headers: {
@@ -26,7 +26,7 @@ const data = (locale, path, query) => {
     limit: 'none',
     lang: locale
   }, query)
-  return fetch(`${DRUPAL_BASE_URL}/data.php?${qs.encode(fullQuery)}`, options)
+  return fetch(`${DRUPAL_DATA_BASE_URL}/data.php?${qs.encode(fullQuery)}`, options)
 }
 
 module.exports = {
