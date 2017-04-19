@@ -5,6 +5,7 @@
     "node": "6.9.x"
   },
   "cacheDirectories": [
+    "node_modules",
     "nextjs/node_modules"
   ],
   "description": "Lobbywatch 2017",
