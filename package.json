@@ -11,7 +11,7 @@
   "scripts": {
     "dev": "nodemon -w server.js -w routes.js -w constants.js -w graphql server.js",
     "build": "next build",
-    "postinstall": "./bin/build.sh",
+    "postinstall": "npm run build",
     "start": "NODE_ENV=production node server.js",
     "test": "standard 'src/**/*.js' 'pages/**/*.js'",
     "standardize": "standard --fix 'src/**/*.js' 'pages/**/*.js'",
