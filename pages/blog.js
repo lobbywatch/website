@@ -1,7 +1,6 @@
 import React from 'react'
 
-import gql from 'graphql-tag'
-import {graphql} from 'react-apollo'
+import {graphql, gql} from 'react-apollo'
 
 import withData from '../lib/withData'
 
