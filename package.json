@@ -2,7 +2,7 @@
   "name": "lobbywatch-rooster",
   "version": "0.9.0",
   "engines": {
-    "node": "6.9.x"
+    "node": "7.8.x"
   },
   "cacheDirectories": [
     "node_modules",
