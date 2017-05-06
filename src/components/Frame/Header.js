@@ -26,6 +26,13 @@ const titleStyle = css({
   zIndex: 5
 })
 
+const titleTextStyle = css({
+  verticalAlign: 'top',
+  display: 'inline-block',
+  marginTop: -1,
+  marginLeft: 10
+})
+
 const barStyle = css({
   position: 'fixed',
   top: 0,
@@ -173,7 +180,8 @@ class Header extends Component {
         <div {...barStyle}>
           <NextRouteLink prefetch route='index' params={{locale: currentLocale}}>
             <a {...titleStyle}>
-              <Logo size={32} style={{verticalAlign: 'middle', marginRight: 10}} />Lobbywatch
+              <Logo size={32} />
+              <span {...titleTextStyle}>Lobbywatch</span>
             </a>
           </NextRouteLink>
           <Menu expanded={expanded} id='primary-menu'
