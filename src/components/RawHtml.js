@@ -6,7 +6,7 @@ import {
   hrStyle, clearStyle
 } from './Styled'
 import {globalWithMediaQueries} from '../utils/css'
-import {mediaM} from '../theme'
+import {mediaM, POTENCY_COLORS, WHITE} from '../theme'
 
 globalWithMediaQueries('.RawHtml a', linkStyle)
 globalWithMediaQueries('.RawHtml h1', h1Style)
@@ -57,6 +57,16 @@ globalWithMediaQueries('.RawHtml a.button.donate-member:before', {
 })
 globalWithMediaQueries('.RawHtml a.button.donate-patron:before', {
   backgroundImage: 'url(/static/donate/patron.png)'
+})
+
+Object.keys(POTENCY_COLORS).map(key => {
+  globalWithMediaQueries(`.RawHtml .lw-potency-${key.toLowerCase()}`, {
+    display: 'inline-block',
+    backgroundColor: POTENCY_COLORS[key],
+    color: WHITE,
+    borderRadius: 5,
+    padding: '0 4px'
+  })
 })
 
 const RawHtml = ({type, dangerouslySetInnerHTML}) => createElement(type, {
