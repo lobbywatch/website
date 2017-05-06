@@ -332,7 +332,14 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
     councilExitDate: councilExitDate && formatDate(councilExitDate),
     represents: +raw.vertretene_bevoelkerung,
     children: raw.anzahl_kinder !== null ? +raw.anzahl_kinder : null,
-    civilStatus: raw.zivilstand,
+    civilStatus: () => {
+      return t(
+        'parliamentarian/civilStatus/' +
+        `${parliamentarian.gender}-${raw.zivilstand}`,
+        undefined,
+        raw.zivilstand
+      )
+    },
     website: raw.homepage,
     commissions: raw.in_kommission ? raw.in_kommission.map(commission => ({
       id: `${commissionIdPrefix}${commission.id}`,
