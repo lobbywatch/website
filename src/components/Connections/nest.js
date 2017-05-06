@@ -44,7 +44,15 @@ export default ({
 
   const nodeData = groupTree.reduce(
     (rootAccumulator, viaLevel) => {
-      viaLevel.values.sort((a, b) => descending(a.values.map(connectionWeight), b.values.map(connectionWeight)))
+      viaLevel.values
+        .sort((a, b) => ascending(
+          a.key,
+          b.key
+        ))
+        .sort((a, b) => descending(
+          a.values.map(connectionWeight),
+          b.values.map(connectionWeight)
+        ))
 
       const more = viaLevel.values.find(group => group.key === moreKey) || {
         key: moreKey,
