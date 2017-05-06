@@ -33,16 +33,20 @@ const description = (item, t) => {
   switch (item.__typename) {
     case 'Parliamentarian': {
       const connections = item.connections
+        .filter(connection => !connection.vias.length)
+      const displayConnections = connections
         .slice(0, 5)
         .map(connection => connection.to.name)
       return t.pluralize(`parliamentarian/meta/description/${item.gender}`, {
         councilTitle: item.councilTitle,
         name: item.name,
-        party: item.partyMembership ? item.partyMembership.party.abbr : t('connections/party/none'),
-        connections: `${connections.join(', ')}${(
-          connections.length < item.connections.length ? '…' : ''
+        party: item.partyMembership
+          ? item.partyMembership.party.abbr
+          : t('connections/party/none'),
+        connections: `${displayConnections.join(', ')}${(
+          displayConnections.length < connections.length ? '…' : ''
         )}`,
-        count: item.connections.length
+        count: connections.length
       })
     }
     case 'Guest': {
