@@ -91,7 +91,10 @@ const resolveFunctions = {
         const result = parliamentarians.map(p => mapParliamentarian(p, t))
 
         // default: sort by lastname
-        result.sort((a, b) => ascending(a.lastName, b.lastName))
+        result.sort((a, b) => ascending(
+          a.lastName.toLowerCase(),
+          b.lastName.toLowerCase()
+        ))
 
         return result
       })
@@ -125,7 +128,10 @@ const resolveFunctions = {
         const result = (guests || []).map(g => mapGuest(g, t))
 
         // default: sort by lastname
-        result.sort((a, b) => ascending(a.lastName, b.lastName))
+        result.sort((a, b) => ascending(
+          a.lastName.toLowerCase(),
+          b.lastName.toLowerCase()
+        ))
 
         return result
       })
@@ -162,7 +168,10 @@ const resolveFunctions = {
         api.data(locale, 'data/interface/v1/json/table/interessengruppe/flat/list')
       ]).then(([t, {json: {data: lobbyGroups}}]) => {
         // default: sort by name
-        lobbyGroups.sort((a, b) => ascending(a.name, b.name))
+        lobbyGroups.sort((a, b) => ascending(
+          a.name.toLowerCase(),
+          b.name.toLowerCase()
+        ))
 
         return lobbyGroups.map(l => mapLobbyGroup(l, t))
       })
