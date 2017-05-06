@@ -1,0 +1,36 @@
+{
+  "__schema": {
+    "types": [
+      {
+        "kind": "INTERFACE",
+        "name": "Person",
+        "possibleTypes": [
+          {
+            "name": "Parliamentarian"
+          },
+          {
+            "name": "Guest"
+          }
+        ]
+      },
+      {
+        "kind": "UNION",
+        "name": "Entity",
+        "possibleTypes": [
+          {
+            "name": "Parliamentarian"
+          },
+          {
+            "name": "Organisation"
+          },
+          {
+            "name": "Guest"
+          },
+          {
+            "name": "LobbyGroup"
+          }
+        ]
+      }
+    ]
+  }
+}
