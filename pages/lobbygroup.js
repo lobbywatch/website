@@ -11,7 +11,7 @@ import DetailHead from '../src/components/DetailHead'
 import {A, Meta} from '../src/components/Styled'
 import {withT} from '../src/components/Message'
 import {GREY_LIGHT} from '../src/theme'
-import {DRUPAL_BASE_URL} from '../constants'
+import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from '../constants'
 
 const lobbyGroupQuery = gql`
   query getLobbyGroup($locale: Locale!, $id: ID!) {
@@ -85,14 +85,14 @@ const LobbyGroup = ({loading, error, lobbyGroup, t, locale, id}) => (
               connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
           </Center>
         </div>
-        <Center>
+        {DEBUG_INFORMATION && <Center>
           <Meta>
             Original Profil:
             {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
           </Meta>
           <GooglePreview data={lobbyGroup} t={t} path={path} />
-        </Center>
+        </Center>}
       </div>
     )
   }} />

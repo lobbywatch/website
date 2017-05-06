@@ -1,3 +1,5 @@
+const ENV = typeof window !== 'undefined' ? window.__NEXT_DATA__.env : process.env
+
 exports.locales = ['de', 'fr']
 exports.EXPRESS_PORT = (typeof process !== 'undefined' && process.env.PORT) || 3000
 exports.DRUPAL_BASE_URL = 'https://lobbywatch.ch'
@@ -16,3 +18,5 @@ exports.MAILCHIMP_ID_FOR_LOCALE = {
   de: '82c011426c',
   fr: 'b5a3964333'
 }
+
+exports.DEBUG_INFORMATION = !!ENV.DEBUG_INFORMATION

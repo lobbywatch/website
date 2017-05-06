@@ -11,7 +11,7 @@ import DetailHead from '../src/components/DetailHead'
 import {Meta, A} from '../src/components/Styled'
 import {withT} from '../src/components/Message'
 import {GREY_LIGHT} from '../src/theme'
-import {DRUPAL_BASE_URL} from '../constants'
+import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from '../constants'
 
 const guestQuery = gql`
   query getGuest($locale: Locale!, $id: ID!) {
@@ -73,14 +73,14 @@ const Guest = ({loading, error, guest, t, locale, id}) => (
               ])} />
           </Center>
         </div>
-        <Center>
+        {DEBUG_INFORMATION && <Center>
           <Meta>
             Original Profil:
             {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
           </Meta>
           <GooglePreview data={guest} t={t} path={path} />
-        </Center>
+        </Center>}
       </div>
     )
   }} />
