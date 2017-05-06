@@ -1,6 +1,5 @@
 const api = require('./api')
 const {ascending} = require('d3-array')
-const qs = require('querystring')
 const {getFormatter} = require('../src/utils/translate')
 const {
   mapPage, mapMeta,
@@ -24,10 +23,9 @@ const resolveFunctions = {
     page (_, {locale, path}) {
       const query = {
         'load-entity-refs': 'taxonomy_term,file',
-        'max-depth': 1
+        'url': path.join('/')
       }
-      const segments = path.map(encodeURIComponent)
-      return api.drupal(locale, segments.join('/'), query)
+      return api.drupal(locale, 'daten/page', query)
         .then(
           ({json, response}) => mapPage(locale, json, response.status),
           error => {
@@ -46,20 +44,14 @@ const resolveFunctions = {
     articles (_, {locale, limit, page}) {
       const query = {
         'load-entity-refs': 'taxonomy_term,file',
-        'max-depth': 1,
-        type: 'article',
-        promote: 1,
         limit,
-        page,
-        sort: 'created',
-        direction: 'DESC'
+        page
       }
 
-      return api.drupal(locale, '', query)
+      return api.drupal(locale, 'daten/articles', query)
         .then(({json}) => {
-          const last = qs.decode(json.last.split('?')[1])
           return {
-            pages: +last.page,
+            pages: +json.pages,
             list: json.list.map(article => mapPage(locale, article))
           }
         })

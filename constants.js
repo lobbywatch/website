@@ -1,6 +1,6 @@
 exports.locales = ['de', 'fr']
-exports.EXPRESS_PORT = typeof process !== 'undefined' && process.env.PORT || 3000
-exports.DRUPAL_BASE_URL = 'https://lw.preus.se'
+exports.EXPRESS_PORT = (typeof process !== 'undefined' && process.env.PORT) || 3000
+exports.DRUPAL_BASE_URL = 'https://lobbywatch.ch'
 exports.DRUPAL_DATA_BASE_URL = 'https://lobbywatch.ch'
 exports.DRUPAL_IMAGE_BASE_URL = 'https://lobbywatch.ch'
 

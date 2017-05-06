@@ -4,8 +4,7 @@ const {DRUPAL_BASE_URL, DRUPAL_DATA_BASE_URL} = require('../constants')
 
 const options = {
   headers: {
-    Accept: 'application/json',
-    Authorization: `Basic ${(new Buffer('lobbywatch:#IchBinKeineTentakelPuppe')).toString('base64')}`
+    Accept: 'application/json'
   }
 }
 
