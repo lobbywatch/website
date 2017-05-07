@@ -7,11 +7,12 @@ import {stratify} from 'd3-hierarchy'
 import {Center} from './index'
 import SocialMedia from './SocialMedia'
 import Newsletter from './Newsletter'
-import {RouteLink, Hr, metaStyle, Strong, Clear} from '../Styled'
+import {RouteLink, A, Hr, metaStyle, Strong, Clear} from '../Styled'
 import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../../theme'
 import CreativeCommons from '../../assets/CreativeCommons'
 import Message from '../Message'
 import Loader from '../Loader'
+import {locales} from '../../../constants'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {
@@ -20,7 +21,7 @@ const metaQuery = gql`
         id
         parentId
         title
-        path
+        href
       }
     }
   }
@@ -118,13 +119,32 @@ const Footer = ({loading, error, links, locale}) => (
                   <Strong>{data.title}</Strong>
                   <ul {...footerListStyle}>
                     {
-                      children.map(({data: {id, title, path}}) => (
-                        <li key={id}>
-                          <RouteLink route={path.length ? 'page' : 'index'} params={{locale, path}}>
-                            {title}
-                          </RouteLink>
-                        </li>
-                      ))
+                      children.map(({data: {id, title, href}}) => {
+                        let link
+                        const supportedPath = href.match(/^\/([^/]+)/)
+                        if (supportedPath && locales.indexOf(supportedPath[1]) !== -1) {
+                          const path = href.split('/').slice(2)
+                          link = (
+                            <RouteLink
+                              route={path.length ? 'page' : 'index'}
+                              params={{locale: supportedPath[1], path}}>
+                              {title}
+                            </RouteLink>
+                          )
+                        } else {
+                          link = (
+                            <A href={href}
+                              target={!href.match(/^mailto:/) ? '_blank' : undefined}>
+                              {title}
+                            </A>
+                          )
+                        }
+                        return (
+                          <li key={id}>
+                            {link}
+                          </li>
+                        )
+                      })
                     }
                   </ul>
                 </div>

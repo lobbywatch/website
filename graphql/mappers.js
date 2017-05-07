@@ -1,7 +1,7 @@
 const {timeFormat, timeParse} = require('d3-time-format')
 const {timeYear, timeMonth} = require('d3-time')
 const striptags = require('striptags')
-const {DRUPAL_BASE_URL, DRUPAL_IMAGE_BASE_URL} = require('../constants')
+const {DRUPAL_IMAGE_BASE_URL} = require('../constants')
 
 const parseDate = timeParse('%Y-%m-%d')
 const formatDate = timeFormat('%d.%m.%Y')
@@ -352,16 +352,6 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
   return parliamentarian
 }
 
-const toPathArray = (locale, path) => {
-  return path.replace(DRUPAL_BASE_URL, '')
-    .split('/')
-    .filter(Boolean)
-    .filter((segment, i) => !(
-      i === 0 &&
-      segment === locale
-    ))
-}
-
 exports.mapPage = (locale, raw, statusCode) => {
   let image = (
     raw.field_image &&
@@ -397,7 +387,7 @@ exports.mapMeta = (locale, raw) => {
       id: `MenuLink-${link.id}`,
       parentId: +link.parentId ? `MenuLink-${link.parentId}` : 'MenuLink-Root',
       title: link.title,
-      path: toPathArray(locale, link.href)
+      href: link.href
     })),
     blocks: ({region}) => region
       ? raw.blocks.filter(block => block.region === region)

@@ -15,7 +15,7 @@ type MenuLink {
   id: ID!
   parentId: ID!
   title: String
-  path: [String!]
+  href: String
 }
 type Block {
   region: String
