@@ -368,13 +368,15 @@ exports.mapPage = (locale, raw, statusCode) => {
     raw.field_image[0] &&
     raw.field_image[0].url
   )
-  if (image) {
-    image = image.replace('lw.preus.se/sites/default/', 'lobbywatch.ch/sites/lobbywatch.ch/')
-  }
   return Object.assign({}, raw, {
     statusCode,
-    path: toPathArray(locale, raw.url),
-    nodeId: raw.nid,
+    path: raw.path.split('/'),
+    translations: Object.keys(raw.translations || {})
+      .filter(key => key !== locale)
+      .map(key => ({
+        locale: key,
+        path: raw.translations[key].split('/')
+      })),
     author: raw.field_author,
     created: raw.created ? formatTime(+raw.created * 1000) : null,
     content: raw.body.value,

@@ -14,7 +14,10 @@ const pageQuery = gql`
   query page($locale: Locale!, $path: [String!]!) {
     page(locale: $locale, path: $path) {
       path
-      nodeId
+      translations {
+        locale
+        path
+      }
       statusCode
       title
       content
@@ -26,7 +29,11 @@ const pageQuery = gql`
 
 const Page = ({loading, error, page, url, url: {query: {locale}}}) => (
   <Frame url={url} localizeRoute={(locale) => {
-    if (!page || !page.nodeId) {
+    const translation = !!page && (
+      page.translations
+        .find(t => t.locale === locale)
+    )
+    if (!translation) {
       return {
         route: 'index',
         params: {locale}
@@ -36,7 +43,7 @@ const Page = ({loading, error, page, url, url: {query: {locale}}}) => (
       route: 'page',
       params: {
         locale,
-        path: ['node', page.nodeId]
+        path: translation.path
       }
     }
   }}>

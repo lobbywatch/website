@@ -27,10 +27,14 @@ type Meta {
   blocks(region: String): [Block!]!
   links: [MenuLink!]!
 }
+type PageTranslations {
+  locale: String!
+  path: [String!]!
+}
 type Page {
   statusCode: Int
-  path: [String!]
-  nodeId: ID
+  path: [String!]!
+  translations: [PageTranslations!]!
   title: String
   image: String
   author: String
