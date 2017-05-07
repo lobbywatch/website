@@ -112,16 +112,19 @@ class Header extends Component {
       {
         label: t('menu/parliamentarians'),
         route: 'parliamentarians',
+        active: url.pathname.match(/^\/parliamentarian/),
         params: {locale: currentLocale}
       },
       {
         label: t('menu/guests'),
         route: 'guests',
+        active: url.pathname.match(/^\/guest/),
         params: {locale: currentLocale}
       },
       {
         label: t('menu/lobbygroups'),
         route: 'lobbygroups',
+        active: url.pathname.match(/^\/lobbygroup/),
         params: {locale: currentLocale}
       }
     ]

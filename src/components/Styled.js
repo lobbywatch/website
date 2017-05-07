@@ -16,10 +16,10 @@ export const linkStyle = {
 }
 export const linkRule = css(linkStyle)
 export const Link = ({children, className, ...props}) => (
-  <NextLink {...props}><a {...linkRule}>{children}</a></NextLink>
+  <NextLink {...props}><a className={className} {...linkRule}>{children}</a></NextLink>
 )
 export const RouteLink = ({children, className, ...props}) => (
-  <NextRouteLink {...props}><a {...linkRule}>{children}</a></NextRouteLink>
+  <NextRouteLink {...props}><a className={className} {...linkRule}>{children}</a></NextRouteLink>
 )
 
 export const A = ({children, ...props}) => <a {...props} {...linkRule}>{children}</a>
@@ -39,10 +39,10 @@ export const buttonLinkStyle = {
 }
 export const buttonLinkRule = css(buttonLinkStyle)
 export const ButtonLink = ({children, className, ...props}) => (
-  <NextLink {...props}><a {...buttonLinkRule}>{children}</a></NextLink>
+  <NextLink {...props}><a className={className} {...buttonLinkRule}>{children}</a></NextLink>
 )
 export const ButtonRouteLink = ({children, className, ...props}) => (
-  <NextRouteLink {...props}><a {...buttonLinkRule}>{children}</a></NextRouteLink>
+  <NextRouteLink {...props}><a className={className} {...buttonLinkRule}>{children}</a></NextRouteLink>
 )
 
 const textCenterRule = css({

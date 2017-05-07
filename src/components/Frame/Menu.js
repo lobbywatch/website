@@ -59,6 +59,12 @@ const listItemStyle = css({
   },
   '& a, & a:visited, & a:hover': {
     color: LW_BLUE_LIGHT
+  },
+  '& a:hover': {
+    color: WHITE
+  },
+  '& a.active': {
+    color: WHITE
   }
 })
 const listItemSeparatorStyle = css({
@@ -81,10 +87,15 @@ const listItemSeparatorStyle = css({
 const Menu = ({items, expanded, id}) => (
   <nav {...menuStyle} role='navigation' id={id} aria-expanded={expanded}>
     <ul {...listStyle}>
-      {items.map(({label, route, params, separator}, i) => (
+      {items.map(({label, route, params, active, separator}, i) => (
         <li {...listItemStyle} key={i}>
           {separator && <span {...listItemSeparatorStyle} />}
-          <RouteLink prefetch route={route} params={params}>{label}</RouteLink>
+          <RouteLink prefetch
+            route={route}
+            params={params}
+            className={active ? 'active' : ''}>
+            {label}
+          </RouteLink>
         </li>
       ))}
     </ul>
