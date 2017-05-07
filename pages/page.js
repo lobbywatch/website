@@ -7,7 +7,8 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import MetaTags from '../src/components/MetaTags'
 import RawHtml from '../src/components/RawHtml'
-import {H1} from '../src/components/Styled'
+import Cover, {NARROW_WIDTH} from '../src/components/Cover'
+import {H1, Meta} from '../src/components/Styled'
 import {Router as RoutesRouter} from '../routes'
 
 const pageQuery = gql`
@@ -23,6 +24,8 @@ const pageQuery = gql`
       content
       lead
       image
+      created
+      author
     }
   }
 `
@@ -48,11 +51,21 @@ const Page = ({loading, error, page, url, url: {query: {locale}}}) => (
     }
   }}>
     <Loader loading={loading} error={error} render={() => (
-      <Center>
+      <div>
         <MetaTags locale={locale} title={page.title} description={page.lead} image={page.image} />
-        <H1>{page.title}</H1>
-        <RawHtml dangerouslySetInnerHTML={{__html: page.content}} />
-      </Center>
+        {!!page.image && (
+          <Cover src={page.image} title={page.title} />
+        )}
+        <Center style={{paddingTop: 0, maxWidth: NARROW_WIDTH}}>
+          {!page.image && (
+            <H1>{page.title}</H1>
+          )}
+          <Meta style={{marginBottom: -7}}>
+            {[page.created, page.author].filter(Boolean).join(' – ')}
+          </Meta>
+          <RawHtml dangerouslySetInnerHTML={{__html: page.content}} />
+        </Center>
+      </div>
     )} />
   </Frame>
 )

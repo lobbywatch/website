@@ -8,11 +8,28 @@ export const intersperse = (list, separator) => {
   }, [list[0]])
 }
 
+export const NBSP = '\u00a0'
+
+export const preventWidow = (string) => {
+  const words = string.split(' ')
+  const length = words.length
+  if (length > 2) {
+    words.splice(
+      -2,
+      2,
+      words[length - 2] +
+      NBSP +
+      words[length - 1]
+    )
+  }
+  return words.join(' ')
+}
+
 // From react-redux
 // https://github.com/reactjs/react-redux/blob/dab9c85b4b6480f9962688c3ba9ec426508d2879/src/utils/shallowEqual.js
 
 const hasOwn = Object.prototype.hasOwnProperty
-export function shallowEqual (a, b) {
+export const shallowEqual = (a, b) => {
   if (a === b) return true
 
   let countA = 0

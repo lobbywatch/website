@@ -69,6 +69,28 @@ Object.keys(POTENCY_COLORS).map(key => {
   })
 })
 
+const maxWidth = {
+  maxWidth: '100%'
+}
+globalWithMediaQueries('.RawHtml iframe', maxWidth)
+globalWithMediaQueries('.RawHtml img', maxWidth)
+
+const aspect16to9 = {
+  position: 'relative',
+  height: 0,
+  overflow: 'hidden',
+  paddingBottom: '56.25%'
+}
+const aspectInner = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%'
+}
+globalWithMediaQueries('.RawHtml .lw-16-9', aspect16to9)
+globalWithMediaQueries('.RawHtml .lw-16-9 iframe', aspectInner)
+
 const RawHtml = ({type, dangerouslySetInnerHTML}) => createElement(type, {
   className: 'RawHtml',
   dangerouslySetInnerHTML
