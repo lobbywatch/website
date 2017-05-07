@@ -42,7 +42,9 @@ const Parliamentarians = ({loading, error, parliamentarians, locale}) => (
         <H1><Message id='menu/parliamentarians' locale={locale} /></H1>
       </TextCenter>
       <ListView locale={locale} items={parliamentarians} />
-      <BlockRegion locale={locale} region='rooster_parliamentarians' />
+      <BlockRegion locale={locale}
+        region='rooster_parliamentarians'
+        style={{paddingTop: 50}} />
     </Center>
   )} />
 )

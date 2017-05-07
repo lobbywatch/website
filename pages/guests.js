@@ -35,7 +35,9 @@ const Guests = ({loading, error, guests, locale}) => (
         <H1><Message id='menu/guests' locale={locale} /></H1>
       </TextCenter>
       <ListView locale={locale} items={guests} />
-      <BlockRegion locale={locale} region='rooster_guests' />
+      <BlockRegion locale={locale}
+        region='rooster_guests'
+        style={{paddingTop: 50}} />
     </Center>
   )} />
 )

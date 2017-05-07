@@ -33,7 +33,9 @@ const LobbyGroups = ({loading, error, lobbyGroups, locale}) => (
         <H1><Message id='menu/lobbygroups' locale={locale} /></H1>
       </TextCenter>
       <ListView locale={locale} items={lobbyGroups} />
-      <BlockRegion locale={locale} region='rooster_lobbygroups' />
+      <BlockRegion locale={locale}
+        region='rooster_lobbygroups'
+        style={{paddingTop: 50}} />
     </Center>
   )} />
 )
