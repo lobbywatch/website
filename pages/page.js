@@ -56,7 +56,7 @@ const Page = ({loading, error, page, url, url: {query: {locale}}}) => (
         {!!page.image && (
           <Cover src={page.image} title={page.title} />
         )}
-        <Center style={{paddingTop: 0, maxWidth: NARROW_WIDTH}}>
+        <Center style={{paddingTop: 0, paddingBottom: 100, maxWidth: NARROW_WIDTH}}>
           {!page.image && (
             <H1>{page.title}</H1>
           )}
@@ -85,6 +85,7 @@ const PageWithQuery = graphql(pageQuery, {
       !data.loading &&
       page &&
       page.path &&
+      page.statusCode !== 404 &&
       page.path.join('/') !== query.path
     )
     if (serverContext) {

@@ -33,6 +33,9 @@ const resolveFunctions = {
               return {
                 statusCode: 404,
                 title: '404',
+                path: ['404'],
+                translations: [],
+                lead: '',
                 content: 'Seite nicht gefunden / Page non trouvée'
               }
             } else {

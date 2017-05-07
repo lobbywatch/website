@@ -39,7 +39,7 @@ type Page {
   image: String
   author: String
   content: String
-  lead: String
+  lead: String!
   # DD.MM.YYYY HH:MM
   created: String
   categories: [String!]
