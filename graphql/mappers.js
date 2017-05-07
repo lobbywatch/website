@@ -367,8 +367,12 @@ exports.mapPage = (locale, raw, statusCode) => {
         locale: key,
         path: raw.translations[key].split('/')
       })),
-    author: raw.field_author,
-    created: raw.created ? formatTime(+raw.created * 1000) : null,
+    author: raw.type === 'article'
+      ? raw.field_author
+      : null,
+    created: raw.type === 'article' && raw.created
+      ? formatTime(+raw.created * 1000)
+      : null,
     content: raw.body.value,
     lead: striptags(raw.body.value).trim().split('\n')[0],
     categories: (raw.field_category || [])
