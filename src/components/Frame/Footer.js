@@ -103,7 +103,7 @@ const groupLinks = (links) => {
 
 const Footer = ({loading, error, links, locale}) => (
   <div>
-    <Center>
+    <Center style={{paddingTop: 100}}>
       <Clear {...columnContainerStyle}>
         <div {...columnStyle}><SocialMedia locale={locale} /></div>
         <div {...columnStyle}><Newsletter locale={locale} /></div>

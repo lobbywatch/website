@@ -56,11 +56,11 @@ const Page = ({loading, error, page, url, url: {query: {locale}}}) => (
         {!!page.image && (
           <Cover src={page.image} title={page.title} />
         )}
-        <Center style={{paddingTop: 0, paddingBottom: 100, maxWidth: NARROW_WIDTH}}>
+        <Center style={{paddingTop: 0, maxWidth: NARROW_WIDTH}}>
           {!page.image && (
             <H1>{page.title}</H1>
           )}
-          <Meta style={{marginBottom: -7}}>
+          <Meta style={{marginBottom: 7}}>
             {[page.created, page.author].filter(Boolean).join(' – ')}
           </Meta>
           <RawHtml dangerouslySetInnerHTML={{__html: page.content}} />

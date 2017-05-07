@@ -18,6 +18,9 @@ globalWithMediaQueries('.RawHtml hr', hrStyle)
 globalWithMediaQueries('.RawHtml ul', {
   lineHeight: '24px'
 })
+globalWithMediaQueries('.RawHtml > :first-child', {
+  marginTop: 0
+})
 
 globalWithMediaQueries('.RawHtml a.button', buttonLinkStyle)
 
