@@ -9,6 +9,7 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import MetaTags from '../src/components/MetaTags'
 import ListView from '../src/components/ListView'
+import BlockRegion from '../src/components/BlockRegion'
 
 const parliamentariansQuery = gql`
   query parliamentarians($locale: Locale!) {
@@ -41,6 +42,7 @@ const Parliamentarians = ({loading, error, parliamentarians, locale}) => (
         <H1><Message id='menu/parliamentarians' locale={locale} /></H1>
       </TextCenter>
       <ListView locale={locale} items={parliamentarians} />
+      <BlockRegion locale={locale} region='rooster_parliamentarians' />
     </Center>
   )} />
 )

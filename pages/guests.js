@@ -9,6 +9,7 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import MetaTags from '../src/components/MetaTags'
 import ListView from '../src/components/ListView'
+import BlockRegion from '../src/components/BlockRegion'
 
 const guestsQuery = gql`
   query guests($locale: Locale!) {
@@ -34,6 +35,7 @@ const Guests = ({loading, error, guests, locale}) => (
         <H1><Message id='menu/guests' locale={locale} /></H1>
       </TextCenter>
       <ListView locale={locale} items={guests} />
+      <BlockRegion locale={locale} region='rooster_guests' />
     </Center>
   )} />
 )

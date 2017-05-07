@@ -9,6 +9,7 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import MetaTags from '../src/components/MetaTags'
 import ListView from '../src/components/ListView'
+import BlockRegion from '../src/components/BlockRegion'
 
 const lobbyGroupsQuery = gql`
   query lobbyGroups($locale: Locale!) {
@@ -32,6 +33,7 @@ const LobbyGroups = ({loading, error, lobbyGroups, locale}) => (
         <H1><Message id='menu/lobbygroups' locale={locale} /></H1>
       </TextCenter>
       <ListView locale={locale} items={lobbyGroups} />
+      <BlockRegion locale={locale} region='rooster_lobbygroups' />
     </Center>
   )} />
 )

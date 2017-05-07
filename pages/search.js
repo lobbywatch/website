@@ -2,9 +2,10 @@ import React from 'react'
 
 import {graphql, gql} from 'react-apollo'
 import withData from '../lib/withData'
-import {H1, P} from '../src/components/Styled'
+import {P} from '../src/components/Styled'
 import Message from '../src/components/Message'
 import {SEARCH_MAX_WIDTH} from '../src/components/Frame/Header'
+import BlockRegion from '../src/components/BlockRegion'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
@@ -55,13 +56,6 @@ const searchQuery = gql`
   }
 `
 
-const NoResults = ({locale}) => (
-  <H1><Message locale={locale} id='search/no-result' /></H1>
-)
-const Hint = ({locale}) => (
-  <P><Message locale={locale} id='search/hint' /></P>
-)
-
 const Search = ({loading, error, term, results, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
@@ -70,8 +64,12 @@ const Search = ({loading, error, term, results, locale}) => (
         description: t.pluralize('search/meta/description', {count: results.length, term})
       })} />
       <ListView locale={locale} items={results} maxWidth={SEARCH_MAX_WIDTH} />
-      {!results.length && !!term.length && <NoResults locale={locale} />}
-      {!results.length && !term.length && <Hint locale={locale} />}
+      {!results.length && !!term.length && (
+        <BlockRegion locale={locale} region='rooster_noresults' />
+      )}
+      {!results.length && !term.length && (
+        <P><Message locale={locale} id='search/hint' /></P>
+      )}
     </Center>
   )} />
 )

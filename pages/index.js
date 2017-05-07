@@ -6,8 +6,8 @@ import withData from '../lib/withData'
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import MetaTags from '../src/components/MetaTags'
-import RawHtml from '../src/components/RawHtml'
 import Message from '../src/components/Message'
+import BlockRegion from '../src/components/BlockRegion'
 import Card from '../src/components/Card'
 import Grid, {GridItem} from '../src/components/Grid'
 import {H1, Link} from '../src/components/Styled'
@@ -25,17 +25,10 @@ const indexQuery = gql`
         path
       }
     }
-    meta(locale: $locale) {
-      blocks(region: "rooster_home") {
-        key
-        title
-        content
-      }
-    }
   }
 `
 
-const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) => (
+const Index = ({loading, error, articles, url, url: {query: {locale}}}) => (
   <Frame url={url}>
     <Loader loading={loading} error={error} render={() => (
       <div>
@@ -63,15 +56,7 @@ const Index = ({loading, error, articles, blocks, url, url: {query: {locale}}}) 
         </Center>
         <div style={{backgroundColor: GREY_SOFT}}>
           <Center>
-            {
-              blocks
-                .map(block => (
-                  <div key={block.key} style={{textAlign: 'center'}}>
-                    <H1>{block.title}</H1>
-                    <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
-                  </div>
-                ))
-            }
+            <BlockRegion locale={locale} region='rooster_home' style={{textAlign: 'center'}} />
           </Center>
         </div>
       </div>
@@ -91,8 +76,7 @@ const IndexWithQuery = graphql(indexQuery, {
     return {
       loading: data.loading,
       error: data.error,
-      articles: data.articles && data.articles.list,
-      blocks: data.meta && data.meta.blocks
+      articles: data.articles && data.articles.list
     }
   }
 })(Index)
