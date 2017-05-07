@@ -45,11 +45,11 @@ const Blog = ({loading, error, articles, blocks, page, url, locale}) => (
       <PageNavigation locale={locale}
         prev={page > 0 && ({
           to: `/blog?page=${page - 1}&locale=${locale}`,
-          as: `/${locale}/blog${page - 1 > 0 ? `?page=${page - 1}` : ''}`
+          as: `/${locale}/artikel/archiv${page - 1 > 0 ? `?page=${page - 1}` : ''}`
         })}
         next={page < articles.pages && ({
           to: `/blog?page=${page + 1}&locale=${locale}`,
-          as: `/${locale}/blog?page=${page + 1}`
+          as: `/${locale}/artikel/archiv?page=${page + 1}`
         })} />
     </Center>
   )} />

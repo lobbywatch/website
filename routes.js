@@ -6,7 +6,7 @@ const localeSegment = `:locale(${locales.join('|')})`
 module.exports.localeSegment = localeSegment
 
 routes.add('index', `/${localeSegment}`)
-routes.add('blog', `/${localeSegment}/blog`)
+routes.add('blog', `/${localeSegment}/artikel/archiv`)
 routes.add('parliamentarians', `/${localeSegment}/daten/parlamentarier`)
 routes.add('parliamentarian', `/${localeSegment}/daten/parlamentarier/:id/:name`)
 routes.add('lobbygroups', `/${localeSegment}/daten/lobbygruppe`)

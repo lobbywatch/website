@@ -25,10 +25,6 @@ app.prepare().then(() => {
     const {locale, term} = req.params
     res.redirect(301, `/${encodeURIComponent(locale)}/search${term ? `?term=${encodeURIComponent(term)}` : ''}`)
   })
-  server.get(`/${routes.localeSegment}/artikel/archiv`, (req, res) => {
-    const {locale} = req.params
-    res.redirect(301, `/${encodeURIComponent(locale)}/blog`)
-  })
   server.use(handler)
 
   server.listen(EXPRESS_PORT, (err) => {

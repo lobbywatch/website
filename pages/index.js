@@ -48,7 +48,7 @@ const Index = ({loading, error, articles, url, url: {query: {locale}}}) => (
           <div style={{textAlign: 'center', margin: '10px 0 20px'}}>
             <Link {...{
               href: `/blog?locale=${locale}`,
-              as: `/${locale}/blog`
+              as: `/${locale}/artikel/archiv`
             }}>
               <Message locale={locale} id='index/blog/link' />
             </Link>

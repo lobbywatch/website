@@ -124,10 +124,16 @@ const Footer = ({loading, error, links, locale}) => (
                         const supportedPath = href.match(/^\/([^/]+)/)
                         if (supportedPath && locales.indexOf(supportedPath[1]) !== -1) {
                           const path = href.split('/').slice(2)
+                          let route = path.length ? 'page' : 'index'
+                          let params = {locale: supportedPath[1], path}
+                          if (path.join('/') === 'artikel/archiv') {
+                            route = 'blog'
+                            params = {locale: supportedPath[1]}
+                          }
                           link = (
                             <RouteLink
-                              route={path.length ? 'page' : 'index'}
-                              params={{locale: supportedPath[1], path}}>
+                              route={route}
+                              params={params}>
                               {title}
                             </RouteLink>
                           )
