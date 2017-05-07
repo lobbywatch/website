@@ -2,9 +2,9 @@ const ENV = typeof window !== 'undefined' ? window.__NEXT_DATA__.env : process.e
 
 exports.locales = ['de', 'fr']
 exports.EXPRESS_PORT = (typeof process !== 'undefined' && process.env.PORT) || 3000
-exports.DRUPAL_BASE_URL = 'https://lobbywatch.ch'
-exports.DRUPAL_DATA_BASE_URL = 'https://lobbywatch.ch'
-exports.DRUPAL_IMAGE_BASE_URL = 'https://lobbywatch.ch'
+exports.DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
+exports.DRUPAL_DATA_BASE_URL = 'https://cms.lobbywatch.ch'
+exports.DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
 
 const location = typeof window !== 'undefined' && window.location
 const hostname = location ? location.hostname : '127.0.0.1'
