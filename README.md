@@ -21,9 +21,56 @@ npm run dev
 
 To deploy the app to Swisscom Application Cloud run following [`cf-cli`](https://docs.developer.swisscom.com/cf-cli/install-go-cli.html) commands:
 
+### Staging
+
 ```bash
 cf login -a https://api.lyra-836.appcloud.swisscom.com --sso
+cf target -s Staging
 cf push lobbywatch-rooster
+```
+
+### Production
+
+We follow the [blue-green schema](https://docs.cloudfoundry.org/devguide/deploy-apps/blue-green.html). This results in following three steps.
+
+#### 1. Choose Color
+
+Check which color is currently free:
+
+```
+$ cf target -s Production
+$ cf routes
+Getting routes for org Lobbywatch / space Production as you@example.com ...
+
+space       host  domain         apps
+Production        lobbywatch.ch  lobbywatch-green
+```
+
+The color with the domain `lobbywatch.ch` and an empty host is the productive one. In the above shown case we should deploy to `blue` since `green` is productive.
+
+#### 2. Deploy and Scale Up
+
+```bash
+cf push lobbywatch-blue -d lobbywatch.ch -n next
+cf scale lobbywatch-blue -i 2 -m 256M
+```
+
+Test the deploy on `next.lobbywatch.ch`.
+
+#### 3. Re-Route and Scale Down
+
+If everything is fine, re-route traffic:
+
+```bash
+cf map-route lobbywatch-blue lobbywatch.ch
+cf unmap-route lobbywatch-green lobbywatch.ch
+cf unmap-route lobbywatch-blue lobbywatch.ch -n next
+```
+
+Scale down the unused app:
+
+```bash
+cf scale lobbywatch-green -i 1 -m 128M
 ```
 
 ### Api only
