@@ -45,7 +45,7 @@ const footerColumnStyle = css({
   fontSize: 14,
   [mediaM]: {
     float: 'left',
-    width: '33%'
+    width: '25%'
   }
 })
 
