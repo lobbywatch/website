@@ -47,10 +47,10 @@ const leadContainerStyle = css({
 })
 const leadCenterStyle = css({
   padding: '20px 20px 0',
+  maxWidth: NARROW_WIDTH,
+  margin: '0 auto',
   [mediaM]: {
-    textAlign: 'center',
-    maxWidth: NARROW_WIDTH,
-    margin: '0 auto'
+    textAlign: 'center'
   }
 })
 const titleStyle = css({
