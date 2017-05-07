@@ -10,7 +10,9 @@ const centerStyle = css({
   padding: FRAME_PADDING,
   margin: '0 auto'
 })
-export const Center = ({children, ...props}) => <div {...props} {...centerStyle}>{children}</div>
+export const Center = ({children, ...props}) => (
+  <div {...props} {...centerStyle}>{children}</div>
+)
 
 css.global('html', {boxSizing: 'border-box'})
 css.global('*, *:before, *:after', {boxSizing: 'inherit'})

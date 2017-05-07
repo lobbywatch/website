@@ -13,6 +13,7 @@ import layout, {START_Y} from './layout'
 import nest from './nest'
 import {set} from 'd3-collection'
 import * as style from './style'
+import {Center} from '../Frame'
 
 import Icons from '../../assets/TypeIcons'
 
@@ -166,140 +167,144 @@ class Connections extends Component {
     const hasIndirect = !!nodes.find(({data}) => data && data.connection && data.connection.indirect)
 
     return (
-      <div {...style.container} ref={ref => { this.containerRef = ref }}>
-        {!!hover && !!width && <ContextBox x={hover.x + hover.data.measurements.width / 2} y={hover.y + hover.data.measurements.height + 12} contextWidth={width}>
-          {hoverValues.map(([key, test, render], i) => {
-            const hasValue = test(hover, this.props)
-            if (!hasValue) {
-              return null
+      <div {...style.edge}>
+        <Center style={{paddingTop: 0, paddingBottom: 0}}>
+          <div {...style.container} ref={ref => { this.containerRef = ref }}>
+            {!!hover && !!width && <ContextBox x={hover.x + hover.data.measurements.width / 2} y={hover.y + hover.data.measurements.height + 12} contextWidth={width}>
+              {hoverValues.map(([key, test, render], i) => {
+                const hasValue = test(hover, this.props)
+                if (!hasValue) {
+                  return null
+                }
+                const content = render ? render(hover, this.props) : hasValue
+                if (!key) {
+                  return content
+                }
+                return (
+                  <ContextBoxValue key={i} label={t(key)}>
+                    {content}
+                  </ContextBoxValue>
+                )
+              })}
+            </ContextBox>}
+            <div {...style.metaBox} {...metaRule}>
+              {intersperse([
+                !!published && <Message key='published' locale={locale} id='published' replacements={{date: published}} />,
+                !!updated && <Message key='updated' locale={locale} id='updated' replacements={{date: updated}} />
+              ], <br key='br' />)}
+            </div>
+            <svg width={width} ref={ref => { this.svgRef = ref }} style={{position: 'absolute', top: 0, left: 0}}>
+              {!!width && links.map(({source, target, setRef}, i) => {
+                const visible = getVisible(source.parent) && getVisible(target.parent)
+                if (visible) {
+                  return <path key={i} ref={setRef}
+                    fill='none' stroke={WHITE} strokeWidth={2} />
+                }
+              })}
+            </svg>
+            <div style={{textAlign: 'center', position: 'relative', paddingTop: START_Y}}>
+              {nodes.map((node) => {
+                const {data, setRef, children, parent} = node
+                const isVisible = getVisible(parent)
+                const isOpen = open.has(data.id)
+                const toggle = () => {
+                  const isParentOpen = open.has(parent.data.id)
+                  let nextOpen = isParentOpen ? set([parent.data.id]) : set()
+                  if (!isOpen) {
+                    nextOpen.add(data.id)
+                  } else {
+                    nextOpen.remove(data.id)
+                  }
+                  this.setState({open: nextOpen})
+                }
+                if (data.type === 'Root') {
+                  return <span key={data.id} ref={setRef} {...style.root} />
+                }
+                if (data.type === 'Group') {
+                  const indirect = data.parentId !== 'Root'
+                  return (
+                    <span key={data.id} ref={setRef}
+                      className={[
+                        (indirect ? style.bubbleVia : style.bubble),
+                        !isVisible && style.hidden
+                      ].filter(Boolean).join(' ')}
+                      onClick={toggle}
+                      style={{cursor: 'pointer'}}>
+                      <span className={indirect ? style.countVia : style.count}>{data.count}</span> {data.label}
+                    </span>
+                  )
+                }
+                if (data.type === 'Guest') {
+                  let isFirst = viaI === 0
+                  viaI += 1
+                  let isLast = viaI === intermediates.length
+                  return (<span key={data.id}>
+                    {!!isFirst && <br />}
+                    <span ref={setRef}
+                      {...style.bubbleVia}
+                      className={!isVisible && style.hidden}
+                      onClick={toggle}
+                      style={{cursor: children && children.length ? 'pointer' : ''}}>
+                      <GuestIcon className={style.icon} /> {data.label}
+                    </span>
+                    {!!isLast && <br />}
+                  </span>)
+                }
+                if (data.type === 'Connection') {
+                  const {connection} = data
+                  const canHover = !!hoverValues
+                    .map(([_, test]) => test(node, this.props))
+                    .filter(Boolean)
+                    .length
+                  return (
+                    <RawRouteLink key={data.id}
+                      route={connection.to.__typename.toLowerCase()}
+                      params={{
+                        locale,
+                        id: connection.to.id.replace(`${connection.to.__typename}-`, ''),
+                        name: connection.to.name
+                      }}>
+                      <a ref={setRef}
+                        onMouseOver={canHover ? () => this.setState({hover: node}) : undefined}
+                        onMouseOut={canHover ? () => this.setState({hover: null}) : undefined}
+                        className={[
+                          connection.indirect ? style.connectionIndirect : style.connection,
+                          !isVisible && style.hidden
+                        ].filter(Boolean).join(' ')}
+                        style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
+                        {connection.to.name}
+                      </a>
+                    </RawRouteLink>
+                  )
+                }
+              })}
+            </div>
+          </div>
+        </Center>
+        {potency && <Legend
+          locale={locale}
+          title={t('connections/legend/title')}
+          pagePath={t('connections/legend/path').split('/')}
+          items={Object.keys(POTENCY_COLORS).map(key => ({
+            label: t(`connections/legend/${key}`),
+            color: POTENCY_COLORS[key]
+          }))} />}
+        {hasIndirect && <Legend
+          locale={locale}
+          title={t('connections/legend/type/title')}
+          items={[
+            {
+              color: GREY_DARK,
+              textColor: BLACK,
+              label: t('connections/legend/direct')
+            },
+            {
+              color: WHITE,
+              label: t('connections/legend/indirect'),
+              border: `1px solid ${GREY_DARK}`,
+              textColor: BLACK
             }
-            const content = render ? render(hover, this.props) : hasValue
-            if (!key) {
-              return content
-            }
-            return (
-              <ContextBoxValue key={i} label={t(key)}>
-                {content}
-              </ContextBoxValue>
-            )
-          })}
-        </ContextBox>}
-        <div {...style.metaBox} {...metaRule}>
-          {intersperse([
-            !!published && <Message key='published' locale={locale} id='published' replacements={{date: published}} />,
-            !!updated && <Message key='updated' locale={locale} id='updated' replacements={{date: updated}} />
-          ], <br key='br' />)}
-        </div>
-        <svg width={width} ref={ref => { this.svgRef = ref }} style={{position: 'absolute', top: 0, left: 0}}>
-          {!!width && links.map(({source, target, setRef}, i) => {
-            const visible = getVisible(source.parent) && getVisible(target.parent)
-            if (visible) {
-              return <path key={i} ref={setRef}
-                fill='none' stroke={WHITE} strokeWidth={2} />
-            }
-          })}
-        </svg>
-        <div style={{textAlign: 'center', position: 'relative', paddingTop: START_Y}}>
-          {potency && <Legend
-            locale={locale}
-            title={t('connections/legend/title')}
-            pagePath={t('connections/legend/path').split('/')}
-            items={Object.keys(POTENCY_COLORS).map(key => ({
-              label: t(`connections/legend/${key}`),
-              color: POTENCY_COLORS[key]
-            }))} />}
-          {hasIndirect && <Legend
-            locale={locale}
-            title={t('connections/legend/type/title')}
-            items={[
-              {
-                color: GREY_DARK,
-                textColor: BLACK,
-                label: t('connections/legend/direct')
-              },
-              {
-                color: WHITE,
-                label: t('connections/legend/indirect'),
-                border: `1px solid ${GREY_DARK}`,
-                textColor: BLACK
-              }
-            ]} />}
-          {nodes.map((node) => {
-            const {data, setRef, children, parent} = node
-            const isVisible = getVisible(parent)
-            const isOpen = open.has(data.id)
-            const toggle = () => {
-              const isParentOpen = open.has(parent.data.id)
-              let nextOpen = isParentOpen ? set([parent.data.id]) : set()
-              if (!isOpen) {
-                nextOpen.add(data.id)
-              } else {
-                nextOpen.remove(data.id)
-              }
-              this.setState({open: nextOpen})
-            }
-            if (data.type === 'Root') {
-              return <span key={data.id} ref={setRef} {...style.root} />
-            }
-            if (data.type === 'Group') {
-              const indirect = data.parentId !== 'Root'
-              return (
-                <span key={data.id} ref={setRef}
-                  className={[
-                    (indirect ? style.bubbleVia : style.bubble),
-                    !isVisible && style.hidden
-                  ].filter(Boolean).join(' ')}
-                  onClick={toggle}
-                  style={{cursor: 'pointer'}}>
-                  <span className={indirect ? style.countVia : style.count}>{data.count}</span> {data.label}
-                </span>
-              )
-            }
-            if (data.type === 'Guest') {
-              let isFirst = viaI === 0
-              viaI += 1
-              let isLast = viaI === intermediates.length
-              return (<span key={data.id}>
-                {!!isFirst && <br />}
-                <span ref={setRef}
-                  {...style.bubbleVia}
-                  className={!isVisible && style.hidden}
-                  onClick={toggle}
-                  style={{cursor: children && children.length ? 'pointer' : ''}}>
-                  <GuestIcon className={style.icon} /> {data.label}
-                </span>
-                {!!isLast && <br />}
-              </span>)
-            }
-            if (data.type === 'Connection') {
-              const {connection} = data
-              const canHover = !!hoverValues
-                .map(([_, test]) => test(node, this.props))
-                .filter(Boolean)
-                .length
-              return (
-                <RawRouteLink key={data.id}
-                  route={connection.to.__typename.toLowerCase()}
-                  params={{
-                    locale,
-                    id: connection.to.id.replace(`${connection.to.__typename}-`, ''),
-                    name: connection.to.name
-                  }}>
-                  <a ref={setRef}
-                    onMouseOver={canHover ? () => this.setState({hover: node}) : undefined}
-                    onMouseOut={canHover ? () => this.setState({hover: null}) : undefined}
-                    className={[
-                      connection.indirect ? style.connectionIndirect : style.connection,
-                      !isVisible && style.hidden
-                    ].filter(Boolean).join(' ')}
-                    style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
-                    {connection.to.name}
-                  </a>
-                </RawRouteLink>
-              )
-            }
-          })}
-        </div>
+          ]} />}
       </div>
     )
   }

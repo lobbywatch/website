@@ -78,17 +78,13 @@ const Org = ({loading, error, organisation, t, locale, id}) => (
         <Center>
           <DetailHead locale={locale} data={organisation} />
         </Center>
-        <div style={{backgroundColor: GREY_LIGHT}}>
-          <Center style={{paddingTop: 0, paddingBottom: 0}}>
-            <Connections
-              locale={locale}
-              updated={updated}
-              published={published}
-              data={organisation.connections}
-              groupByDestination
-              connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
-          </Center>
-        </div>
+        <Connections
+          locale={locale}
+          updated={updated}
+          published={published}
+          data={organisation.connections}
+          groupByDestination
+          connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
         {DEBUG_INFORMATION && <Center>
           <Meta>
             Original Profil:

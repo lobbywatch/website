@@ -58,21 +58,17 @@ const Guest = ({loading, error, guest, t, locale, id}) => (
         <Center>
           <DetailHead locale={locale} data={guest} />
         </Center>
-        <div style={{backgroundColor: GREY_LIGHT}}>
-          <Center style={{paddingTop: 0, paddingBottom: 0}}>
-            <Connections locale={locale} potency
-              updated={updated}
-              published={published}
-              data={guest.connections}
-              maxGroups={7}
-              hoverValues={hoverValues.concat([
-                [
-                  'connections/context/lobbygroup',
-                  hover => hover.data.connection.group !== hover.parent.data.label && hover.data.connection.group
-                ]
-              ])} />
-          </Center>
-        </div>
+        <Connections locale={locale} potency
+          updated={updated}
+          published={published}
+          data={guest.connections}
+          maxGroups={7}
+          hoverValues={hoverValues.concat([
+            [
+              'connections/context/lobbygroup',
+              hover => hover.data.connection.group !== hover.parent.data.label && hover.data.connection.group
+            ]
+          ])} />
         {DEBUG_INFORMATION && <Center>
           <Meta>
             Original Profil:

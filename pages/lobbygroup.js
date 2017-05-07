@@ -74,17 +74,13 @@ const LobbyGroup = ({loading, error, lobbyGroup, t, locale, id}) => (
         <Center>
           <DetailHead locale={locale} data={lobbyGroup} />
         </Center>
-        <div style={{backgroundColor: GREY_LIGHT}}>
-          <Center style={{paddingTop: 0, paddingBottom: 0}}>
-            <Connections locale={locale}
-              directness={1}
-              updated={updated}
-              published={published}
-              data={lobbyGroup.connections}
-              groupByDestination
-              connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
-          </Center>
-        </div>
+        <Connections locale={locale}
+          directness={1}
+          updated={updated}
+          published={published}
+          data={lobbyGroup.connections}
+          groupByDestination
+          connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
         {DEBUG_INFORMATION && <Center>
           <Meta>
             Original Profil:

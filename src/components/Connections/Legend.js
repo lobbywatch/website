@@ -11,8 +11,8 @@ const legendContainer = css({
   paddingBottom: 20,
   position: 'absolute',
   top: 0,
-  left: 0,
-  right: 0,
+  left: 20,
+  right: 20,
   fontSize: 12,
   textAlign: 'left',
   [mediaM]: {

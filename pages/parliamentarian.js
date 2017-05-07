@@ -91,23 +91,19 @@ const Parliamentarian = ({loading, error, parliamentarian, t, locale, id}) => (
         <Center>
           <DetailHead locale={locale} data={parliamentarian} />
         </Center>
-        <div style={{backgroundColor: GREY_LIGHT}}>
-          <Center style={{paddingTop: 0, paddingBottom: 0}}>
-            <Connections locale={locale} potency
-              data={parliamentarian.connections}
-              maxGroups={7}
-              updated={updated}
-              published={published}
-              intermediate={connection => connection.vias.length ? connection.vias[0].to.id : ''}
-              intermediates={parliamentarian.guests}
-              hoverValues={hoverValues.concat([
-                [
-                  'connections/context/lobbygroup',
-                  hover => hover.data.connection.group !== hover.parent.data.label && hover.data.connection.group
-                ]
-              ])} />
-          </Center>
-        </div>
+        <Connections locale={locale} potency
+          data={parliamentarian.connections}
+          maxGroups={7}
+          updated={updated}
+          published={published}
+          intermediate={connection => connection.vias.length ? connection.vias[0].to.id : ''}
+          intermediates={parliamentarian.guests}
+          hoverValues={hoverValues.concat([
+            [
+              'connections/context/lobbygroup',
+              hover => hover.data.connection.group !== hover.parent.data.label && hover.data.connection.group
+            ]
+          ])} />
         {DEBUG_INFORMATION && <Center>
           <Meta>
             Original Profil:
