@@ -52,7 +52,7 @@ The color with the domain `lobbywatch.ch` and an empty host is the productive on
 
 ```bash
 cf push lobbywatch-blue -d lobbywatch.ch -n next
-cf scale lobbywatch-blue -i 2 -m 256M
+cf scale lobbywatch-blue -i 2 -m 512M
 ```
 
 Test the deploy on `next.lobbywatch.ch`.
@@ -63,7 +63,9 @@ If everything is fine, re-route traffic:
 
 ```bash
 cf map-route lobbywatch-blue lobbywatch.ch
+cf map-route lobbywatch-blue lobbywatch.ch -n www
 cf unmap-route lobbywatch-green lobbywatch.ch
+cf unmap-route lobbywatch-green lobbywatch.ch -n www
 cf unmap-route lobbywatch-blue lobbywatch.ch -n next
 ```
 
