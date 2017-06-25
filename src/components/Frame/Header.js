@@ -5,8 +5,14 @@ import {withT} from '../Message'
 import {inputStyle} from '../Styled'
 import {Center} from './index'
 import {locales} from '../../../constants'
-import {Link as NextRouteLink, Router as RoutesRouter} from '../../../routes'
+import Routes, {
+  Link as NextRouteLink,
+  Router as RoutesRouter
+} from '../../../routes'
+
 import Router from 'next/router'
+import Head from 'next/head'
+
 import {
   LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE,
   mediaM,
@@ -129,7 +135,7 @@ class Header extends Component {
       }
     ]
 
-    const localeLinks = locales
+    const localizedRoutes = locales
       .filter(locale => locale !== currentLocale)
       .map((locale, i) => {
         const localizedRoute = localizeRoute
@@ -141,12 +147,23 @@ class Header extends Component {
               locale
             }
           }
+        const route = Routes.findByName(localizedRoute.route)
+        const href = route && route.getAs(localizedRoute.params)
         return {
-          separator: i === 0,
-          label: t(`menu/locales/${locale}`, {}, locale),
-          ...localizedRoute
+          locale,
+          ...localizedRoute,
+          href
         }
       })
+
+    const localeLinks = localizedRoutes.map(({locale, route, params}, i) => {
+      return {
+        separator: i === 0,
+        label: t(`menu/locales/${locale}`, {}, locale),
+        route,
+        params
+      }
+    })
 
     const onSearch = (event) => {
       const term = event.target.value
@@ -180,6 +197,11 @@ class Header extends Component {
 
     return (
       <div>
+        <Head>
+          {localizedRoutes.map(({locale, href}) => (
+            <link key={locale} rel='alternate' hrefLang={locale} href={href} />
+          ))}
+        </Head>
         <div {...barStyle}>
           <NextRouteLink prefetch route='index' params={{locale: currentLocale}}>
             <a {...titleStyle}>
