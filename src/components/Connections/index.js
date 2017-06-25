@@ -314,14 +314,23 @@ export const hoverValues = [
   ['connections/context/function', ({data}) => data.connection['function']],
   [
     'connections/context/compensation',
-    ({data: {connection: {compensation}}}) => !!compensation,
-    ({data: {connection: {compensation}}}, {t}) => (
-      <span>
-        {chfFormat(compensation.money)}
-        {' '}{t('connections/context/compensation/periode')}
-        {!!compensation.description && ` (${compensation.description})`}
-      </span>
-    )
+    ({data: {connection, connection: {compensation}}}) => (
+      !!compensation ||
+      (
+        connection.from &&
+        connection.from.__typename === 'Parliamentarian' &&
+        !connection.vias.length
+      )
+    ),
+    ({data: {connection: {compensation}}}, {t}) => compensation
+      ? (
+        <span>
+          {chfFormat(compensation.money)}
+          {' '}{t('connections/context/compensation/periode')}
+          {!!compensation.description && ` (${compensation.description})`}
+        </span>
+      )
+      : t('connections/context/compensation/notAvailable')
   ],
   [
     null,

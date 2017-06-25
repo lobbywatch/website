@@ -57,6 +57,9 @@ const parliamentarianQuery = gql`
           money
           description
         }
+        from {
+          __typename
+        }
         to {
           __typename
           ... on Organisation {
