@@ -18,9 +18,7 @@ const symbolStyle = css({
   height: SYMBOL_SIZE
 })
 const portraitStyle = css({
-  borderRadius: '50%',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center'
+  borderRadius: '50%'
 })
 const aStyle = css({
   display: 'block',
@@ -54,7 +52,8 @@ const ListView = ({locale, items, title, subtitle, maxWidth}) => {
     return (
       <RawRouteLink key={id} prefetch route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
         <a {...aStyle}>
-          {!!portrait && <span {...symbolStyle} {...portraitStyle} style={{backgroundImage: `url(${portrait})`}} />}
+          {!!portrait && <img {...symbolStyle} {...portraitStyle}
+            src={portrait} alt='' />}
           {!portrait && !!Icon && <Icon className={symbolStyle} size={SYMBOL_SIZE} />}
           <span>
             {title(item)}<br />

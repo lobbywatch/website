@@ -23,9 +23,7 @@ const symbolStyle = css({
 const imageStyle = css({
   width: 64,
   height: 64,
-  borderRadius: '50%',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center'
+  borderRadius: '50%'
 })
 
 const detailBoxStyle = css({
@@ -61,7 +59,7 @@ class DetailHead extends Component {
     const detailFields = details(data, t, locale)
     return (
       <TextCenter>
-        {!!img && <div {...symbolStyle} {...imageStyle} style={{backgroundImage: `url(${img})`}} />}
+        {!!img && <img {...symbolStyle} {...imageStyle} src={img} alt='' />}
         {!img && !!Icon && <Icon className={symbolStyle} size={64} />}
         <h1 {...titleStyle}>
           {title(data, t, locale)}
