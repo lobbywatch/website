@@ -6,8 +6,6 @@ const graphql = require('./graphql')
 const {
   locales,
   EXPRESS_PORT,
-  PUBLIC_BASE_URL,
-  COUNTDOWN_DATE,
   GOOGLE_SITE_VERIFICATION
 } = require('./constants')
 const routes = require('./routes')
@@ -21,57 +19,6 @@ acceptLanguage.languages(locales)
 
 app.prepare().then(() => {
   const server = express()
-
-  if (PUBLIC_BASE_URL) {
-    server.enable('trust proxy')
-    server.use((req, res, next) => {
-      if (`${req.protocol}://${req.get('Host')}` !== PUBLIC_BASE_URL) {
-        return res.redirect(PUBLIC_BASE_URL + req.url)
-      }
-      return next()
-    })
-  }
-
-  // only attach middle-ware if we're not already past it
-  if ((new Date()) < COUNTDOWN_DATE) {
-    const ALLOWED_PATHS = [
-      '/_next',
-      '/_webpack/',
-      '/__webpack_hmr',
-      '/static/',
-      '/graphql',
-      '/graphiql'
-    ]
-
-    server.use((req, res, next) => {
-      const now = new Date()
-      if (now < COUNTDOWN_DATE) {
-        const BACKDOOR_URL = process.env.BACKDOOR_URL || ''
-        if (req.url === BACKDOOR_URL) {
-          res.cookie('backdoorUrl', BACKDOOR_URL, {
-            maxAge: 2880000,
-            httpOnly: true
-          })
-          return res.redirect('/')
-        }
-
-        const cookies = (
-          req.headers.cookie &&
-          require('cookie').parse(req.headers.cookie)
-        ) || {}
-        if (
-          cookies['backdoorUrl'] === BACKDOOR_URL ||
-          ALLOWED_PATHS.some(path => req.url.startsWith(path))
-        ) {
-          return next()
-        }
-
-        res.statusCode = 503
-        return app.render(req, res, '/countdown', {})
-      }
-      return next()
-    })
-  }
 
   graphql(server)
 

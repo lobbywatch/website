@@ -80,21 +80,3 @@ cf scale lobbywatch-green -i 1 -m 128M
 ```
 cf push lobbylayer-api -c "node api.js"
 ```
-
-## Countdown Teaser
-
-You can configure a countdown date, before that date a teaser website will be shown.
-
-```
-COUNTDOWN_UTC=2017-05-11T18:00:00.000Z
-```
-
-`constants.js` will export a `COUNTDOWN_UTC` (`Date.toISOString()`) and `COUNTDOWN_DATE` from it, for usage in the application code.
-
-Additionally you can configure a backdoor URL. Opening that URL sets a cookie which allows to circumvent the countdown page.
-
-```
-BACKDOOR_URL=/iftah-ya-simsim
-```
-
-Shout-out to [Schmidsi](https://github.com/schmidsi) for building the countdown page.
