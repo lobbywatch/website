@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 
 const graphql = require('./graphql')
-const PORT = typeof process !== 'undefined' && process.env.PORT || 5000
+const PORT = (typeof process !== 'undefined' && process.env.PORT) || 5000
 
 const server = express()
 
