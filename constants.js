@@ -6,6 +6,8 @@ exports.DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
 exports.DRUPAL_DATA_BASE_URL = 'https://cms.lobbywatch.ch'
 exports.DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
 
+exports.PUBLIC_BASE_URL = ENV.PUBLIC_BASE_URL
+
 const location = typeof window !== 'undefined' && window.location
 const hostname = location ? location.hostname : '127.0.0.1'
 const port = location ? location.port : exports.EXPRESS_PORT

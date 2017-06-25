@@ -6,7 +6,8 @@ const graphql = require('./graphql')
 const {
   locales,
   EXPRESS_PORT,
-  GOOGLE_SITE_VERIFICATION
+  GOOGLE_SITE_VERIFICATION,
+  PUBLIC_BASE_URL
 } = require('./constants')
 const routes = require('./routes')
 
@@ -21,6 +22,16 @@ app.prepare().then(() => {
   const server = express()
 
   graphql(server)
+
+  if (!DEV && PUBLIC_BASE_URL) {
+    server.enable('trust proxy')
+    server.use((req, res, next) => {
+      if (`${req.protocol}://${req.get('Host')}` !== PUBLIC_BASE_URL) {
+        return res.redirect(PUBLIC_BASE_URL + req.url)
+      }
+      return next()
+    })
+  }
 
   server.get('/', (req, res) => {
     res.redirect(`/${acceptLanguage.get(req.headers['accept-language'])}`)

@@ -62,11 +62,13 @@ Test the deploy on `next.lobbywatch.ch`.
 If everything is fine, re-route traffic:
 
 ```bash
+cf set-env lobbywatch-blue PUBLIC_BASE_URL https://lobbywatch.ch
 cf map-route lobbywatch-blue lobbywatch.ch
 cf map-route lobbywatch-blue lobbywatch.ch -n www
 cf unmap-route lobbywatch-green lobbywatch.ch
 cf unmap-route lobbywatch-green lobbywatch.ch -n www
 cf unmap-route lobbywatch-blue lobbywatch.ch -n next
+cf unset-env lobbywatch-green PUBLIC_BASE_URL
 ```
 
 Scale down the unused app:
