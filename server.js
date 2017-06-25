@@ -7,7 +7,8 @@ const {
   locales,
   EXPRESS_PORT,
   PUBLIC_BASE_URL,
-  COUNTDOWN_DATE
+  COUNTDOWN_DATE,
+  GOOGLE_SITE_VERIFICATION
 } = require('./constants')
 const routes = require('./routes')
 
@@ -80,6 +81,9 @@ app.prepare().then(() => {
   server.get(`/${routes.localeSegment}/search/daten/:term?`, (req, res) => {
     const {locale, term} = req.params
     res.redirect(301, `/${encodeURIComponent(locale)}/search${term ? `?term=${encodeURIComponent(term)}` : ''}`)
+  })
+  server.get(`/${GOOGLE_SITE_VERIFICATION}`, (req, res) => {
+    res.send(`google-site-verification: ${GOOGLE_SITE_VERIFICATION}`)
   })
   server.use(handler)
 
