@@ -33,7 +33,7 @@ cf push lobbywatch-rooster
 
 We follow the [blue-green schema](https://docs.cloudfoundry.org/devguide/deploy-apps/blue-green.html). This results in following three steps.
 
-#### 1. Choose Color
+#### Choose Color
 
 Check which color is currently free:
 
@@ -48,20 +48,16 @@ Production        lobbywatch.ch  lobbywatch-green
 
 The color with the domain `lobbywatch.ch` and an empty host is the productive one. In the above shown case we should deploy to `blue` since `green` is productive.
 
-#### 2. Deploy and Scale Up
+##### Deploying Blue
 
 ```bash
-cf push lobbywatch-blue -d lobbywatch.ch -n next
+# Scale Up and Deploy Blue
 cf scale lobbywatch-blue -i 2 -m 512M
-```
+cf push lobbywatch-blue -d lobbywatch.ch -n next
+# Test the deploy on next.lobbywatch.ch
+while true
 
-Test the deploy on `next.lobbywatch.ch`.
-
-#### 3. Re-Route and Scale Down
-
-If everything is fine, re-route traffic:
-
-```bash
+# Re-Route to Blue
 cf set-env lobbywatch-blue PUBLIC_BASE_URL https://lobbywatch.ch
 cf map-route lobbywatch-blue lobbywatch.ch
 cf map-route lobbywatch-blue lobbywatch.ch -n www
@@ -69,12 +65,32 @@ cf unmap-route lobbywatch-green lobbywatch.ch
 cf unmap-route lobbywatch-green lobbywatch.ch -n www
 cf unmap-route lobbywatch-blue lobbywatch.ch -n next
 cf unset-env lobbywatch-green PUBLIC_BASE_URL
+
+# Scale Down Green
+cf scale lobbywatch-green -i 0 -m 128M
 ```
 
-Scale down the unused app:
+
+##### Deploying Green
 
 ```bash
-cf scale lobbywatch-green -i 1 -m 128M
+# Scale Up and Deploy Green
+cf scale lobbywatch-green -i 2 -m 512M
+cf push lobbywatch-green -d lobbywatch.ch -n next
+# Test the deploy on next.lobbywatch.ch
+while true
+
+# Re-Route to Green
+cf set-env lobbywatch-green PUBLIC_BASE_URL https://lobbywatch.ch
+cf map-route lobbywatch-green lobbywatch.ch
+cf map-route lobbywatch-green lobbywatch.ch -n www
+cf unmap-route lobbywatch-blue lobbywatch.ch
+cf unmap-route lobbywatch-blue lobbywatch.ch -n www
+cf unmap-route lobbywatch-green lobbywatch.ch -n next
+cf unset-env lobbywatch-blue PUBLIC_BASE_URL
+
+# Scale Down Blue
+cf scale lobbywatch-blue -i 0 -m 128M
 ```
 
 ### Api only
