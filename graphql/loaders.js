@@ -1,3 +1,5 @@
+const fs = require('fs')
+const path = require('path')
 const DataLoader = require('dataloader')
 const gsheets = require('gsheets')
 const lru = require('lru-cache')
@@ -15,19 +17,35 @@ const createDataLoaderLruCache = (options) => {
   }
 }
 
-const loadTranslations = (locales) => {
+const LOCAL_TRANSLATION_PATH = path.join('..', 'lib', 'translations.json')
+const HAS_LOCAL_TRANSLATIONS = fs.existsSync(
+  path.join(__dirname, LOCAL_TRANSLATION_PATH)
+)
+
+const mapTranslations = (locales, data) => {
+  return locales.map(locale => {
+    return data.map(translation => ({
+      key: translation.key,
+      value: translation[locale]
+    }))
+  })
+}
+
+const loadTranslations = HAS_LOCAL_TRANSLATIONS
+? (locales) => {
+  const json = require(LOCAL_TRANSLATION_PATH)
+  return Promise.resolve(
+    mapTranslations(locales, json.data)
+  )
+}
+: (locales) => {
   const start = new Date().getTime()
   return gsheets.getWorksheetById('1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg', 'od6')
     .then(res => {
       const end = new Date().getTime()
       console.info('[gsheets]', '1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg', 'od6')
       console.info(`${end - start}ms`)
-      return locales.map(locale => {
-        return res.data.map(translation => ({
-          key: translation.key,
-          value: translation[locale]
-        }))
-      })
+      return mapTranslations(locales, res.data)
     })
 }
 

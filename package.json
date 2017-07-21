@@ -17,6 +17,7 @@
     "start": "NODE_ENV=production node server.js",
     "test": "standard 'src/**/*.js' 'pages/**/*.js'",
     "standardize": "standard --fix 'src/**/*.js' 'pages/**/*.js'",
+    "translations": "gsheets --key=1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg --title=translations --pretty --out lib/translations.json",
     "klog": "find . -name '*.js' -not -path \"./node_modules*\" -not -path \"./.next*\" | xargs wc -l"
   },
   "author": "Thomas Preusse <t@preus.se> (https://t.preus.se/)",
