@@ -59,6 +59,7 @@ while true
 
 # Re-Route to Blue
 cf set-env lobbywatch-blue PUBLIC_BASE_URL https://lobbywatch.ch
+cf restart lobbywatch-blue
 cf map-route lobbywatch-blue lobbywatch.ch
 cf map-route lobbywatch-blue lobbywatch.ch -n www
 cf unmap-route lobbywatch-green lobbywatch.ch
@@ -82,6 +83,7 @@ while true
 
 # Re-Route to Green
 cf set-env lobbywatch-green PUBLIC_BASE_URL https://lobbywatch.ch
+cf restart lobbywatch-green
 cf map-route lobbywatch-green lobbywatch.ch
 cf map-route lobbywatch-green lobbywatch.ch -n www
 cf unmap-route lobbywatch-blue lobbywatch.ch

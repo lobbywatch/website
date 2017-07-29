@@ -2,8 +2,8 @@
   "name": "lobbywatch-rooster",
   "version": "0.9.0",
   "engines": {
-    "node": "8.1.x",
-    "npm": "5.0.x"
+    "node": "8.1.4",
+    "npm": "5.0.3"
   },
   "cacheDirectories": [
     "node_modules",
