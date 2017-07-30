@@ -122,7 +122,7 @@ DetailHead.defaultProps = {
           {
             intersperse([
               d.function,
-              <span>
+              <span key='invited'>
                 {t(`guest/${d.gender}/invited`)}
                 {' '}
                 <RouteLink route='parliamentarian' params={{locale, id: d.parliamentarian.id, name: d.parliamentarian.name}}>
