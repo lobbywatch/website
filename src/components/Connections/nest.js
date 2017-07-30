@@ -1,6 +1,6 @@
 import {nest} from 'd3-collection'
 import {stratify} from 'd3-hierarchy'
-import {descending, ascending} from 'd3-array'
+import {descending, ascending, sum} from 'd3-array'
 
 const groupConnections = (connections, directness) => {
   const groups = nest()
@@ -50,8 +50,8 @@ export default ({
           b.key
         ))
         .sort((a, b) => descending(
-          a.values.map(connectionWeight),
-          b.values.map(connectionWeight)
+          sum(a.values.map(connectionWeight)),
+          sum(b.values.map(connectionWeight))
         ))
 
       const more = viaLevel.values.find(group => group.key === moreKey) || {
@@ -66,6 +66,10 @@ export default ({
           (rest, {values}) => rest.concat(values),
           []
         ))
+        more.values.sort((a, b) => descending(
+          connectionWeight(a),
+          connectionWeight(b)
+        ))
       }
       if (more.values.length) {
         visibleGroups.push(more)
@@ -78,6 +82,7 @@ export default ({
             id: `Group-${groupId}`,
             parentId: viaLevel.key || 'Root',
             type: 'Group',
+            potency: values.map(v => v.potency)[0],
             count: values.length,
             label: group
           }).concat(values.map((connection, i) => ({
