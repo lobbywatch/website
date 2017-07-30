@@ -5,10 +5,6 @@
     "node": "8.1.4",
     "npm": "5.0.3"
   },
-  "cacheDirectories": [
-    "node_modules",
-    "nextjs/node_modules"
-  ],
   "description": "Lobbywatch 2017",
   "scripts": {
     "dev": "nodemon -w server.js -w routes.js -w constants.js -w graphql server.js",
