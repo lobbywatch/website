@@ -25,7 +25,7 @@ export default class MyDocument extends Document {
     }
   }
   render () {
-    const {css} = this.props
+    const {css, env: {GA_TRACKING_ID}} = this.props
     return (
       <html>
         <Head>
@@ -45,6 +45,14 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          {!!GA_TRACKING_ID && <script dangerouslySetInnerHTML={{__html: `
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+ga('create', '${GA_TRACKING_ID}', 'auto');
+          `}} />}
         </body>
       </html>
     )

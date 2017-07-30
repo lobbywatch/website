@@ -1,32 +1,52 @@
-import React, {PropTypes} from 'react'
+import React, {Component, PropTypes} from 'react'
 import Head from 'next/head'
 import {withT} from './Message'
 import {set, nest} from 'd3-collection'
 import {descending} from 'd3-array'
 import {A, H2, Meta} from './Styled'
+import track from '../../lib/ga'
 
-const Raw = ({title: pageTitle, description, image}) => {
-  const title = [pageTitle, 'Lobbywatch.ch'].filter(Boolean).join(' – ')
+class Raw extends Component {
+  componentDidMount () {
+    const {pageTitle} = this.props
 
-  return (
-    <Head>
-      <title>{title}</title>
-      <meta name='description' content={description} />
-      <meta property='og:type' content='website' />
-      <meta property='og:title' content={title} />
-      <meta property='og:description' content={description} />
-      {!!image && <meta property='og:image' content={image} />}
-      <meta name='twitter:card' content={image ? 'summary_large_image' : 'summary'} />
-      <meta name='twitter:site' content='@Lobbywatch_CH' />
-      <meta name='twitter:creator' content='@Lobbywatch_CH' />
-    </Head>
-  )
+    track('set', {
+      location: window.location.href,
+      title: pageTitle
+    })
+    track('send', 'pageview')
+  }
+  render () {
+    const {title, pageTitle, description, image} = this.props
+
+    return (
+      <Head>
+        <title>{pageTitle}</title>
+        <meta name='description' content={description} />
+        <meta property='og:type' content='website' />
+        <meta property='og:title' content={title} />
+        <meta property='og:description' content={description} />
+        {!!image && <meta property='og:image' content={image} />}
+        <meta name='twitter:card' content={image ? 'summary_large_image' : 'summary'} />
+        <meta name='twitter:site' content='@Lobbywatch_CH' />
+        <meta name='twitter:creator' content='@Lobbywatch_CH' />
+      </Head>
+    )
+  }
 }
 
 Raw.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   image: PropTypes.string
+}
+
+const pageTitle = (title) => {
+  return [title, 'Lobbywatch.ch'].filter(Boolean).join(' – ')
+}
+
+const title = (item, t) => {
+  return item.name
 }
 
 const description = (item, t) => {
@@ -126,10 +146,11 @@ const MetaTags = ({locale, t, fromT, data, ...rest}) => {
   if (data) {
     props = {
       ...props,
-      title: data.name,
+      title: title(data, t),
       description: description(data, t)
     }
   }
+  props.pageTitle = pageTitle(props.title)
   return <Raw {...props} />
 }
 

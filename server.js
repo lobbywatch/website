@@ -2,6 +2,11 @@ const express = require('express')
 const next = require('next')
 const acceptLanguage = require('accept-language')
 
+const DEV = process.env.NODE_ENV !== 'production'
+if (DEV || process.env.DOTENV) {
+  require('dotenv').config()
+}
+
 const graphql = require('./graphql')
 const {
   locales,
@@ -10,8 +15,6 @@ const {
   PUBLIC_BASE_URL
 } = require('./constants')
 const routes = require('./routes')
-
-const DEV = process.env.NODE_ENV !== 'production'
 
 const app = next({dir: '.', dev: DEV})
 const handler = routes.getRequestHandler(app)
