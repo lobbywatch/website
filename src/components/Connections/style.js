@@ -106,4 +106,3 @@ export const pathSegmentIcon = css({
   top: 2,
   left: 0
 })
-

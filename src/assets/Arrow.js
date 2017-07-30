@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 import {LW_BLUE} from '../theme'
 
 const Icon = ({size, color, style, className, direction}) => (

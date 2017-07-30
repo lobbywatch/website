@@ -1,4 +1,5 @@
-import React, {PropTypes, Component} from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 
 import {WHITE, BLACK, GREY_DARK, POTENCY_COLORS} from '../../theme'
 import GuestIcon from '../../assets/Guest'

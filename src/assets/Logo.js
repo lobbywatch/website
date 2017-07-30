@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 import {LW_BLUE_LIGHT} from '../theme'
 
 const Logo = ({size, style, className}) => (

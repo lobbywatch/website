@@ -1,4 +1,5 @@
-import React, {Component, PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React, { Component } from 'react'
 import Head from 'next/head'
 import {withT} from './Message'
 import {set, nest} from 'd3-collection'

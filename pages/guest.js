@@ -10,7 +10,6 @@ import Connections, {hoverValues} from '../src/components/Connections'
 import DetailHead from '../src/components/DetailHead'
 import {Meta, A} from '../src/components/Styled'
 import {withT} from '../src/components/Message'
-import {GREY_LIGHT} from '../src/theme'
 import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from '../constants'
 
 const guestQuery = gql`

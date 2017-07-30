@@ -1,4 +1,5 @@
-import React, {PropTypes} from 'react'
+import PropTypes from 'prop-types'
+import React from 'react'
 
 import {metaRule} from './Styled'
 import {LW_BLUE, GREY_LIGHT, mediaM} from '../theme'
