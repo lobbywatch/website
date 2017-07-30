@@ -141,7 +141,7 @@ class Header extends Component {
         const localizedRoute = localizeRoute
           ? localizeRoute(locale)
           : {
-            route: url.pathname.replace(/^\//, ''),
+            route: url.pathname.replace(/^\//, '') || 'index',
             params: {
               ...url.query,
               locale
