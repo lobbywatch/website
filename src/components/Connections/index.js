@@ -230,7 +230,12 @@ class Connections extends Component {
                         !isVisible && style.hidden
                       ].filter(Boolean).join(' ')}
                       onClick={toggle}
-                      style={{cursor: 'pointer'}}>
+                      style={{
+                        cursor: 'pointer',
+                        backgroundColor: !indirect
+                          ? POTENCY_COLORS[data.potency]
+                          : undefined
+                      }}>
                       <span className={indirect ? style.countVia : style.count}>{data.count}</span> {data.label}
                     </span>
                   )
@@ -353,6 +358,14 @@ export const hoverValues = [
   ]
 ]
 
+const POTENCY_WEIGHT = {
+  HIGH: 1000,
+  MEDIUM: 50,
+  LOW: 1
+}
+
+export const connectionWeight = connection => POTENCY_WEIGHT[connection.potency] || 1
+
 Connections.propTypes = {
   directness: PropTypes.number.isRequired,
   groupByDestination: PropTypes.bool.isRequired,
@@ -368,7 +381,7 @@ Connections.defaultProps = {
   intermediates: [],
   groupByDestination: false,
   maxGroups: undefined,
-  connectionWeight: () => 1,
+  connectionWeight: connectionWeight,
   hoverValues
 }
 
