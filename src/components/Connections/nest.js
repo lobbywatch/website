@@ -9,16 +9,18 @@ const groupConnections = (connections, directness) => {
 
   return groups.map(({values}) => {
     let paths = values
-      .map(value => value.vias.length && value.vias)
-      .filter(Boolean)
+      .map(value => value.vias)
     paths.sort((a, b) => ascending(a.length, b.length))
     if (!paths.length) {
       paths = undefined
     }
+    const indirect = paths && paths[0].length > directness
+
     return {
       ...values[0],
-      paths,
-      indirect: paths && paths[0].length > directness
+      // don't show empty direct connection in tooltip
+      paths: paths.filter(p => p.length),
+      indirect
     }
   })
 }
