@@ -102,6 +102,7 @@ class Header extends Component {
       (isFocused && beforeSearch && beforeSearch.route === Router.route)
     ) {
       this.searchInput.focus()
+      this.searchInput.selectionStart = this.searchInput.selectionEnd = this.searchInput.value.length
       if (!isSearchRoute) {
         beforeSearch = null
       }
@@ -174,7 +175,7 @@ class Header extends Component {
       if (!term.length) {
         if (beforeSearch) {
           RoutesRouter.replaceRoute(
-            beforeSearch.route.replace(/^\//, ''),
+            beforeSearch.route.replace(/^\//, '') || 'index',
             beforeSearch.params
           )
         } else {
