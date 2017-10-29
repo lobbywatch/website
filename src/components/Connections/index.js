@@ -9,7 +9,7 @@ import Legend from './Legend'
 import Message, {withT} from '../Message'
 import {shallowEqual, intersperse} from '../../utils/helpers'
 import {chfFormat} from '../../utils/formats'
-import {Link as RawRouteLink} from '../../../routes'
+import routes, {Router as RoutesRouter} from '../../../routes'
 import layout, {START_Y} from './layout'
 import nest from './nest'
 import {set} from 'd3-collection'
@@ -262,25 +262,54 @@ class Connections extends Component {
                     .map(([_, test]) => test(node, this.props))
                     .filter(Boolean)
                     .length
+
+                  const routeName = connection.to.__typename.toLowerCase()
+                  const route = routes.findByName(routeName)
+                  const params = {
+                    locale,
+                    id: connection.to.id.replace(`${connection.to.__typename}-`, ''),
+                    name: connection.to.name
+                  }
+
                   return (
-                    <RawRouteLink key={data.id}
-                      route={connection.to.__typename.toLowerCase()}
-                      params={{
-                        locale,
-                        id: connection.to.id.replace(`${connection.to.__typename}-`, ''),
-                        name: connection.to.name
-                      }}>
-                      <a ref={setRef}
-                        onMouseOver={canHover ? () => this.setState({hover: node}) : undefined}
-                        onMouseOut={canHover ? () => this.setState({hover: null}) : undefined}
-                        className={[
-                          connection.indirect ? style.connectionIndirect : style.connection,
-                          !isVisible && style.hidden
-                        ].filter(Boolean).join(' ')}
-                        style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
-                        {connection.to.name}
-                      </a>
-                    </RawRouteLink>
+                    <a key={data.id} ref={setRef}
+                      href={route.getAs(params)}
+                      onClick={e => {
+                        e.preventDefault()
+
+                        // ensure Android only navigates on second tap
+                        // - matching iOS hover behaviour
+                        if (!canHover || this.hoverNode !== node) {
+                          RoutesRouter.pushRoute(routeName, params)
+                        }
+                      }}
+                      onTouchStart={() => {
+                        if (this.hoverNode === node) {
+                          this.hoverNode = undefined
+                        } else {
+                          this.hoverNode = node
+                        }
+                      }}
+                      onMouseOver={canHover
+                        ? () => this.setState({hover: node})
+                        : undefined}
+                      onMouseOut={canHover
+                        ? () => {
+                          this.setState({hover: null})
+                          if (this.hoverNode === node) {
+                            this.hoverNode = undefined
+                          }
+                        }
+                        : undefined}
+                      className={[
+                        connection.indirect
+                          ? style.connectionIndirect
+                          : style.connection,
+                        !isVisible && style.hidden
+                      ].filter(Boolean).join(' ')}
+                      style={{backgroundColor: POTENCY_COLORS[connection.potency]}}>
+                      {connection.to.name}
+                    </a>
                   )
                 }
               })}
@@ -340,7 +369,7 @@ export const hoverValues = [
   ],
   [
     null,
-    ({data: {connection: {paths}}}) => !!paths,
+    ({data: {connection: {paths}}}) => !!paths && paths.length,
     ({data: {connection: {paths}}}, {t, directness}) => paths.map((path, i) => (
       <ContextBoxValue key={`paths-${i}`}
         label={t(`connections/context/paths/${path.length > directness ? 'indirect' : 'direct'}`)}>
