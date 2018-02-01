@@ -30,7 +30,7 @@ export default class MyDocument extends Document {
       <html>
         <Head>
           <meta name='viewport' content='width=device-width,initial-scale=1' />
-          <meta http-equiv='X-UA-Compatible' content='IE=edge' />
+          <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
           <style dangerouslySetInnerHTML={{ __html: fontFaces }} />
           {css ? <style dangerouslySetInnerHTML={{ __html: css }} /> : null}
           <link rel='apple-touch-icon' sizes='180x180' href='/static/apple-touch-icon.png' />
