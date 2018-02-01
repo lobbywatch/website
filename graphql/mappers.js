@@ -47,8 +47,13 @@ exports.mapLobbyGroup = (raw, t) => {
     }))
 
     const parliamentarians = raw.connections.map(connection => {
+      const parliamentarianRaw = raw.parlamentarier.find(p => p.id === connection.parlamentarier_id)
+      if (!parliamentarianRaw) {
+        console.warn('[mappers]', `Connection: missing parliamentarian ${connection.parlamentarier_id} ${connection.parlamentarier_name}`)
+        return null
+      }
       const parliamentarian = mapParliamentarian(
-        raw.parlamentarier.find(p => p.id === connection.parlamentarier_id),
+        parliamentarianRaw,
         t
       )
 
