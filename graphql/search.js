@@ -57,6 +57,7 @@ module.exports.loadSearch = (locales) => {
       api.data(locale, 'data/interface/v1/json/table/organisation/flat/list', {
         select_fields: [
           'name_de', 'name_fr', 'rechtsform', 'ort',
+          'abkuerzung_de', 'abkuerzung_fr',
           'interessengruppe_de', 'interessengruppe_fr', 'interessengruppe_id',
           'interessengruppe2_de', 'interessengruppe2_fr', 'interessengruppe2_id',
           'interessengruppe3_de', 'interessengruppe3_fr', 'interessengruppe3_id',
@@ -102,6 +103,7 @@ module.exports.loadSearch = (locales) => {
         keywords: cleanKeywords([
           organisation.name,
           organisation.uid,
+          organisation.abkuerzung,
           organisation.interessengruppe,
           organisation.interessengruppe2,
           organisation.interessengruppe3
