@@ -64,7 +64,7 @@ const CONNECTION_WEIGHTS = {
 
 const LobbyGroup = ({loading, error, lobbyGroup, t, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {__typename, name, updated, published} = lobbyGroup
+    const {__typename, name} = lobbyGroup
     const rawId = id.replace(`${__typename}-`, '')
     const path = `/${locale}/daten/lobbygruppe/${rawId}/${name}`
     return (
@@ -75,8 +75,6 @@ const LobbyGroup = ({loading, error, lobbyGroup, t, locale, id}) => (
         </Center>
         <Connections locale={locale}
           directness={1}
-          updated={updated}
-          published={published}
           data={lobbyGroup.connections}
           groupByDestination
           connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />

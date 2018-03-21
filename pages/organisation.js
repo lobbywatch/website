@@ -68,7 +68,7 @@ const CONNECTION_WEIGHTS = {
 
 const Org = ({loading, error, organisation, t, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {__typename, updated, published, name} = organisation
+    const {__typename, name} = organisation
     const rawId = id.replace(`${__typename}-`, '')
     const path = `/${locale}/daten/organisation/${rawId}/${name}`
     return (
@@ -79,8 +79,6 @@ const Org = ({loading, error, organisation, t, locale, id}) => (
         </Center>
         <Connections
           locale={locale}
-          updated={updated}
-          published={published}
           data={organisation.connections}
           groupByDestination
           connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
