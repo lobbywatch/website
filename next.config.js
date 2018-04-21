@@ -1,15 +1,15 @@
 module.exports = {
   webpack: (config, { dev }) => {
-    const entryFactory = config.entry
-    config.entry = () => (
-      entryFactory()
-        .then((entry) => {
-          entry['main.js'] = [
-            './lib/polyfill.js'
-          ].concat(entry['main.js'])
-          return entry
-        })
-    )
+    const originalEntry = config.entry
+    config.entry = async () => {
+      const entries = await originalEntry()
+
+      if (entries['main.js']) {
+        entries['main.js'].unshift('./lib/polyfill.js')
+      }
+
+      return entries
+    }
     return config
   }
 }

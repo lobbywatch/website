@@ -2,8 +2,7 @@
   "name": "lobbywatch-rooster",
   "version": "0.9.0",
   "engines": {
-    "node": "8.9.3",
-    "npm": "5.5.1"
+    "node": "8.11.1"
   },
   "description": "Lobbywatch 2017",
   "scripts": {
@@ -46,8 +45,8 @@
     "gsheets": "^2.0.0",
     "isomorphic-fetch": "^2.2.1",
     "lru-cache": "^4.0.2",
-    "next": "^4.2.3",
-    "next-routes": "^1.2.0",
+    "next": "^5.1.0",
+    "next-routes": "^1.4.1",
     "prop-types": "^15.6.0",
     "querystring": "^0.2.0",
     "react": "^16.2.0",

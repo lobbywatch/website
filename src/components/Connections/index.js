@@ -70,7 +70,8 @@ class Connections extends Component {
       width: undefined,
       nodes,
       links,
-      hierarchy
+      hierarchy,
+      open: set()
     }
 
     return nextState
@@ -248,7 +249,7 @@ class Connections extends Component {
                     {!!isFirst && <br />}
                     <span ref={setRef}
                       {...style.bubbleVia}
-                      className={!isVisible && style.hidden}
+                      className={!isVisible ? style.hidden : undefined}
                       onClick={toggle}
                       style={{cursor: children && children.length ? 'pointer' : ''}}>
                       <GuestIcon className={style.icon} /> {data.label}
@@ -281,6 +282,9 @@ class Connections extends Component {
                         // - matching iOS hover behaviour
                         if (!canHover || this.hoverNode !== node) {
                           RoutesRouter.pushRoute(routeName, params)
+                            .then(() => {
+                              window.scroll(0, 0)
+                            })
                         }
                       }}
                       onTouchStart={() => {
