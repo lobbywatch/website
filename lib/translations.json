@@ -1,5 +1,5 @@
 {
-  "updated": "2017-06-25T19:53:33.475Z",
+  "updated": "2018-04-24T18:35:25.689Z",
   "title": "translations",
   "data": [
     {
@@ -1012,6 +1012,21 @@
       "key": "connection/function/beirat-mitglied",
       "de": "Beirat/Patronatskomitee/Expertenkommission/Advisory Board",
       "fr": "Conseil/Comité de patronage/Commission d'experts/Advisory Board"
+    },
+    {
+      "key": "petition/text",
+      "de": "Schluss mit dem Lobby-Versteckspiel! {link}",
+      "fr": "Stop au jeu de cache-cache des lobbys! {link}"
+    },
+    {
+      "key": "petition/link/href",
+      "de": "https://act.campax.org/petitions/schluss-mit-dem-lobby-versteckspiel-stop-au-jeu-de-cache-cache-des-lobbys",
+      "fr": "https://act.campax.org/petitions/schluss-mit-dem-lobby-versteckspiel-stop-au-jeu-de-cache-cache-des-lobbys"
+    },
+    {
+      "key": "petition/link/text",
+      "de": "Petition unterzeichnen",
+      "fr": "Signer la pétition"
     }
   ]
 }

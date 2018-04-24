@@ -9,8 +9,9 @@ exports.getFormatter = translations => {
     accumulator[translation.key] = translation.value
     return accumulator
   }, {})
-  const formatter = (key, replacements, emptyValue) => {
-    let message = index[key] || (emptyValue !== undefined ? emptyValue : `[missing translation '${key}']`)
+
+  const formatter = (key, replacements, missingValue) => {
+    let message = index[key] || (missingValue !== undefined ? missingValue : `TK(${key})`)
     if (replacements) {
       Object.keys(replacements).forEach(replacementKey => {
         message = message.replace(`{${replacementKey}}`, replacements[replacementKey])
@@ -18,15 +19,49 @@ exports.getFormatter = translations => {
     }
     return message
   }
-  const first = formatter.first = (keys, replacements, emptyValue) => {
-    const key = keys.find(k => index[k] !== undefined) || keys[keys.length - 1]
-    return formatter(key, replacements, emptyValue)
+
+  const firstKey = keys => (
+    keys.find(k => index[k] !== undefined) || keys[keys.length - 1]
+  )
+  const pluralizationKeys = (baseKey, replacements) => [
+    `${baseKey}/${replacements.count}`,
+    `${baseKey}/other`
+  ]
+
+  formatter.first = (keys, replacements, missingValue) => {
+    return formatter(firstKey(keys), replacements, missingValue)
   }
-  formatter.pluralize = (baseKey, replacements, emptyValue) => {
-    return first([
-      `${baseKey}/${replacements.count}`,
-      `${baseKey}/other`
-    ], replacements, emptyValue)
+  formatter.pluralize = (baseKey, replacements, missingValue) => {
+    return formatter.first(
+      pluralizationKeys(baseKey, replacements),
+      replacements,
+      missingValue
+    )
+  }
+
+  const createReplacementReducer = replacements => (r, part) => {
+    if (part[0] === '{') {
+      r.push(replacements[part.slice(1, -1)] || '')
+    } else {
+      r.push(part)
+    }
+    return r
+  }
+  formatter.elements = (key, replacements, missingValue) => {
+    return formatter(key, undefined, missingValue)
+      .split(/(\{[^{}]+\})/g)
+      .filter(Boolean)
+      .reduce(createReplacementReducer(replacements), [])
+  }
+  formatter.first.elements = (keys, replacements, missingValue) => {
+    return formatter.elements(firstKey(keys), replacements, missingValue)
+  }
+  formatter.pluralize.elements = (baseKey, replacements, missingValue) => {
+    return formatter.first.elements(
+      pluralizationKeys(baseKey, replacements),
+      replacements,
+      missingValue
+    )
   }
 
   return formatter

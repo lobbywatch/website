@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {css, merge} from 'glamor'
 
 import {withT} from '../Message'
-import {inputStyle} from '../Styled'
+import {inputStyle, linkStyle} from '../Styled'
 import {Center} from './index'
 import {locales} from '../../../constants'
 import Routes, {
@@ -14,7 +14,7 @@ import Router from 'next/router'
 import Head from 'next/head'
 
 import {
-  LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE,
+  LW_BLUE_LIGHT, LW_BLUE_DARK, LW_BLUE, WHITE,
   mediaM,
   HEADER_HEIGHT, FRAME_PADDING
 } from '../../theme'
@@ -22,6 +22,7 @@ import Logo from '../../assets/Logo'
 import SearchIcon from '../../assets/Search'
 import Menu from './Menu'
 import Toggle from './Toggle'
+import { linkRule } from '../Styled'
 
 const titleStyle = css({
   fontSize: 24,
@@ -83,6 +84,25 @@ const searchIconStyle = css({
   [mediaM]: {
     right: 16
   }
+})
+
+const promoContainerStyle = css({
+  // borderTop: `1px solid ${LW_BLUE_DARK}`,
+  // borderBottom: `1px solid ${LW_BLUE_DARK}`,
+  backgroundColor: LW_BLUE,
+  color: WHITE
+  // color: '#fff'
+})
+
+const promoStyle = css({
+  margin: '0 auto',
+  maxWidth: SEARCH_MAX_WIDTH,
+  padding: `10px ${FRAME_PADDING}px`,
+  textAlign: 'center'
+})
+
+const promoLinkStyle = css({
+  color: 'inherit'
 })
 
 let beforeSearch
@@ -230,6 +250,15 @@ class Header extends Component {
             </div>
           </Center>
         </div>
+        {t('petition/text', undefined, false) && <div {...promoContainerStyle}>
+          <div {...promoStyle}>
+            {t.elements('petition/text', {
+              link: <a {...promoLinkStyle} key='link' href={t('petition/link/href')}>
+                {t('petition/link/text')}
+              </a>
+            })}
+          </div>
+        </div>}
       </div>
     )
   }
