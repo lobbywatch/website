@@ -1,5 +1,5 @@
 {
-  "updated": "2018-04-24T18:35:25.689Z",
+  "updated": "2018-07-16T16:30:03.555Z",
   "title": "translations",
   "data": [
     {
@@ -1015,18 +1015,18 @@
     },
     {
       "key": "petition/text",
-      "de": "Schluss mit dem Lobby-Versteckspiel! {link}",
-      "fr": "Stop au jeu de cache-cache des lobbys! {link}"
+      "de": "Wir brauchen Sie! {link}",
+      "fr": null
     },
     {
       "key": "petition/link/href",
-      "de": "https://act.campax.org/petitions/schluss-mit-dem-lobby-versteckspiel-stop-au-jeu-de-cache-cache-des-lobbys",
-      "fr": "https://act.campax.org/petitions/schluss-mit-dem-lobby-versteckspiel-stop-au-jeu-de-cache-cache-des-lobbys"
+      "de": "/de/mitglied-werden",
+      "fr": null
     },
     {
       "key": "petition/link/text",
-      "de": "Petition unterzeichnen",
-      "fr": "Signer la pétition"
+      "de": "Mitglied werden",
+      "fr": null
     }
   ]
 }
