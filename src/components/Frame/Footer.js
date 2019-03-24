@@ -1,7 +1,8 @@
 import React from 'react'
 import {css} from 'glamor'
 
-import {gql, graphql} from 'react-apollo'
+import {graphql} from 'react-apollo'
+import gql from 'graphql-tag'
 import {stratify} from 'd3-hierarchy'
 
 import {Center} from './index'

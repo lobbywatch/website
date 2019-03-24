@@ -2,13 +2,12 @@
   "name": "lobbywatch-rooster",
   "version": "0.9.0",
   "engines": {
-    "node": "8.11.1"
+    "node": "10.4.1"
   },
   "description": "Lobbywatch 2017",
   "scripts": {
     "dev": "nodemon -w server.js -w routes.js -w constants.js -w graphql server.js",
     "build": "next build",
-    "postinstall": "npm run build",
     "start": "NODE_ENV=production node server.js",
     "test": "standard 'src/**/*.js' 'pages/**/*.js'",
     "standardize": "standard --fix 'src/**/*.js' 'pages/**/*.js'",
@@ -24,11 +23,18 @@
   "bugs": {
     "url": "https://github.com/lobbywatch/website/issues"
   },
+  "standard": {
+    "parser": "babel-eslint"
+  },
   "dependencies": {
     "accept-language": "^3.0.15",
-    "apollo-client": "^1.2.0",
-    "body-parser": "^1.15.2",
-    "core-js": "^2.4.1",
+    "apollo-cache-inmemory": "^1.2.10",
+    "apollo-client": "^2.4.2",
+    "apollo-link": "^1.2.3",
+    "apollo-link-http": "^1.5.5",
+    "apollo-server": "^2.4.8",
+    "apollo-server-express": "^2.4.8",
+    "core-js": "^3.0.0",
     "cors": "^2.8.1",
     "d3-array": "^1.0.2",
     "d3-collection": "^1.0.2",
@@ -39,26 +45,26 @@
     "dataloader": "^1.3.0",
     "express": "^4.14.0",
     "glamor": "^2.20.22",
-    "graphql": "^0.9.6",
-    "graphql-server-express": "^0.7.2",
-    "graphql-tools": "^0.11.0",
+    "graphql": "^14.0.2",
+    "graphql-playground-middleware-express": "^1.7.12",
+    "graphql-tag": "^2.10.0",
     "gsheets": "^2.0.0",
-    "isomorphic-fetch": "^2.2.1",
-    "lru-cache": "^4.0.2",
-    "next": "^5.1.0",
-    "next-routes": "^1.4.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "lru-cache": "^5.1.1",
+    "next": "^8.0.3",
+    "next-routes": "^1.4.2",
     "prop-types": "^15.6.0",
     "querystring": "^0.2.0",
-    "react": "^16.2.0",
-    "react-apollo": "^1.2.0",
-    "react-dom": "^16.2.0",
-    "redux": "^3.6.0",
+    "react": "^16.8.4",
+    "react-apollo": "^2.5.2",
+    "react-dom": "^16.8.4",
     "striptags": "^3.0.1",
     "throng": "^4.0.0"
   },
   "devDependencies": {
-    "dotenv": "^4.0.0",
-    "nodemon": "^1.11.0",
-    "standard": "^10.0.2"
+    "babel-eslint": "^10.0.1",
+    "dotenv": "^7.0.0",
+    "nodemon": "^1.18.10",
+    "standard": "^12.0.1"
   }
 }

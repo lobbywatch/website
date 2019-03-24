@@ -1,7 +1,8 @@
 import React from 'react'
 
-import {graphql, gql} from 'react-apollo'
-import withData from '../lib/withData'
+import {graphql, compose} from 'react-apollo'
+import gql from 'graphql-tag'
+import {withRouter} from 'next/router'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
@@ -28,8 +29,8 @@ const indexQuery = gql`
   }
 `
 
-const Index = ({loading, error, articles, url, url: {query: {locale}}}) => (
-  <Frame url={url}>
+const Index = ({loading, error, articles, router: {query: {locale}}}) => (
+  <Frame>
     <Loader loading={loading} error={error} render={() => (
       <div>
         <MetaTags locale={locale} fromT={t => ({
@@ -64,21 +65,24 @@ const Index = ({loading, error, articles, url, url: {query: {locale}}}) => (
   </Frame>
 )
 
-const IndexWithQuery = graphql(indexQuery, {
-  options: ({url}) => {
-    return {
-      variables: {
-        locale: url.query.locale
+const IndexWithQuery = compose(
+  withRouter,
+  graphql(indexQuery, {
+    options: ({router}) => {
+      return {
+        variables: {
+          locale: router.query.locale
+        }
+      }
+    },
+    props: ({data}) => {
+      return {
+        loading: data.loading,
+        error: data.error,
+        articles: data.articles && data.articles.list
       }
     }
-  },
-  props: ({data}) => {
-    return {
-      loading: data.loading,
-      error: data.error,
-      articles: data.articles && data.articles.list
-    }
-  }
-})(Index)
+  })
+)(Index)
 
-export default withData(IndexWithQuery)
+export default IndexWithQuery

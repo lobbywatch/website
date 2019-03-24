@@ -2,12 +2,12 @@ const fs = require('fs')
 const path = require('path')
 const DataLoader = require('dataloader')
 const gsheets = require('gsheets')
-const lru = require('lru-cache')
+const LRU = require('lru-cache')
 const {loadSearch} = require('./search')
 const api = require('./api')
 
 const createDataLoaderLruCache = (options) => {
-  const cache = lru(options)
+  const cache = new LRU(options)
 
   return {
     get: (k) => cache.get(k),

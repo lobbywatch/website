@@ -1,8 +1,8 @@
 import React from 'react'
 
-import {graphql, gql} from 'react-apollo'
-
-import withData from '../lib/withData'
+import {graphql} from 'react-apollo'
+import gql from 'graphql-tag'
+import {withRouter} from 'next/router'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
@@ -29,7 +29,7 @@ const blogQuery = gql`
   }
 `
 
-const Blog = ({loading, error, articles, blocks, page, url, locale}) => (
+const Blog = ({loading, error, articles, blocks, page, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
       <MetaTags locale={locale} fromT={t => ({
@@ -56,7 +56,7 @@ const Blog = ({loading, error, articles, blocks, page, url, locale}) => (
 )
 
 const BlogWithQuery = graphql(blogQuery, {
-  props: ({data, ownProps: {url}}) => {
+  props: ({data}) => {
     return {
       loading: data.loading,
       error: data.error,
@@ -65,10 +65,10 @@ const BlogWithQuery = graphql(blogQuery, {
   }
 })(Blog)
 
-const Page = ({url, url: {query: {locale, page}}}) => (
-  <Frame url={url}>
+const Page = ({router: {query: {locale, page}}}) => (
+  <Frame>
     <BlogWithQuery locale={locale} page={+page || 0} />
   </Frame>
 )
 
-export default withData(Page)
+export default withRouter(Page)

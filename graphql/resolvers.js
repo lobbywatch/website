@@ -10,6 +10,12 @@ const {
 } = require('./mappers')
 
 const resolveFunctions = {
+  Person: {
+    __resolveType (data, context, info) {
+      const [type] = data.id.split('-')
+      return info.schema.getType(type)
+    }
+  },
   Entity: {
     __resolveType (data, context, info) {
       const [type] = data.id.split('-')

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import {css} from 'glamor'
+import {withRouter} from 'next/router'
 
 import Header from './Header'
 import Footer from './Footer'
@@ -30,10 +31,10 @@ const bodyGrowerStyle = css({
   flexGrow: 1
 })
 
-const Frame = ({url, url: {query: {locale, term}}, localizeRoute, children}) => (
+const Frame = ({router: {query: {locale, term}}, localizeRoute, children}) => (
   <div {...containerStyle}>
     <div {...bodyGrowerStyle}>
-      <Header locale={locale} term={term} url={url} localizeRoute={localizeRoute} />
+      <Header locale={locale} term={term} localizeRoute={localizeRoute} />
       {children}
     </div>
     <Footer locale={locale} />
@@ -43,9 +44,9 @@ const Frame = ({url, url: {query: {locale, term}}, localizeRoute, children}) => 
 Frame.propTypes = {
   children: PropTypes.node,
   localizeRoute: PropTypes.func,
-  url: PropTypes.shape({
+  router: PropTypes.shape({
     query: PropTypes.object.isRequired
   }).isRequired
 }
 
-export default Frame
+export default withRouter(Frame)

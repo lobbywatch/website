@@ -1,7 +1,8 @@
 import React from 'react'
 
-import {graphql, gql} from 'react-apollo'
-import withData from '../lib/withData'
+import {graphql} from 'react-apollo'
+import gql from 'graphql-tag'
+import {withRouter} from 'next/router'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
@@ -30,8 +31,8 @@ const pageQuery = gql`
   }
 `
 
-const Page = ({loading, error, page, url, url: {query: {locale}}}) => (
-  <Frame url={url} localizeRoute={(locale) => {
+const Page = ({loading, error, page, router: {query: {locale}}}) => (
+  <Frame localizeRoute={(locale) => {
     const translation = !!page && (
       page.translations
         .find(t => t.locale === locale)
@@ -71,15 +72,15 @@ const Page = ({loading, error, page, url, url: {query: {locale}}}) => (
 )
 
 const PageWithQuery = graphql(pageQuery, {
-  options: ({url}) => {
+  options: ({router}) => {
     return {
       variables: {
-        locale: url.query.locale,
-        path: url.query.path.split('/')
+        locale: router.query.locale,
+        path: router.query.path.split('/')
       }
     }
   },
-  props: ({data, ownProps: {url: {query}, serverContext}}) => {
+  props: ({data, ownProps: {router: {query}, serverContext}}) => {
     const page = data.page
     const redirect = (
       !data.loading &&
@@ -114,4 +115,4 @@ const PageWithQuery = graphql(pageQuery, {
   }
 })(Page)
 
-export default withData(PageWithQuery)
+export default withRouter(PageWithQuery)

@@ -1,29 +1,19 @@
-const bodyParser = require('body-parser')
-const {graphqlExpress, graphiqlExpress} = require('graphql-server-express')
-const {makeExecutableSchema} = require('graphql-tools')
+const { ApolloServer, gql } = require('apollo-server-express')
+const playground = require('graphql-playground-middleware-express').default
 
 const Schema = require('./schema')
 const Resolvers = require('./resolvers')
 const createLoaders = require('./loaders')
 
-const executableSchema = makeExecutableSchema({
-  typeDefs: Schema,
-  resolvers: Resolvers
-})
+module.exports = app => {
+  const apollo = new ApolloServer({
+    typeDefs: Schema,
+    resolvers: Resolvers,
+    context: () => ({
+      loaders: createLoaders()
+    })
+  })
 
-module.exports = server => {
-  server.use(
-    '/graphql',
-    bodyParser.json(),
-    graphqlExpress(request => ({
-      schema: executableSchema,
-      context: {
-        loaders: createLoaders()
-      }
-    }))
-  )
-
-  server.use('/graphiql', graphiqlExpress({
-    endpointURL: '/graphql'
-  }))
+  apollo.applyMiddleware({ app })
+  app.get('/graphiql', playground({ endpoint: '/graphql' }))
 }

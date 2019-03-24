@@ -1,7 +1,9 @@
 import React from 'react'
 
-import {graphql, gql} from 'react-apollo'
-import withData from '../lib/withData'
+import {graphql} from 'react-apollo'
+import gql from 'graphql-tag'
+import {withRouter} from 'next/router'
+
 import {H1, TextCenter} from '../src/components/Styled'
 import Message from '../src/components/Message'
 
@@ -59,10 +61,10 @@ const ParliamentariansWithQuery = graphql(parliamentariansQuery, {
   }
 })(Parliamentarians)
 
-const Page = ({url, url: {query: {locale}}}) => (
-  <Frame url={url}>
+const Page = ({router: {query: {locale}}}) => (
+  <Frame>
     <ParliamentariansWithQuery locale={locale} />
   </Frame>
 )
 
-export default withData(Page)
+export default withRouter(Page)

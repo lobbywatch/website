@@ -1,7 +1,8 @@
 import React from 'react'
 
-import {graphql, gql} from 'react-apollo'
-import withData from '../lib/withData'
+import {graphql} from 'react-apollo'
+import gql from 'graphql-tag'
+import {withRouter} from 'next/router'
 
 import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
@@ -107,10 +108,10 @@ const LobbyGroupWithQuery = withT(graphql(lobbyGroupQuery, {
   }
 })(LobbyGroup))
 
-const Page = ({url, url: {query: {locale, id}}}) => (
-  <Frame url={url}>
+const Page = ({router: {query: {locale, id}}}) => (
+  <Frame>
     <LobbyGroupWithQuery locale={locale} id={id} />
   </Frame>
 )
 
-export default withData(Page)
+export default withRouter(Page)

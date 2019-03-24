@@ -1,7 +1,9 @@
 import React from 'react'
 
-import {graphql, gql} from 'react-apollo'
-import withData from '../lib/withData'
+import {graphql} from 'react-apollo'
+import gql from 'graphql-tag'
+import {withRouter} from 'next/router'
+
 import {P} from '../src/components/Styled'
 import Message from '../src/components/Message'
 import {SEARCH_MAX_WIDTH} from '../src/components/Frame/Header'
@@ -84,10 +86,10 @@ const SearchWithQuery = graphql(searchQuery, {
   }
 })(Search)
 
-const Page = ({url, url: {query: {locale, term}}}) => (
-  <Frame url={url}>
+const Page = ({router: {query: {locale, term}}}) => (
+  <Frame>
     <SearchWithQuery locale={locale} term={term || ''} />
   </Frame>
 )
 
-export default withData(Page)
+export default withRouter(Page)

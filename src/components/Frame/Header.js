@@ -10,7 +10,7 @@ import Routes, {
   Router as RoutesRouter
 } from '../../../routes'
 
-import Router from 'next/router'
+import Router, {withRouter} from 'next/router'
 import Head from 'next/head'
 
 import {
@@ -132,26 +132,26 @@ class Header extends Component {
   render () {
     const {expanded} = this.state
     const {
-      locale: currentLocale, t, term,
-      url, localizeRoute
+      locale: currentLocale, t,
+      router, localizeRoute
     } = this.props
     const menuItems = [
       {
         label: t('menu/parliamentarians'),
         route: 'parliamentarians',
-        active: url.pathname.match(/^\/parliamentarian/),
+        active: router.pathname.match(/^\/parliamentarian/),
         params: {locale: currentLocale}
       },
       {
         label: t('menu/guests'),
         route: 'guests',
-        active: url.pathname.match(/^\/guest/),
+        active: router.pathname.match(/^\/guest/),
         params: {locale: currentLocale}
       },
       {
         label: t('menu/lobbygroups'),
         route: 'lobbygroups',
-        active: url.pathname.match(/^\/lobbygroup/),
+        active: router.pathname.match(/^\/lobbygroup/),
         params: {locale: currentLocale}
       }
     ]
@@ -162,9 +162,9 @@ class Header extends Component {
         const localizedRoute = localizeRoute
           ? localizeRoute(locale)
           : {
-            route: url.pathname.replace(/^\//, '') || 'index',
+            route: router.pathname.replace(/^\//, '') || 'index',
             params: {
-              ...url.query,
+              ...router.query,
               locale
             }
           }
@@ -244,7 +244,7 @@ class Header extends Component {
                 onChange={onSearch}
                 onFocus={() => { isFocused = true }}
                 onBlur={() => { isFocused = false }}
-                value={term || ''}
+                value={router.query.term || ''}
                 placeholder={t('search/placeholder')} />
               <SearchIcon className={searchIconStyle} />
             </div>
@@ -264,4 +264,4 @@ class Header extends Component {
   }
 }
 
-export default withT(Header)
+export default withRouter(withT(Header))

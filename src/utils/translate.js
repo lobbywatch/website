@@ -1,6 +1,6 @@
 // exports instead of named export for graphql server
 
-exports.getFormatter = translations => {
+module.exports.getFormatter = translations => {
   if (!Array.isArray(translations)) {
     return () => ''
   }
