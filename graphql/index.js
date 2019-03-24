@@ -9,6 +9,7 @@ module.exports = app => {
   const apollo = new ApolloServer({
     typeDefs: Schema,
     resolvers: Resolvers,
+    introspection: true,
     context: () => ({
       loaders: createLoaders()
     })
