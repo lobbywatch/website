@@ -66,6 +66,14 @@ const Search = ({loading, error, term, results, locale}) => (
         description: t.pluralize('search/meta/description', {count: results.length, term})
       })} />
       <ListView locale={locale} items={results} maxWidth={SEARCH_MAX_WIDTH} />
+      {results.length === 30 && (
+        <P style={{
+          maxWidth: SEARCH_MAX_WIDTH,
+          margin: '20px auto 0'
+        }}>
+          <Message locale={locale} id='search/more' />
+         </P>
+      )}
       {!results.length && !!term.length && (
         <BlockRegion locale={locale} region='rooster_noresults' />
       )}

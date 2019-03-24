@@ -44,7 +44,9 @@ module.exports.loadSearch = (locales) => {
           'beruf', 'geschlecht', 'geburtstag',
           'parteifunktion', 'partei_name', 'partei',
           'kanton_name_de', 'kanton_name_fr', 'ratstyp',
-          'im_rat_bis_unix', 'im_rat_seit_unix'
+          'im_rat_bis_unix', 'im_rat_seit_unix',
+          'kommissionen_namen_de', 'kommissionen_namen_fr',
+          'kommissionen_abkuerzung_de', 'kommissionen_abkuerzung_fr'
         ].join(',')
       }),
       api.data(locale, 'data/interface/v1/json/table/zutrittsberechtigung/flat/list', {
@@ -78,7 +80,9 @@ module.exports.loadSearch = (locales) => {
           parliamentarian.vorname,
           parliamentarian.zweiter_vorname,
           parliamentarian.kanton_name,
-          parliamentarian.partei
+          parliamentarian.partei,
+          ...parliamentarian.kommissionen_abkuerzung.split(','),
+          ...parliamentarian.kommissionen_namen.split(';')
         ])
       })).concat(guests.map(guest => ({
         type: 'Guest',
@@ -95,7 +99,11 @@ module.exports.loadSearch = (locales) => {
         keywords: cleanKeywords([
           lobbyGroup.name,
           lobbyGroup.alias_namen,
-          lobbyGroup.branche
+          lobbyGroup.branche,
+          lobbyGroup.kommission1_abkuerzung,
+          lobbyGroup.kommission2_abkuerzung,
+          lobbyGroup.kommission1,
+          lobbyGroup.kommission2
         ])
       }))).concat(organisations.map(organisation => ({
         type: 'Organisation',
@@ -126,7 +134,7 @@ module.exports.loadSearch = (locales) => {
                 const index = keyword.indexOf(term)
                 if (index !== -1) {
                   matchedTerms += 1
-                  let score = term === keyword ? 15 : 6
+                  let score = term === keyword ? 24 : 12
                   score /= index + 1
                   score -= keywordIndex
                   sum += Math.max(score, 0)
@@ -141,7 +149,7 @@ module.exports.loadSearch = (locales) => {
           }
         }).filter(Boolean)
         .sort((a, b) => descending(a[0], b[0]))
-        .slice(0, 10)
+        .slice(0, 30)
         .map(d => {
           return mappers[`map${d[1].type}`](d[1].raw, t)
         })
