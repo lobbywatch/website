@@ -81,8 +81,8 @@ module.exports.loadSearch = (locales) => {
           parliamentarian.zweiter_vorname,
           parliamentarian.kanton_name,
           parliamentarian.partei,
-          ...parliamentarian.kommissionen_abkuerzung.split(','),
-          ...parliamentarian.kommissionen_namen.split(';')
+          ...parliamentarian.kommissionen_abkuerzung ? parliamentarian.kommissionen_abkuerzung.split(',') : [],
+          ...parliamentarian.kommissionen_namen ? parliamentarian.kommissionen_namen.split(';') : []
         ])
       })).concat(guests.map(guest => ({
         type: 'Guest',
