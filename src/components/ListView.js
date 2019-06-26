@@ -124,7 +124,8 @@ ListView.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
     __typename: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
+    portrait: PropTypes.string
   })).isRequired,
   title: PropTypes.func.isRequired,
   subtitle: PropTypes.func.isRequired
