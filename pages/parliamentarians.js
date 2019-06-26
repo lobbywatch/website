@@ -55,7 +55,11 @@ const Parliamentarians = ({loading, error, parliamentarians, locale}) => (
             <H2>{key}</H2>
             <ListView
               locale={locale}
-              items={values} />
+              items={values}
+              subtitle={item => [
+                item.councilTitle,
+                item.partyMembership && item.partyMembership.party.abbr
+              ].filter(Boolean).join(', ')} />
           </div>
         ))}
       <BlockRegion locale={locale}
