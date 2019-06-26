@@ -4,7 +4,10 @@ import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 import {withRouter} from 'next/router'
 
-import {H1, TextCenter} from '../src/components/Styled'
+import {nest} from 'd3-collection'
+import {ascending} from 'd3-array'
+
+import {H1, H2, TextCenter} from '../src/components/Styled'
 import Message from '../src/components/Message'
 
 import Loader from '../src/components/Loader'
@@ -43,7 +46,22 @@ const Parliamentarians = ({loading, error, parliamentarians, locale}) => (
       <TextCenter>
         <H1><Message id='menu/parliamentarians' locale={locale} /></H1>
       </TextCenter>
-      <ListView locale={locale} items={parliamentarians} />
+      {nest()
+        .key(item => item.canton)
+        .sortKeys(ascending)
+        .entries(parliamentarians)
+        .map(({key, values}) => (
+          <div key={key} style={{marginBottom: 50}}>
+            <H2>{key}</H2>
+            <ListView
+              locale={locale}
+              items={values}
+              subtitle={item => [
+                item.councilTitle,
+                item.partyMembership && item.partyMembership.party.abbr
+              ].filter(Boolean).join(', ')} />
+          </div>
+        ))}
       <BlockRegion locale={locale}
         region='rooster_parliamentarians'
         style={{paddingTop: 50}} />
