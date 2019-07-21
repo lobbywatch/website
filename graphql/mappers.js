@@ -49,7 +49,7 @@ exports.mapLobbyGroup = (raw, t) => {
     const parliamentarians = raw.connections.map(connection => {
       const parliamentarianRaw = raw.parlamentarier.find(p => p.id === connection.parlamentarier_id)
       if (!parliamentarianRaw) {
-        console.warn('[mappers]', `Connection: missing parliamentarian ${connection.parlamentarier_id} ${connection.parlamentarier_name}`)
+        console.warn('[mappers]', `Connection: missing parliamentarian ${connection.parlamentarier_id} ${connection.parlamentarier_name} (${raw.id} ${raw.name})`)
         return null
       }
       const parliamentarian = mapParliamentarian(
@@ -57,14 +57,23 @@ exports.mapLobbyGroup = (raw, t) => {
         t
       )
 
+      const rawConnectorOrganisation = raw.organisationen
+          .find(org => org.id === connection.connector_organisation_id)
+      if (!rawConnectorOrganisation) {
+        console.warn('[mappers]', `Connection: missing connector organisation ${connection.connector_organisation_id} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`)
+        return null
+      }
       const connectorOrganisation = mapOrganisation(
-        raw.organisationen
-          .find(org => org.id === connection.connector_organisation_id),
+        rawConnectorOrganisation,
         t
       )
-      const intermediateOrganisation = connection.zwischen_organisation_id && mapOrganisation(
-        raw.zwischen_organisationen
-          .find(org => org.id === connection.zwischen_organisation_id),
+      const rawIntermediateOrganisation = connection.zwischen_organisation_id && raw.zwischen_organisationen.find(org => org.id === connection.zwischen_organisation_id) 
+      if (!rawIntermediateOrganisation && connection.zwischen_organisation_id) {
+        console.warn('[mappers]', `Connection: missing intermediate organisation ${connection.zwischen_organisation_id} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`)
+        return null
+      }
+      const intermediateOrganisation = rawIntermediateOrganisation && mapOrganisation(
+        rawIntermediateOrganisation,
         t
       )
 
@@ -94,7 +103,7 @@ exports.mapLobbyGroup = (raw, t) => {
             .find(g => g.person_id === connection.person_id)
         if (!rawGuest) {
           console.error(
-            `Can't find ${connection.zutrittsberechtigter} (${connection.person_id}) in data.zutrittsberechtigte of ${lobbyGroup.id}`
+            `[mappers] Connection: missing guest ${connection.person_id} ${connection.zutrittsberechtigter} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`
           )
           // can happen when e.g. the guest is not published yet
           // kill the connection
