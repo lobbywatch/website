@@ -51,7 +51,8 @@ class Newsletter extends Component {
       id: MAILCHIMP_ID_FOR_LOCALE[locale],
       hl: 'de'
     }
-    jsonp(`${MAILCHIMP_BASE_URL}/subscribe/post-json?${qs.encode(query)}`, {param: 'c'}, (error, data) => {
+    this.setState({message: t('newsletter/processing')})
+    jsonp(`${MAILCHIMP_BASE_URL}/subscribe/post-json?${qs.encode(query)}`, {param: 'c', timeout: 20000}, (error, data) => {
       if (error) {
         this.setState({message: t('newsletter/error/timeout')})
         return
