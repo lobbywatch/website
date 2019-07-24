@@ -1,5 +1,5 @@
 {
-  "updated": "2019-03-24T12:43:23.568Z",
+  "updated": "2019-07-24T16:30:33.111Z",
   "title": "translations",
   "data": [
     {
@@ -213,14 +213,19 @@
       "fr": "S'inscrire"
     },
     {
+      "key": "newsletter/processing",
+      "de": "Anmelden…",
+      "fr": "Inscrire…"
+    },
+    {
       "key": "newsletter/succes",
       "de": "Abonnement erfolgreich.",
       "fr": "Inscription réussie"
     },
     {
       "key": "newsletter/error/timeout",
-      "de": "Verbindung zu MailChimp fehlgeschlagen, versuchen Sie es später nochmals.",
-      "fr": "Erreurs dans la connexion avec MailChimp, réessayez plus tard."
+      "de": "Verbindung zu MailChimp fehlgeschlagen, versuchen Sie es später nochmals.\nUrsache könnte auch ein «Content Blocking» durch den Browser sein, z.B. «Firefox Content Blocking ‹Strict›». Schalten Sie das «Content Blocking» während der Newsletter-Anmeldung temporär aus.",
+      "fr": "Erreurs dans la connexion avec MailChimp, réessayez plus tard.\nUne raison pourrait être le «Content Blocking» du browser, par exemple «Content Blocking Strict» de Firefox. Veuillez éteindre le «Content Blocking» temporairement pendant l'inscription."
     },
     {
       "key": "newsletter/error/generic",
