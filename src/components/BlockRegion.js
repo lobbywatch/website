@@ -37,7 +37,7 @@ const RegionWithQuery = graphql(query, {
     return {
       loading: data.loading,
       error: data.error,
-      blocks: data.meta && data.meta.blocks
+      blocks: data.meta ? data.meta.blocks : []
     }
   }
 })(Region)

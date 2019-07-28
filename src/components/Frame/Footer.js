@@ -183,7 +183,7 @@ const FooterWithQuery = graphql(metaQuery, {
     return {
       loading: data.loading,
       error: data.error,
-      links: data.meta && data.meta.links
+      links: data.meta ? data.meta.links : []
     }
   }
 })(Footer)
