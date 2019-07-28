@@ -18,4 +18,5 @@ module.exports = {
     return config
   },
   poweredByHeader: false,
+  useFileSystemPublicRoutes: false
 }
