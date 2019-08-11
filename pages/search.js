@@ -53,6 +53,18 @@ const searchQuery = gql`
         id
         name
         sector
+        branch {
+          id
+          name
+        }
+      }
+      ... on Branch {
+        id
+        name
+        commissions {
+          id
+          name
+        }
       }
     }
   }

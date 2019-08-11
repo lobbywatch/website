@@ -1,5 +1,5 @@
 {
-  "updated": "2019-07-24T16:30:33.111Z",
+  "updated": "2019-08-11T10:54:43.546Z",
   "title": "translations",
   "data": [
     {
@@ -493,6 +493,11 @@
       "key": "connections/organisation",
       "de": "Organisationen",
       "fr": "Organisations"
+    },
+    {
+      "key": "connections/lobbyGroup",
+      "de": "Lobbygruppen",
+      "fr": "Groupes d'intérêt"
     },
     {
       "key": "connections/groups/arbeitet fuer",

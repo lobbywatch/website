@@ -140,6 +140,10 @@ exports.mapLobbyGroup = (raw, t) => {
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
     sector: raw.branche,
+    branch: {
+        id: `${branchIdPrefix}${raw.branche_id}`,
+        name: raw.branche
+      },
     description: raw.beschreibung,
     commissions: [
       {
@@ -156,6 +160,54 @@ exports.mapLobbyGroup = (raw, t) => {
     connections
   }
   return lobbyGroup
+}
+
+const branchIdPrefix = exports.branchIdPrefix = 'Branch-'
+exports.mapBranch = (raw, t) => {
+
+    const connections = () => {
+    const lobbygroups = raw.interessengruppe.map(connection => ({
+      from: branch,
+      vias: [],
+      to: {
+        id: `${lobbyGroupIdPrefix}${connection.id}`,
+        name: connection.name
+      },
+      group: t('connections/lobbyGroup')
+    }))
+    const organisations = raw.organisationen.map(connection => ({
+      from: branch,
+      vias: [],
+      to: {
+        id: `${orgIdPrefix}${connection.id}`,
+        name: connection.name
+      },
+      group: connection.interessengruppe
+    }))
+    return organisations.concat(lobbygroups).filter(Boolean)
+  }
+
+  const branch = {
+    id: `${branchIdPrefix}${raw.id}`,
+    updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
+    published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
+    name: raw.name,
+    description: raw.beschreibung,
+    commissions: [
+      {
+        id: `${commissionIdPrefix}${raw.kommission_id}`,
+        name: raw.kommission1_name,
+        abbr: raw.kommission1_abkuerzung
+      },
+      {
+        id: `${commissionIdPrefix}${raw.kommission2_id}`,
+        name: raw.kommission2_name,
+        abbr: raw.kommission2_abkuerzung
+      }
+    ].filter(c => c.name),
+    connections
+  }
+  return branch
 }
 
 const orgIdPrefix = exports.orgIdPrefix = 'Organisation-'

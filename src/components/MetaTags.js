@@ -100,7 +100,7 @@ const description = (item, t) => {
 
       return t.pluralize('lobbygroup/meta/description', {
         name: item.name,
-        sector: item.sector,
+        sector: item.branch.name,
         count,
         partyCounts: partyCounts
           .map(partyCount => `${partyCount.value.size()} ${partyCount.key}`)

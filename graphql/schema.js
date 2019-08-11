@@ -140,11 +140,22 @@ type LobbyGroup {
   name: String!
   description: String
   sector: String
+  branch: Branch
   commissions: [Commission!]!
   connections: [Connection]
 }
 
-union Entity = Parliamentarian | Organisation | Guest | LobbyGroup
+type Branch {
+  id: ID!
+  updated: String!
+  published: String!
+  name: String!
+  description: String
+  commissions: [Commission!]!
+  connections: [Connection]
+}
+
+union Entity = Parliamentarian | Organisation | Guest | LobbyGroup | Branch
 
 type Connection {
   from: Entity!
@@ -205,6 +216,8 @@ type RootQuery {
   getOrganisation(locale: Locale!, id: ID!): Organisation
   lobbyGroups(locale: Locale!): [LobbyGroup!]!
   getLobbyGroup(locale: Locale!, id: ID!): LobbyGroup
+  branchs(locale: Locale!): [Branch!]!
+  getBranch(locale: Locale!, id: ID!): Branch
   search(locale: Locale!, term: String!): [Entity!]!
   translations(locale: Locale!): [Translation!]!
 }

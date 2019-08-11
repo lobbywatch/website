@@ -135,7 +135,9 @@ DetailHead.defaultProps = {
           {d.occupation}
         </span>)
       case 'LobbyGroup':
-        return d.sector
+        return <RouteLink route='branch' params={{locale, id: d.branch.id, name: d.branch.name}}>
+                {d.branch.name}
+              </RouteLink>
       case 'Organisation':
         return intersperse(
           d.lobbyGroups
