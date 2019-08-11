@@ -3,15 +3,13 @@ import React from 'react'
 import {LW_BLUE_DARK, WHITE} from '../theme'
 
 const Icon = ({size, style, className}) => (
-  <svg width={size} height={size} style={style} className={className} viewBox='0 0 24 24'>
-    <circle fill={LW_BLUE_DARK} cx='12' cy='12' r='12' />
-    <g transform='translate(6 5)' fill={WHITE}>
-      <circle cx='9.5' cy='8' r='1.5' />
-      <path d='M12 12H7v-.542c0-.327.157-.633.426-.82.41-.286 1.11-.638 2.074-.638.964 0 1.665.352 2.075.64.268.186.425.492.425.818V12z' />
-      <circle cx='2.5' cy='8' r='1.5' />
-      <path d='M5 12H0v-.542c0-.327.158-.633.425-.82C.835 10.353 1.536 10 2.5 10c.965 0 1.665.352 2.074.64.27.186.426.492.426.818V12z' />
-      <circle cx='6' cy='1.5' r='1.5' />
-      <path d='M8.5 5.5h-5v-.542c0-.327.158-.633.425-.82C4.335 3.853 5.035 3.5 6 3.5c.965 0 1.665.353 2.075.638.268.188.425.494.425.82V5.5z' />
+  <svg width={size} height={size} style={style} className={className} viewBox='0 0 32 32'>
+    <circle fill={LW_BLUE_DARK} cx='16' cy='16' r='16' />
+    <g id="Branch" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <circle id="Oval" fill="#112233" cx="16" cy="16" r="16"></circle>
+        <g id="md-domain-48px" transform="translate(8.000000, 9.000000)" fill="#FFFFFF" fill-rule="nonzero">
+            <path d="M8,3.2 L8,1.77635684e-15 L0,1.77635684e-15 L0,14.4 L16,14.4 L16,3.2 L8,3.2 Z M3.2,12.8 L1.6,12.8 L1.6,11.2 L3.2,11.2 L3.2,12.8 Z M3.2,9.6 L1.6,9.6 L1.6,8 L3.2,8 L3.2,9.6 Z M3.2,6.4 L1.6,6.4 L1.6,4.8 L3.2,4.8 L3.2,6.4 Z M3.2,3.2 L1.6,3.2 L1.6,1.6 L3.2,1.6 L3.2,3.2 Z M6.4,12.8 L4.8,12.8 L4.8,11.2 L6.4,11.2 L6.4,12.8 Z M6.4,9.6 L4.8,9.6 L4.8,8 L6.4,8 L6.4,9.6 Z M6.4,6.4 L4.8,6.4 L4.8,4.8 L6.4,4.8 L6.4,6.4 Z M6.4,3.2 L4.8,3.2 L4.8,1.6 L6.4,1.6 L6.4,3.2 Z M14.4,12.8 L8,12.8 L8,11.2 L9.6,11.2 L9.6,9.6 L8,9.6 L8,8 L9.6,8 L9.6,6.4 L8,6.4 L8,4.8 L14.4,4.8 L14.4,12.8 Z M12.8,6.4 L11.2,6.4 L11.2,8 L12.8,8 L12.8,6.4 Z M12.8,9.6 L11.2,9.6 L11.2,11.2 L12.8,11.2 L12.8,9.6 Z" id="Shape"></path>
+        </g>
     </g>
   </svg>
 )
