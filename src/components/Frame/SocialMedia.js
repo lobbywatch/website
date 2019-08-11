@@ -2,7 +2,6 @@ import React from 'react'
 import {DRUPAL_BASE_URL} from '../../../constants'
 import FacebookIcon from '../../assets/Facebook'
 import TwitterIcon from '../../assets/Twitter'
-import GooglePlusIcon from '../../assets/GooglePlus'
 import RSSIcon from '../../assets/RSS'
 import {mediaM, mediaSOnly} from '../../theme'
 
@@ -14,7 +13,7 @@ const flexIconsStyle = css({
   display: 'flex',
   justifyContent: 'space-between',
   width: '100%',
-  maxWidth: 240,
+  maxWidth: 180,
   [mediaSOnly]: {
     marginLeft: 'auto',
     marginRight: 'auto'
@@ -36,7 +35,6 @@ const SocialMedia = ({locale}) => (
     <div {...flexIconsStyle}>
       <a target='_blank' href='https://www.facebook.com/lobbywatch'><FacebookIcon /></a>
       <a target='_blank' href='https://twitter.com/Lobbywatch_CH'><TwitterIcon /></a>
-      <a target='_blank' href='https://plus.google.com/u/0/101566979087611109696'><GooglePlusIcon /></a>
       <a target='_blank' href={`${DRUPAL_BASE_URL}/${locale}/rss.xml`}><RSSIcon /></a>
     </div>
   </div>
