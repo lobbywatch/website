@@ -188,6 +188,11 @@ DetailHead.defaultProps = {
           ['description'],
           ['commissions', formatCommissions]
         ]
+      case 'Branch':
+        return [
+          ['description'],
+          ['commissions', formatCommissions]
+        ]
       case 'Organisation':
         return [
           ['website', formatWebsite],
