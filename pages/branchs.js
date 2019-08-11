@@ -19,6 +19,9 @@ const branchsQuery = gql`
       __typename
       id
       name
+      commissions {
+        name
+      }
     }
   }
 `
