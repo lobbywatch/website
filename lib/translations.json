@@ -1,5 +1,5 @@
 {
-  "updated": "2019-08-11T10:54:43.546Z",
+  "updated": "2019-08-12T06:12:43.501Z",
   "title": "translations",
   "data": [
     {
@@ -21,6 +21,11 @@
       "key": "menu/lobbygroups",
       "de": "Lobbygruppen",
       "fr": "Groupes d'intérêt"
+    },
+    {
+      "key": "menu/branchs",
+      "de": "Branchen",
+      "fr": "Branches"
     },
     {
       "key": "menu/guests",
@@ -115,7 +120,17 @@
     {
       "key": "lobbygroup/meta/description/other",
       "de": "Die Lobbygruppe {name} ({sector}) hat {count} Verbindungen ({partyCounts}) ins Parlament.",
-      "fr": "Le lobby {name} ({sector}) a {count} relations ({partyCounts})au parlement."
+      "fr": "Le lobby {name} ({sector}) a {count} relations ({partyCounts}) au parlement."
+    },
+    {
+      "key": "branchs/meta/description",
+      "de": "{count} Branchen nehmen Einfluss auf die Politik in der Schweiz.",
+      "fr": "{count} branches influencent la politique en Suisse"
+    },
+    {
+      "key": "branch/meta/description",
+      "de": "Die Branche {name} der Schweizer Wirtschaft.",
+      "fr": "La branche {name} de l'économie suisse."
     },
     {
       "key": "organisation/meta/description/0",
@@ -395,6 +410,11 @@
       "fr": "Groupe d'intérêt non trouvé"
     },
     {
+      "key": "branch/error/404",
+      "de": "Branche nicht gefunden",
+      "fr": "Branche non trouvé"
+    },
+    {
       "key": "connections/legend/type/title",
       "de": "Verbindungsart",
       "fr": "Lien"
@@ -446,6 +466,11 @@
     },
     {
       "key": "connections/context/sector",
+      "de": "Branche",
+      "fr": "Branche"
+    },
+    {
+      "key": "connections/context/branch",
       "de": "Branche",
       "fr": "Branche"
     },
