@@ -107,6 +107,11 @@ const description = (item, t) => {
           .join(', ')
       })
     }
+    case 'Branch': {
+      return t('branch/meta/description', {
+        name: item.name
+      })
+    }
     case 'Organisation': {
       const partyCounts = nest()
         .key(connection => connection.group)
