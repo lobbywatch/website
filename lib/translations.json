@@ -1022,21 +1022,6 @@
       "key": "connection/function/beirat-mitglied",
       "de": "Beirat/Patronatskomitee/Expertenkommission/Advisory Board",
       "fr": "Conseil/Comité de patronage/Commission d'experts/Advisory Board"
-    },
-    {
-      "key": "petition/text",
-      "de": "Wir brauchen Sie! {link}",
-      "fr": null
-    },
-    {
-      "key": "petition/link/href",
-      "de": "/de/mitglied-werden",
-      "fr": null
-    },
-    {
-      "key": "petition/link/text",
-      "de": "Mitglied werden",
-      "fr": null
     }
   ]
 }
