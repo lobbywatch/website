@@ -49,9 +49,9 @@ globalWithMediaQueries('.RawHtml .grid .item a.button', {
 })
 globalWithMediaQueries('.RawHtml a.button.donate-member:before, .RawHtml a.button.donate-patron:before', {
   content: '""',
-  width: 92,
-  height: 92,
-  margin: '0 auto 20px',
+  width: 46,
+  height: 46,
+  margin: '0 auto',
   display: 'block',
   backgroundSize: '100%'
 })
