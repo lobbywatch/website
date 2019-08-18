@@ -6,7 +6,7 @@ import RSSIcon from '../../assets/RSS'
 import {mediaM, mediaSOnly} from '../../theme'
 
 import Message from '../Message'
-import {Strong} from '../Styled'
+import {Strong, H3} from '../Styled'
 import {css} from 'glamor'
 
 const flexIconsStyle = css({
@@ -21,8 +21,6 @@ const flexIconsStyle = css({
 })
 
 const titleStyle = css({
-  display: 'block',
-  marginBottom: 20,
   textAlign: 'center',
   [mediaM]: {
     textAlign: 'left'
@@ -31,7 +29,7 @@ const titleStyle = css({
 
 const SocialMedia = ({locale}) => (
   <div>
-    <Strong {...titleStyle}><Message locale={locale} id='social/title' /></Strong>
+    <H3 {...titleStyle}><Message locale={locale} id='social/title' /></H3>
     <div {...flexIconsStyle}>
       <a target='_blank' href='https://www.facebook.com/lobbywatch'><FacebookIcon /></a>
       <a target='_blank' href='https://twitter.com/Lobbywatch_CH'><TwitterIcon /></a>

@@ -105,13 +105,11 @@ const groupLinks = (links) => {
 }
 
 const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
-  <div style={{ marginTop: 80 }}>
-    {!(pathname === '/page' && query.path === 'unterstuetzen') && <div style={{backgroundColor: GREY_SOFT}}>
-      <Center>
-        <BlockRegion locale={locale} region='rooster_home' />
-      </Center>
-    </div>}
+  <div style={{ marginTop: 20 }}>
     <Center>
+      {!(pathname === '/page' && query.path === 'unterstuetzen') &&
+        <BlockRegion locale={locale} region='rooster_home' compact />
+      }
       <Clear {...columnContainerStyle}>
         <div {...columnStyle}><SocialMedia locale={locale} /></div>
         <div {...columnStyle}><Newsletter locale={locale} /></div>

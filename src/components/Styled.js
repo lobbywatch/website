@@ -71,9 +71,10 @@ export const h2Rule = css(h2Style)
 export const H2 = ({children, ...props}) => <h2 {...props} {...h2Rule}>{children}</h2>
 
 export const h3Style = {
-  fontSize: 16,
+  fontSize: 18,
   lineHeight: '24px',
-  fontWeight: 700
+  fontWeight: 700,
+  margin: '0 0 20px'
 }
 export const h3Rule = css(h3Style)
 export const H3 = ({children, ...props}) => <h3 {...props} {...h3Rule}>{children}</h3>
