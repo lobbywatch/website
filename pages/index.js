@@ -8,7 +8,6 @@ import Loader from '../src/components/Loader'
 import Frame, {Center} from '../src/components/Frame'
 import MetaTags from '../src/components/MetaTags'
 import Message from '../src/components/Message'
-import BlockRegion from '../src/components/BlockRegion'
 import Card from '../src/components/Card'
 import Grid, {GridItem} from '../src/components/Grid'
 import {H1, Link} from '../src/components/Styled'
@@ -46,7 +45,7 @@ const Index = ({loading, error, articles, router: {query: {locale}}}) => (
               <GridItem key={i}><Card locale={locale} {...article} /></GridItem>
             ))}
           </Grid>
-          <div style={{textAlign: 'center', margin: '10px 0 20px'}}>
+          <div style={{textAlign: 'center', margin: '10px 0 0'}}>
             <Link {...{
               href: `/blog?locale=${locale}`,
               as: `/${locale}/artikel/archiv`
@@ -55,11 +54,6 @@ const Index = ({loading, error, articles, router: {query: {locale}}}) => (
             </Link>
           </div>
         </Center>
-        <div style={{backgroundColor: GREY_SOFT}}>
-          <Center>
-            <BlockRegion locale={locale} region='rooster_home' style={{textAlign: 'center'}} />
-          </Center>
-        </div>
       </div>
     )} />
   </Frame>

@@ -98,11 +98,10 @@ const promoStyle = css({
   margin: '0 auto',
   maxWidth: SEARCH_MAX_WIDTH,
   padding: `10px ${FRAME_PADDING}px`,
-  textAlign: 'center'
-})
-
-const promoLinkStyle = css({
-  color: 'inherit'
+  textAlign: 'center',
+  '& a': {
+    color: 'inherit'
+  }
 })
 
 let beforeSearch
@@ -253,7 +252,7 @@ class Header extends Component {
         {t('petition/text', undefined, false) && <div {...promoContainerStyle}>
           <div {...promoStyle}>
             {t.elements('petition/text', {
-              link: <a {...promoLinkStyle} key='link' href={t('petition/link/href')}>
+              link: <a key='link' href={t('petition/link/href')}>
                 {t('petition/link/text')}
               </a>
             })}
