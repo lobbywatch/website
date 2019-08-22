@@ -330,7 +330,7 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
       }
     } : null,
     canton: raw.kanton_name,
-    active: raw.aktiv,
+    active: !!+raw.aktiv,
     council: raw.ratstyp,
     councilTitle: () => {
       return t(
