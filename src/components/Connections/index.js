@@ -361,15 +361,15 @@ export const hoverValues = [
         !connection.vias.length
       )
     ),
-    ({data: {connection: {compensation}}}, {t}) => compensation
-      ? (
-        <span>
-          {chfFormat(compensation.money)}
-          {' '}{t('connections/context/compensation/periode')}
-          {!!compensation.description && ` (${compensation.description})`}
-        </span>
-      )
-      : t('connections/context/compensation/notAvailable')
+    ({data: {connection: {compensations}}}, {t}) => compensations.filter((e, i) => i < 3).map(compensation =>
+      <div>
+        {compensation.year}{': '}
+        {compensation.money !== null ?
+          chfFormat(compensation.money) +
+          (compensation.description ? ` (${compensation.description})` : '')
+        : t('connections/context/compensation/notAvailable')}
+      </div>
+    )
   ],
   [
     null,

@@ -243,6 +243,11 @@ const mapMandate = (origin, connection, t) => ({
   group: connection.interessengruppe,
   potency: connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index],
   function: () => mapFunction(t, Object.assign({gender: origin.gender}, connection)),
+  compensations: (connection.verguetungen_pro_jahr || []).map((raw) => ({
+    year: raw.jahr && +raw.jahr,
+    money: +raw.verguetung || null,
+    description: raw.beschreibung || null
+  })).sort((a, b) => b.year - a.year),
   compensation: connection.verguetung !== null ? ({
     year: connection.verguetung_jahr && +connection.verguetung_jahr,
     money: +connection.verguetung,
