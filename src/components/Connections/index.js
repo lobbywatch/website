@@ -353,16 +353,16 @@ export const hoverValues = [
   ['connections/context/function', ({data}) => data.connection['function']],
   [
     'connections/context/compensation',
-    ({data: {connection, connection: {compensation}}}) => (
-      !!compensation ||
+    ({data: {connection, connection: {compensations}}}) => (
+      !!compensations ||
       (
-        connection.from &&
-        connection.from.__typename === 'Parliamentarian' &&
+        (connection.from && connection.from.__typename === 'Parliamentarian' ||
+        connection.to && connection.to.__typename === 'Parliamentarian') &&
         !connection.vias.length
       )
     ),
-    ({data: {connection: {compensations}}}, {t}) => compensations.filter((e, i) => i < 3).map(compensation =>
-      <div>
+    ({data: {connection: {compensations}}}, {t}) => compensations.filter((e, i) => i < 3).map((compensation, i) =>
+      <div key={`compensation-${i}`}>
         {compensation.year}{': '}
         {compensation.money !== null ?
           chfFormat(compensation.money) +

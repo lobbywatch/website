@@ -150,8 +150,10 @@ type Connection {
   from: Entity!
   to: Entity!
   vias: [Connection!]!
+  # Last available compensation
   compensation: Compensation
-  compensations: [Compensation!]!
+  # Yearly compensations
+  compensations: [Compensation!]
   group: String
   potency: Potency
   function: String
