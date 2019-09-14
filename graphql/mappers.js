@@ -33,7 +33,7 @@ const mapFunction = (t, {beschreibung, art, funktion_im_gremium: funktion, recht
   return translated
 }
 
-const mapCompensations = (t, verguetungen_pro_jahr) => (verguetungen_pro_jahr || []).map((raw) => ({
+const mapCompensations = verguetungen_pro_jahr => (verguetungen_pro_jahr || []).map((raw) => ({
           year: raw.jahr && +raw.jahr,
           money: raw.verguetung !== undefined && raw.verguetung !== null ? +raw.verguetung : null,
           description: raw.beschreibung || null
@@ -176,7 +176,7 @@ const mapOrganisation = exports.mapOrganisation = (raw, t) => {
         group: parliamentarian.partyMembership
           ? parliamentarian.partyMembership.party.abbr
           : t('connections/party/none'),
-        compensations: mapCompensations(t, directConnection.verguetungen_pro_jahr),
+        compensations: mapCompensations(directConnection.verguetungen_pro_jahr),
         function: mapFunction(t, Object.assign({}, directConnection, {
           gender: parliamentarian.gender,
           rechtsform: org.legalFormId
@@ -250,7 +250,7 @@ const mapMandate = (origin, connection, t) => ({
   group: connection.interessengruppe,
   potency: connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index],
   function: () => mapFunction(t, Object.assign({gender: origin.gender}, connection)),
-  compensations: mapCompensations(t, connection.verguetungen_pro_jahr),
+  compensations: mapCompensations(connection.verguetungen_pro_jahr),
   compensation: connection.verguetung !== null ? ({
     year: connection.verguetung_jahr && +connection.verguetung_jahr,
     money: +connection.verguetung,

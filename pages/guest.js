@@ -31,7 +31,8 @@ const guestQuery = gql`
         group
         potency
         function
-        compensation {
+        compensations {
+          year
           money
           description
         }
