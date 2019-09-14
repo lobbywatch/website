@@ -119,6 +119,7 @@ DetailHead.defaultProps = {
           d.canton
         ].filter(Boolean).join(', ')
       case 'Guest':
+        const rawParlamentarianId = d.parliamentarian.id.replace(`${d.parliamentarian.__typename}-`, '')
         return (<span>
           {
             intersperse([
@@ -126,7 +127,7 @@ DetailHead.defaultProps = {
               <span key='invited'>
                 {t(`guest/${d.gender}/invited`)}
                 {' '}
-                <RouteLink route='parliamentarian' params={{locale, id: d.parliamentarian.id, name: d.parliamentarian.name}}>
+                <RouteLink route='parliamentarian' params={{locale, id: rawParlamentarianId, name: d.parliamentarian.name}}>
                   {d.parliamentarian.name}
                 </RouteLink>
               </span>
