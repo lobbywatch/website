@@ -13,6 +13,12 @@ const potencyMap = {
   '1': 'LOW'
 }
 
+const compensationTransparenceStateMap = {
+  'ja': 'YES',
+  'nein': 'NO',
+  'teilweise': 'PARTIAL'
+}
+
 const mapFunction = (t, {beschreibung, art, funktion_im_gremium: funktion, rechtsform, gender}) => {
   if (beschreibung) {
     return beschreibung
@@ -368,6 +374,10 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
       name: commission.name,
       abbr: commission.abkuerzung
     })) : null,
+    compensationTransparence: () => raw.verguetungstransparenz_beurteilung ? {
+      dueDate: raw.verguetungstransparenz_beurteilung_stichdatum,
+      isTansparent: compensationTransparenceStateMap[raw.verguetungstransparenz_beurteilung]
+    } : null,
     guests,
     connections
   }
