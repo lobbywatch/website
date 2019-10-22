@@ -1,6 +1,7 @@
 const {timeFormat, timeParse} = require('d3-time-format')
 const {timeYear, timeMonth} = require('d3-time')
 const striptags = require('striptags')
+const entities = require('entities')
 const {DRUPAL_IMAGE_BASE_URL} = require('../constants')
 
 const parseDate = timeParse('%Y-%m-%d')
@@ -396,7 +397,9 @@ exports.mapPage = (locale, raw, statusCode) => {
       ? formatTime(+raw.created * 1000)
       : null,
     content: raw.body.value,
-    lead: striptags(raw.body.value).trim().split('\n')[0],
+    lead: entities.decodeHTML(
+      striptags(raw.body.value).trim().split('\n')[0]
+    ),
     categories: (raw.field_category || [])
       .map(category => category.name),
     tags: (raw.field_tags || [])
