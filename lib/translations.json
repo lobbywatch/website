@@ -1,5 +1,5 @@
 {
-  "updated": "2019-09-14T07:49:17.995Z",
+  "updated": "2019-12-08T21:55:13.238Z",
   "title": "translations",
   "data": [
     {
@@ -1052,6 +1052,21 @@
       "key": "connection/function/beirat-mitglied",
       "de": "Beirat/Patronatskomitee/Expertenkommission/Advisory Board",
       "fr": "Conseil/Comité de patronage/Commission d'experts/Advisory Board"
+    },
+    {
+      "key": "banner/text",
+      "de": "Sie suchen nach neu gewählten Ratsmitglieder? Wir arbeiten mit Hochdruck an den Recherchen und bitten Sie um ein wenig Geduld.",
+      "fr": "Cherchez-vous des parlementaires nouvellement élus ? Nous travaillons sans relâche sur la recherche et vous demandons de faire preuve de patience."
+    },
+    {
+      "key": "banner/link/text",
+      "de": null,
+      "fr": null
+    },
+    {
+      "key": "banner/link/href",
+      "de": null,
+      "fr": null
     }
   ]
 }

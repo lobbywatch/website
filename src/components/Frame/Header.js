@@ -249,11 +249,11 @@ class Header extends Component {
             </div>
           </Center>
         </div>
-        {t('petition/text', undefined, false) && <div {...promoContainerStyle}>
+        {t('banner/text', undefined, false) && <div {...promoContainerStyle}>
           <div {...promoStyle}>
-            {t.elements('petition/text', {
-              link: <a key='link' href={t('petition/link/href')}>
-                {t('petition/link/text')}
+            {t.elements('banner/text', {
+              link: <a key='link' href={t('banner/link/href')}>
+                {t('banner/link/text')}
               </a>
             })}
           </div>
