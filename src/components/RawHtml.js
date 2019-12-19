@@ -78,6 +78,29 @@ const maxWidth = {
 globalWithMediaQueries('.RawHtml iframe', maxWidth)
 globalWithMediaQueries('.RawHtml img', maxWidth)
 
+globalWithMediaQueries('.RawHtml .img-left', {
+  float: 'left',
+  clear: 'left',
+  display: 'block',
+  marginTop: '0.5em',
+  marginBottom: '0.5em',
+  marginRight: '0.5em',
+  marginLeft: '0em',
+  maxWidth: '100%',
+  height: 'auto'
+})
+globalWithMediaQueries('.RawHtml .img-right', {
+  float: 'right',
+  clear: 'right',
+  display: 'block',
+  marginTop: '0.5em',
+  marginBottom: '0.5em',
+  marginLeft: '0.5em',
+  marginRight: '0em',
+  maxWidth: '100%',
+  height: 'auto'
+})
+
 const aspect16to9 = {
   position: 'relative',
   height: 0,

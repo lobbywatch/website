@@ -376,11 +376,14 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
 }
 
 exports.mapPage = (locale, raw, statusCode) => {
-  let image = (
+  const image = (
     raw.field_image &&
     raw.field_image[0] &&
     raw.field_image[0].url
   )
+  const content = raw.body.value.replace(/"(\/sites\/lobbywatch\.ch\/files\/)/g, (_, path) => {
+    return `"${DRUPAL_IMAGE_BASE_URL}${path}`
+  })
   return Object.assign({}, raw, {
     statusCode,
     path: raw.path.split('/'),
@@ -396,7 +399,7 @@ exports.mapPage = (locale, raw, statusCode) => {
     created: raw.type === 'article' && raw.created
       ? formatTime(+raw.created * 1000)
       : null,
-    content: raw.body.value,
+    content,
     lead: entities.decodeHTML(
       striptags(raw.body.value).trim().split('\n')[0]
     ),
