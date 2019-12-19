@@ -223,7 +223,7 @@ class Header extends Component {
           ))}
         </Head>
         <div {...barStyle}>
-          <NextRouteLink prefetch route='index' params={{locale: currentLocale}}>
+          <NextRouteLink route='index' params={{locale: currentLocale}}>
             <a {...titleStyle}>
               <Logo size={32} />
               <span {...titleTextStyle}>Lobbywatch</span>
