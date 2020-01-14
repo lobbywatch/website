@@ -365,7 +365,10 @@ export const hoverValues = [
       <div key={`compensation-${i}`}>
         {compensation.year}{': '}
         {compensation.money !== null ?
-          chfFormat(compensation.money) +
+          t.pluralize('connections/context/compensation/money', {
+            count: compensation.money,
+            formatted: chfFormat(compensation.money)
+          }) +
           (compensation.description ? ` (${compensation.description})` : '')
         : t('connections/context/compensation/notAvailable')}
       </div>

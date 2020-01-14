@@ -1,5 +1,5 @@
 {
-  "updated": "2019-12-08T21:55:13.238Z",
+  "updated": "2020-01-14T12:31:51.023Z",
   "title": "translations",
   "data": [
     {
@@ -498,6 +498,16 @@
       "key": "connections/context/compensation/notAvailable",
       "de": "keine Angabe",
       "fr": "pas d'information"
+    },
+    {
+      "key": "connections/context/compensation/money/1",
+      "de": "bezahlte Tätigkeit",
+      "fr": "activité rémunérée"
+    },
+    {
+      "key": "connections/context/compensation/money/other",
+      "de": "{formatted}",
+      "fr": "{formatted}"
     },
     {
       "key": "connections/more/singular",
