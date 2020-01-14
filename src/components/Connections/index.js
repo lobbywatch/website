@@ -354,7 +354,8 @@ export const hoverValues = [
   [
     'connections/context/compensation',
     ({data: {connection, connection: {compensations}}}) => (
-      !!compensations && compensations.length > 0 ||
+      !!compensations &&
+      compensations.length > 0 &&
       (
         connection.from &&
         connection.from.__typename === 'Parliamentarian' &&
