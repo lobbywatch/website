@@ -1,5 +1,5 @@
 {
-  "updated": "2020-01-14T12:31:51.023Z",
+  "updated": "2020-01-20T10:07:51.117Z",
   "title": "translations",
   "data": [
     {
@@ -501,8 +501,8 @@
     },
     {
       "key": "connections/context/compensation/money/1",
-      "de": "bezahlte Tätigkeit",
-      "fr": "activité rémunérée"
+      "de": "bezahlte Tätigkeit, Betrag unbekannt",
+      "fr": "activité rémunérée, montant inconnu"
     },
     {
       "key": "connections/context/compensation/money/other",
