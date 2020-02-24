@@ -1,5 +1,5 @@
 {
-  "updated": "2020-01-20T10:07:51.117Z",
+  "updated": "2020-02-24T19:43:32.192Z",
   "title": "translations",
   "data": [
     {
@@ -1065,8 +1065,8 @@
     },
     {
       "key": "banner/text",
-      "de": "Sie suchen nach neu gewählten Ratsmitglieder? Wir arbeiten mit Hochdruck an den Recherchen und bitten Sie um ein wenig Geduld.",
-      "fr": "Cherchez-vous des parlementaires nouvellement élus ? Nous travaillons sans relâche sur la recherche et vous demandons de faire preuve de patience."
+      "de": null,
+      "fr": null
     },
     {
       "key": "banner/link/text",
