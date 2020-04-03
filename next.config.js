@@ -3,6 +3,13 @@ module.exports = {
     const entryFactory = config.entry
     const polyfillPath = './lib/polyfill.js'
 
+    const alias = { ...config.resolve.alias }
+    delete alias.url // alias to native-url
+    config.resolve = {
+      ...config.resolve,
+      alias
+    }
+
     config.entry = async () => {
       const entries = await entryFactory()
 
