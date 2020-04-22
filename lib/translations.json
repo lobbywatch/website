@@ -1,5 +1,5 @@
 {
-  "updated": "2020-02-24T19:43:32.192Z",
+  "updated": "2020-04-22T18:31:40.438Z",
   "title": "translations",
   "data": [
     {
@@ -498,6 +498,11 @@
       "key": "connections/context/compensation/notAvailable",
       "de": "keine Angabe",
       "fr": "pas d'information"
+    },
+    {
+      "key": "connections/context/compensation/money/-1",
+      "de": "keine, bezahlendes Mitglied",
+      "fr": "aucun, membre payant"
     },
     {
       "key": "connections/context/compensation/money/1",
