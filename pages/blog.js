@@ -44,11 +44,11 @@ const Blog = ({loading, error, articles, blocks, page, locale}) => (
       </Grid>
       <PageNavigation locale={locale}
         prev={page > 0 && ({
-          to: `/blog?page=${page - 1}&locale=${locale}`,
+          href: `/blog?page=${page - 1}&locale=${locale}`,
           as: `/${locale}/artikel/archiv${page - 1 > 0 ? `?page=${page - 1}` : ''}`
         })}
         next={page < articles.pages && ({
-          to: `/blog?page=${page + 1}&locale=${locale}`,
+          href: `/blog?page=${page + 1}&locale=${locale}`,
           as: `/${locale}/artikel/archiv?page=${page + 1}`
         })} />
     </Center>
