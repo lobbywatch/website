@@ -108,7 +108,7 @@ const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
   <div style={{ marginTop: 20 }}>
     <Center>
       {!(pathname === '/page' && query.path === 'unterstuetzen') &&
-        <BlockRegion locale={locale} region='rooster_home' compact />
+        <BlockRegion locale={locale} region='rooster_home' compact first={pathname !== '/'} />
       }
       <Clear {...columnContainerStyle}>
         <div {...columnStyle}><SocialMedia locale={locale} /></div>
