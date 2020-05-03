@@ -67,7 +67,7 @@ exports.mapLobbyGroup = (raw, t) => {
         rawConnectorOrganisation,
         t
       )
-      const rawIntermediateOrganisation = connection.zwischen_organisation_id && raw.zwischen_organisationen.find(org => org.id === connection.zwischen_organisation_id) 
+      const rawIntermediateOrganisation = connection.zwischen_organisation_id && raw.zwischen_organisationen.find(org => org.id === connection.zwischen_organisation_id)
       if (!rawIntermediateOrganisation && connection.zwischen_organisation_id) {
         console.warn('[mappers]', `Connection: missing intermediate organisation ${connection.zwischen_organisation_id} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`)
         return null
@@ -175,16 +175,16 @@ exports.mapBranch = (raw, t) => {
       },
       group: t('connections/lobbyGroup')
     }))
-    const organisations = raw.organisationen.map(connection => ({
+    const parliamentarians = raw.parlamentarier.map(connection => ({
       from: branch,
       vias: [],
       to: {
-        id: `${orgIdPrefix}${connection.id}`,
+        id: `${parliamentarianIdPrefix}${connection.id}`,
         name: connection.name
       },
-      group: connection.interessengruppe
+      group: connection.partei
     }))
-    return organisations.concat(lobbygroups).filter(Boolean)
+    return parliamentarians.concat(lobbygroups).filter(Boolean)
   }
 
   const branch = {

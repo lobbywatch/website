@@ -30,10 +30,6 @@ const branchQuery = gql`
         group
         to {
           __typename
-          ... on Organisation {
-            id
-            name
-          }
           ... on LobbyGroup {
             id
             name
@@ -46,15 +42,7 @@ const branchQuery = gql`
         vias {
           __typename
           to {
-            ... on Organisation {
-              id
-              name
-            }
             ... on LobbyGroup {
-              id
-              name
-            }
-            ... on Guest {
               id
               name
             }

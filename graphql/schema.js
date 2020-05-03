@@ -116,6 +116,7 @@ type Organisation {
   lobbyGroups: [LobbyGroup!]!
   connections: [Connection!]!
 }
+
 type Guest implements Person {
   id: ID!
   updated: String!
