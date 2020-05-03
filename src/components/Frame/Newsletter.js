@@ -3,7 +3,7 @@ import jsonp from '../../utils/jsonp'
 import qs from 'querystring'
 
 import {withT} from '../Message'
-import {Strong, Input, Submit, P} from '../Styled'
+import {Strong, Input, Submit, P, H3} from '../Styled'
 import {css} from 'glamor'
 import {MAILCHIMP_BASE_URL, MAILCHIMP_U, MAILCHIMP_ID_FOR_LOCALE} from '../../../constants'
 import {mediaM} from '../../theme'
@@ -24,8 +24,6 @@ const flexIconsStyle = css({
   }
 })
 const titleStyle = css({
-  display: 'block',
-  marginBottom: 20,
   textAlign: 'center',
   [mediaM]: {
     textAlign: 'left'
@@ -81,7 +79,7 @@ class Newsletter extends Component {
 
     return (
       <div>
-        <Strong {...titleStyle}>{t('newsletter/title')}</Strong>
+        <H3 {...titleStyle}>{t('newsletter/title')}</H3>
         <form {...flexIconsStyle} target='_blank' onSubmit={e => this.onSubmit(e)} action={`${MAILCHIMP_BASE_URL}/subscribe/post`} method='POST'>
           <input type='hidden' name='u' value={MAILCHIMP_U} />
           <input type='hidden' name='id' value={MAILCHIMP_ID_FOR_LOCALE[locale]} />

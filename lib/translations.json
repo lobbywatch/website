@@ -1,5 +1,5 @@
 {
-  "updated": "2019-08-12T06:12:43.501Z",
+  "updated": "2020-04-22T18:31:40.438Z",
   "title": "translations",
   "data": [
     {
@@ -486,8 +486,8 @@
     },
     {
       "key": "connections/context/compensation",
-      "de": "Entschädigung",
-      "fr": "Indemnité"
+      "de": "Entschädigungen pro Jahr",
+      "fr": "Indemnités par année"
     },
     {
       "key": "connections/context/compensation/periode",
@@ -496,8 +496,23 @@
     },
     {
       "key": "connections/context/compensation/notAvailable",
-      "de": "Keine Angabe",
+      "de": "keine Angabe",
       "fr": "pas d'information"
+    },
+    {
+      "key": "connections/context/compensation/money/-1",
+      "de": "keine, bezahlendes Mitglied",
+      "fr": "aucun, membre payant"
+    },
+    {
+      "key": "connections/context/compensation/money/1",
+      "de": "bezahlte Tätigkeit, Betrag unbekannt",
+      "fr": "activité rémunérée, montant inconnu"
+    },
+    {
+      "key": "connections/context/compensation/money/other",
+      "de": "{formatted}",
+      "fr": "{formatted}"
     },
     {
       "key": "connections/more/singular",
@@ -1054,18 +1069,18 @@
       "fr": "Conseil/Comité de patronage/Commission d'experts/Advisory Board"
     },
     {
-      "key": "petition/text",
-      "de": "Wir brauchen Sie! {link}",
+      "key": "banner/text",
+      "de": null,
       "fr": null
     },
     {
-      "key": "petition/link/href",
-      "de": "/de/mitglied-werden",
+      "key": "banner/link/text",
+      "de": null,
       "fr": null
     },
     {
-      "key": "petition/link/text",
-      "de": "Mitglied werden",
+      "key": "banner/link/href",
+      "de": null,
       "fr": null
     }
   ]

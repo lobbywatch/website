@@ -3,7 +3,7 @@ import React from 'react'
 import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 
-import {H1} from './Styled'
+import {H2, H3} from './Styled'
 import RawHtml from './RawHtml'
 import Loader from './Loader'
 
@@ -19,12 +19,15 @@ const query = gql`
   }
 `
 
-const Region = ({loading, error, blocks, style}) => (
+const Region = ({loading, error, blocks, style, compact, first}) => (
   <Loader loading={loading} error={error} render={() => (
     <div>
-      {blocks.map(block => (
+      {blocks.slice(0, first ? 1 : undefined).map(block => (
         <div key={block.key} style={style}>
-          <H1>{block.title}</H1>
+          {compact
+            ? <H3>{block.title}</H3>
+            : <H2>{block.title}</H2>
+          }
           <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
         </div>
       ))}

@@ -1,6 +1,7 @@
 const {timeFormat, timeParse} = require('d3-time-format')
 const {timeYear, timeMonth} = require('d3-time')
 const striptags = require('striptags')
+const entities = require('entities')
 const {DRUPAL_IMAGE_BASE_URL} = require('../constants')
 
 const parseDate = timeParse('%Y-%m-%d')
@@ -32,6 +33,12 @@ const mapFunction = (t, {beschreibung, art, funktion_im_gremium: funktion, recht
   }
   return translated
 }
+
+const mapCompensations = verguetungen_pro_jahr => (verguetungen_pro_jahr || []).map((raw) => ({
+          year: raw.jahr && +raw.jahr,
+          money: raw.verguetung !== undefined && raw.verguetung !== null ? +raw.verguetung : null,
+          description: raw.beschreibung || null
+        })).sort((a, b) => b.year - a.year)
 
 const lobbyGroupIdPrefix = exports.lobbyGroupIdPrefix = 'LobbyGroup-'
 exports.mapLobbyGroup = (raw, t) => {
@@ -222,6 +229,7 @@ const mapOrganisation = exports.mapOrganisation = (raw, t) => {
         group: parliamentarian.partyMembership
           ? parliamentarian.partyMembership.party.abbr
           : t('connections/party/none'),
+        compensations: mapCompensations(directConnection.verguetungen_pro_jahr),
         function: mapFunction(t, Object.assign({}, directConnection, {
           gender: parliamentarian.gender,
           rechtsform: org.legalFormId
@@ -295,6 +303,7 @@ const mapMandate = (origin, connection, t) => ({
   group: connection.interessengruppe,
   potency: connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index],
   function: () => mapFunction(t, Object.assign({gender: origin.gender}, connection)),
+  compensations: mapCompensations(connection.verguetungen_pro_jahr),
   compensation: connection.verguetung !== null ? ({
     year: connection.verguetung_jahr && +connection.verguetung_jahr,
     money: +connection.verguetung,
@@ -382,7 +391,7 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
       }
     } : null,
     canton: raw.kanton_name,
-    active: !councilExitDate,
+    active: !!+raw.aktiv,
     council: raw.ratstyp,
     councilTitle: () => {
       return t(
@@ -419,11 +428,14 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
 }
 
 exports.mapPage = (locale, raw, statusCode) => {
-  let image = (
+  const image = (
     raw.field_image &&
     raw.field_image[0] &&
     raw.field_image[0].url
   )
+  const content = raw.body.value.replace(/"(\/sites\/lobbywatch\.ch\/files\/)/g, (_, path) => {
+    return `"${DRUPAL_IMAGE_BASE_URL}${path}`
+  })
   return Object.assign({}, raw, {
     statusCode,
     path: raw.path.split('/'),
@@ -439,8 +451,10 @@ exports.mapPage = (locale, raw, statusCode) => {
     created: raw.type === 'article' && raw.created
       ? formatTime(+raw.created * 1000)
       : null,
-    content: raw.body.value,
-    lead: striptags(raw.body.value).trim().split('\n')[0],
+    content,
+    lead: entities.decodeHTML(
+      striptags(raw.body.value).trim().split('\n')[0]
+    ),
     categories: (raw.field_category || [])
       .map(category => category.name),
     tags: (raw.field_tags || [])

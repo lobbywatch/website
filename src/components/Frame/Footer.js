@@ -4,6 +4,7 @@ import {css} from 'glamor'
 import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 import {stratify} from 'd3-hierarchy'
+import {withRouter} from 'next/router'
 
 import {Center} from './index'
 import SocialMedia from './SocialMedia'
@@ -14,6 +15,7 @@ import CreativeCommons from '../../assets/CreativeCommons'
 import Message from '../Message'
 import Loader from '../Loader'
 import {locales} from '../../../constants'
+import BlockRegion from '../BlockRegion'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {
@@ -102,9 +104,12 @@ const groupLinks = (links) => {
   ]).children || []
 }
 
-const Footer = ({loading, error, links, locale}) => (
-  <div>
-    <Center style={{paddingTop: 100}}>
+const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
+  <div style={{ marginTop: 20 }}>
+    <Center>
+      {!(pathname === '/page' && query.path === 'unterstuetzen') &&
+        <BlockRegion locale={locale} region='rooster_home' compact first={pathname !== '/'} />
+      }
       <Clear {...columnContainerStyle}>
         <div {...columnStyle}><SocialMedia locale={locale} /></div>
         <div {...columnStyle}><Newsletter locale={locale} /></div>
@@ -188,4 +193,4 @@ const FooterWithQuery = graphql(metaQuery, {
   }
 })(Footer)
 
-export default FooterWithQuery
+export default withRouter(FooterWithQuery)

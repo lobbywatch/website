@@ -91,7 +91,7 @@ const Menu = ({items, expanded, id}) => (
       {items.map(({label, route, params, active, separator}, i) => (
         <li {...listItemStyle} key={i}>
           {separator && <span {...listItemSeparatorStyle} />}
-          <RouteLink prefetch
+          <RouteLink
             route={route}
             params={params}
             className={active ? 'active' : ''}>

@@ -91,7 +91,7 @@ type Commission {
 }
 
 type Compensation {
-  year: Int
+  year: Int!
   # measured in yearly CHF
   money: Int
   description: String
@@ -162,7 +162,10 @@ type Connection {
   from: Entity!
   to: Entity!
   vias: [Connection!]!
+  # Last available compensation
   compensation: Compensation
+  # Yearly compensations
+  compensations: [Compensation!]
   group: String
   potency: Potency
   function: String

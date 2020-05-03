@@ -49,9 +49,9 @@ globalWithMediaQueries('.RawHtml .grid .item a.button', {
 })
 globalWithMediaQueries('.RawHtml a.button.donate-member:before, .RawHtml a.button.donate-patron:before', {
   content: '""',
-  width: 92,
-  height: 92,
-  margin: '0 auto 20px',
+  width: 46,
+  height: 46,
+  margin: '0 auto',
   display: 'block',
   backgroundSize: '100%'
 })
@@ -77,6 +77,29 @@ const maxWidth = {
 }
 globalWithMediaQueries('.RawHtml iframe', maxWidth)
 globalWithMediaQueries('.RawHtml img', maxWidth)
+
+globalWithMediaQueries('.RawHtml .img-left', {
+  float: 'left',
+  clear: 'left',
+  display: 'block',
+  marginTop: '0.5em',
+  marginBottom: '0.5em',
+  marginRight: '0.5em',
+  marginLeft: '0em',
+  maxWidth: '100%',
+  height: 'auto'
+})
+globalWithMediaQueries('.RawHtml .img-right', {
+  float: 'right',
+  clear: 'right',
+  display: 'block',
+  marginTop: '0.5em',
+  marginBottom: '0.5em',
+  marginLeft: '0.5em',
+  marginRight: '0em',
+  maxWidth: '100%',
+  height: 'auto'
+})
 
 const aspect16to9 = {
   position: 'relative',

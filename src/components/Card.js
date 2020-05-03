@@ -55,7 +55,7 @@ const pStyle = css({
 const Card = ({image, path, title, author, created, lead, locale}) => {
   return (
     <div {...containerStyle}>
-      <RawRouteLink prefetch route='page' params={{locale, path}}>
+      <RawRouteLink route='page' params={{locale, path}}>
         <a {...headStyle} style={{backgroundImage: image && `url(${image})`}}>
           <span {...shadeStyle} />
           <h2 {...titleStyle}>{title}</h2>
@@ -67,7 +67,7 @@ const Card = ({image, path, title, author, created, lead, locale}) => {
         </span>
         <P className={pStyle}>{lead}</P>
         <TextCenter>
-          <ButtonRouteLink prefetch route='page' params={{locale, path}}>
+          <ButtonRouteLink route='page' params={{locale, path}}>
             <Message id='card/read' locale={locale} />
           </ButtonRouteLink>
         </TextCenter>

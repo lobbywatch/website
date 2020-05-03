@@ -5,7 +5,8 @@ import {PADDING_BOTTOM} from './layout'
 
 export const edge = css({
   position: 'relative',
-  backgroundColor: GREY_LIGHT
+  backgroundColor: GREY_LIGHT,
+  marginBottom: 20
 })
 export const container = css({
   position: 'relative',

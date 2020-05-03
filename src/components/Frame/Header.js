@@ -98,11 +98,10 @@ const promoStyle = css({
   margin: '0 auto',
   maxWidth: SEARCH_MAX_WIDTH,
   padding: `10px ${FRAME_PADDING}px`,
-  textAlign: 'center'
-})
-
-const promoLinkStyle = css({
-  color: 'inherit'
+  textAlign: 'center',
+  '& a': {
+    color: 'inherit'
+  }
 })
 
 let beforeSearch
@@ -224,7 +223,7 @@ class Header extends Component {
           ))}
         </Head>
         <div {...barStyle}>
-          <NextRouteLink prefetch route='index' params={{locale: currentLocale}}>
+          <NextRouteLink route='index' params={{locale: currentLocale}}>
             <a {...titleStyle}>
               <Logo size={32} />
               <span {...titleTextStyle}>Lobbywatch</span>
@@ -250,11 +249,11 @@ class Header extends Component {
             </div>
           </Center>
         </div>
-        {t('petition/text', undefined, false) && <div {...promoContainerStyle}>
+        {t('banner/text', undefined, false) && <div {...promoContainerStyle}>
           <div {...promoStyle}>
-            {t.elements('petition/text', {
-              link: <a {...promoLinkStyle} key='link' href={t('petition/link/href')}>
-                {t('petition/link/text')}
+            {t.elements('banner/text', {
+              link: <a key='link' href={t('banner/link/href')}>
+                {t('banner/link/text')}
               </a>
             })}
           </div>
