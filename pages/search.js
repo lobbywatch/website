@@ -52,7 +52,6 @@ const searchQuery = gql`
       ... on LobbyGroup {
         id
         name
-        sector
         branch {
           id
           name

@@ -21,7 +21,6 @@ const lobbyGroupQuery = gql`
       published
       id
       name
-      sector
       branch {
         id
         name

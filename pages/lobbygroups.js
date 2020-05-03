@@ -19,7 +19,6 @@ const lobbyGroupsQuery = gql`
       __typename
       id
       name
-      sector
       branch {
         id
         name
