@@ -13,51 +13,50 @@ import MetaTags from '../src/components/MetaTags'
 import ListView from '../src/components/ListView'
 import BlockRegion from '../src/components/BlockRegion'
 
-const lobbyGroupsQuery = gql`
-  query lobbyGroups($locale: Locale!) {
-    lobbyGroups(locale: $locale) {
+const branchsQuery = gql`
+  query branchs($locale: Locale!) {
+    branchs(locale: $locale) {
       __typename
       id
       name
-      branch {
-        id
+      commissions {
         name
       }
     }
   }
 `
 
-const LobbyGroups = ({loading, error, lobbyGroups, locale}) => (
+const Branchs = ({loading, error, branchs, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
       <MetaTags locale={locale} fromT={t => ({
-        title: t('menu/lobbygroups'),
-        description: t('lobbygroups/meta/description', {count: lobbyGroups.length})
+        title: t('menu/branchs'),
+        description: t('branchs/meta/description', {count: branchs.length})
       })} />
       <TextCenter>
-        <H1><Message id='menu/lobbygroups' locale={locale} /></H1>
+        <H1><Message id='menu/branchs' locale={locale} /></H1>
       </TextCenter>
-      <ListView locale={locale} items={lobbyGroups} />
+      <ListView locale={locale} items={branchs} />
       <BlockRegion locale={locale}
-        region='rooster_lobbygroups'
+        region='rooster_branchs'
         style={{paddingTop: 50}} />
     </Center>
   )} />
 )
 
-const LobbyGroupsWithQuery = graphql(lobbyGroupsQuery, {
+const BranchWithQuery = graphql(branchsQuery, {
   props: ({data}) => {
     return {
       loading: data.loading,
       error: data.error,
-      lobbyGroups: data.lobbyGroups
+      branchs: data.branchs
     }
   }
-})(LobbyGroups)
+})(Branchs)
 
 const Page = ({router: {query: {locale, id}}}) => (
   <Frame>
-    <LobbyGroupsWithQuery locale={locale} />
+    <BranchWithQuery locale={locale} />
   </Frame>
 )
 

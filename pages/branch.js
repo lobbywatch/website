@@ -13,18 +13,14 @@ import {A, Meta} from '../src/components/Styled'
 import {withT} from '../src/components/Message'
 import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from '../constants'
 
-const lobbyGroupQuery = gql`
-  query getLobbyGroup($locale: Locale!, $id: ID!) {
-    getLobbyGroup(locale: $locale, id: $id) {
+const branchQuery = gql`
+  query getBranch($locale: Locale!, $id: ID!) {
+    getBranch(locale: $locale, id: $id) {
       __typename
       updated
       published
       id
       name
-      branch {
-        id
-        name
-      }
       description
       commissions {
         name
@@ -34,7 +30,7 @@ const lobbyGroupQuery = gql`
         group
         to {
           __typename
-          ... on Organisation {
+          ... on LobbyGroup {
             id
             name
           }
@@ -46,11 +42,7 @@ const lobbyGroupQuery = gql`
         vias {
           __typename
           to {
-            ... on Organisation {
-              id
-              name
-            }
-            ... on Guest {
+            ... on LobbyGroup {
               id
               name
             }
@@ -62,24 +54,24 @@ const lobbyGroupQuery = gql`
 `
 
 const CONNECTION_WEIGHTS = {
-  Parliamentarian: 0.1,
-  Organisation: 1000
+  LobbyGroup: 1000,
+  Organisation: 0
 }
 
-const LobbyGroup = ({loading, error, lobbyGroup, t, locale, id}) => (
+const Branch = ({loading, error, branch, t, locale, id}) => (
   <Loader loading={loading} error={error} render={() => {
-    const {__typename, name} = lobbyGroup
+    const {__typename, name} = branch
     const rawId = id.replace(`${__typename}-`, '')
-    const path = `/${locale}/daten/lobbygruppe/${rawId}/${name}`
+    const path = `/${locale}/daten/branch/${rawId}/${name}`
     return (
       <div>
-        <MetaTags locale={locale} data={lobbyGroup} />
+        <MetaTags locale={locale} data={branch} />
         <Center>
-          <DetailHead locale={locale} data={lobbyGroup} />
+          <DetailHead locale={locale} data={branch} />
         </Center>
         <Connections locale={locale}
           directness={1}
-          data={lobbyGroup.connections}
+          data={branch.connections}
           groupByDestination
           connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
         {DEBUG_INFORMATION && <Center>
@@ -88,16 +80,16 @@ const LobbyGroup = ({loading, error, lobbyGroup, t, locale, id}) => (
             {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
             {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
           </Meta>
-          <GooglePreview data={lobbyGroup} t={t} path={path} />
+          <GooglePreview data={branch} t={t} path={path} />
         </Center>}
       </div>
     )
   }} />
 )
 
-const LobbyGroupWithQuery = withT(graphql(lobbyGroupQuery, {
+const BranchWithQuery = withT(graphql(branchQuery, {
   props: ({data, ownProps: {serverContext, t}}) => {
-    const notFound = !data.loading && !data.getLobbyGroup
+    const notFound = !data.loading && !data.getBranch
     if (serverContext) {
       if (notFound) {
         serverContext.res.statusCode = 404
@@ -105,15 +97,15 @@ const LobbyGroupWithQuery = withT(graphql(lobbyGroupQuery, {
     }
     return {
       loading: data.loading,
-      error: data.error || (notFound && t('lobbygroup/error/404')),
-      lobbyGroup: data.getLobbyGroup
+      error: data.error || (notFound && t('branch/error/404')),
+      branch: data.getBranch
     }
   }
-})(LobbyGroup))
+})(Branch))
 
 const Page = ({router: {query: {locale, id}}}) => (
   <Frame>
-    <LobbyGroupWithQuery locale={locale} id={id} />
+    <BranchWithQuery locale={locale} id={id} />
   </Frame>
 )
 

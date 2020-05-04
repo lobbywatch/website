@@ -106,7 +106,11 @@ ListView.defaultProps = {
       case 'Guest':
         return item['function']
       case 'LobbyGroup':
-        return item.sector
+        return item.branch.name
+      case 'Branch':
+        return item.commissions
+          .map(commission => commission.name)
+          .filter(Boolean).join(', ')
       case 'Organisation':
         return item.lobbyGroups
           .map(lobbyGroup => lobbyGroup.name)

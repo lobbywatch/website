@@ -32,7 +32,8 @@ const BOOSTS = {
   Parliamentarian: 1,
   Guest: 0.5,
   Organisation: 0,
-  LobbyGroup: 0
+  LobbyGroup: 0,
+  Branch: 0
 }
 
 module.exports.loadSearch = (locales) => {
@@ -56,6 +57,7 @@ module.exports.loadSearch = (locales) => {
         ].join(',')
       }),
       api.data(locale, 'data/interface/v1/json/table/interessengruppe/flat/list'),
+      api.data(locale, 'data/interface/v1/json/table/branche/flat/list'),
       api.data(locale, 'data/interface/v1/json/table/organisation/flat/list', {
         select_fields: [
           'name_de', 'name_fr', 'rechtsform', 'ort',
@@ -70,6 +72,7 @@ module.exports.loadSearch = (locales) => {
       {json: {data: parliamentarians}},
       {json: {data: guests}},
       {json: {data: lobbyGroups}},
+      {json: {data: branchs}},
       {json: {data: organisations}}
     ]) => {
       const index = parliamentarians.map(parliamentarian => ({
@@ -104,6 +107,12 @@ module.exports.loadSearch = (locales) => {
           lobbyGroup.kommission2_abkuerzung,
           lobbyGroup.kommission1,
           lobbyGroup.kommission2
+        ])
+      }))).concat(branchs.map(branch => ({
+        type: 'Branch',
+        raw: branch,
+        keywords: cleanKeywords([
+          branch.name
         ])
       }))).concat(organisations.map(organisation => ({
         type: 'Organisation',

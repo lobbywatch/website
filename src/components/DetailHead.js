@@ -107,6 +107,8 @@ const formatWebsite = value => {
   return <A href={value} target='_blank'>{label}</A>
 }
 
+const getRawId = ({ id, __typename }) => id.replace(`${__typename}-`, '')
+
 DetailHead.defaultProps = {
   image: d => d.portrait,
   title: d => d.name,
@@ -119,7 +121,6 @@ DetailHead.defaultProps = {
           d.canton
         ].filter(Boolean).join(', ')
       case 'Guest':
-        const rawParlamentarianId = d.parliamentarian.id.replace(`${d.parliamentarian.__typename}-`, '')
         return (<span>
           {
             intersperse([
@@ -127,7 +128,11 @@ DetailHead.defaultProps = {
               <span key='invited'>
                 {t(`guest/${d.gender}/invited`)}
                 {' '}
-                <RouteLink route='parliamentarian' params={{locale, id: rawParlamentarianId, name: d.parliamentarian.name}}>
+                <RouteLink route='parliamentarian' params={{
+                  locale,
+                  id: getRawId(d.parliamentarian),
+                  name: d.parliamentarian.name
+                }}>
                   {d.parliamentarian.name}
                 </RouteLink>
               </span>
@@ -136,12 +141,22 @@ DetailHead.defaultProps = {
           {d.occupation}
         </span>)
       case 'LobbyGroup':
-        return d.sector
+        return <RouteLink route='branch' params={{
+          locale,
+          id: getRawId(d.branch),
+          name: d.branch.name
+        }}>
+          {d.branch.name}
+        </RouteLink>
       case 'Organisation':
         return intersperse(
           d.lobbyGroups
             .map((lobbyGroup, i) => (
-              <RouteLink key={i} route='lobbygroup' params={{locale, id: lobbyGroup.id, name: lobbyGroup.name}}>
+              <RouteLink key={i} route='lobbygroup' params={{
+                locale,
+                id: getRawId(lobbyGroup),
+                name: lobbyGroup.name
+              }}>
                 {lobbyGroup.name}
               </RouteLink>
             ))
@@ -183,6 +198,11 @@ DetailHead.defaultProps = {
           ['commissions', formatCommissions]
         ]
       case 'LobbyGroup':
+        return [
+          ['description'],
+          ['commissions', formatCommissions]
+        ]
+      case 'Branch':
         return [
           ['description'],
           ['commissions', formatCommissions]

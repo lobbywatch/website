@@ -28,6 +28,9 @@
           },
           {
             "name": "LobbyGroup"
+          },
+          {
+            "name": "Branch"
           }
         ]
       }
