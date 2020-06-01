@@ -17,9 +17,9 @@ const branchQuery = gql`
   query getBranch($locale: Locale!, $id: ID!) {
     getBranch(locale: $locale, id: $id) {
       __typename
+      id
       updated
       published
-      id
       name
       description
       commissions {

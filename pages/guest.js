@@ -17,6 +17,7 @@ const guestQuery = gql`
   query getGuest($locale: Locale!, $id: ID!) {
     getGuest(locale: $locale, id: $id) {
       __typename
+      id
       updated
       published
       name

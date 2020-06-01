@@ -17,9 +17,9 @@ const lobbyGroupQuery = gql`
   query getLobbyGroup($locale: Locale!, $id: ID!) {
     getLobbyGroup(locale: $locale, id: $id) {
       __typename
+      id
       updated
       published
-      id
       name
       branch {
         id

@@ -6,6 +6,8 @@ import {set, nest} from 'd3-collection'
 import {descending} from 'd3-array'
 import {A, H2, Meta} from './Styled'
 import track from '../../lib/ga'
+import {PUBLIC_BASE_URL} from '../../constants'
+import {matchDatum} from '../../routes'
 
 class Raw extends Component {
   componentDidMount () {
@@ -18,12 +20,14 @@ class Raw extends Component {
     track('send', 'pageview')
   }
   render () {
-    const {title, pageTitle, description, image} = this.props
+    const {title, pageTitle, description, image, url} = this.props
 
     return (
       <Head>
         <title>{pageTitle}</title>
         <meta name='description' content={description} />
+        {url && <meta property='og:url' content={url} />}
+        {url && <link rel='canonical' href={url} />}
         <meta property='og:type' content='website' />
         <meta property='og:title' content={title} />
         <meta property='og:description' content={description} />
@@ -154,6 +158,11 @@ const MetaTags = ({locale, t, fromT, data, ...rest}) => {
       ...props,
       title: title(data, t),
       description: description(data, t)
+    }
+
+    const detailRoute = matchDatum(data, locale)
+    if (detailRoute) {
+      props.url = `${PUBLIC_BASE_URL || ''}${detailRoute.as}`
     }
   }
   props.pageTitle = pageTitle(props.title)

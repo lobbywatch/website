@@ -17,6 +17,7 @@ const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: ID!) {
     getParliamentarian(locale: $locale, id: $id) {
       __typename
+      id
       updated
       published
       name

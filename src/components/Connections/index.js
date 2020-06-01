@@ -9,7 +9,7 @@ import Legend from './Legend'
 import Message, {withT} from '../Message'
 import {shallowEqual, intersperse} from '../../utils/helpers'
 import {chfFormat} from '../../utils/formats'
-import routes, {Router as RoutesRouter} from '../../../routes'
+import routes, {Router as RoutesRouter, matchDatum} from '../../../routes'
 import layout, {START_Y} from './layout'
 import nest from './nest'
 import {set} from 'd3-collection'
@@ -264,17 +264,11 @@ class Connections extends Component {
                     .filter(Boolean)
                     .length
 
-                  const routeName = connection.to.__typename.toLowerCase()
-                  const route = routes.findByName(routeName)
-                  const params = {
-                    locale,
-                    id: connection.to.id.replace(`${connection.to.__typename}-`, ''),
-                    name: connection.to.name
-                  }
+                  const {routeName, params, as} = matchDatum(connection.to, locale)
 
                   return (
                     <a key={data.id} ref={setRef}
-                      href={route.getAs(params)}
+                      href={as}
                       onClick={e => {
                         e.preventDefault()
 

@@ -17,6 +17,7 @@ const orgQuery = gql`
   query getOrganisation($locale: Locale!, $id: ID!) {
     getOrganisation(locale: $locale, id: $id) {
       __typename
+      id
       updated
       published
       name
