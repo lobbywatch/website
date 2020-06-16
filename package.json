@@ -67,5 +67,6 @@
     "dotenv": "^8.2.0",
     "nodemon": "^2.0.4",
     "standard": "^14.3.4"
-  }
+  },
+  "cacheDirectories": ["node_modules", ".next/cache"]
 }
