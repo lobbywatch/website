@@ -2,7 +2,7 @@
   "name": "lobbywatch-rooster",
   "version": "0.9.0",
   "engines": {
-    "node": "10.4.1"
+    "node": "14.4.0"
   },
   "description": "Lobbywatch 2017",
   "scripts": {
