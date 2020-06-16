@@ -1,5 +1,6 @@
 const {timeFormat, timeParse} = require('d3-time-format')
 const {timeYear, timeMonth} = require('d3-time')
+const {descending} = require('d3-array')
 const striptags = require('striptags')
 const entities = require('entities')
 const {DRUPAL_IMAGE_BASE_URL} = require('../constants')
@@ -34,11 +35,23 @@ const mapFunction = (t, {beschreibung, art, funktion_im_gremium: funktion, recht
   return translated
 }
 
-const mapCompensations = verguetungen_pro_jahr => (verguetungen_pro_jahr || []).map((raw) => ({
-          year: raw.jahr && +raw.jahr,
-          money: raw.verguetung !== undefined && raw.verguetung !== null ? +raw.verguetung : null,
-          description: raw.beschreibung || null
-        })).sort((a, b) => b.year - a.year)
+const mapCompensations = (verguetungen, parliamentarian) => {
+  return (verguetungen || [])
+    .map((raw) => {
+      const money = raw.verguetung !== undefined && raw.verguetung !== null
+        ? +raw.verguetung
+        : null
+      return {
+        year: raw.jahr && +raw.jahr,
+        money,
+        description: money === -1 && raw.beschreibung === 'Bezahlendes Mitglied'
+          ? null
+          : raw.beschreibung || null
+      }
+    })
+    .sort((a, b) => descending(a.year, b.year))
+    .filter(d => d.year && (d.money !== null || d.description !== null))
+}
 
 const lobbyGroupIdPrefix = exports.lobbyGroupIdPrefix = 'LobbyGroup-'
 exports.mapLobbyGroup = (raw, t) => {
