@@ -44,7 +44,7 @@ const mapCompensations = (verguetungen, parliamentarian) => {
       return {
         year: raw.jahr && +raw.jahr,
         money,
-        description: money === -1 && raw.beschreibung === 'Bezahlendes Mitglied'
+        description: (money === -1 && raw.beschreibung === 'Bezahlendes Mitglied') || (money === 0 && raw.beschreibung === 'Ehrenamtlich')
           ? null
           : raw.beschreibung || null
       }
