@@ -40,11 +40,11 @@ const Parliamentarians = ({loading, error, parliamentarians, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
       <MetaTags locale={locale} fromT={t => ({
-        title: t('menu/parliamentarians'),
+        title: t('parliamentarians/meta/title'),
         description: t('parliamentarians/meta/description', {count: parliamentarians.length})
       })} />
       <TextCenter>
-        <H1><Message id='menu/parliamentarians' locale={locale} /></H1>
+        <H1><Message id='parliamentarians/meta/title' locale={locale} /></H1>
       </TextCenter>
       {nest()
         .key(item => item.canton)

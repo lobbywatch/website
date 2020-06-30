@@ -30,11 +30,11 @@ const Guests = ({loading, error, guests, locale}) => (
   <Loader loading={loading} error={error} render={() => (
     <Center>
       <MetaTags locale={locale} fromT={t => ({
-        title: t('menu/guests'),
+        title: t('guests/meta/title'),
         description: t('guests/meta/description', {count: guests.length})
       })} />
       <TextCenter>
-        <H1><Message id='menu/guests' locale={locale} /></H1>
+        <H1><Message id='guests/meta/title' locale={locale} /></H1>
       </TextCenter>
       <ListView locale={locale} items={guests} />
       <BlockRegion locale={locale}
