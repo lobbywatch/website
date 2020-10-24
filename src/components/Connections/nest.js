@@ -25,7 +25,7 @@ const groupConnections = (connections, directness) => {
   })
 }
 
-export default ({
+const nestConnections = ({
   data, groupByDestination, directness,
   intermediate, intermediates,
   maxGroups, connectionWeight,
@@ -117,3 +117,5 @@ export default ({
   const hierarchy = stratify()(nodeData)
   return hierarchy
 }
+
+export default nestConnections
