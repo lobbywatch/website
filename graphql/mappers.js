@@ -353,7 +353,9 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
   const guests = (raw.zutrittsberechtigungen || []).map(g => mapGuest(g, t))
 
   const connections = () => {
-    const direct = raw.interessenbindungen.map(directConnection => mapMandate(parliamentarian, directConnection, t))
+    const direct = raw.interessenbindungen
+      .filter(directConnection => !(directConnection.rechtsform === 'Parlamentarische Gruppe' && directConnection.art === 'mitglied'))
+      .map(directConnection => mapMandate(parliamentarian, directConnection, t))
     let indirect = []
     guests.forEach(guest => {
       guest.connections.forEach(indirectConnection => {
