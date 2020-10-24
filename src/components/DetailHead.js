@@ -6,6 +6,7 @@ import {ContextBoxValue} from './ContextBox'
 
 import {numberFormat} from '../utils/formats'
 import {intersperse} from '../utils/helpers'
+import {getRawId} from '../utils/id'
 import {GREY_LIGHT} from '../theme'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
@@ -107,8 +108,6 @@ const formatWebsite = value => {
   return <A href={value} target='_blank'>{label}</A>
 }
 
-const getRawId = ({ id, __typename }) => id.replace(`${__typename}-`, '')
-
 DetailHead.defaultProps = {
   image: d => d.portrait,
   title: d => d.name,
@@ -130,7 +129,7 @@ DetailHead.defaultProps = {
                 {' '}
                 <RouteLink route='parliamentarian' params={{
                   locale,
-                  id: getRawId(d.parliamentarian),
+                  id: getRawId(d.parliamentarian, locale),
                   name: d.parliamentarian.name
                 }}>
                   {d.parliamentarian.name}
@@ -143,7 +142,7 @@ DetailHead.defaultProps = {
       case 'LobbyGroup':
         return <RouteLink route='branch' params={{
           locale,
-          id: getRawId(d.branch),
+          id: getRawId(d.branch, locale),
           name: d.branch.name
         }}>
           {d.branch.name}
@@ -154,7 +153,7 @@ DetailHead.defaultProps = {
             .map((lobbyGroup, i) => (
               <RouteLink key={i} route='lobbygroup' params={{
                 locale,
-                id: getRawId(lobbyGroup),
+                id: getRawId(lobbyGroup, locale),
                 name: lobbyGroup.name
               }}>
                 {lobbyGroup.name}

@@ -7,7 +7,7 @@ import {descending} from 'd3-array'
 import {A, H2, Meta} from './Styled'
 import track from '../../lib/ga'
 import {PUBLIC_BASE_URL} from '../../constants'
-import {matchDatum} from '../../routes'
+import {matchRouteFromDatum} from '../utils/id'
 
 class Raw extends Component {
   componentDidMount () {
@@ -160,7 +160,7 @@ const MetaTags = ({locale, t, fromT, data, ...rest}) => {
       description: description(data, t)
     }
 
-    const detailRoute = matchDatum(data, locale)
+    const detailRoute = matchRouteFromDatum(data, locale)
     if (detailRoute) {
       props.url = `${PUBLIC_BASE_URL || ''}${detailRoute.as}`
     }

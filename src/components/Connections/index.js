@@ -9,7 +9,8 @@ import Legend from './Legend'
 import Message, {withT} from '../Message'
 import {shallowEqual, intersperse} from '../../utils/helpers'
 import {chfFormat} from '../../utils/formats'
-import routes, {Router as RoutesRouter, matchDatum} from '../../../routes'
+import {matchRouteFromDatum} from '../../utils/id'
+import routes, {Router as RoutesRouter} from '../../../routes'
 import layout, {START_Y} from './layout'
 import nest from './nest'
 import {set} from 'd3-collection'
@@ -264,7 +265,7 @@ class Connections extends Component {
                     .filter(Boolean)
                     .length
 
-                  const {routeName, params, as} = matchDatum(connection.to, locale)
+                  const {routeName, params, as} = matchRouteFromDatum(connection.to, locale)
 
                   return (
                     <a key={data.id} ref={setRef}

@@ -18,23 +18,3 @@ routes.add('guest', `/${localeSegment}/daten/zutrittsberechtigter/:id/:name?`)
 routes.add('guests', `/${localeSegment}/daten/zutrittsberechtigter`)
 routes.add('search', `/${localeSegment}/search`)
 routes.add('page', `/${localeSegment}/:path*`)
-
-module.exports.matchDatum = (datum, locale) => {
-  const routeName = datum.__typename.toLowerCase()
-  const route = routes.findByName(routeName)
-  if (!route) {
-    return null
-  }
-
-  const params = {
-    locale,
-    id: datum.id.replace(`${datum.__typename}-`, ''),
-    name: datum.name
-  }
-
-  return {
-    routeName,
-    params,
-    as: route.getAs(params)
-  }
-}

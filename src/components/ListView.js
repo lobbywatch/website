@@ -5,6 +5,7 @@ import {metaRule} from './Styled'
 import {LW_BLUE, GREY_LIGHT, mediaM} from '../theme'
 import {css} from 'glamor'
 import {Link as RawRouteLink} from '../../routes'
+import {getRawId} from '../utils/id'
 import Grid, {GridItem} from './Grid'
 
 import Icons from '../assets/TypeIcons'
@@ -49,7 +50,7 @@ const ListView = ({locale, items, title, subtitle, maxWidth}) => {
   const elements = items.map((item) => {
     const {__typename, id, name, portrait} = item
     const Icon = Icons[__typename]
-    const rawId = id.replace(`${__typename}-`, '')
+    const rawId = getRawId(item, locale)
     return (
       <RawRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
         <a {...aStyle}>

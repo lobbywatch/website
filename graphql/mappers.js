@@ -60,7 +60,7 @@ exports.mapLobbyGroup = (raw, t) => {
       from: lobbyGroup,
       vias: [],
       to: {
-        id: `${orgIdPrefix}${connection.id}`,
+        id: `${orgIdPrefix}${connection.id}-${t.locale}`,
         name: connection.name
       },
       group: t('connections/organisation')
@@ -155,24 +155,24 @@ exports.mapLobbyGroup = (raw, t) => {
   }
 
   const lobbyGroup = {
-    id: `${lobbyGroupIdPrefix}${raw.id}`,
+    id: `${lobbyGroupIdPrefix}${raw.id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
     sector: raw.branche,
     branch: {
-        id: `${branchIdPrefix}${raw.branche_id}`,
+        id: `${branchIdPrefix}${raw.branche_id}-${t.locale}`,
         name: raw.branche
       },
     description: raw.beschreibung,
     commissions: [
       {
-        id: `${commissionIdPrefix}${raw.kommission1_id}`,
+        id: `${commissionIdPrefix}${raw.kommission1_id}-${t.locale}`,
         name: raw.kommission1_name,
         abbr: raw.kommission1_abkuerzung
       },
       {
-        id: `${commissionIdPrefix}${raw.kommission2_id}`,
+        id: `${commissionIdPrefix}${raw.kommission2_id}-${t.locale}`,
         name: raw.kommission2_name,
         abbr: raw.kommission2_abkuerzung
       }
@@ -190,7 +190,7 @@ exports.mapBranch = (raw, t) => {
       from: branch,
       vias: [],
       to: {
-        id: `${lobbyGroupIdPrefix}${connection.id}`,
+        id: `${lobbyGroupIdPrefix}${connection.id}-${t.locale}`,
         name: connection.name
       },
       group: t('connections/lobbyGroup')
@@ -199,7 +199,7 @@ exports.mapBranch = (raw, t) => {
       from: branch,
       vias: [],
       to: {
-        id: `${parliamentarianIdPrefix}${connection.id}`,
+        id: `${parliamentarianIdPrefix}${connection.id}-${t.locale}`,
         name: connection.name
       },
       group: connection.partei
@@ -208,19 +208,19 @@ exports.mapBranch = (raw, t) => {
   }
 
   const branch = {
-    id: `${branchIdPrefix}${raw.id}`,
+    id: `${branchIdPrefix}${raw.id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
     description: raw.beschreibung,
     commissions: [
       {
-        id: `${commissionIdPrefix}${raw.kommission_id}`,
+        id: `${commissionIdPrefix}${raw.kommission_id}-${t.locale}`,
         name: raw.kommission1_name,
         abbr: raw.kommission1_abkuerzung
       },
       {
-        id: `${commissionIdPrefix}${raw.kommission2_id}`,
+        id: `${commissionIdPrefix}${raw.kommission2_id}-${t.locale}`,
         name: raw.kommission2_name,
         abbr: raw.kommission2_abkuerzung
       }
@@ -234,7 +234,7 @@ const orgIdPrefix = exports.orgIdPrefix = 'Organisation-'
 const mapOrganisation = exports.mapOrganisation = (raw, t) => {
   const connections = () => {
     const direct = raw.parlamentarier.map(directConnection => {
-      const parliamentarian = mapParliamentarian(directConnection)
+      const parliamentarian = mapParliamentarian(directConnection, t)
       return {
         from: org,
         vias: [],
@@ -252,7 +252,7 @@ const mapOrganisation = exports.mapOrganisation = (raw, t) => {
     let indirect = []
     raw.zutrittsberechtigte.forEach(rawGuest => {
       if (rawGuest.parlamentarier) {
-        const parliamentarian = mapParliamentarian(rawGuest.parlamentarier)
+        const parliamentarian = mapParliamentarian(rawGuest.parlamentarier, t)
         const guest = mapGuest(rawGuest, t)
         indirect.push({
           from: org,
@@ -274,7 +274,7 @@ const mapOrganisation = exports.mapOrganisation = (raw, t) => {
     let relations = raw.beziehungen.map(connection => ({
       from: org,
       to: {
-        id: `${orgIdPrefix}${connection.ziel_organisation_id}`,
+        id: `${orgIdPrefix}${connection.ziel_organisation_id}-${t.locale}`,
         name: connection.ziel_organisation_name
       },
       vias: [],
@@ -284,7 +284,7 @@ const mapOrganisation = exports.mapOrganisation = (raw, t) => {
   }
 
   const org = {
-    id: `${orgIdPrefix}${raw.id}`,
+    id: `${orgIdPrefix}${raw.id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
@@ -310,7 +310,7 @@ const mapMandate = (origin, connection, t) => ({
   from: () => origin,
   vias: [],
   to: {
-    id: `${orgIdPrefix}${connection.organisation_id}`,
+    id: `${orgIdPrefix}${connection.organisation_id}-${t.locale}`,
     name: connection.organisation_name
   },
   group: connection.interessengruppe,
@@ -327,7 +327,7 @@ const mapMandate = (origin, connection, t) => ({
 const guestIdPrefix = exports.guestIdPrefix = 'Guest-'
 const mapGuest = exports.mapGuest = (raw, t) => {
   const guest = {
-    id: `${guestIdPrefix}${raw.person_id}`,
+    id: `${guestIdPrefix}${raw.person_id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: () => `${raw.vorname} ${raw.nachname}`,
@@ -373,7 +373,7 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
   }
 
   const parliamentarian = {
-    id: `${parliamentarianIdPrefix}${raw.parlamentarier_id || raw.id}`,
+    id: `${parliamentarianIdPrefix}${raw.parlamentarier_id || raw.id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: () => `${raw.vorname} ${raw.nachname}`,
@@ -432,10 +432,10 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
     },
     website: raw.homepage,
     commissions: raw.in_kommission ? raw.in_kommission.map(commission => ({
-      id: `${commissionIdPrefix}${commission.id}`,
+      id: `${commissionIdPrefix}${commission.id}-${t.locale}`,
       name: commission.name,
       abbr: commission.abkuerzung
-    })) : null,
+    })) : [],
     guests,
     connections
   }

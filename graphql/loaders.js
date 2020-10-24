@@ -24,10 +24,12 @@ const HAS_LOCAL_TRANSLATIONS = fs.existsSync(
 
 const mapTranslations = (locales, data) => {
   return locales.map(locale => {
-    return data.map(translation => ({
+    const translations = data.map(translation => ({
       key: translation.key,
       value: translation[locale]
     }))
+    translations.locale = locale
+    return translations
   })
 }
 

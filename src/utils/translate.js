@@ -20,6 +20,8 @@ module.exports.getFormatter = translations => {
     return message
   }
 
+  formatter.locale = translations.locale
+
   const firstKey = keys => (
     keys.find(k => index[k] !== undefined) || keys[keys.length - 1]
   )
