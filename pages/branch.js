@@ -46,6 +46,14 @@ const branchQuery = gql`
               id
               name
             }
+            ... on Organisation {
+              id
+              name
+            }
+            ... on Guest {
+              id
+              name
+            }
           }
         }
       }

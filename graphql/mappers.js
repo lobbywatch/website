@@ -53,6 +53,98 @@ const mapCompensations = (verguetungen, parliamentarian) => {
     .filter(d => d.year && (d.money !== null || d.description !== null))
 }
 
+const mapParliamentariansFromConnections = (raw, t, origin) => {
+  return raw.connections.map(connection => {
+    const parliamentarianRaw = raw.parlamentarier.find(p => p.id === connection.parlamentarier_id)
+    if (!parliamentarianRaw) {
+      console.warn('[mappers]', `Connection: missing parliamentarian ${connection.parlamentarier_id} ${connection.parlamentarier_name} (${raw.id} ${raw.name})`)
+      return null
+    }
+    const parliamentarian = mapParliamentarian(
+      parliamentarianRaw,
+      t
+    )
+
+    const rawConnectorOrganisation = raw.organisationen
+        .find(org => org.id === connection.connector_organisation_id)
+    if (!rawConnectorOrganisation) {
+      console.warn('[mappers]', `Connection: missing connector organisation ${connection.connector_organisation_id} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`)
+      return null
+    }
+    // filter out simple memberships of parlamentarian groups
+    // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1603379470004900
+    if (rawConnectorOrganisation.rechtsform === 'Parlamentarische Gruppe' && connection.art === 'mitglied') {
+      return null
+    }
+    const connectorOrganisation = mapOrganisation(
+      rawConnectorOrganisation,
+      t
+    )
+    const rawIntermediateOrganisation = connection.zwischen_organisation_id && raw.zwischen_organisationen?.find(org => org.id === connection.zwischen_organisation_id)
+    if (!rawIntermediateOrganisation && connection.zwischen_organisation_id) {
+      console.warn('[mappers]', `Connection: missing intermediate organisation ${connection.zwischen_organisation_id} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`)
+      return null
+    }
+    const intermediateOrganisation = rawIntermediateOrganisation && mapOrganisation(
+      rawIntermediateOrganisation,
+      t
+    )
+
+    let directFunction
+    if (!intermediateOrganisation && !connection.person_id) {
+      directFunction = () => mapFunction(t, Object.assign({}, connection, {
+        rechtsform: connectorOrganisation.legalFormId,
+        gender: parliamentarian.gender
+      }))
+    }
+    const vias = [
+      {
+        from: origin,
+        to: connectorOrganisation,
+        function: directFunction
+      }
+    ]
+    if (intermediateOrganisation) {
+      vias.push({
+        from: connectorOrganisation,
+        to: intermediateOrganisation,
+        function: t(`connections/art/${connection.zwischen_organisation_art}`)
+      })
+    }
+    if (connection.person_id && raw.zutrittsberechtigte) {
+      const rawGuest = raw.zutrittsberechtigte
+          .find(g => g.person_id === connection.person_id)
+      if (!rawGuest) {
+        console.error(
+          `[mappers] Connection: missing guest ${connection.person_id} ${connection.zutrittsberechtigter} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`
+        )
+        // can happen when e.g. the guest is not published yet
+        // kill the connection
+        return null
+      }
+      const guest = mapGuest(rawGuest, t)
+      const org = intermediateOrganisation || connectorOrganisation
+      vias.push({
+        from: org,
+        to: guest,
+        function: () => mapFunction(t, Object.assign({}, connection, {
+          rechtsform: org.legalFormId,
+          gender: guest.gender
+        }))
+      })
+    }
+
+    return {
+      from: origin,
+      vias,
+      to: parliamentarian,
+      group: parliamentarian.partyMembership
+        ? parliamentarian.partyMembership.party.abbr
+        : t('connections/party/none')
+    }
+  })
+}
+
 const lobbyGroupIdPrefix = exports.lobbyGroupIdPrefix = 'LobbyGroup-'
 exports.mapLobbyGroup = (raw, t) => {
   const connections = () => {
@@ -66,90 +158,7 @@ exports.mapLobbyGroup = (raw, t) => {
       group: t('connections/organisation')
     }))
 
-    const parliamentarians = raw.connections.map(connection => {
-      const parliamentarianRaw = raw.parlamentarier.find(p => p.id === connection.parlamentarier_id)
-      if (!parliamentarianRaw) {
-        console.warn('[mappers]', `Connection: missing parliamentarian ${connection.parlamentarier_id} ${connection.parlamentarier_name} (${raw.id} ${raw.name})`)
-        return null
-      }
-      const parliamentarian = mapParliamentarian(
-        parliamentarianRaw,
-        t
-      )
-
-      const rawConnectorOrganisation = raw.organisationen
-          .find(org => org.id === connection.connector_organisation_id)
-      if (!rawConnectorOrganisation) {
-        console.warn('[mappers]', `Connection: missing connector organisation ${connection.connector_organisation_id} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`)
-        return null
-      }
-      const connectorOrganisation = mapOrganisation(
-        rawConnectorOrganisation,
-        t
-      )
-      const rawIntermediateOrganisation = connection.zwischen_organisation_id && raw.zwischen_organisationen.find(org => org.id === connection.zwischen_organisation_id)
-      if (!rawIntermediateOrganisation && connection.zwischen_organisation_id) {
-        console.warn('[mappers]', `Connection: missing intermediate organisation ${connection.zwischen_organisation_id} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`)
-        return null
-      }
-      const intermediateOrganisation = rawIntermediateOrganisation && mapOrganisation(
-        rawIntermediateOrganisation,
-        t
-      )
-
-      let directFunction
-      if (!intermediateOrganisation && !connection.person_id) {
-        directFunction = () => mapFunction(t, Object.assign({}, connection, {
-          rechtsform: connectorOrganisation.legalFormId,
-          gender: parliamentarian.gender
-        }))
-      }
-      const vias = [
-        {
-          from: lobbyGroup,
-          to: connectorOrganisation,
-          function: directFunction
-        }
-      ]
-      if (intermediateOrganisation) {
-        vias.push({
-          from: connectorOrganisation,
-          to: intermediateOrganisation,
-          function: t(`connections/art/${connection.zwischen_organisation_art}`)
-        })
-      }
-      if (connection.person_id) {
-        const rawGuest = raw.zutrittsberechtigte
-            .find(g => g.person_id === connection.person_id)
-        if (!rawGuest) {
-          console.error(
-            `[mappers] Connection: missing guest ${connection.person_id} ${connection.zutrittsberechtigter} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`
-          )
-          // can happen when e.g. the guest is not published yet
-          // kill the connection
-          return null
-        }
-        const guest = mapGuest(rawGuest, t)
-        const org = intermediateOrganisation || connectorOrganisation
-        vias.push({
-          from: org,
-          to: guest,
-          function: () => mapFunction(t, Object.assign({}, connection, {
-            rechtsform: org.legalFormId,
-            gender: guest.gender
-          }))
-        })
-      }
-
-      return {
-        from: lobbyGroup,
-        vias,
-        to: parliamentarian,
-        group: parliamentarian.partyMembership
-          ? parliamentarian.partyMembership.party.abbr
-          : t('connections/party/none')
-      }
-    })
+    const parliamentarians = mapParliamentariansFromConnections(raw, t, lobbyGroup)
 
     return organisations.concat(parliamentarians).filter(Boolean)
   }
@@ -184,8 +193,7 @@ exports.mapLobbyGroup = (raw, t) => {
 
 const branchIdPrefix = exports.branchIdPrefix = 'Branch-'
 exports.mapBranch = (raw, t) => {
-
-    const connections = () => {
+  const connections = () => {
     const lobbygroups = raw.interessengruppe.map(connection => ({
       from: branch,
       vias: [],
@@ -195,15 +203,7 @@ exports.mapBranch = (raw, t) => {
       },
       group: t('connections/lobbyGroup')
     }))
-    const parliamentarians = raw.parlamentarier.map(connection => ({
-      from: branch,
-      vias: [],
-      to: {
-        id: `${parliamentarianIdPrefix}${connection.id}-${t.locale}`,
-        name: connection.name
-      },
-      group: connection.partei
-    }))
+    const parliamentarians = mapParliamentariansFromConnections(raw, t, branch)
     return parliamentarians.concat(lobbygroups).filter(Boolean)
   }
 
@@ -353,6 +353,8 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
   const guests = (raw.zutrittsberechtigungen || []).map(g => mapGuest(g, t))
 
   const connections = () => {
+    // filter out simple memberships of parlamentarian groups
+    // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1603379470004900
     const direct = raw.interessenbindungen
       .filter(directConnection => !(directConnection.rechtsform === 'Parlamentarische Gruppe' && directConnection.art === 'mitglied'))
       .map(directConnection => mapMandate(parliamentarian, directConnection, t))
