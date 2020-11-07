@@ -485,8 +485,8 @@ exports.mapPage = (locale, raw, statusCode) => {
 exports.mapMeta = (locale, raw) => {
   return Object.assign({}, raw, {
     links: raw.links.map(link => ({
-      id: `MenuLink-${link.id}`,
-      parentId: +link.parentId ? `MenuLink-${link.parentId}` : 'MenuLink-Root',
+      id: `MenuLink-${link.id}-${locale}`,
+      parentId: +link.parentId ? `MenuLink-${link.parentId}-${locale}` : 'MenuLink-Root',
       title: link.title,
       href: link.href
     })),
