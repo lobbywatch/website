@@ -51,7 +51,10 @@ class Connections extends Component {
       this.layout()
     }
   }
-  nestData (state, props) {
+  static getDerivedStateFromProps(props, state) {
+    if (state.previousProps && shallowEqual(props, state.previousProps)) {
+      return null
+    }
     const hierarchy = nest(props)
     const nodes = hierarchy.descendants()
     nodes.forEach(node => {
@@ -72,7 +75,8 @@ class Connections extends Component {
       nodes,
       links,
       hierarchy,
-      open: set()
+      open: set(),
+      previousProps: props
     }
 
     return nextState
@@ -129,14 +133,6 @@ class Connections extends Component {
 
     this.containerRef.style.height = `${height}px`
     this.svgRef.style.height = `${height}px`
-  }
-  componentWillMount () {
-    this.setState(this.nestData)
-  }
-  componentWillReceiveProps (nextProps) {
-    if (!shallowEqual(this.props, nextProps)) {
-      this.setState(this.nestData(this.state, nextProps))
-    }
   }
   componentDidMount () {
     window.addEventListener('resize', this.measure)
