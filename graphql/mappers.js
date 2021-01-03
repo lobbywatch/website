@@ -328,7 +328,7 @@ const guestIdPrefix = exports.guestIdPrefix = 'Guest-'
 const mapGuest = exports.mapGuest = (raw, t) => {
   const guest = {
     id: `${guestIdPrefix}${raw.person_id}-${t.locale}`,
-    updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
+    updated: () => formatDate(new Date(raw.last_modified_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: () => `${raw.vorname} ${raw.nachname}`,
     firstName: raw.vorname,
@@ -376,7 +376,7 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
 
   const parliamentarian = {
     id: `${parliamentarianIdPrefix}${raw.parlamentarier_id || raw.id}-${t.locale}`,
-    updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
+    updated: () => formatDate(new Date(raw.last_modified_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     name: () => `${raw.vorname} ${raw.nachname}`,
     parliamentId: raw.parlament_biografie_id,
