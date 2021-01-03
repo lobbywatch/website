@@ -6,7 +6,7 @@ Lobbywatch.ch build with React.js and the [Next.js](https://github.com/zeit/next
 
 ## Prerequisites
 
-To run the application you'll need Node.js v6.9 or higher.
+To run the application you'll need Node.js v14 or higher.
 
 ## Develop
 
