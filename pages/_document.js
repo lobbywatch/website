@@ -25,10 +25,16 @@ export default class MyDocument extends Document {
     }
   }
   render () {
-    const {css, env: {GA_TRACKING_ID}} = this.props
+    const {css, env: {GA_TRACKING_ID, PUBLIC_BASE_URL}, __NEXT_DATA__: {query: {locale}}} = this.props
+    const motivationComment = `/*
+🤔 You look like a curious person.
+💁 That's good, we need people like you!
+👉 Join us, ${PUBLIC_BASE_URL || ''}/de/seite/mitarbeiten
+*/`
     return (
-      <Html>
+      <Html lang={locale} dir="ltr">
         <Head>
+          <script dangerouslySetInnerHTML={{__html: motivationComment}}></script>
           <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
           <style dangerouslySetInnerHTML={{ __html: fontFaces }} />
           {css ? <style dangerouslySetInnerHTML={{ __html: css }} /> : null}
