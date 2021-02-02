@@ -15,6 +15,8 @@ import {Router as RoutesRouter} from '../routes'
 const pageQuery = gql`
   query page($locale: Locale!, $path: [String!]!) {
     page(locale: $locale, path: $path) {
+      __typename
+      nid
       path
       translations {
         locale
@@ -23,9 +25,11 @@ const pageQuery = gql`
       statusCode
       title
       content
+      type
       lead
       image
-      created
+      published
+      updated
       author
     }
   }
@@ -53,7 +57,7 @@ const Page = ({loading, error, page, router: {query: {locale}}}) => (
   }}>
     <Loader loading={loading} error={error} render={() => (
       <div>
-        <MetaTags locale={locale} title={page.title} description={page.lead} image={page.image} />
+        <MetaTags locale={locale} title={page.title} description={page.lead} image={page.image} page={page}/>
         {!!page.image && (
           <Cover src={page.image} title={page.title} />
         )}
@@ -62,7 +66,7 @@ const Page = ({loading, error, page, router: {query: {locale}}}) => (
             <H1>{page.title}</H1>
           )}
           <Meta style={{marginBottom: 7}}>
-            {[page.created, page.author].filter(Boolean).join(' – ')}
+            {[page.published, page.author].filter(Boolean).join(' – ')}
           </Meta>
           <RawHtml dangerouslySetInnerHTML={{__html: page.content}} />
         </Center>

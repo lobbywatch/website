@@ -22,6 +22,8 @@ const branchQuery = gql`
       published
       name
       description
+      wikipedia_url
+      wikidata_url
       commissions {
         name
         abbr

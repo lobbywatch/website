@@ -1,7 +1,7 @@
 import routes from '../../routes'
 
 export const getRawId = ({ id, __typename }, locale) => id
-  .split('-')
+  ?.split('-')
   .filter(part => part !== __typename && part !== locale)
   .join('-')
 
@@ -18,9 +18,15 @@ export const matchRouteFromDatum = (datum, locale) => {
     name: datum.name
   }
 
+  const shortParams = {
+    locale,
+    id: getRawId(datum, locale)
+  }
+
   return {
     routeName,
     params,
-    as: route.getAs(params)
+    as: route.getAs(params),
+    short: route.getAs(shortParams)
   }
 }

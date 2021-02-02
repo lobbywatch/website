@@ -16,6 +16,7 @@ import Message from '../Message'
 import Loader from '../Loader'
 import {locales} from '../../../constants'
 import BlockRegion from '../BlockRegion'
+import { JsonLd } from '../JsonLd'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {
@@ -105,7 +106,8 @@ const groupLinks = (links) => {
 }
 
 const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
-  <div style={{ marginTop: 20 }}>
+  <footer style={{ marginTop: 20 }}>
+    <JsonLd data={{"@context": "http://schema.org/", "@type": "WPFooter"}} />
     <Center>
       {!(pathname === '/page' && query.path === 'unterstuetzen') &&
         <BlockRegion locale={locale} region='rooster_home' compact first={pathname !== '/'} />
@@ -173,7 +175,7 @@ const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
         )} />
       </Center>
     </div>
-  </div>
+  </footer>
 )
 
 const FooterWithQuery = graphql(metaQuery, {

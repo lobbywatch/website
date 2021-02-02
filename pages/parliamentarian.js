@@ -25,6 +25,7 @@ const parliamentarianQuery = gql`
       gender
       age
       portrait
+      council
       councilTitle
       active
       canton
@@ -35,8 +36,15 @@ const parliamentarianQuery = gql`
       occupation
       civilStatus
       children
-      website
       parliamentId
+      website
+      wikipedia_url
+      wikidata_url
+      twitter_name
+      twitter_url
+      facebook_url
+      linkedin_url
+      parlament_biografie_url
       commissions {
         name
         abbr
@@ -47,8 +55,15 @@ const parliamentarianQuery = gql`
         }
       }
       guests {
+        __typename
         id
         name
+        wikipedia_url
+        wikidata_url
+        twitter_name
+        twitter_url
+        facebook_url
+        linkedin_url
       }
       connections {
         group
@@ -67,6 +82,8 @@ const parliamentarianQuery = gql`
           ... on Organisation {
             id
             name
+            uid
+            wikidata_url
           }
         }
         vias {

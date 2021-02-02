@@ -52,7 +52,7 @@ const pStyle = css({
   flexGrow: 1
 })
 
-const Card = ({image, path, title, author, created, lead, locale}) => {
+const Card = ({image, path, title, author, published, lead, locale}) => {
   return (
     <div {...containerStyle}>
       <RawRouteLink route='page' params={{locale, path}}>
@@ -63,7 +63,7 @@ const Card = ({image, path, title, author, created, lead, locale}) => {
       </RawRouteLink>
       <div {...bodyStyle}>
         <span {...metaRule}>
-          {[created, author].filter(Boolean).join(' – ')}
+          {[published, author].filter(Boolean).join(' – ')}
         </span>
         <P className={pStyle}>{lead}</P>
         <TextCenter>
@@ -80,7 +80,7 @@ Card.propTypes = {
   locale: PropTypes.oneOf(locales).isRequired,
   path: PropTypes.arrayOf(PropTypes.string).isRequired,
   title: PropTypes.string.isRequired,
-  created: PropTypes.string.isRequired,
+  published: PropTypes.string.isRequired,
   lead: PropTypes.string.isRequired,
   image: PropTypes.string
 }

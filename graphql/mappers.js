@@ -8,6 +8,7 @@ const {DRUPAL_IMAGE_BASE_URL} = require('../constants')
 const parseDate = timeParse('%Y-%m-%d')
 const formatDate = timeFormat('%d.%m.%Y')
 const formatTime = timeFormat('%d.%m.%Y %H:%M')
+const formatDateIso = timeFormat('%Y-%m-%d')
 
 const potencyMap = {
   '3': 'HIGH',
@@ -167,12 +168,16 @@ exports.mapLobbyGroup = (raw, t) => {
     id: `${lobbyGroupIdPrefix}${raw.id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
+    updatedIso: () => formatDateIso(new Date(raw.updated_date_unix * 1000)),
+    publishedIso: () => formatDateIso(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
     sector: raw.branche,
     branch: {
         id: `${branchIdPrefix}${raw.branche_id}-${t.locale}`,
         name: raw.branche
-      },
+    },
+    wikipedia_url: raw.wikipedia,
+    wikidata_url: raw.wikidata_item_url,
     description: raw.beschreibung,
     commissions: [
       {
@@ -211,8 +216,12 @@ exports.mapBranch = (raw, t) => {
     id: `${branchIdPrefix}${raw.id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
+    updatedIso: () => formatDateIso(new Date(raw.updated_date_unix * 1000)),
+    publishedIso: () => formatDateIso(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
     description: raw.beschreibung,
+    wikipedia_url: raw.wikipedia,
+    wikidata_url: raw.wikidata_item_url,
     commissions: [
       {
         id: `${commissionIdPrefix}${raw.kommission_id}-${t.locale}`,
@@ -287,10 +296,15 @@ const mapOrganisation = exports.mapOrganisation = (raw, t) => {
     id: `${orgIdPrefix}${raw.id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.updated_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
+    updatedIso: () => formatDateIso(new Date(raw.updated_date_unix * 1000)),
+    publishedIso: () => formatDateIso(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
+    abbr: raw.abkuerzung,
     legalForm: t(`organisation/legalForm/${raw.rechtsform}`),
     legalFormId: raw.rechtsform,
     location: raw.ort,
+    postalCode: raw.adresse_plz,
+    countryIso2: raw.land_iso2,
     description: raw.beschreibung,
     lobbyGroups: [
       {name: raw.interessengruppe, id: raw.interessengruppe_id},
@@ -299,6 +313,10 @@ const mapOrganisation = exports.mapOrganisation = (raw, t) => {
     ].filter(l => l.name),
     uid: raw.uid,
     website: raw.homepage,
+    wikipedia_url: raw.wikipedia,
+    wikidata_url: raw.wikidata_item_url,
+    twitter_name: raw.twitter_name,
+    twitter_url: raw.twitter_url,
     connections
   }
   return org
@@ -330,6 +348,8 @@ const mapGuest = exports.mapGuest = (raw, t) => {
     id: `${guestIdPrefix}${raw.person_id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.last_modified_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
+    updatedIso: () => formatDateIso(new Date(raw.updated_date_unix * 1000)),
+    publishedIso: () => formatDateIso(new Date(raw.freigabe_datum_unix * 1000)),
     name: () => `${raw.vorname} ${raw.nachname}`,
     firstName: raw.vorname,
     middleName: raw.zweiter_vorname,
@@ -337,6 +357,14 @@ const mapGuest = exports.mapGuest = (raw, t) => {
     occupation: raw.beruf,
     gender: raw.geschlecht,
     function: raw.funktion,
+    website: raw.homepage,
+    wikipedia_url: raw.wikipedia,
+    wikidata_url: raw.wikidata_item_url,
+    twitter_name: raw.twitter_name,
+    twitter_url: raw.twitter_url,
+    linkedin_url: raw.linkedin_profil_url,
+    facebook_name: raw.facebook_name,
+    facebook_url: raw.facebook_url,
     parliamentarian: () => mapParliamentarian(raw.parlamentarier, t)
   }
   guest.connections = (raw.mandate || []).map(connection => mapMandate(guest, connection, t))
@@ -374,16 +402,28 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
     return direct.concat(indirect)
   }
 
+  const ROUNDING_PRECISION = 1000
+
   const parliamentarian = {
     id: `${parliamentarianIdPrefix}${raw.parlamentarier_id || raw.id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.last_modified_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
+    updatedIso: () => formatDateIso(new Date(raw.updated_date_unix * 1000)),
+    publishedIso: () => formatDateIso(new Date(raw.freigabe_datum_unix * 1000)),
     name: () => `${raw.vorname} ${raw.nachname}`,
     parliamentId: raw.parlament_biografie_id,
     firstName: raw.vorname,
     middleName: raw.zweiter_vorname,
     lastName: raw.nachname,
     occupation: raw.beruf,
+    wikipedia_url: raw.wikipedia,
+    wikidata_url: raw.wikidata_item_url,
+    twitter_name: raw.twitter_name,
+    twitter_url: raw.twitter_url,
+    linkedin_url: raw.linkedin_profil_url,
+    facebook_name: raw.facebook_name,
+    facebook_url: raw.facebook_url,
+    parlament_biografie_url: raw.parlament_biografie_url,
     gender: raw.geschlecht,
     dateOfBirth: formatDate(dateOfBirth),
     portrait: [
@@ -404,7 +444,11 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
       function: raw.parteifunktion,
       party: {
         name: raw.partei_name,
-        abbr: raw.partei
+        abbr: raw.partei,
+        wikipedia_url: raw.wikipedia,
+        wikidata_url: raw.wikidata_item_url,
+        twitter_name: raw.twitter_name,
+        twitter_url: raw.twitter_url,
       }
     } : null,
     canton: raw.kanton_name,
@@ -422,7 +466,7 @@ const mapParliamentarian = exports.mapParliamentarian = (raw, t) => {
     },
     councilJoinDate: formatDate(councilJoinDate),
     councilExitDate: councilExitDate && formatDate(councilExitDate),
-    represents: +raw.vertretene_bevoelkerung,
+    represents: Math.round(+raw.vertretene_bevoelkerung / ROUNDING_PRECISION) * ROUNDING_PRECISION,
     children: raw.anzahl_kinder !== null ? +raw.anzahl_kinder : null,
     civilStatus: () => {
       return t(
@@ -465,10 +509,21 @@ exports.mapPage = (locale, raw, statusCode) => {
     author: raw.type === 'article'
       ? raw.field_author
       : null,
-    created: raw.type === 'article' && raw.created
+    published: raw.type === 'article' && raw.created
       ? formatTime(+raw.created * 1000)
       : null,
+    updated: raw.type === 'article' && raw.changed
+      ? formatTime(+raw.changed * 1000)
+      : null,
+    publishedIso: raw.type === 'article' && raw.created
+      ? formatDateIso(+raw.created * 1000)
+      : null,
+    updatedIso: raw.type === 'article' && raw.changed
+      ? formatDateIso(+raw.changed * 1000)
+      : null,
     content,
+    type: raw.type,
+    nid: raw.nid,
     lead: entities.decodeHTML(
       striptags(raw.body.value).trim().split('\n')[0]
     ),

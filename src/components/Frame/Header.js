@@ -22,7 +22,7 @@ import Logo from '../../assets/Logo'
 import SearchIcon from '../../assets/Search'
 import Menu from './Menu'
 import Toggle from './Toggle'
-import { linkRule } from '../Styled'
+import { JsonLd } from '../JsonLd'
 
 const titleStyle = css({
   fontSize: 24,
@@ -216,10 +216,11 @@ class Header extends Component {
     }
 
     return (
-      <div>
+      <header>
+        <JsonLd data={{"@context": "http://schema.org/", "@type": "WPHeader"}} />
         <Head>
           {localizedRoutes.map(({locale, href}) => (
-            <link key={locale} rel='alternate' hrefLang={locale} href={href} />
+            <link key={locale} rel='alternate' hreflang={locale} href={href} />
           ))}
         </Head>
         <div {...barStyle}>
@@ -258,7 +259,7 @@ class Header extends Component {
             })}
           </div>
         </div>}
-      </div>
+      </header>
     )
   }
 }

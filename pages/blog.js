@@ -18,7 +18,7 @@ const blogQuery = gql`
     articles(locale: $locale, limit: 10, page: $page) {
       pages
       list {
-        created
+        published
         image
         lead
         title

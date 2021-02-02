@@ -11,13 +11,12 @@ import Message from '../src/components/Message'
 import Card from '../src/components/Card'
 import Grid, {GridItem} from '../src/components/Grid'
 import {H1, Link} from '../src/components/Styled'
-import {GREY_SOFT} from '../src/theme'
 
 const indexQuery = gql`
   query index($locale: Locale!) {
     articles(locale: $locale, limit: 2) {
       list {
-        created
+        published
         image
         lead
         title
