@@ -1,10 +1,10 @@
 {
-  "name": "lobbywatch-rooster",
-  "version": "0.9.0",
+  "name": "lobbywatch-frontend",
+  "version": "1.0.0",
   "engines": {
     "node": "14.4.0"
   },
-  "description": "Lobbywatch 2017",
+  "description": "Lobbywatch.ch Frontend",
   "scripts": {
     "dev": "nodemon -w server.js -w routes.js -w constants.js -w graphql server.js",
     "build": "next build",
