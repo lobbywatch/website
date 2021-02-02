@@ -23,9 +23,18 @@ const guestQuery = gql`
       name
       occupation
       gender
+      wikipedia_url
+      wikidata_url
+      twitter_name
+      twitter_url
+      facebook_url
+      linkedin_url
       parliamentarian {
+        __typename
         id
         name
+        wikidata_url
+        parlament_biografie_url
       }
       function
       connections {
@@ -42,6 +51,8 @@ const guestQuery = gql`
           ... on Organisation {
             id
             name
+            uid
+            wikidata_url
           }
         }
       }

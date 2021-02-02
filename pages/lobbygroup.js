@@ -30,6 +30,8 @@ const lobbyGroupQuery = gql`
         name
         abbr
       }
+      wikipedia_url
+      wikidata_url
       connections {
         group
         to {
@@ -37,10 +39,14 @@ const lobbyGroupQuery = gql`
           ... on Organisation {
             id
             name
+            uid
+            wikidata_url
           }
           ... on Parliamentarian {
             id
             name
+            wikidata_url
+            parlament_biografie_url
           }
         }
         vias {

@@ -23,9 +23,15 @@ const orgQuery = gql`
       name
       legalForm
       location
+      postalCode
+      countryIso2
       description
       uid
       website
+      wikipedia_url
+      wikidata_url
+      twitter_name
+      twitter_url
       lobbyGroups {
         id
         name
@@ -44,6 +50,8 @@ const orgQuery = gql`
           ... on Parliamentarian {
             id
             name
+            wikidata_url
+            parlament_biografie_url
           }
           ... on Organisation {
             id
