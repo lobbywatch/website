@@ -31,6 +31,7 @@ const pageQuery = gql`
       published
       updated
       author
+      authorUid
     }
   }
 `

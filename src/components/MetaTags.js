@@ -281,6 +281,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
             "url": pageUrl,
             "author": {
               "@type": "Person",
+              "@id": `${baseId}uid-${item.authorUid}`,
               "name": item.author
             },
             "datePublished": convertDateToIso(item.published),
