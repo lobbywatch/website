@@ -42,6 +42,8 @@ type Page {
   content: String
   lead: String!
   type: String!
+  # deprecated
+  created: String
   # DD.MM.YYYY HH:MM
   published: String
   updated: String
