@@ -50,15 +50,29 @@ export const shallowEqual = (a, b) => {
 // Compact arrays with null entries; delete keys from objects with null value
 // From https://stackoverflow.com/questions/18515254/recursively-remove-null-values-from-javascript-object
 // And https://stackoverflow.com/questions/41828787/javascript-filter-null-object-properties
+// Reverse iterate https://stackoverflow.com/questions/9882284/looping-through-array-and-removing-items-without-breaking-for-loop
 export const recursivelyRemoveNullsInPlace = (obj) => {
-  const isArray = Array.isArray(obj)
-  for (var k in obj) {
-    if (obj[k] === null || obj[k] === undefined || obj[k].length === 0) {
-      isArray ? obj.splice(k, 1) : delete obj[k]
-    } else if (typeof obj[k] == "object" || Array.isArray(obj[k])) {
-      recursivelyRemoveNullsInPlace(obj[k])
-      if (obj[k].length === 0) {
-        isArray ? obj.splice(k, 1) : delete obj[k]
+  if (Array.isArray(obj)) {
+    var k = obj.length
+    while (k--) {
+      if (obj[k] === null || obj[k] === undefined || obj[k].length === 0) {
+        obj.splice(k, 1) // splice reindexes array, thus a forward loop does not work
+      } else if (typeof obj[k] == "object" || Array.isArray(obj[k])) {
+        recursivelyRemoveNullsInPlace(obj[k])
+        if (obj[k].length === 0) {
+          obj.splice(k, 1) // splice reindexes array, thus a forward loop does not work
+        }
+      }
+    }
+  } else { // object
+    for (var k in obj) {
+      if (obj[k] === null || obj[k] === undefined || obj[k].length === 0) {
+        delete obj[k]
+      } else if (typeof obj[k] == "object" || Array.isArray(obj[k])) {
+        recursivelyRemoveNullsInPlace(obj[k])
+        if (obj[k].length === 0) {
+          delete obj[k]
+        }
       }
     }
   }

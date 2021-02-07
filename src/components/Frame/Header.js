@@ -220,7 +220,7 @@ class Header extends Component {
         <JsonLd data={{"@context": "http://schema.org/", "@type": "WPHeader"}} />
         <Head>
           {localizedRoutes.map(({locale, href}) => (
-            <link key={locale} rel='alternate' hreflang={locale} href={href} />
+            <link key={locale} rel='alternate' hrefLang={locale} href={href} />
           ))}
         </Head>
         <div {...barStyle}>
