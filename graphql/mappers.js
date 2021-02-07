@@ -509,6 +509,9 @@ exports.mapPage = (locale, raw, statusCode) => {
     author: raw.type === 'article'
       ? raw.field_author
       : null,
+    authorUid: raw.type === 'article'
+      ? raw.field_author_uid
+      : null,
     published: raw.type === 'article' && raw.created
       ? formatTime(+raw.created * 1000)
       : null,

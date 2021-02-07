@@ -39,6 +39,7 @@ type Page {
   title: String
   image: String
   author: String
+  authorUid: Int
   content: String
   lead: String!
   type: String!
