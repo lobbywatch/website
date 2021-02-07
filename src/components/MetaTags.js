@@ -23,7 +23,6 @@ class Raw extends Component {
   }
   render () {
     const {title, pageTitle, description, image, url, shorturl, publishedIso, updatedIso, jsonLds, locale} = this.props
-    console.log('Metatags.props', this.props)
 
     // Tempate from https://gist.github.com/oelna/192663f21e81e5467658332259b90a09
     const rss_url = `${DRUPAL_BASE_URL || 'https://cms.lobbywatch.ch'}/${locale}/rss.xml`
@@ -196,14 +195,14 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
   const jsonLds = []
   const baseUrl = PUBLIC_BASE_URL || ''
   const baseId = baseUrl + '#'
-  console.log('generateJsonLds', locale, t, fromT, item, props, rest)
 
   // All fields of the objects are filled, even with null or undefined values.
   // At the end, all empty (null or undefined) values are cleaned before returning.
   const lobbywatchOrganization = {
     "@context": "https://schema.org",
     "@type": "NewsMediaOrganization",
-    "@id" : "https://lobbywatch.ch",
+    "@language": locale,
+    "@id": "https://lobbywatch.ch",
     "additionalType": [
       "NGO"
     ],
@@ -215,7 +214,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
       `${baseUrl}/static/favicon-32x32.png`,
       `${baseUrl}/apple-touch-icon.png`,
     ],
-    // "description": ,
+    "description": t('index/meta/description'),
     "url": "https://lobbywatch.ch",
     "nonprofitStatus": "NonprofitType",
     "sameAs": [
@@ -228,13 +227,15 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
   jsonLds.push({
     "@context": "http://schema.org",
     "@type": "WebSite",
+    "@language": locale,
     "name": "Lobbywatch.ch",
-    "@id" : `${baseId}website`,
+    "@id": `${baseId}website`,
     "url": "https://lobbywatch.ch",
-    // "description": ; TODO de and fr text
+    "description": t("blog/meta/description"),
     "sameAs": [
       "https://www.facebook.com/lobbywatch",
       "https://twitter.com/Lobbywatch_CH",
+      "https://www.instagram.com/lobbywatch_ch/"
     ],
     "potentialAction": {
       "@type": "SearchAction",
@@ -250,6 +251,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
     return {
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@language": locale,
       "@id": baseId + linkedItem.id,
       "identifier" : linkedItem.uid,
       "name": linkedItem.name,
@@ -273,7 +275,8 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
             "additionalType": [
               "BlogPosting"
             ],
-            "@id": baseId + item.nid,
+            "@language": locale,
+            "@id": `${baseId}nid-${item.nid}`,
             "headline": item.title?.substr(0, MAX_HEADLINE),
             "name": item.title,
             "description": item.lead,
@@ -296,7 +299,8 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
           jsonLds.push({
             "@context": "https://schema.org",
             "@type": "WebPage",
-            "@id": baseId + item.nid,
+            "@language": locale,
+            "@id": `${baseId}nid-${item.nid}`,
             "name": item.title,
             "description": item.lead,
             "url": pageUrl,
@@ -307,10 +311,32 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
       break;
     }
     case 'Parliamentarian': {
+      const NR = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@language": locale,
+        "@id": baseId + 'nr-' + locale,
+        "name": t("parliamentarian/council/title/NR-M"),
+        "sameAs": [
+          'https://www.wikidata.org/wiki/Q676078',
+        ],
+      }
+      const SR = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@language": locale,
+        "@id": baseId + 'sr-' + locale,
+        "name": t("parliamentarian/council/title/SR-M"),
+        "sameAs": [
+          'https://www.wikidata.org/wiki/Q609037',
+        ],
+      }
+
       // https://schema.org/Person, https://jsonld.com/person/
       jsonLds.push({
         "@context": "https://schema.org",
         "@type": "Person",
+        "@language": locale,
         "@id": baseId + item.id,
         "jobTitle": [
           item.councilTitle,
@@ -340,7 +366,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
           "addressCountry": "CH",
         },
         "memberOf": [
-          item.council,
+          item.council == 'NR' ? NR : SR,
           item.partyMembership.party.abbr,
           // commissions
         ],
@@ -370,6 +396,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
       jsonLds.push({
         "@context": "https://schema.org",
         "@type": "Person",
+        "@language": locale,
         "@id": baseId + guestItem.id,
         "jobTitle": guestItem.occupation,
         "name": guestItem.name,
@@ -395,7 +422,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
           "sameAs": [
             linkedItem.wikidata_url,
             linkedItem.twitter_url,
-            item.parlament_biografie_url,
+            linkedItem.parlament_biografie_url,
           ],
         },
         "affiliation": affiliations(item.connections),
@@ -407,6 +434,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
       jsonLds.push({
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@language": locale,
         "@id": baseId + item.id,
         "identifier" : item.uid,
         "name": item.name,
@@ -434,7 +462,8 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
           }
         }),
         // "knows" is not specified for Organization, maybe search enginges are not that strict
-        "knows": item.connections.filter(linkedItem => linkedItem.__typename === 'Parliamentarian').map(linkedItem => {
+        "knows": item.connections.filter(linkedItem => linkedItem.to.__typename === 'Parliamentarian').map(innerItem => {
+          const linkedItem = innerItem.to
           return {
             "@context": "https://schema.org",
             "@type": "Person",
@@ -443,6 +472,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
             "url": baseUrl + matchRouteFromDatum(linkedItem, locale).as,
             "sameAs": [
               linkedItem.wikidata_url,
+              linkedItem.parlament_biografie_url,
             ],
           }
         }),
@@ -454,6 +484,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
       jsonLds.push({
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@language": locale,
         "@id": baseId + item.id,
         "url": props.url,
         "name": item.name,
@@ -489,6 +520,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
       jsonLds.push({
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@language": locale,
         "@id": baseId + item.id,
         "url": props.url,
         "name": item.name,
@@ -515,8 +547,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
     }
   }
 
-  console.log('jsonLds', jsonLds)
-  // FIXME recursivelyRemoveNullsInPlace(jsonLds)
+  recursivelyRemoveNullsInPlace(jsonLds)
 
   return jsonLds
 }
