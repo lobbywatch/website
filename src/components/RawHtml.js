@@ -8,7 +8,10 @@ import {
 import {globalWithMediaQueries} from '../utils/css'
 import {mediaM, POTENCY_COLORS, WHITE} from '../theme'
 
-globalWithMediaQueries('.RawHtml a', linkStyle)
+const { ':visited': linkStyleVisited, ...linkStyleGeneral } = linkStyle
+
+globalWithMediaQueries('.RawHtml a', linkStyleGeneral)
+globalWithMediaQueries('.RawHtml a:visited', linkStyleVisited)
 globalWithMediaQueries('.RawHtml h1', h1Style)
 globalWithMediaQueries('.RawHtml h2', h2Style)
 globalWithMediaQueries('.RawHtml h3, .RawHtml h4, .RawHtml h5, .RawHtml h6', h3Style)
