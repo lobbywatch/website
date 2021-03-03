@@ -367,7 +367,6 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
         },
         "memberOf": [
           item.council == 'NR' ? NR : SR,
-          item.partyMembership.party.abbr,
           // commissions
         ],
         "knows": item.guests.map(linkedItem => {
