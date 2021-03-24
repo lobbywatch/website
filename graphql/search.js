@@ -43,7 +43,7 @@ module.exports.loadSearch = (locales) => {
         select_fields: [
           'parlament_number', 'vorname', 'zweiter_vorname', 'nachname',
           'beruf', 'geschlecht', 'geburtstag',
-          'parteifunktion', 'partei_name', 'partei',
+          'parteifunktion', 'partei_name', 'partei_name_fr', 'partei', 'partei_fr',
           'kanton_name_de', 'kanton_name_fr', 'ratstyp', 'aktiv',
           'im_rat_bis_unix', 'im_rat_seit_unix',
           'kommissionen_namen_de', 'kommissionen_namen_fr',
