@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+// import Image from 'next/image'
+
 import {h2Rule, metaRule, ButtonRouteLink, P, TextCenter} from './Styled'
 import Message from './Message'
 
@@ -57,6 +59,14 @@ const Card = ({image, path, title, author, published, lead, locale}) => {
     <div {...containerStyle}>
       <RawRouteLink route='page' params={{locale, path}}>
         <a {...headStyle} style={{backgroundImage: image && `url(${image})`}}>
+          {/* Next Image consumes too much memory on Heroku */}
+          {/* <Image
+            src={image}
+            priority
+            layout='fill'
+            objectFit='cover'
+            quality={90}
+          /> */}
           <span {...shadeStyle} />
           <h2 {...titleStyle}>{title}</h2>
         </a>

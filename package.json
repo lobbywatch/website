@@ -6,7 +6,7 @@
   },
   "description": "Lobbywatch.ch Frontend",
   "scripts": {
-    "dev": "nodemon -w server.js -w routes.js -w constants.js -w graphql server.js",
+    "dev": "nodemon -w server.js -w routes.js -w constants.js -w graphql -w next.config.js server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
     "test": "standard 'src/**/*.js' 'pages/**/*.js'",
@@ -52,7 +52,7 @@
     "gsheets": "^2.0.0",
     "isomorphic-unfetch": "^3.1.0",
     "lru-cache": "^5.1.1",
-    "next": "^10.0.7",
+    "next": "^10.1.1",
     "next-routes": "^1.4.2",
     "prop-types": "^15.6.0",
     "querystring": "^0.2.0",
