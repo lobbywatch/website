@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import Image from 'next/image'
+
 import {h2Rule, metaRule, ButtonRouteLink, P, TextCenter} from './Styled'
 import Message from './Message'
 
@@ -18,8 +20,6 @@ const containerStyle = css({
 })
 const headStyle = css({
   textDecoration: 'none',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
   backgroundColor: GREY_LIGHT,
   minHeight: 160,
   padding: '16px 24px',
@@ -56,7 +56,14 @@ const Card = ({image, path, title, author, published, lead, locale}) => {
   return (
     <div {...containerStyle}>
       <RawRouteLink route='page' params={{locale, path}}>
-        <a {...headStyle} style={{backgroundImage: image && `url(${image})`}}>
+        <a {...headStyle}>
+          <Image
+            src={image}
+            priority
+            layout='fill'
+            objectFit='cover'
+            quality={90}
+          />
           <span {...shadeStyle} />
           <h2 {...titleStyle}>{title}</h2>
         </a>

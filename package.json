@@ -6,7 +6,7 @@
   },
   "description": "Lobbywatch.ch Frontend",
   "scripts": {
-    "dev": "nodemon -w server.js -w routes.js -w constants.js -w graphql server.js",
+    "dev": "nodemon -w server.js -w routes.js -w constants.js -w graphql -w next.config.js server.js",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
     "test": "standard 'src/**/*.js' 'pages/**/*.js'",
