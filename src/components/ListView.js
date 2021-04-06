@@ -4,8 +4,8 @@ import React from 'react'
 import {metaRule} from './Styled'
 import {LW_BLUE, GREY_LIGHT, mediaM} from '../theme'
 import {css} from 'glamor'
-import {Link as RawRouteLink} from '../../routes'
-import {getRawId} from '../utils/id'
+import Link from 'next/link'
+import {itemPath} from '../utils/routes'
 import Grid, {GridItem} from './Grid'
 
 import Icons from '../assets/TypeIcons'
@@ -48,11 +48,10 @@ const metaStyle = css(metaRule, {
 
 const ListView = ({locale, items, title, subtitle, maxWidth}) => {
   const elements = items.map((item) => {
-    const {__typename, id, name, portrait} = item
+    const {__typename, id, portrait} = item
     const Icon = Icons[__typename]
-    const rawId = getRawId(item, locale)
     return (
-      <RawRouteLink key={id} route={__typename.toLowerCase()} params={{locale, id: rawId, name}}>
+      <Link key={id} href={itemPath(item, locale)}>
         <a {...aStyle}>
           {!!portrait && <img {...symbolStyle} {...portraitStyle}
             src={portrait} alt='' />}
@@ -64,7 +63,7 @@ const ListView = ({locale, items, title, subtitle, maxWidth}) => {
             </span>
           </span>
         </a>
-      </RawRouteLink>
+      </Link>
     )
   })
 

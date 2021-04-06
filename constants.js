@@ -1,6 +1,7 @@
 const ENV = typeof window !== 'undefined' ? window.__NEXT_DATA__.env : process.env
 
 exports.locales = ['de', 'fr']
+exports.localeSegment = `:locale(${exports.locales.join('|')})`
 exports.EXPRESS_PORT = (typeof process !== 'undefined' && process.env.PORT) || 3000
 exports.DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
 exports.DRUPAL_DATA_BASE_URL = 'https://cms.lobbywatch.ch'

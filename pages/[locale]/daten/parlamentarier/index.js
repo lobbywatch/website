@@ -7,14 +7,14 @@ import {withRouter} from 'next/router'
 import {nest} from 'd3-collection'
 import {ascending} from 'd3-array'
 
-import {H1, H2, TextCenter} from '../src/components/Styled'
-import Message from '../src/components/Message'
+import {H1, H2, TextCenter} from 'src/components/Styled'
+import Message from 'src/components/Message'
 
-import Loader from '../src/components/Loader'
-import Frame, {Center} from '../src/components/Frame'
-import MetaTags from '../src/components/MetaTags'
-import ListView from '../src/components/ListView'
-import BlockRegion from '../src/components/BlockRegion'
+import Loader from 'src/components/Loader'
+import Frame, {Center} from 'src/components/Frame'
+import MetaTags from 'src/components/MetaTags'
+import ListView from 'src/components/ListView'
+import BlockRegion from 'src/components/BlockRegion'
 
 const parliamentariansQuery = gql`
   query parliamentarians($locale: Locale!) {

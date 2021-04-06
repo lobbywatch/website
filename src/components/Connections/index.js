@@ -9,8 +9,8 @@ import Legend from './Legend'
 import Message, {withT} from '../Message'
 import {shallowEqual, intersperse} from '../../utils/helpers'
 import {chfFormat} from '../../utils/formats'
-import {matchRouteFromDatum} from '../../utils/id'
-import routes, {Router as RoutesRouter} from '../../../routes'
+import {itemPath} from '../../utils/routes'
+import {withRouter} from 'next/router'
 import layout, {START_Y} from './layout'
 import nest from './nest'
 import {set} from 'd3-collection'
@@ -158,7 +158,8 @@ class Connections extends Component {
       intermediates,
       potency,
       updated, published,
-      hoverValues
+      hoverValues,
+      router
     } = this.props
     let viaI = 0
 
@@ -261,21 +262,18 @@ class Connections extends Component {
                     .filter(Boolean)
                     .length
 
-                  const {routeName, params, as} = matchRouteFromDatum(connection.to, locale)
+                  const detailPath = itemPath(connection.to, locale)
 
                   return (
                     <a key={data.id} ref={setRef}
-                      href={as}
+                      href={detailPath}
                       onClick={e => {
                         e.preventDefault()
 
                         // ensure Android only navigates on second tap
                         // - matching iOS hover behaviour
                         if (!canHover || this.hoverNode !== node) {
-                          RoutesRouter.pushRoute(routeName, params)
-                            .then(() => {
-                              window.scroll(0, 0)
-                            })
+                          router.push(detailPath)
                         }
                       }}
                       onTouchStart={() => {
@@ -413,4 +411,4 @@ Connections.defaultProps = {
   hoverValues
 }
 
-export default withT(Connections)
+export default withT(withRouter(Connections))

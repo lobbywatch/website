@@ -2,16 +2,14 @@ import React, {Component} from 'react'
 import {css, merge} from 'glamor'
 
 import {withT} from '../Message'
-import {inputStyle, linkStyle} from '../Styled'
+import {inputStyle} from '../Styled'
 import {Center} from './index'
 import {locales} from '../../../constants'
-import Routes, {
-  Link as NextRouteLink,
-  Router as RoutesRouter
-} from '../../../routes'
+import {typeSegments} from '../../utils/routes'
 
-import Router, {withRouter} from 'next/router'
+import {withRouter} from 'next/router'
 import Head from 'next/head'
+import Link from 'next/link'
 
 import {
   LW_BLUE_LIGHT, LW_BLUE_DARK, LW_BLUE, WHITE,
@@ -115,10 +113,11 @@ class Header extends Component {
     }
   }
   componentDidMount () {
-    const isSearchRoute = Router.route === '/search'
+    const {router} = this.props
+    const isSearchRoute = router.pathname === '/[locale]/search'
     if (
       isSearchRoute ||
-      (isFocused && beforeSearch && beforeSearch.route === Router.route)
+      (isFocused && beforeSearch && beforeSearch.pathname === router.pathname)
     ) {
       this.searchInput.focus()
       this.searchInput.selectionStart = this.searchInput.selectionEnd = this.searchInput.value.length
@@ -126,95 +125,76 @@ class Header extends Component {
         beforeSearch = null
       }
     }
-    Router.prefetch('/search')
+    router.prefetch('/[locale]/search')
   }
   render () {
     const {expanded} = this.state
     const {
       locale: currentLocale, t,
-      router, localizeRoute
+      router, localizeHref
     } = this.props
     const menuItems = [
       {
         label: t('menu/parliamentarians'),
-        route: 'parliamentarians',
-        active: router.pathname.match(/^\/parliamentarian/),
-        params: {locale: currentLocale}
+        href: `/${currentLocale}/${typeSegments.Parliamentarian}`
       },
       {
         label: t('menu/guests'),
-        route: 'guests',
-        active: router.pathname.match(/^\/guest/),
-        params: {locale: currentLocale}
+        href: `/${currentLocale}/${typeSegments.Guest}`
       },
       {
         label: t('menu/lobbygroups'),
-        route: 'lobbygroups',
-        active: router.pathname.match(/^\/lobbygroup/),
-        params: {locale: currentLocale}
+        href: `/${currentLocale}/${typeSegments.LobbyGroup}`
       }
-    ]
+    ].map(item => ({
+      ...item,
+      active: router.asPath.startsWith(item.href)
+    }))
 
     const localizedRoutes = locales
       .filter(locale => locale !== currentLocale)
-      .map((locale, i) => {
-        const localizedRoute = localizeRoute
-          ? localizeRoute(locale)
+      .map((locale) => {
+        const href = localizeHref
+          ? localizeHref(locale)
           : {
-            route: router.pathname.replace(/^\//, '') || 'index',
-            params: {
+            pathname: router.pathname,
+            query: {
               ...router.query,
               locale
             }
           }
-        const route = Routes.findByName(localizedRoute.route)
-        const href = route && route.getAs(localizedRoute.params)
         return {
           locale,
-          ...localizedRoute,
           href
         }
       })
 
-    const localeLinks = localizedRoutes.map(({locale, route, params}, i) => {
+    const localeLinks = localizedRoutes.map(({locale, href}, i) => {
       return {
         separator: i === 0,
         label: t(`menu/locales/${locale}`, {}, locale),
-        route,
-        params
+        href
       }
     })
 
     const onSearch = (event) => {
       const term = event.target.value
 
-      const href = `/search?locale=${encodeURIComponent(currentLocale)}&term=${encodeURIComponent(term)}`
       const as = `/${encodeURIComponent(currentLocale)}/search?term=${encodeURIComponent(term)}`
-
       if (!term.length) {
-        if (beforeSearch) {
-          RoutesRouter.replaceRoute(
-            beforeSearch.route.replace(/^\//, '') || 'index',
-            beforeSearch.params
-          )
-        } else {
-          RoutesRouter.replaceRoute('index', {
-            locale: currentLocale
-          })
-        }
+        router.replace(beforeSearch || `/${currentLocale}`)
         return
       }
-      if (Router.route !== '/search') {
+      if (router.pathname !== '/[locale]/search') {
         beforeSearch = {
-          route: Router.route,
-          params: Router.query
+          pathname: router.pathname,
+          query: router.query
         }
-        Router.push(href, as)
+        router.push(as)
       } else {
-        Router.replace(href, as, {shallow: true})
+        router.replace(as)
       }
     }
-
     return (
       <header>
         <JsonLd data={{"@context": "http://schema.org/", "@type": "WPHeader"}} />
@@ -224,12 +204,12 @@ class Header extends Component {
           ))}
         </Head>
         <div {...barStyle}>
-          <NextRouteLink route='index' params={{locale: currentLocale}}>
+          <Link href={`/${encodeURIComponent(currentLocale)}`}>
             <a {...titleStyle}>
               <Logo size={32} />
               <span {...titleTextStyle}>Lobbywatch</span>
             </a>
-          </NextRouteLink>
+          </Link>
           <Menu expanded={expanded} id='primary-menu'
             items={menuItems.concat(localeLinks)} />
           <Toggle expanded={expanded} id='primary-menu'

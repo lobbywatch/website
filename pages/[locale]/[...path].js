@@ -4,13 +4,12 @@ import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 import {withRouter} from 'next/router'
 
-import Loader from '../src/components/Loader'
-import Frame, {Center} from '../src/components/Frame'
-import MetaTags from '../src/components/MetaTags'
-import RawHtml from '../src/components/RawHtml'
-import Cover, {NARROW_WIDTH} from '../src/components/Cover'
-import {H1, Meta} from '../src/components/Styled'
-import {Router as RoutesRouter} from '../routes'
+import Loader from 'src/components/Loader'
+import Frame, {Center} from 'src/components/Frame'
+import MetaTags from 'src/components/MetaTags'
+import RawHtml from 'src/components/RawHtml'
+import Cover, {NARROW_WIDTH} from 'src/components/Cover'
+import {H1, Meta} from 'src/components/Styled'
 
 const pageQuery = gql`
   query page($locale: Locale!, $path: [String!]!) {
@@ -37,24 +36,15 @@ const pageQuery = gql`
 `
 
 const Page = ({loading, error, page, router: {query: {locale}}}) => (
-  <Frame localizeRoute={(locale) => {
+  <Frame localizeHref={(locale) => {
     const translation = !!page && (
       page.translations
         .find(t => t.locale === locale)
     )
     if (!translation) {
-      return {
-        route: 'index',
-        params: {locale}
-      }
+      return `/${locale}`
     }
-    return {
-      route: 'page',
-      params: {
-        locale,
-        path: translation.path
-      }
-    }
+    return `/${locale}/${translation.path.join('/')}`
   }}>
     <Loader loading={loading} error={error} render={() => (
       <div>
@@ -77,38 +67,34 @@ const Page = ({loading, error, page, router: {query: {locale}}}) => (
 )
 
 const PageWithQuery = graphql(pageQuery, {
-  options: ({router}) => {
+  options: ({router: { query: { locale, path }}}) => {
     return {
       variables: {
-        locale: router.query.locale,
-        path: router.query.path.split('/')
+        locale,
+        path
       }
     }
   },
-  props: ({data, ownProps: {router: {query}, serverContext}}) => {
+  props: ({data, ownProps: {router, router: {query: { locale, path }}, serverContext}}) => {
     const page = data.page
     const redirect = (
       !data.loading &&
       page &&
       page.path &&
       page.statusCode !== 404 &&
-      page.path.join('/') !== query.path
+      page.path.join('/') !== path.join('/')
     )
     if (serverContext) {
       if (redirect) {
-        serverContext.res.redirect(301, `/${query.locale}/${page.path.join('/')}`)
+        serverContext.res.redirect(301, `/${locale}/${page.path.join('/')}`)
         serverContext.res.end()
       } else if (page && page.statusCode) {
         serverContext.res.statusCode = page.statusCode
       }
     } else {
       if (redirect) {
-        RoutesRouter.replaceRoute(
-          'page',
-          {
-            locale: query.locale,
-            path: page.path
-          }
+        router.replace(
+          `/${locale}/${page.path.join('/')}`
         )
       }
     }

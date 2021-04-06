@@ -4,14 +4,14 @@ import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 import {withRouter} from 'next/router'
 
-import Loader from '../src/components/Loader'
-import Frame, {Center} from '../src/components/Frame'
-import MetaTags from '../src/components/MetaTags'
-import Card from '../src/components/Card'
-import Grid, {GridItem} from '../src/components/Grid'
-import {H1} from '../src/components/Styled'
-import Message from '../src/components/Message'
-import PageNavigation from '../src/components/PageNavigation'
+import Loader from 'src/components/Loader'
+import Frame, {Center} from 'src/components/Frame'
+import MetaTags from 'src/components/MetaTags'
+import Card from 'src/components/Card'
+import Grid, {GridItem} from 'src/components/Grid'
+import {H1} from 'src/components/Styled'
+import Message from 'src/components/Message'
+import PageNavigation from 'src/components/PageNavigation'
 
 const blogQuery = gql`
   query blog($locale: Locale!, $page: Int!) {

@@ -4,15 +4,15 @@ import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 import {withRouter} from 'next/router'
 
-import {P} from '../src/components/Styled'
-import Message from '../src/components/Message'
-import {SEARCH_MAX_WIDTH} from '../src/components/Frame/Header'
-import BlockRegion from '../src/components/BlockRegion'
+import {P} from 'src/components/Styled'
+import Message from 'src/components/Message'
+import {SEARCH_MAX_WIDTH} from 'src/components/Frame/Header'
+import BlockRegion from 'src/components/BlockRegion'
 
-import Loader from '../src/components/Loader'
-import Frame, {Center} from '../src/components/Frame'
-import MetaTags from '../src/components/MetaTags'
-import ListView from '../src/components/ListView'
+import Loader from 'src/components/Loader'
+import Frame, {Center} from 'src/components/Frame'
+import MetaTags from 'src/components/MetaTags'
+import ListView from 'src/components/ListView'
 
 const searchQuery = gql`
   query search($locale: Locale!, $term: String!) {

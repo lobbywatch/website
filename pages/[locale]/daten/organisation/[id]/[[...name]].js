@@ -4,14 +4,14 @@ import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 import {withRouter} from 'next/router'
 
-import Loader from '../src/components/Loader'
-import Frame, {Center} from '../src/components/Frame'
-import MetaTags, {GooglePreview} from '../src/components/MetaTags'
-import Connections from '../src/components/Connections'
-import DetailHead from '../src/components/DetailHead'
-import {A, Meta} from '../src/components/Styled'
-import {withT} from '../src/components/Message'
-import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from '../constants'
+import Loader from 'src/components/Loader'
+import Frame, {Center} from 'src/components/Frame'
+import MetaTags, {GooglePreview} from 'src/components/MetaTags'
+import Connections from 'src/components/Connections'
+import DetailHead from 'src/components/DetailHead'
+import {A, Meta} from 'src/components/Styled'
+import {withT} from 'src/components/Message'
+import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from 'constants'
 
 const orgQuery = gql`
   query getOrganisation($locale: Locale!, $id: ID!) {

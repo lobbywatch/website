@@ -31,19 +31,22 @@ const bodyGrowerStyle = css({
   flexGrow: 1
 })
 
-const Frame = ({router: {query: {locale, term}}, localizeRoute, children}) => (
-  <div {...containerStyle}>
-    <div {...bodyGrowerStyle}>
-      <Header locale={locale} term={term} localizeRoute={localizeRoute} />
-      {children}
+const Frame = ({router: {query: {locale: queryLocale, term, path}}, localizeHref, children}) => {
+  const locale = queryLocale || path[0]
+  return (
+    <div {...containerStyle}>
+      <div {...bodyGrowerStyle}>
+        <Header locale={locale} term={term} localizeHref={localizeHref} />
+        {children}
+      </div>
+      <Footer locale={locale} />
     </div>
-    <Footer locale={locale} />
-  </div>
-)
+  )
+}
 
 Frame.propTypes = {
   children: PropTypes.node,
-  localizeRoute: PropTypes.func,
+  localizeHref: PropTypes.func,
   router: PropTypes.shape({
     query: PropTypes.object.isRequired
   }).isRequired
