@@ -10,6 +10,8 @@ import {typeSegments} from '../../utils/routes'
 import {withRouter} from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
+// https://github.com/vercel/next.js/discussions/22025
+import {resolveHref} from 'next/dist/next-server/lib/router/router'
 
 import {
   LW_BLUE_LIGHT, LW_BLUE_DARK, LW_BLUE, WHITE,
@@ -195,12 +197,20 @@ class Header extends Component {
         router.replace(as)
       }
     }
+
     return (
       <header>
         <JsonLd data={{"@context": "http://schema.org/", "@type": "WPHeader"}} />
         <Head>
           {localizedRoutes.map(({locale, href}) => (
-            <link key={locale} rel='alternate' hrefLang={locale} href={href} />
+            <link
+              key={locale}
+              rel='alternate'
+              hrefLang={locale}
+              href={typeof href === 'string' 
+                ? href
+                : resolveHref(router.pathname, href, true)[1]
+              } />
           ))}
         </Head>
         <div {...barStyle}>

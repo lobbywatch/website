@@ -49,7 +49,7 @@ const Page = ({loading, error, page, router: {query: {locale}}}) => (
     return `/${targetLocale}/${translation.path.join('/')}`
   }}>
     <Loader loading={loading} error={error} render={() => {
-      if (page.statusCode) {
+      if (page.statusCode === 404) {
         return <NotFound />
       }
       return (
