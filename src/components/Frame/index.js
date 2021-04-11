@@ -6,6 +6,7 @@ import {withRouter} from 'next/router'
 import Header from './Header'
 import Footer from './Footer'
 import {BLACK, FRAME_PADDING} from '../../theme'
+import { locales } from '../../../constants'
 
 const centerStyle = css({
   maxWidth: 800,
@@ -31,8 +32,8 @@ const bodyGrowerStyle = css({
   flexGrow: 1
 })
 
-const Frame = ({router: {query: {locale: queryLocale, term, path}}, localizeHref, children}) => {
-  const locale = queryLocale || path[0]
+const Frame = ({router: {query: {locale: queryLocale, term}}, localizeHref, children}) => {
+  const locale = locales.includes(queryLocale) ? queryLocale : 'de'
   return (
     <div {...containerStyle}>
       <div {...bodyGrowerStyle}>

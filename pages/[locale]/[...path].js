@@ -11,6 +11,8 @@ import RawHtml from 'src/components/RawHtml'
 import Cover, {NARROW_WIDTH} from 'src/components/Cover'
 import {H1, Meta} from 'src/components/Styled'
 
+import {NotFound} from '../404'
+
 const pageQuery = gql`
   query page($locale: Locale!, $path: [String!]!) {
     page(locale: $locale, path: $path) {
@@ -36,33 +38,38 @@ const pageQuery = gql`
 `
 
 const Page = ({loading, error, page, router: {query: {locale}}}) => (
-  <Frame localizeHref={(locale) => {
+  <Frame localizeHref={(targetLocale) => {
     const translation = !!page && (
       page.translations
-        .find(t => t.locale === locale)
+        .find(t => t.locale === targetLocale)
     )
     if (!translation) {
-      return `/${locale}`
+      return `/${targetLocale}`
     }
-    return `/${locale}/${translation.path.join('/')}`
+    return `/${targetLocale}/${translation.path.join('/')}`
   }}>
-    <Loader loading={loading} error={error} render={() => (
-      <div>
-        <MetaTags locale={locale} title={page.title} description={page.lead} image={page.image} page={page}/>
-        {!!page.image && (
-          <Cover src={page.image} title={page.title} />
-        )}
-        <Center style={{paddingTop: 0, maxWidth: NARROW_WIDTH}}>
-          {!page.image && (
-            <H1>{page.title}</H1>
+    <Loader loading={loading} error={error} render={() => {
+      if (page.statusCode) {
+        return <NotFound />
+      }
+      return (
+        <>
+          <MetaTags locale={locale} title={page.title} description={page.lead} image={page.image} page={page}/>
+          {!!page.image && (
+            <Cover src={page.image} title={page.title} />
           )}
-          <Meta style={{marginBottom: 7}}>
-            {[page.published, page.author].filter(Boolean).join(' – ')}
-          </Meta>
-          <RawHtml dangerouslySetInnerHTML={{__html: page.content}} />
-        </Center>
-      </div>
-    )} />
+          <Center style={{paddingTop: 0, maxWidth: NARROW_WIDTH}}>
+            {!page.image && (
+              <H1>{page.title}</H1>
+            )}
+            <Meta style={{marginBottom: 7}}>
+              {[page.published, page.author].filter(Boolean).join(' – ')}
+            </Meta>
+            <RawHtml dangerouslySetInnerHTML={{__html: page.content}} />
+          </Center>
+        </>
+      )
+    }} />
   </Frame>
 )
 
