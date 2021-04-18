@@ -122,9 +122,9 @@ const OrgWithQuery = withT(graphql(orgQuery, {
   }
 })(Org))
 
-const Page = ({router: {query: {locale, id}}}) => (
+const Page = ({router: {query: {locale, id}}, serverContext}) => (
   <Frame>
-    <OrgWithQuery locale={locale} id={id} />
+    <OrgWithQuery locale={locale} id={id} serverContext={serverContext} />
   </Frame>
 )
 

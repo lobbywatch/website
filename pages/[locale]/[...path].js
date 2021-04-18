@@ -11,7 +11,7 @@ import RawHtml from 'src/components/RawHtml'
 import Cover, {NARROW_WIDTH} from 'src/components/Cover'
 import {H1, Meta} from 'src/components/Styled'
 
-import {NotFound} from '../404'
+import {NotFound} from 'pages/404'
 
 const pageQuery = gql`
   query page($locale: Locale!, $path: [String!]!) {

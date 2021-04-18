@@ -113,9 +113,9 @@ const BranchWithQuery = withT(graphql(branchQuery, {
   }
 })(Branch))
 
-const Page = ({router: {query: {locale, id}}}) => (
+const Page = ({router: {query: {locale, id}}, serverContext}) => (
   <Frame>
-    <BranchWithQuery locale={locale} id={id} />
+    <BranchWithQuery locale={locale} id={id} serverContext={serverContext} />
   </Frame>
 )
 
