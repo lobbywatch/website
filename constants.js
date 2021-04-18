@@ -15,7 +15,6 @@ const port = location ? location.port : exports.EXPRESS_PORT
 const protocol = location ? location.protocol : 'http:'
 exports.GRAPHQL_URI = `${protocol}//${hostname}${port ? `:${port}` : ''}/graphql`
 
-exports.GOOGLE_SITE_VERIFICATION = 'google8a64872b44ccae7c.html'
 exports.GA_TRACKING_ID = ENV.GA_TRACKING_ID
 
 exports.MAILCHIMP_BASE_URL = 'https://lobbywatch.us8.list-manage.com'
