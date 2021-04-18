@@ -9,7 +9,7 @@ import {withRouter} from 'next/router'
 import {Center} from './index'
 import SocialMedia from './SocialMedia'
 import Newsletter from './Newsletter'
-import {RouteLink, A, Hr, metaStyle, Strong, Clear} from '../Styled'
+import {StyledLink, A, Hr, metaStyle, Strong, Clear} from '../Styled'
 import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../../theme'
 import CreativeCommons from '../../assets/CreativeCommons'
 import Message from '../Message'
@@ -131,19 +131,10 @@ const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
                         let link
                         const supportedPath = href.match(/^\/([^/]+)/)
                         if (supportedPath && locales.indexOf(supportedPath[1]) !== -1) {
-                          const path = href.split('/').slice(2)
-                          let route = path.length ? 'page' : 'index'
-                          let params = {locale: supportedPath[1], path}
-                          if (path.join('/') === 'artikel/archiv') {
-                            route = 'blog'
-                            params = {locale: supportedPath[1]}
-                          }
                           link = (
-                            <RouteLink
-                              route={route}
-                              params={params}>
+                            <StyledLink href={href}>
                               {title}
-                            </RouteLink>
+                            </StyledLink>
                           )
                         } else {
                           link = (

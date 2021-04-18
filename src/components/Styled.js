@@ -1,6 +1,5 @@
 import React from 'react'
 import NextLink from 'next/link'
-import {Link as NextRouteLink} from '../../routes'
 import {LW_BLUE, LW_BLUE_HOVER, GREY_DARK, GREY_LIGHT, GREY_MID, WHITE, GREY_SOFT, mediaM} from '../theme'
 import {css, merge} from 'glamor'
 
@@ -15,11 +14,8 @@ export const linkStyle = {
   }
 }
 export const linkRule = css(linkStyle)
-export const Link = ({children, className, ...props}) => (
+export const StyledLink = ({children, className, ...props}) => (
   <NextLink {...props}><a className={className} {...linkRule}>{children}</a></NextLink>
-)
-export const RouteLink = ({children, className, ...props}) => (
-  <NextRouteLink {...props}><a className={className} {...linkRule}>{children}</a></NextRouteLink>
 )
 
 export const A = ({children, ...props}) => <a {...props} {...linkRule}>{children}</a>
@@ -40,9 +36,6 @@ export const buttonLinkStyle = {
 export const buttonLinkRule = css(buttonLinkStyle)
 export const ButtonLink = ({children, className, ...props}) => (
   <NextLink {...props}><a className={className} {...buttonLinkRule}>{children}</a></NextLink>
-)
-export const ButtonRouteLink = ({children, className, ...props}) => (
-  <NextRouteLink {...props}><a className={className} {...buttonLinkRule}>{children}</a></NextRouteLink>
 )
 
 const textCenterRule = css({

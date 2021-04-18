@@ -7,7 +7,7 @@ import {descending} from 'd3-array'
 import {A, H2, Meta} from './Styled'
 import track from '../../lib/ga'
 import {DRUPAL_BASE_URL, PUBLIC_BASE_URL} from '../../constants'
-import {matchRouteFromDatum} from '../utils/id'
+import {itemPath} from '../utils/routes'
 import {recursivelyRemoveNullsInPlace} from '../utils/helpers'
 import {convertDateToIso} from '../utils/formats'
 
@@ -73,7 +73,7 @@ class Raw extends Component {
 
 Raw.propTypes = {
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   image: PropTypes.string
 }
 
@@ -255,7 +255,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
       "@id": baseId + linkedItem.id,
       "identifier" : linkedItem.uid,
       "name": linkedItem.name,
-      "url": baseUrl + matchRouteFromDatum(linkedItem, locale).as,
+      "url": baseUrl + itemPath(linkedItem, locale),
       "sameAs": [
         linkedItem.wikidata_url,
       ],
@@ -375,7 +375,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
             "@type": "Person",
             "@id": baseId + linkedItem.id,
             "name": linkedItem.name,
-            "url": baseUrl + matchRouteFromDatum(linkedItem, locale).as,
+            "url": baseUrl + itemPath(linkedItem, locale),
             "sameAs": [
               linkedItem.wikidata_url,
               linkedItem.wikipedia_url,
@@ -417,7 +417,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
           "@type": "Person",
           "@id": baseId + linkedItem.id,
           "name": linkedItem.name,
-          "url": baseUrl + matchRouteFromDatum(linkedItem, locale).as,
+          "url": baseUrl + itemPath(linkedItem, locale),
           "sameAs": [
             linkedItem.wikidata_url,
             linkedItem.twitter_url,
@@ -457,7 +457,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
             "@type": "Organization",
             "@id": baseId + linkedItem.id,
             "name": linkedItem.name,
-            "url": baseUrl + matchRouteFromDatum(linkedItem, locale).as,
+            "url": baseUrl + itemPath(linkedItem, locale),
           }
         }),
         // "knows" is not specified for Organization, maybe search enginges are not that strict
@@ -468,7 +468,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
             "@type": "Person",
             "@id": baseId + linkedItem.id,
             "name": linkedItem.name,
-            "url": baseUrl + matchRouteFromDatum(linkedItem, locale).as,
+            "url": baseUrl + itemPath(linkedItem, locale),
             "sameAs": [
               linkedItem.wikidata_url,
               linkedItem.parlament_biografie_url,
@@ -497,7 +497,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
             "@type": "Organization",
             "@id": baseId + linkedItem.id,
             "name": linkedItem.name,
-            "url": baseUrl + matchRouteFromDatum(linkedItem, locale).as,
+            "url": baseUrl + itemPath(linkedItem, locale),
         },
         "member": item.connections.filter(linkedItem => ['Organisation', 'Parliamentarian'].includes(linkedItem.to.__typename)).map(innerItem => {
           const linkedItem = innerItem.to
@@ -506,7 +506,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
             "@type": linkedItem.__typename === 'Parliamentarian' ? 'Person' : "Organization",
             "@id": baseId + linkedItem.id,
             "name": linkedItem.name,
-            "url": baseUrl + matchRouteFromDatum(linkedItem, locale).as,
+            "url": baseUrl + itemPath(linkedItem, locale),
             "sameAs": [
               item.wikidata_url,
             ],
@@ -535,7 +535,7 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
             "@type": "Organization",
             "@id": baseId + linkedItem.id,
             "name": linkedItem.name,
-            "url": baseUrl + matchRouteFromDatum(linkedItem, locale).as,
+            "url": baseUrl + itemPath(linkedItem, locale),
           }
         }),
       })
@@ -568,10 +568,10 @@ const MetaTags = ({locale, t, fromT, data, page, ...rest}) => {
       updatedIso: convertDateToIso(data.updated),
     }
 
-    const detailRoute = matchRouteFromDatum(data, locale)
-    if (detailRoute) {
-      props.url = `${PUBLIC_BASE_URL || ''}${detailRoute.as}`
-      props.shorturl = `${PUBLIC_BASE_URL || ''}${detailRoute.short}`
+    const detailPath = itemPath(data, locale)
+    if (detailPath) {
+      props.url = `${PUBLIC_BASE_URL || ''}${detailPath}`
+      props.shorturl = `${PUBLIC_BASE_URL || ''}${itemPath({ ...data, name: undefined }, locale)}`
     }
   } else if (page) {
     props.url = `${PUBLIC_BASE_URL || ''}/${locale}/` + page.path.join('/')

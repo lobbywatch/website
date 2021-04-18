@@ -38,12 +38,13 @@ const resolveFunctions = {
           error => {
             if (error.response && error.response.status === 404) {
               return {
+                nid: 0,
+                type: 'page',
                 statusCode: 404,
                 title: '404',
                 path: ['404'],
                 translations: [],
-                lead: '',
-                content: 'Seite nicht gefunden / Page non trouvée'
+                lead: ''
               }
             } else {
               throw error

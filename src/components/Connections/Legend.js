@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import {css, merge} from 'glamor'
+import Link from 'next/link'
 
 import {LW_BLUE, GREY_DARK, mediaM} from '../../theme'
 import {intersperse} from '../../utils/helpers'
-import {Link as RawRouteLink} from '../../../routes'
 import {Clear} from '../Styled'
 
 const legendContainer = css({
@@ -50,14 +50,9 @@ const legendBubble = css({
 
 const Legend = ({locale, title, pagePath, items}) => (
   <Clear {...legendContainer}>
-    {!!pagePath && <RawRouteLink
-      route='page'
-      params={{
-        locale,
-        path: pagePath
-      }}>
+    {!!pagePath && <Link href={`/${locale}/${pagePath.join('/')}`}>
       <a {...legendLink}>{title}</a>
-    </RawRouteLink>}
+    </Link>}
     {!pagePath && <span {...legendLabel}>{title}</span>}
 
     <span {...legendValues}>

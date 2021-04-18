@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import Link from 'next/link'
 // import Image from 'next/image'
 
-import {h2Rule, metaRule, ButtonRouteLink, P, TextCenter} from './Styled'
+import {h2Rule, metaRule, ButtonLink, P, TextCenter} from './Styled'
 import Message from './Message'
 
 import {css} from 'glamor'
 import {WHITE, GREY_SOFT, GREY_LIGHT} from '../theme'
-import {Link as RawRouteLink} from '../../routes'
 import {locales} from '../../constants'
 
 const containerStyle = css({
@@ -55,9 +55,10 @@ const pStyle = css({
 })
 
 const Card = ({image, path, title, author, published, lead, locale}) => {
+  const fullPath = `/${locale}/${path.join('/')}`
   return (
     <div {...containerStyle}>
-      <RawRouteLink route='page' params={{locale, path}}>
+      <Link href={fullPath}>
         <a {...headStyle} style={{backgroundImage: image && `url(${image})`}}>
           {/* Next Image consumes too much memory on Heroku */}
           {/* <Image
@@ -70,16 +71,16 @@ const Card = ({image, path, title, author, published, lead, locale}) => {
           <span {...shadeStyle} />
           <h2 {...titleStyle}>{title}</h2>
         </a>
-      </RawRouteLink>
+      </Link>
       <div {...bodyStyle}>
         <span {...metaRule}>
           {[published, author].filter(Boolean).join(' – ')}
         </span>
         <P className={pStyle}>{lead}</P>
         <TextCenter>
-          <ButtonRouteLink route='page' params={{locale, path}}>
+          <ButtonLink href={fullPath}>
             <Message id='card/read' locale={locale} />
-          </ButtonRouteLink>
+          </ButtonLink>
         </TextCenter>
       </div>
     </div>

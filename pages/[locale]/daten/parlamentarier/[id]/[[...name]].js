@@ -4,14 +4,14 @@ import {graphql} from 'react-apollo'
 import gql from 'graphql-tag'
 import {withRouter} from 'next/router'
 
-import Loader from '../src/components/Loader'
-import Frame, {Center} from '../src/components/Frame'
-import MetaTags, {GooglePreview} from '../src/components/MetaTags'
-import Connections, {hoverValues} from '../src/components/Connections'
-import DetailHead from '../src/components/DetailHead'
-import {A, Meta} from '../src/components/Styled'
-import {withT} from '../src/components/Message'
-import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from '../constants'
+import Loader from 'src/components/Loader'
+import Frame, {Center} from 'src/components/Frame'
+import MetaTags, {GooglePreview} from 'src/components/MetaTags'
+import Connections, {hoverValues} from 'src/components/Connections'
+import DetailHead from 'src/components/DetailHead'
+import {A, Meta} from 'src/components/Styled'
+import {withT} from 'src/components/Message'
+import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from 'constants'
 
 const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: ID!) {
@@ -155,9 +155,9 @@ const ParliamentarianWithQuery = withT(graphql(parliamentarianQuery, {
   }
 })(Parliamentarian))
 
-const Page = ({router: {query: {locale, id}}}) => (
+const Page = ({router: {query: {locale, id}}, serverContext}) => (
   <Frame>
-    <ParliamentarianWithQuery locale={locale} id={id} />
+    <ParliamentarianWithQuery locale={locale} id={id} serverContext={serverContext} />
   </Frame>
 )
 

@@ -4,13 +4,13 @@ import {graphql, compose} from 'react-apollo'
 import gql from 'graphql-tag'
 import {withRouter} from 'next/router'
 
-import Loader from '../src/components/Loader'
-import Frame, {Center} from '../src/components/Frame'
-import MetaTags from '../src/components/MetaTags'
-import Message from '../src/components/Message'
-import Card from '../src/components/Card'
-import Grid, {GridItem} from '../src/components/Grid'
-import {H1, Link} from '../src/components/Styled'
+import Loader from 'src/components/Loader'
+import Frame, {Center} from 'src/components/Frame'
+import MetaTags from 'src/components/MetaTags'
+import Message from 'src/components/Message'
+import Card from 'src/components/Card'
+import Grid, {GridItem} from 'src/components/Grid'
+import {H1, StyledLink} from 'src/components/Styled'
 
 const indexQuery = gql`
   query index($locale: Locale!) {
@@ -45,12 +45,9 @@ const Index = ({loading, error, articles, router: {query: {locale}}}) => (
             ))}
           </Grid>
           <div style={{textAlign: 'center', margin: '10px 0 0'}}>
-            <Link {...{
-              href: `/blog?locale=${locale}`,
-              as: `/${locale}/artikel/archiv`
-            }}>
+            <StyledLink href={`/${locale}/artikel/archiv`}>
               <Message locale={locale} id='index/blog/link' />
-            </Link>
+            </StyledLink>
           </div>
         </Center>
       </div>
