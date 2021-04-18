@@ -3,6 +3,7 @@ import {DRUPAL_BASE_URL} from '../../../constants'
 import FacebookIcon from '../../assets/Facebook'
 import TwitterIcon from '../../assets/Twitter'
 import RSSIcon from '../../assets/RSS'
+import InstagramIcon from '../../assets/Instagram'
 import {mediaM, mediaSOnly} from '../../theme'
 
 import Message from '../Message'
@@ -33,6 +34,7 @@ const SocialMedia = ({locale}) => (
     <div {...flexIconsStyle}>
       <a target='_blank' href='https://www.facebook.com/lobbywatch'><FacebookIcon /></a>
       <a target='_blank' href='https://twitter.com/Lobbywatch_CH'><TwitterIcon /></a>
+      <a target='_blank' href='https://www.instagram.com/Lobbywatch_CH/'><InstagramIcon /></a>
       <a target='_blank' href={`${DRUPAL_BASE_URL}/${locale}/rss.xml`}><RSSIcon /></a>
     </div>
   </div>

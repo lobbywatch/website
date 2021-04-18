@@ -19,10 +19,10 @@ const query = gql`
   }
 `
 
-const Region = ({loading, error, blocks, style, compact}) => (
+const Region = ({loading, error, blocks, style, compact, first}) => (
   <Loader loading={loading} error={error} render={() => (
     <div>
-      {blocks.map(block => (
+      {blocks.slice(0, first ? 1 : undefined).map(block => (
         <div key={block.key} style={style}>
           {compact
             ? <H3>{block.title}</H3>

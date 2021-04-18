@@ -6,7 +6,8 @@ const {
   mapParliamentarian, parliamentarianIdPrefix,
   mapGuest, guestIdPrefix,
   mapOrganisation, orgIdPrefix,
-  mapLobbyGroup, lobbyGroupIdPrefix
+  mapLobbyGroup, lobbyGroupIdPrefix,
+  mapBranch, branchIdPrefix
 } = require('./mappers')
 
 const resolveFunctions = {
@@ -37,12 +38,13 @@ const resolveFunctions = {
           error => {
             if (error.response && error.response.status === 404) {
               return {
+                nid: 0,
+                type: 'page',
                 statusCode: 404,
                 title: '404',
                 path: ['404'],
                 translations: [],
-                lead: '',
-                content: 'Seite nicht gefunden / Page non trouvée'
+                lead: ''
               }
             } else {
               throw error
@@ -192,6 +194,33 @@ const resolveFunctions = {
         translations.load(locale).then(getFormatter)
       ]).then(([{json: {data: lobbyGroup}}, t]) => {
         return lobbyGroup && mapLobbyGroup(lobbyGroup, t)
+      })
+    },
+    branchs (_, {locale}, {loaders: {translations}}, info) {
+      const queriedFields = new Set(
+        info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
+      )
+
+      return Promise.all([
+        translations.load(locale).then(getFormatter),
+        api.data(locale, 'data/interface/v1/json/table/branche/flat/list')
+      ]).then(([t, {json: {data: branchs}}]) => {
+        // default: sort by name
+        branchs.sort((a, b) => ascending(
+          a.name.toLowerCase(),
+          b.name.toLowerCase()
+        ))
+
+        return branchs.map(l => mapBranch(l, t))
+      })
+    },
+    getBranch (_, {locale, id}, {loaders: {translations}}, info) {
+      const rawId = id.replace(branchIdPrefix, '')
+      return Promise.all([
+        api.data(locale, `data/interface/v1/json/table/branche/aggregated/id/${encodeURIComponent(rawId)}`),
+        translations.load(locale).then(getFormatter)
+      ]).then(([{json: {data: branch}}, t]) => {
+        return branch && mapBranch(branch, t)
       })
     },
     search (_, {locale, term}, {loaders: {translations, search}}) {

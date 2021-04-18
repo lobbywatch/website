@@ -60,14 +60,14 @@ const toggleStyle = css({
   }
 })
 
-export default ({expanded, onClick, id}) => (
-  <button {...toggleStyle}
-    onClick={onClick}
-    aria-controls={id}
-    title={''}
-    aria-expanded={expanded}>
-    <span />
-    <span />
-    <span />
-  </button>
-)
+const Toggle = ({expanded, onClick, id}) => <button {...toggleStyle}
+  onClick={onClick}
+  aria-controls={id}
+  title={''}
+  aria-expanded={expanded}>
+  <span />
+  <span />
+  <span />
+</button>
+
+export default Toggle

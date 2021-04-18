@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {h2Rule, metaRule, ButtonRouteLink, P, TextCenter} from './Styled'
+import Link from 'next/link'
+// import Image from 'next/image'
+
+import {h2Rule, metaRule, ButtonLink, P, TextCenter} from './Styled'
 import Message from './Message'
 
 import {css} from 'glamor'
 import {WHITE, GREY_SOFT, GREY_LIGHT} from '../theme'
-import {Link as RawRouteLink} from '../../routes'
 import {locales} from '../../constants'
 
 const containerStyle = css({
@@ -52,24 +54,33 @@ const pStyle = css({
   flexGrow: 1
 })
 
-const Card = ({image, path, title, author, created, lead, locale}) => {
+const Card = ({image, path, title, author, published, lead, locale}) => {
+  const fullPath = `/${locale}/${path.join('/')}`
   return (
     <div {...containerStyle}>
-      <RawRouteLink prefetch route='page' params={{locale, path}}>
+      <Link href={fullPath}>
         <a {...headStyle} style={{backgroundImage: image && `url(${image})`}}>
+          {/* Next Image consumes too much memory on Heroku */}
+          {/* <Image
+            src={image}
+            priority
+            layout='fill'
+            objectFit='cover'
+            quality={90}
+          /> */}
           <span {...shadeStyle} />
           <h2 {...titleStyle}>{title}</h2>
         </a>
-      </RawRouteLink>
+      </Link>
       <div {...bodyStyle}>
         <span {...metaRule}>
-          {[created, author].filter(Boolean).join(' – ')}
+          {[published, author].filter(Boolean).join(' – ')}
         </span>
         <P className={pStyle}>{lead}</P>
         <TextCenter>
-          <ButtonRouteLink prefetch route='page' params={{locale, path}}>
+          <ButtonLink href={fullPath}>
             <Message id='card/read' locale={locale} />
-          </ButtonRouteLink>
+          </ButtonLink>
         </TextCenter>
       </div>
     </div>
@@ -80,7 +91,7 @@ Card.propTypes = {
   locale: PropTypes.oneOf(locales).isRequired,
   path: PropTypes.arrayOf(PropTypes.string).isRequired,
   title: PropTypes.string.isRequired,
-  created: PropTypes.string.isRequired,
+  published: PropTypes.string.isRequired,
   lead: PropTypes.string.isRequired,
   image: PropTypes.string
 }

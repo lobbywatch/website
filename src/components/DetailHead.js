@@ -1,11 +1,12 @@
 import PropTypes from 'prop-types'
 import React, {Component} from 'react'
-import {A, RouteLink, Clear, h1Rule, metaRule, TextCenter} from './Styled'
+import {A, StyledLink, Clear, h1Rule, metaRule, TextCenter} from './Styled'
 import {withT} from './Message'
 import {ContextBoxValue} from './ContextBox'
 
 import {numberFormat} from '../utils/formats'
 import {intersperse} from '../utils/helpers'
+import {itemPath} from '../utils/routes'
 import {GREY_LIGHT} from '../theme'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
@@ -119,7 +120,6 @@ DetailHead.defaultProps = {
           d.canton
         ].filter(Boolean).join(', ')
       case 'Guest':
-        const rawParlamentarianId = d.parliamentarian.id.replace(`${d.parliamentarian.__typename}-`, '')
         return (<span>
           {
             intersperse([
@@ -127,23 +127,25 @@ DetailHead.defaultProps = {
               <span key='invited'>
                 {t(`guest/${d.gender}/invited`)}
                 {' '}
-                <RouteLink route='parliamentarian' params={{locale, id: rawParlamentarianId, name: d.parliamentarian.name}}>
+                <StyledLink href={itemPath(d.parliamentarian, locale)}>
                   {d.parliamentarian.name}
-                </RouteLink>
+                </StyledLink>
               </span>
             ].filter(Boolean), ', ')}
           <br />
           {d.occupation}
         </span>)
       case 'LobbyGroup':
-        return d.sector
+        return <StyledLink href={itemPath(d.branch, locale)}>
+          {d.branch.name}
+        </StyledLink>
       case 'Organisation':
         return intersperse(
           d.lobbyGroups
             .map((lobbyGroup, i) => (
-              <RouteLink key={i} route='lobbygroup' params={{locale, id: lobbyGroup.id, name: lobbyGroup.name}}>
+              <StyledLink key={i} href={itemPath(lobbyGroup, locale)}>
                 {lobbyGroup.name}
-              </RouteLink>
+              </StyledLink>
             ))
             .concat([
               d.legalForm,
@@ -183,6 +185,11 @@ DetailHead.defaultProps = {
           ['commissions', formatCommissions]
         ]
       case 'LobbyGroup':
+        return [
+          ['description'],
+          ['commissions', formatCommissions]
+        ]
+      case 'Branch':
         return [
           ['description'],
           ['commissions', formatCommissions]

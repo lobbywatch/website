@@ -74,10 +74,7 @@ const Cover = ({src, title}) => (
 )
 
 Cover.propTypes = {
-  image: PropTypes.shape({
-    src: PropTypes.string.isRequired,
-    alt: PropTypes.string.isRequired
-  }).isRequired,
+  src: PropTypes.string.isRequired,
   children: PropTypes.node
 }
 

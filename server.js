@@ -13,14 +13,14 @@ const start = (workerId) => {
   const graphql = require('./graphql')
   const {
     locales,
+    localeSegment,
     EXPRESS_PORT,
     GOOGLE_SITE_VERIFICATION,
     PUBLIC_BASE_URL
   } = require('./constants')
-  const routes = require('./routes')
 
   const app = next({dir: '.', dev: DEV})
-  const handler = routes.getRequestHandler(app)
+  const handler = app.getRequestHandler()
 
   acceptLanguage.languages(locales)
 
@@ -42,7 +42,7 @@ const start = (workerId) => {
     server.get('/', (req, res) => {
       res.redirect(`/${acceptLanguage.get(req.headers['accept-language'])}`)
     })
-    server.get(`/${routes.localeSegment}/search/daten/:term?`, (req, res) => {
+    server.get(`/${localeSegment}/search/daten/:term?`, (req, res) => {
       const {locale, term} = req.params
       res.redirect(301, `/${encodeURIComponent(locale)}/search${term ? `?term=${encodeURIComponent(term)}` : ''}`)
     })

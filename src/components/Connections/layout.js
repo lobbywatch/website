@@ -1,7 +1,7 @@
 export const START_Y = 70
 export const PADDING_BOTTOM = 60
 
-export default ({
+const layout = ({
   hierarchy,
   nodes, links,
   width, open
@@ -85,3 +85,5 @@ export default ({
 
   return Math.max(height, window.innerHeight * 0.5)
 }
+
+export default layout

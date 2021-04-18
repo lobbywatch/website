@@ -1,4 +1,4 @@
-import Document, {Head, Main, NextScript} from 'next/document'
+import Document, {Html, Head, Main, NextScript} from 'next/document'
 import {LW_BLUE_LIGHT, WHITE} from '../src/theme'
 
 import {renderStatic} from 'glamor/server'
@@ -25,20 +25,25 @@ export default class MyDocument extends Document {
     }
   }
   render () {
-    const {css, env: {GA_TRACKING_ID}} = this.props
+    const {css, env: {GA_TRACKING_ID, PUBLIC_BASE_URL}, __NEXT_DATA__: {query: {locale}}} = this.props
+    const motivationComment = `/*
+🤔 You look like a curious person.
+💁 That's good, we need people like you!
+👉 Join us, ${PUBLIC_BASE_URL || ''}/de/seite/mitarbeiten
+*/`
     return (
-      <html>
+      <Html lang={locale} dir="ltr">
         <Head>
-          <meta name='viewport' content='width=device-width,initial-scale=1' />
+          <script dangerouslySetInnerHTML={{__html: motivationComment}}></script>
           <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
           <style dangerouslySetInnerHTML={{ __html: fontFaces }} />
           {css ? <style dangerouslySetInnerHTML={{ __html: css }} /> : null}
-          <link rel='apple-touch-icon' sizes='180x180' href='/static/apple-touch-icon.png' />
+          <link rel='apple-touch-icon' sizes='180x180' href='/apple-touch-icon.png' />
           <link rel='icon' type='image/png' href='/static/favicon-32x32.png' sizes='32x32' />
           <link rel='icon' type='image/png' href='/static/favicon-16x16.png' sizes='16x16' />
           <link rel='manifest' href='/static/manifest.json' />
           <link rel='mask-icon' href='/static/safari-pinned-tab.svg' color={LW_BLUE_LIGHT} />
-          <link rel='shortcut icon' href='/static/favicon.ico' />
+          <link rel='shortcut icon' href='/favicon.ico' />
           <meta name='msapplication-config' content='/static/browserconfig.xml' />
           <meta name='theme-color' content={WHITE} />
         </Head>
@@ -52,9 +57,10 @@ m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
 })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
 ga('create', '${GA_TRACKING_ID}', 'auto');
+ga('set', 'anonymizeIp', true);
           `}} />}
         </body>
-      </html>
+      </Html>
     )
   }
 }

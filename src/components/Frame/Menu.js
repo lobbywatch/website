@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import {css} from 'glamor'
-import {RouteLink} from '../Styled'
+import {StyledLink} from '../Styled'
 import {
   LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE,
   mediaM, mediaSOnly,
@@ -88,15 +88,14 @@ const listItemSeparatorStyle = css({
 const Menu = ({items, expanded, id}) => (
   <nav {...menuStyle} role='navigation' id={id} aria-expanded={expanded}>
     <ul {...listStyle}>
-      {items.map(({label, route, params, active, separator}, i) => (
+      {items.map(({label, href, active, separator}, i) => (
         <li {...listItemStyle} key={i}>
           {separator && <span {...listItemSeparatorStyle} />}
-          <RouteLink prefetch
-            route={route}
-            params={params}
+          <StyledLink
+            href={href}
             className={active ? 'active' : ''}>
             {label}
-          </RouteLink>
+          </StyledLink>
         </li>
       ))}
     </ul>
@@ -105,8 +104,7 @@ const Menu = ({items, expanded, id}) => (
 
 Menu.propTypes = {
   items: PropTypes.arrayOf(PropTypes.shape({
-    params: PropTypes.object,
-    route: PropTypes.string.isRequired,
+    href: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.object.isRequired]).isRequired,
     label: PropTypes.node.isRequired,
     separator: PropTypes.bool
   })),

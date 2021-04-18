@@ -9,7 +9,8 @@ import Legend from './Legend'
 import Message, {withT} from '../Message'
 import {shallowEqual, intersperse} from '../../utils/helpers'
 import {chfFormat} from '../../utils/formats'
-import routes, {Router as RoutesRouter} from '../../../routes'
+import {itemPath} from '../../utils/routes'
+import {withRouter} from 'next/router'
 import layout, {START_Y} from './layout'
 import nest from './nest'
 import {set} from 'd3-collection'
@@ -50,7 +51,10 @@ class Connections extends Component {
       this.layout()
     }
   }
-  nestData (state, props) {
+  static getDerivedStateFromProps(props, state) {
+    if (state.previousProps && shallowEqual(props, state.previousProps)) {
+      return null
+    }
     const hierarchy = nest(props)
     const nodes = hierarchy.descendants()
     nodes.forEach(node => {
@@ -71,7 +75,8 @@ class Connections extends Component {
       nodes,
       links,
       hierarchy,
-      open: set()
+      open: set(),
+      previousProps: props
     }
 
     return nextState
@@ -129,14 +134,6 @@ class Connections extends Component {
     this.containerRef.style.height = `${height}px`
     this.svgRef.style.height = `${height}px`
   }
-  componentWillMount () {
-    this.setState(this.nestData)
-  }
-  componentWillReceiveProps (nextProps) {
-    if (!shallowEqual(this.props, nextProps)) {
-      this.setState(this.nestData(this.state, nextProps))
-    }
-  }
   componentDidMount () {
     window.addEventListener('resize', this.measure)
     this.measure()
@@ -161,7 +158,8 @@ class Connections extends Component {
       intermediates,
       potency,
       updated, published,
-      hoverValues
+      hoverValues,
+      router
     } = this.props
     let viaI = 0
 
@@ -264,27 +262,18 @@ class Connections extends Component {
                     .filter(Boolean)
                     .length
 
-                  const routeName = connection.to.__typename.toLowerCase()
-                  const route = routes.findByName(routeName)
-                  const params = {
-                    locale,
-                    id: connection.to.id.replace(`${connection.to.__typename}-`, ''),
-                    name: connection.to.name
-                  }
+                  const detailPath = itemPath(connection.to, locale)
 
                   return (
                     <a key={data.id} ref={setRef}
-                      href={route.getAs(params)}
+                      href={detailPath}
                       onClick={e => {
                         e.preventDefault()
 
                         // ensure Android only navigates on second tap
                         // - matching iOS hover behaviour
                         if (!canHover || this.hoverNode !== node) {
-                          RoutesRouter.pushRoute(routeName, params)
-                            .then(() => {
-                              window.scroll(0, 0)
-                            })
+                          router.push(detailPath)
                         }
                       }}
                       onTouchStart={() => {
@@ -354,7 +343,8 @@ export const hoverValues = [
   [
     'connections/context/compensation',
     ({data: {connection, connection: {compensations}}}) => (
-      !!compensations && compensations.length > 0 ||
+      !!compensations &&
+      compensations.length > 0 &&
       (
         connection.from &&
         connection.from.__typename === 'Parliamentarian' &&
@@ -365,7 +355,10 @@ export const hoverValues = [
       <div key={`compensation-${i}`}>
         {compensation.year}{': '}
         {compensation.money !== null ?
-          chfFormat(compensation.money) +
+          t.pluralize('connections/context/compensation/money', {
+            count: compensation.money,
+            formatted: chfFormat(compensation.money)
+          }) +
           (compensation.description ? ` (${compensation.description})` : '')
         : t('connections/context/compensation/notAvailable')}
       </div>
@@ -418,4 +411,4 @@ Connections.defaultProps = {
   hoverValues
 }
 
-export default withT(Connections)
+export default withT(withRouter(Connections))

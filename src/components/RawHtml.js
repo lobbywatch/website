@@ -8,7 +8,10 @@ import {
 import {globalWithMediaQueries} from '../utils/css'
 import {mediaM, POTENCY_COLORS, WHITE} from '../theme'
 
-globalWithMediaQueries('.RawHtml a', linkStyle)
+const { ':visited': linkStyleVisited, ...linkStyleGeneral } = linkStyle
+
+globalWithMediaQueries('.RawHtml a', linkStyleGeneral)
+globalWithMediaQueries('.RawHtml a:visited', linkStyleVisited)
 globalWithMediaQueries('.RawHtml h1', h1Style)
 globalWithMediaQueries('.RawHtml h2', h2Style)
 globalWithMediaQueries('.RawHtml h3, .RawHtml h4, .RawHtml h5, .RawHtml h6', h3Style)
@@ -77,6 +80,29 @@ const maxWidth = {
 }
 globalWithMediaQueries('.RawHtml iframe', maxWidth)
 globalWithMediaQueries('.RawHtml img', maxWidth)
+
+globalWithMediaQueries('.RawHtml .img-left', {
+  float: 'left',
+  clear: 'left',
+  display: 'block',
+  marginTop: '0.5em',
+  marginBottom: '0.5em',
+  marginRight: '0.5em',
+  marginLeft: '0em',
+  maxWidth: '100%',
+  height: 'auto'
+})
+globalWithMediaQueries('.RawHtml .img-right', {
+  float: 'right',
+  clear: 'right',
+  display: 'block',
+  marginTop: '0.5em',
+  marginBottom: '0.5em',
+  marginLeft: '0.5em',
+  marginRight: '0em',
+  maxWidth: '100%',
+  height: 'auto'
+})
 
 const aspect16to9 = {
   position: 'relative',

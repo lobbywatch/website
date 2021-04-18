@@ -1,12 +1,10 @@
-# Lobbywatch Rooster
-
-> 2017 is the year of the Rooster, starting from January 28th, and ending on February 15th, 2018.
+# Lobbywatch Frontend
 
 Lobbywatch.ch build with React.js and the [Next.js](https://github.com/zeit/next.js/) Framework.
 
 ## Prerequisites
 
-To run the application you'll need Node.js v6.9 or higher.
+To run the application you'll need Node.js v14 or higher.
 
 ## Develop
 
@@ -15,6 +13,13 @@ Run the following commands to start a local development server:
 ```bash
 npm install
 npm run dev
+```
+
+or with env settings
+
+```bash
+npm install
+PUBLIC_BASE_URL='http://lobbywatch.local' DEBUG_INFORMATION=1 npm run dev
 ```
 
 ## Deploy

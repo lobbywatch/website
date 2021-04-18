@@ -32,16 +32,25 @@ type PageTranslations {
   path: [String!]!
 }
 type Page {
+  nid: ID!
   statusCode: Int
   path: [String!]!
   translations: [PageTranslations!]!
   title: String
   image: String
   author: String
+  authorUid: Int
   content: String
   lead: String!
-  # DD.MM.YYYY HH:MM
+  type: String!
+  # deprecated
   created: String
+  # DD.MM.YYYY HH:MM
+  published: String
+  updated: String
+  # YYYY-MM-DD
+  publishedIso: String
+  updatedIso: String
   categories: [String!]
   tags: [String!]
   lobbyGroups: [String!]
@@ -67,11 +76,23 @@ interface Person {
   gender: Gender
   # Format: DD.MM.YYYY
   dateOfBirth: String
+  website: String
+  wikipedia_url: String
+  wikidata_url: String
+  twitter_name: String
+  twitter_url: String
+  linkedin_url: String
+  facebook_name: String
+  facebook_url: String
 }
 
 type Party {
   name: String!
   abbr: String!
+  wikipedia_url: String
+  wikidata_url: String
+  twitter_name: String
+  twitter_url: String
 }
 
 type PartyMembership {
@@ -88,6 +109,8 @@ type Commission {
   id: ID!
   name: String!
   abbr: String!
+  wikipedia_url: String
+  wikidata_url: String
 }
 
 type Compensation {
@@ -118,19 +141,31 @@ type Organisation {
   id: ID!
   updated: String!
   published: String!
+  updatedIso: String!
+  publishedIso: String!
   name: String!
+  abbr: String
   legalForm: String
   location: String
+  postalCode: String
+  countryIso2: String
   description: String
   uid: String
   website: String
   lobbyGroups: [LobbyGroup!]!
   connections: [Connection!]!
+  wikipedia_url: String
+  wikidata_url: String
+  twitter_name: String
+  twitter_url: String
 }
+
 type Guest implements Person {
   id: ID!
   updated: String!
   published: String!
+  updatedIso: String!
+  publishedIso: String!
   name: String!
   firstName: String!
   middleName: String
@@ -139,6 +174,14 @@ type Guest implements Person {
   gender: Gender
   # Format: DD.MM.YYYY
   dateOfBirth: String
+  website: String
+  wikipedia_url: String
+  wikidata_url: String
+  twitter_name: String
+  twitter_url: String
+  linkedin_url: String
+  facebook_name: String
+  facebook_url: String
   connections: [Connection!]!
   function: String,
   parliamentarian: Parliamentarian!
@@ -148,14 +191,33 @@ type LobbyGroup {
   id: ID!
   updated: String!
   published: String!
+  updatedIso: String!
+  publishedIso: String!
   name: String!
   description: String
   sector: String
+  branch: Branch
+  wikipedia_url: String
+  wikidata_url: String
   commissions: [Commission!]!
   connections: [Connection]
 }
 
-union Entity = Parliamentarian | Organisation | Guest | LobbyGroup
+type Branch {
+  id: ID!
+  updated: String!
+  published: String!
+  updatedIso: String!
+  publishedIso: String!
+  name: String!
+  description: String
+  wikipedia_url: String
+  wikidata_url: String
+  commissions: [Commission!]!
+  connections: [Connection]
+}
+
+union Entity = Parliamentarian | Organisation | Guest | LobbyGroup | Branch
 
 type Connection {
   from: Entity!
@@ -174,6 +236,8 @@ type Parliamentarian implements Person {
   id: ID!
   updated: String!
   published: String!
+  updatedIso: String!
+  publishedIso: String!
   name: String!
   parliamentId: ID!
   firstName: String!
@@ -201,6 +265,14 @@ type Parliamentarian implements Person {
   children: Int
   civilStatus: String
   website: String
+  wikipedia_url: String
+  wikidata_url: String
+  twitter_name: String
+  twitter_url: String
+  linkedin_url: String
+  facebook_name: String
+  facebook_url: String
+  parlament_biografie_url: String
   commissions: [Commission!]!
   connections: [Connection!]!
   guests: [Guest!]!
@@ -220,6 +292,8 @@ type RootQuery {
   getOrganisation(locale: Locale!, id: ID!): Organisation
   lobbyGroups(locale: Locale!): [LobbyGroup!]!
   getLobbyGroup(locale: Locale!, id: ID!): LobbyGroup
+  branchs(locale: Locale!): [Branch!]!
+  getBranch(locale: Locale!, id: ID!): Branch
   search(locale: Locale!, term: String!): [Entity!]!
   translations(locale: Locale!): [Translation!]!
 }

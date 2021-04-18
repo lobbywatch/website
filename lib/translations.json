@@ -1,5 +1,5 @@
 {
-  "updated": "2019-09-14T07:49:17.995Z",
+  "updated": "2020-06-29T19:27:31.415Z",
   "title": "translations",
   "data": [
     {
@@ -29,7 +29,7 @@
     },
     {
       "key": "menu/guests",
-      "de": "Zutrittsberechtigte/r",
+      "de": "Zutrittsberechtigte",
       "fr": "Personnes accréditées"
     },
     {
@@ -66,6 +66,11 @@
       "key": "blog/meta/description",
       "de": "Lesenswertes aus der Lobbywelt. Beobachtungen aus der Wandelhalle, Interessenkonflikte der Politiker und Meinungen zu Transparenz.",
       "fr": "Ce qu'il vaut la peine de lire sur le monde des lobbies. Remarques venant de la Salle des Pas Perdus, conflits d'intérêts des politiciens et avis sur la transparence."
+    },
+    {
+      "key": "guests/meta/title",
+      "de": "Zutrittsberechtigte Personen",
+      "fr": "Personnes accréditées"
     },
     {
       "key": "guests/meta/description",
@@ -146,6 +151,11 @@
       "key": "organisation/meta/description/other",
       "de": "{name} ({legalFormAndUid}) hat {count} Verbindungen ({partyCounts}) ins Parlament.",
       "fr": "{name} ({legalFormAndUid}) a {count} relations ({partyCounts}) au parlament."
+    },
+    {
+      "key": "parliamentarians/meta/title",
+      "de": "Parlamentarierinnen und Parlamentarier",
+      "fr": "Parlementaires"
     },
     {
       "key": "parliamentarians/meta/description",
@@ -498,6 +508,26 @@
       "key": "connections/context/compensation/notAvailable",
       "de": "keine Angabe",
       "fr": "pas d'information"
+    },
+    {
+      "key": "connections/context/compensation/money/-1",
+      "de": "keine, bezahlendes Mitglied",
+      "fr": "aucun, membre payant"
+    },
+    {
+      "key": "connections/context/compensation/money/0",
+      "de": "Ehrenamtlich",
+      "fr": "Bénévole"
+    },
+    {
+      "key": "connections/context/compensation/money/1",
+      "de": "bezahlte Tätigkeit, Betrag unbekannt",
+      "fr": "activité rémunérée, montant inconnu"
+    },
+    {
+      "key": "connections/context/compensation/money/other",
+      "de": "{formatted}",
+      "fr": "{formatted}"
     },
     {
       "key": "connections/more/singular",
@@ -1052,6 +1082,21 @@
       "key": "connection/function/beirat-mitglied",
       "de": "Beirat/Patronatskomitee/Expertenkommission/Advisory Board",
       "fr": "Conseil/Comité de patronage/Commission d'experts/Advisory Board"
+    },
+    {
+      "key": "banner/text",
+      "de": null,
+      "fr": null
+    },
+    {
+      "key": "banner/link/text",
+      "de": null,
+      "fr": null
+    },
+    {
+      "key": "banner/link/href",
+      "de": null,
+      "fr": null
     }
   ]
 }

@@ -1,0 +1,3 @@
+User-Agent: *
+Disallow: /de/search
+Disallow: /fr/search

@@ -9,13 +9,14 @@ import {withRouter} from 'next/router'
 import {Center} from './index'
 import SocialMedia from './SocialMedia'
 import Newsletter from './Newsletter'
-import {RouteLink, A, Hr, metaStyle, Strong, Clear} from '../Styled'
+import {StyledLink, A, Hr, metaStyle, Strong, Clear} from '../Styled'
 import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../../theme'
 import CreativeCommons from '../../assets/CreativeCommons'
 import Message from '../Message'
 import Loader from '../Loader'
 import {locales} from '../../../constants'
 import BlockRegion from '../BlockRegion'
+import { JsonLd } from '../JsonLd'
 
 const metaQuery = gql`
   query meta($locale: Locale!) {
@@ -105,10 +106,11 @@ const groupLinks = (links) => {
 }
 
 const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
-  <div style={{ marginTop: 20 }}>
+  <footer style={{ marginTop: 20 }}>
+    <JsonLd data={{"@context": "http://schema.org/", "@type": "WPFooter"}} />
     <Center>
       {!(pathname === '/page' && query.path === 'unterstuetzen') &&
-        <BlockRegion locale={locale} region='rooster_home' compact />
+        <BlockRegion locale={locale} region='rooster_home' compact first={pathname !== '/'} />
       }
       <Clear {...columnContainerStyle}>
         <div {...columnStyle}><SocialMedia locale={locale} /></div>
@@ -129,19 +131,10 @@ const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
                         let link
                         const supportedPath = href.match(/^\/([^/]+)/)
                         if (supportedPath && locales.indexOf(supportedPath[1]) !== -1) {
-                          const path = href.split('/').slice(2)
-                          let route = path.length ? 'page' : 'index'
-                          let params = {locale: supportedPath[1], path}
-                          if (path.join('/') === 'artikel/archiv') {
-                            route = 'blog'
-                            params = {locale: supportedPath[1]}
-                          }
                           link = (
-                            <RouteLink
-                              route={route}
-                              params={params}>
+                            <StyledLink href={href}>
                               {title}
-                            </RouteLink>
+                            </StyledLink>
                           )
                         } else {
                           link = (
@@ -173,7 +166,7 @@ const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
         )} />
       </Center>
     </div>
-  </div>
+  </footer>
 )
 
 const FooterWithQuery = graphql(metaQuery, {
