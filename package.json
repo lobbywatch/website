@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nodemon -w next.config.js -w jsconfig.json --exec 'next dev'",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p ${PORT:=3000}",
     "test": "standard 'src/**/*.js' 'pages/**/*.js'",
     "standardize": "standard --fix 'src/**/*.js' 'pages/**/*.js'",
     "translations": "gsheets --key=1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg --title=translations --pretty --out lib/translations.json",
