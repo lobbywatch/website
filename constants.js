@@ -13,7 +13,9 @@ const location = typeof window !== 'undefined' && window.location
 const hostname = location ? location.hostname : '127.0.0.1'
 const port = location ? location.port : exports.EXPRESS_PORT
 const protocol = location ? location.protocol : 'http:'
-exports.GRAPHQL_URI = `${protocol}//${hostname}${port ? `:${port}` : ''}/graphql`
+exports.GRAPHQL_URI = ENV.VERCEL_URL
+  ? `https://${ENV.VERCEL_URL}/graphql`
+  : `${protocol}//${hostname}${port ? `:${port}` : ''}/graphql`
 
 exports.GA_TRACKING_ID = ENV.GA_TRACKING_ID
 
