@@ -120,6 +120,17 @@ type Compensation {
   description: String
 }
 
+enum CompensationTransparenceState {
+  YES
+  NO
+  PARTIAL
+}
+
+type CompensationTransparence {
+  dueDate: String!
+  isTansparent: CompensationTransparenceState
+}
+
 enum Potency {
   HIGH
   MEDIUM
@@ -265,6 +276,7 @@ type Parliamentarian implements Person {
   commissions: [Commission!]!
   connections: [Connection!]!
   guests: [Guest!]!
+  compensationTransparence: CompensationTransparence
 }
 `
 
