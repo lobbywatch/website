@@ -73,7 +73,7 @@ class Raw extends Component {
 
 Raw.propTypes = {
   title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  description: PropTypes.string,
   image: PropTypes.string
 }
 
