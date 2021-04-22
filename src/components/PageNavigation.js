@@ -3,7 +3,7 @@ import {css} from 'glamor'
 
 import Message from './Message'
 import {Clear} from './Styled'
-import RawLink from 'next/link'
+import Link from 'next/link'
 import {GREY_LIGHT, GREY_DARK, mediaM} from '../theme'
 import Arrow from '../assets/Arrow'
 
@@ -39,7 +39,7 @@ const iconStyle = css({
 
 const Nav = ({locale, prev, prevMessageId, next, nextMessageId}) => (
   <Clear {...containerStyle}>
-    {!!prev && <RawLink {...prev}>
+    {!!prev && <Link {...prev}>
       <a {...leftStyle} {...aStyle}>
         <Arrow className={iconStyle} color={GREY_DARK} direction='left' />
         <span {...leftTextStyle}>
@@ -47,14 +47,14 @@ const Nav = ({locale, prev, prevMessageId, next, nextMessageId}) => (
           <Message locale={locale} id={prevMessageId} />
         </span>
       </a>
-    </RawLink>}
-    {!!next && <RawLink {...next}>
+    </Link>}
+    {!!next && <Link {...next}>
       <a {...rightStyle} {...aStyle}>
         <Message locale={locale} id={nextMessageId} />
         {' '}
         <Arrow className={iconStyle} color={GREY_DARK} />
       </a>
-    </RawLink>}
+    </Link>}
   </Clear>
 )
 
