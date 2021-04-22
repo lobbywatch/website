@@ -109,8 +109,8 @@ const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
   <footer style={{ marginTop: 20 }}>
     <JsonLd data={{"@context": "http://schema.org/", "@type": "WPFooter"}} />
     <Center>
-      {!(pathname === '/page' && query.path === 'unterstuetzen') &&
-        <BlockRegion locale={locale} region='rooster_home' compact first={pathname !== '/'} />
+      {!(pathname === '/[locale]/[...path]' && query.path.join('') === 'unterstuetzen') &&
+        <BlockRegion locale={locale} region='rooster_home' compact first={pathname !== '/[locale]'} />
       }
       <Clear {...columnContainerStyle}>
         <div {...columnStyle}><SocialMedia locale={locale} /></div>
