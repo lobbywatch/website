@@ -1,16 +1,17 @@
 import React from 'react'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider } from '@apollo/client'
+import { useApollo } from '../lib/apolloClient'
 
 import { locales } from '../constants'
-import withApolloClient from '../lib/withApolloClient'
 import NotFound from './404'
 
 const WebApp = ({ Component, pageProps, apolloClient, serverContext }) => {
   const router = useRouter()
+  const client = apolloClient || useApollo(pageProps)
 
-  return <ApolloProvider client={apolloClient}>
+  return <ApolloProvider client={client}>
     <Head>
       <meta name='viewport' content='width=device-width,initial-scale=1' />
     </Head>
@@ -20,4 +21,4 @@ const WebApp = ({ Component, pageProps, apolloClient, serverContext }) => {
   </ApolloProvider>
 }
 
-export default withApolloClient(WebApp)
+export default WebApp

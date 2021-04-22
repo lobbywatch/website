@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {graphql} from 'react-apollo'
-import gql from 'graphql-tag'
+import {gql} from '@apollo/client'
+import {graphql} from '@apollo/client/react/hoc'
 import {withRouter} from 'next/router'
 
 import Loader from 'src/components/Loader'
@@ -12,6 +12,8 @@ import Cover, {NARROW_WIDTH} from 'src/components/Cover'
 import {H1, Meta} from 'src/components/Styled'
 
 import {NotFound} from 'pages/404'
+
+import {withInitialProps} from 'lib/apolloClient'
 
 const pageQuery = gql`
   query page($locale: Locale!, $path: [String!]!) {
@@ -113,4 +115,4 @@ const PageWithQuery = graphql(pageQuery, {
   }
 })(Page)
 
-export default withRouter(PageWithQuery)
+export default withInitialProps(withRouter(PageWithQuery))

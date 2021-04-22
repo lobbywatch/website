@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {graphql} from 'react-apollo'
-import gql from 'graphql-tag'
+import {gql} from '@apollo/client'
+import {graphql} from '@apollo/client/react/hoc'
 
 import {H2, H3} from './Styled'
 import RawHtml from './RawHtml'

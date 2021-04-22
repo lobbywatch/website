@@ -1,8 +1,7 @@
 import React from 'react'
 
-import {graphql, compose} from 'react-apollo'
-import gql from 'graphql-tag'
-import {withRouter} from 'next/router'
+import {gql, useQuery} from '@apollo/client'
+import {useRouter} from 'next/router'
 
 import Loader from 'src/components/Loader'
 import Frame, {Center} from 'src/components/Frame'
@@ -11,6 +10,8 @@ import Message from 'src/components/Message'
 import Card from 'src/components/Card'
 import Grid, {GridItem} from 'src/components/Grid'
 import {H1, StyledLink} from 'src/components/Styled'
+
+import {withInitialProps} from 'lib/apolloClient'
 
 const indexQuery = gql`
   query index($locale: Locale!) {
@@ -27,8 +28,15 @@ const indexQuery = gql`
   }
 `
 
-const Index = ({loading, error, articles, router: {query: {locale}}}) => (
-  <Frame>
+const Index = () => {
+  const {query: {locale}} = useRouter()
+  const {loading, error, data} = useQuery(indexQuery, {
+    variables: {
+      locale: locale
+    }
+  })
+
+  return <Frame>
     <Loader loading={loading} error={error} render={() => (
       <div>
         <MetaTags locale={locale} fromT={t => ({
@@ -40,7 +48,7 @@ const Index = ({loading, error, articles, router: {query: {locale}}}) => (
             <Message id='index/blog/title' locale={locale} />
           </H1>
           <Grid>
-            {articles.map((article, i) => (
+            {data.articles.list.map((article, i) => (
               <GridItem key={i}><Card locale={locale} {...article} /></GridItem>
             ))}
           </Grid>
@@ -53,26 +61,6 @@ const Index = ({loading, error, articles, router: {query: {locale}}}) => (
       </div>
     )} />
   </Frame>
-)
+}
 
-const IndexWithQuery = compose(
-  withRouter,
-  graphql(indexQuery, {
-    options: ({router}) => {
-      return {
-        variables: {
-          locale: router.query.locale
-        }
-      }
-    },
-    props: ({data}) => {
-      return {
-        loading: data.loading,
-        error: data.error,
-        articles: data.articles && data.articles.list
-      }
-    }
-  })
-)(Index)
-
-export default IndexWithQuery
+export default withInitialProps(Index)

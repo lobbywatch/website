@@ -1,8 +1,8 @@
 import React from 'react'
 import {css} from 'glamor'
 
-import {graphql} from 'react-apollo'
-import gql from 'graphql-tag'
+import {gql} from '@apollo/client'
+import {graphql} from '@apollo/client/react/hoc'
 import {stratify} from 'd3-hierarchy'
 import {withRouter} from 'next/router'
 
@@ -109,7 +109,7 @@ const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
   <footer style={{ marginTop: 20 }}>
     <JsonLd data={{"@context": "http://schema.org/", "@type": "WPFooter"}} />
     <Center>
-      {!(pathname === '/[locale]/[...path]' && query.path.join('') === 'unterstuetzen') &&
+      {!(pathname === '/[locale]/[...path]' && query.path?.join() === 'unterstuetzen') &&
         <BlockRegion locale={locale} region='rooster_home' compact first={pathname !== '/[locale]'} />
       }
       <Clear {...columnContainerStyle}>

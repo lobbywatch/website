@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {graphql} from 'react-apollo'
-import gql from 'graphql-tag'
+import {gql} from '@apollo/client'
+import {graphql} from '@apollo/client/react/hoc'
 import {withRouter} from 'next/router'
 
 import {H1, TextCenter} from 'src/components/Styled'
@@ -12,6 +12,8 @@ import Frame, {Center} from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
+
+import {withInitialProps} from 'lib/apolloClient'
 
 const guestsQuery = gql`
   query guests($locale: Locale!) {
@@ -60,4 +62,4 @@ const Page = ({router: {query: {locale, id}}}) => (
   </Frame>
 )
 
-export default withRouter(Page)
+export default withInitialProps(withRouter(Page))

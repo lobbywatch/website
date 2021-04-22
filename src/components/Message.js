@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import RawHtml from './RawHtml'
-import {graphql} from 'react-apollo'
-import gql from 'graphql-tag'
+import {gql} from '@apollo/client'
+import {graphql} from '@apollo/client/react/hoc'
 
 import {getFormatter} from '../utils/translate'
 
