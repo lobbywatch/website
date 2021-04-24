@@ -22,11 +22,5 @@ const Page = () => {
 }
 
 export const getStaticProps = createGetStaticProps()
-export async function getStaticPaths() {
-  return {
-    paths: [],
-    fallback: 'blocking'
-  }
-}
 
 export default Page
