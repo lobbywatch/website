@@ -1,11 +1,20 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import RawHtml from './RawHtml'
-import {gql} from '@apollo/client'
+import {useQuery} from '@apollo/client'
 import {graphql} from '@apollo/client/react/hoc'
 
 import {getFormatter} from '../utils/translate'
 import {translationsQuery} from '../../lib/baseQueries'
+
+export const useT = (locale) => {
+  const {data} = useQuery(translationsQuery, {
+    variables: {
+      locale
+    }
+  })
+  return getFormatter(data.translations)
+}
 
 export const withT = (Component, getLocale = ownProps => ownProps.locale) => graphql(translationsQuery, {
   options: (ownProps) => {
