@@ -11,7 +11,8 @@ import Card from 'src/components/Card'
 import Grid, {GridItem} from 'src/components/Grid'
 import {H1, StyledLink} from 'src/components/Styled'
 
-import {createGetStaticProps} from 'lib/apolloClient'
+import {createGetStaticProps} from 'lib/apolloClientSchemaLink'
+import {locales} from '../../constants'
 
 const indexQuery = gql`
   query index($locale: Locale!) {
@@ -68,8 +69,10 @@ export const getStaticProps = createGetStaticProps({
 })
 export async function getStaticPaths() {
   return {
-    paths: [],
-    fallback: 'blocking'
+    paths: locales.map(locale => (
+      { params: { locale } }
+    )),
+    fallback: false
   }
 }
 

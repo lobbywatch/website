@@ -4,9 +4,6 @@ import { useRouter } from 'next/router'
 import { ApolloProvider } from '@apollo/client'
 import { useApollo } from '../lib/apolloClient'
 
-import { locales } from '../constants'
-import NotFound from './404'
-
 const WebApp = ({ Component, pageProps, apolloClient, serverContext }) => {
   const router = useRouter()
   const client = apolloClient || useApollo(pageProps)
@@ -15,9 +12,7 @@ const WebApp = ({ Component, pageProps, apolloClient, serverContext }) => {
     <Head>
       <meta name='viewport' content='width=device-width,initial-scale=1' />
     </Head>
-    {locales.includes(router.query.locale) || router.isFallback
-    ? <Component serverContext={serverContext} {...pageProps} />
-    : <NotFound serverContext={serverContext} />}
+    <Component serverContext={serverContext} {...pageProps} />
   </ApolloProvider>
 }
 

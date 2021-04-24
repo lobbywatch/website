@@ -16,7 +16,7 @@ import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
-import {createGetStaticProps} from 'lib/apolloClient'
+import {createGetStaticProps} from 'lib/apolloClientSchemaLink'
 
 const parliamentariansQuery = gql`
   query parliamentarians($locale: Locale!) {

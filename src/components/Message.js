@@ -14,7 +14,7 @@ export const useT = (locale) => {
       locale
     }
   })
-  return getFormatter(data.translations)
+  return getFormatter(data?.translations)
 }
 
 export const withT = (Component, getLocale = ownProps => ownProps.locale) => graphql(translationsQuery, {
