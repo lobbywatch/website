@@ -10,8 +10,9 @@ import Loader from './Loader'
 const query = gql`
   query blocks($locale: Locale!, $region: String!) {
     meta(locale: $locale) {
+      id
       blocks(region: $region) {
-        key
+        id
         title
         content
       }
@@ -23,7 +24,7 @@ const Region = ({loading, error, blocks, style, compact, first}) => (
   <Loader loading={loading} error={error} render={() => (
     <div>
       {blocks.slice(0, first ? 1 : undefined).map(block => (
-        <div key={block.key} style={style}>
+        <div key={block.id} style={style}>
           {compact
             ? <H3>{block.title}</H3>
             : <H2>{block.title}</H2>
@@ -36,7 +37,8 @@ const Region = ({loading, error, blocks, style, compact, first}) => (
 )
 
 const RegionWithQuery = graphql(query, {
-  props: ({data, ownProps: {url}}) => {
+  skip: ({ blocks }) => !!blocks,
+  props: ({data}) => {
     return {
       loading: data.loading,
       error: data.error,

@@ -16,20 +16,8 @@ import Message from '../Message'
 import Loader from '../Loader'
 import {locales} from '../../../constants'
 import BlockRegion from '../BlockRegion'
-import { JsonLd } from '../JsonLd'
-
-const metaQuery = gql`
-  query meta($locale: Locale!) {
-    meta(locale: $locale) {
-      links {
-        id
-        parentId
-        title
-        href
-      }
-    }
-  }
-`
+import {JsonLd} from '../JsonLd'
+import {metaQuery} from '../../../lib/baseQueries'
 
 const footerStyle = css({
   backgroundColor: GREY_SOFT,
@@ -105,12 +93,12 @@ const groupLinks = (links) => {
   ]).children || []
 }
 
-const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
+const Footer = ({loading, error, links, blocks, locale, router: {pathname, query}}) => (
   <footer style={{ marginTop: 20 }}>
     <JsonLd data={{"@context": "http://schema.org/", "@type": "WPFooter"}} />
     <Center>
       {!(pathname === '/[locale]/[...path]' && query.path?.join() === 'unterstuetzen') &&
-        <BlockRegion locale={locale} region='rooster_home' compact first={pathname !== '/[locale]'} />
+        <BlockRegion blocks={blocks} compact first={pathname !== '/[locale]'} />
       }
       <Clear {...columnContainerStyle}>
         <div {...columnStyle}><SocialMedia locale={locale} /></div>
@@ -181,7 +169,8 @@ const FooterWithQuery = graphql(metaQuery, {
     return {
       loading: data.loading,
       error: data.error,
-      links: data.meta ? data.meta.links : []
+      links: data.meta ? data.meta.links : [],
+      blocks: data.meta ? data.meta.blocks : []
     }
   }
 })(Footer)

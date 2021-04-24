@@ -15,7 +15,7 @@ const WebApp = ({ Component, pageProps, apolloClient, serverContext }) => {
     <Head>
       <meta name='viewport' content='width=device-width,initial-scale=1' />
     </Head>
-    {locales.includes(router.query.locale)
+    {locales.includes(router.query.locale) || router.isFallback
     ? <Component serverContext={serverContext} {...pageProps} />
     : <NotFound serverContext={serverContext} />}
   </ApolloProvider>

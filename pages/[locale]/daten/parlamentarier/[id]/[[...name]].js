@@ -13,7 +13,7 @@ import {A, Meta} from 'src/components/Styled'
 import {withT} from 'src/components/Message'
 import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from 'constants'
 
-import {withInitialProps} from 'lib/apolloClient'
+import {createGetStaticProps} from 'lib/apolloClient'
 
 const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: ID!) {
@@ -102,8 +102,8 @@ const parliamentarianQuery = gql`
   }
 `
 
-const Parliamentarian = ({loading, error, parliamentarian, t, locale, id}) => (
-  <Loader loading={loading} error={error} render={() => {
+const Parliamentarian = ({router: {isFallback}, loading, error, parliamentarian, t, locale, id}) => (
+  <Loader loading={loading || isFallback} error={error} render={() => {
     const {
       __typename, name, updated, published
     } = parliamentarian
@@ -157,10 +157,23 @@ const ParliamentarianWithQuery = withT(graphql(parliamentarianQuery, {
   }
 })(Parliamentarian))
 
-const Page = ({router: {query: {locale, id}}, serverContext}) => (
+const Page = ({router, router: {query: {locale, id}}, serverContext}) => (
   <Frame>
-    <ParliamentarianWithQuery locale={locale} id={id} serverContext={serverContext} />
+    <ParliamentarianWithQuery router={router} locale={locale} id={id} serverContext={serverContext} />
   </Frame>
 )
 
-export default withInitialProps(withRouter(Page))
+export const getStaticProps = createGetStaticProps({
+  pageQuery: parliamentarianQuery,
+  getVariables: ({ params: { id } }) => ({
+    id
+  })
+})
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking'
+  }
+}
+
+export default withRouter(Page)

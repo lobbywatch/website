@@ -5,15 +5,7 @@ import {gql} from '@apollo/client'
 import {graphql} from '@apollo/client/react/hoc'
 
 import {getFormatter} from '../utils/translate'
-
-export const translationsQuery = gql`
-  query translations($locale: Locale!) {
-    translations(locale: $locale) {
-      key
-      value
-    }
-  }
-`
+import {translationsQuery} from '../../lib/baseQueries'
 
 export const withT = (Component, getLocale = ownProps => ownProps.locale) => graphql(translationsQuery, {
   options: (ownProps) => {

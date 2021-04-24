@@ -11,7 +11,7 @@ import Card from 'src/components/Card'
 import Grid, {GridItem} from 'src/components/Grid'
 import {H1, StyledLink} from 'src/components/Styled'
 
-import {withInitialProps} from 'lib/apolloClient'
+import {createGetStaticProps} from 'lib/apolloClient'
 
 const indexQuery = gql`
   query index($locale: Locale!) {
@@ -29,7 +29,7 @@ const indexQuery = gql`
 `
 
 const Index = () => {
-  const {query: {locale}} = useRouter()
+  const {query: {locale}, isFallback} = useRouter()
   const {loading, error, data} = useQuery(indexQuery, {
     variables: {
       locale: locale
@@ -37,7 +37,7 @@ const Index = () => {
   })
 
   return <Frame>
-    <Loader loading={loading} error={error} render={() => (
+    <Loader loading={loading || isFallback} error={error} render={() => (
       <div>
         <MetaTags locale={locale} fromT={t => ({
           title: '',
@@ -63,4 +63,14 @@ const Index = () => {
   </Frame>
 }
 
-export default withInitialProps(Index)
+export const getStaticProps = createGetStaticProps({
+  pageQuery: indexQuery
+})
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking'
+  }
+}
+
+export default Index

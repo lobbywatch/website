@@ -16,7 +16,7 @@ import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
-import {withInitialProps} from 'lib/apolloClient'
+import {createGetStaticProps} from 'lib/apolloClient'
 
 const parliamentariansQuery = gql`
   query parliamentarians($locale: Locale!) {
@@ -38,8 +38,8 @@ const parliamentariansQuery = gql`
   }
 `
 
-const Parliamentarians = ({loading, error, parliamentarians, locale}) => (
-  <Loader loading={loading} error={error} render={() => (
+const Parliamentarians = ({router: {isFallback}, loading, error, parliamentarians, locale}) => (
+  <Loader loading={loading || isFallback} error={error} render={() => (
     <Center>
       <MetaTags locale={locale} fromT={t => ({
         title: t('parliamentarians/meta/title'),
@@ -81,10 +81,20 @@ const ParliamentariansWithQuery = graphql(parliamentariansQuery, {
   }
 })(Parliamentarians)
 
-const Page = ({router: {query: {locale}}}) => (
+const Page = ({router, router: {query: {locale}}}) => (
   <Frame>
-    <ParliamentariansWithQuery locale={locale} />
+    <ParliamentariansWithQuery router={router} locale={locale} />
   </Frame>
 )
 
-export default withInitialProps(withRouter(Page))
+export const getStaticProps = createGetStaticProps({
+  pageQuery: parliamentariansQuery
+})
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking'
+  }
+}
+
+export default withRouter(Page)
