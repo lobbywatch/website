@@ -142,24 +142,18 @@ const Parliamentarian = ({router: {isFallback}, loading, error, parliamentarian,
 )
 
 const ParliamentarianWithQuery = withT(graphql(parliamentarianQuery, {
-  props: ({data, ownProps: {serverContext, t}}) => {
-    const notFound = !data.loading && !data.getParliamentarian
-    if (serverContext) {
-      if (notFound) {
-        serverContext.res.statusCode = 404
-      }
-    }
+  props: ({data}) => {
     return {
       loading: data.loading,
-      error: data.error || (notFound && t('parliamentarian/error/404')),
+      error: data.error,
       parliamentarian: data.getParliamentarian
     }
   }
 })(Parliamentarian))
 
-const Page = ({router, router: {query: {locale, id}}, serverContext}) => (
+const Page = ({router, router: {query: {locale, id}}}) => (
   <Frame>
-    <ParliamentarianWithQuery router={router} locale={locale} id={id} serverContext={serverContext} />
+    <ParliamentarianWithQuery router={router} locale={locale} id={id} />
   </Frame>
 )
 
@@ -167,7 +161,8 @@ export const getStaticProps = createGetStaticProps({
   pageQuery: parliamentarianQuery,
   getVariables: ({ params: { id } }) => ({
     id
-  })
+  }),
+  isNotFound: ({ data }) => !data.getParliamentarian
 })
 export async function getStaticPaths() {
   return {
