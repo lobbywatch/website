@@ -6,6 +6,7 @@ import {graphql} from '@apollo/client/react/hoc'
 
 import {getFormatter} from '../utils/translate'
 import {translationsQuery} from '../../lib/baseQueries'
+import {locales} from '../../constants'
 
 export const useT = (locale) => {
   const {data} = useQuery(translationsQuery, {
@@ -31,7 +32,8 @@ export const withT = (Component, getLocale = ownProps => ownProps.locale) => gra
   }
 })(Component)
 
-const Translate = ({id, replacements, raw, t}) => {
+const Translate = ({id, replacements, raw, locale}) => {
+  const t = useT(locale)
   const translation = t(id, replacements, null)
   if (raw) {
     return <RawHtml type='span' dangerouslySetInnerHTML={{__html: translation}} />
@@ -41,7 +43,8 @@ const Translate = ({id, replacements, raw, t}) => {
 
 Translate.propTypes = {
   id: PropTypes.string,
-  raw: PropTypes.bool
+  raw: PropTypes.bool,
+  locale: PropTypes.oneOf(locales).isRequired
 }
 
-export default withT(Translate)
+export default Translate

@@ -7,6 +7,9 @@ const {
 
 exports.locales = ['de', 'fr']
 exports.localeSegment = `:locale(${exports.locales.join('|')})`
+exports.getSafeLocale = locale => exports.locales.includes(locale)
+  ? locale
+  : 'de'
 
 exports.DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
 exports.DRUPAL_DATA_BASE_URL = 'https://cms.lobbywatch.ch'

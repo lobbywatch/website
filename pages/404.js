@@ -21,6 +21,8 @@ const Page = () => {
   </Frame>
 }
 
-export const getStaticProps = createGetStaticProps()
+export const getStaticProps = createGetStaticProps({
+  defaultLocale: 'de'
+})
 
 export default Page
