@@ -155,7 +155,13 @@ export const getStaticProps = createGetStaticProps({
   getVariables: ({ params: { id } }) => ({
     id
   }),
-  isNotFound: ({ data }) => !data.getParliamentarian
+  getCustomStaticProps: ({ data }) => {
+    if (!data.getParliamentarian) {
+      return {
+        notFound: true
+      }
+    }
+  }
 })
 export async function getStaticPaths() {
   return {
