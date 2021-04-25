@@ -1,15 +1,15 @@
 import React from 'react'
 import {css} from 'glamor'
 
-import {gql} from '@apollo/client'
 import {graphql} from '@apollo/client/react/hoc'
 import {stratify} from 'd3-hierarchy'
 import {withRouter} from 'next/router'
+import Link from 'next/link'
 
 import {Center} from './index'
 import SocialMedia from './SocialMedia'
 import Newsletter from './Newsletter'
-import {StyledLink, A, Hr, metaStyle, Strong, Clear} from '../Styled'
+import {A, Hr, metaStyle, Strong, Clear} from '../Styled'
 import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../../theme'
 import CreativeCommons from '../../assets/CreativeCommons'
 import Message from '../Message'
@@ -120,9 +120,9 @@ const Footer = ({loading, error, links, blocks, locale, router: {pathname, query
                         const supportedPath = href.match(/^\/([^/]+)/)
                         if (supportedPath && locales.indexOf(supportedPath[1]) !== -1) {
                           link = (
-                            <StyledLink href={href}>
-                              {title}
-                            </StyledLink>
+                            <Link href={href} prefetch={false} passHref>
+                              <A>{title}</A>
+                            </Link>
                           )
                         } else {
                           link = (
