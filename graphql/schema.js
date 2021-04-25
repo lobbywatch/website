@@ -18,12 +18,15 @@ type MenuLink {
   href: String
 }
 type Block {
+  id: ID!
   region: String
+  # deprecated
   key: String
   title: String
   content: String
 }
 type Meta {
+  id: ID!
   blocks(region: String): [Block!]!
   links: [MenuLink!]!
 }

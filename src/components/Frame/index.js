@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import {css} from 'glamor'
-import {withRouter} from 'next/router'
+import {useRouter} from 'next/router'
 
 import Header from './Header'
 import Footer from './Footer'
 import {BLACK, FRAME_PADDING} from '../../theme'
-import { locales } from '../../../constants'
+import {getSafeLocale} from '../../../constants'
 
 const centerStyle = css({
   maxWidth: 800,
@@ -32,8 +32,9 @@ const bodyGrowerStyle = css({
   flexGrow: 1
 })
 
-const Frame = ({router: {query: {locale: queryLocale, term}}, localizeHref, children}) => {
-  const locale = locales.includes(queryLocale) ? queryLocale : 'de'
+const Frame = ({localizeHref, children}) => {
+  const {query: {locale: queryLocale, term}} = useRouter()
+  const locale = getSafeLocale(queryLocale)
   return (
     <div {...containerStyle}>
       <div {...bodyGrowerStyle}>
@@ -47,10 +48,7 @@ const Frame = ({router: {query: {locale: queryLocale, term}}, localizeHref, chil
 
 Frame.propTypes = {
   children: PropTypes.node,
-  localizeHref: PropTypes.func,
-  router: PropTypes.shape({
-    query: PropTypes.object.isRequired
-  }).isRequired
+  localizeHref: PropTypes.func
 }
 
-export default withRouter(Frame)
+export default Frame

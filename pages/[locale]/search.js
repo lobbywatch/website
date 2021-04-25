@@ -1,7 +1,8 @@
 import React from 'react'
 
-import {graphql} from 'react-apollo'
-import gql from 'graphql-tag'
+import {gql} from '@apollo/client'
+import {graphql} from '@apollo/client/react/hoc'
+
 import {withRouter} from 'next/router'
 
 import {P} from 'src/components/Styled'
@@ -13,6 +14,8 @@ import Loader from 'src/components/Loader'
 import Frame, {Center} from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
+
+import {withInitialProps} from 'lib/apolloClient'
 
 const searchQuery = gql`
   query search($locale: Locale!, $term: String!) {
@@ -111,4 +114,4 @@ const Page = ({router: {query: {locale, term}}}) => (
   </Frame>
 )
 
-export default withRouter(Page)
+export default withInitialProps(withRouter(Page))

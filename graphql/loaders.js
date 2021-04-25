@@ -5,6 +5,7 @@ const gsheets = require('gsheets')
 const LRU = require('lru-cache')
 const {loadSearch} = require('./search')
 const api = require('./api')
+const translationJson = require('../lib/translations.json')
 
 const createDataLoaderLruCache = (options) => {
   const cache = new LRU(options)
@@ -17,11 +18,6 @@ const createDataLoaderLruCache = (options) => {
   }
 }
 
-const LOCAL_TRANSLATION_PATH = path.join('..', 'lib', 'translations.json')
-const HAS_LOCAL_TRANSLATIONS = fs.existsSync(
-  path.join(__dirname, LOCAL_TRANSLATION_PATH)
-)
-
 const mapTranslations = (locales, data) => {
   return locales.map(locale => {
     const translations = data.map(translation => ({
@@ -33,11 +29,10 @@ const mapTranslations = (locales, data) => {
   })
 }
 
-const loadTranslations = HAS_LOCAL_TRANSLATIONS
+const loadTranslations = !process.env.LIVE_TRANSLATIONS
 ? (locales) => {
-  const json = require(LOCAL_TRANSLATION_PATH)
   return Promise.resolve(
-    mapTranslations(locales, json.data)
+    mapTranslations(locales, translationJson.data)
   )
 }
 : (locales) => {

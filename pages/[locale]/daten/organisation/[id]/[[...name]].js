@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {graphql} from 'react-apollo'
-import gql from 'graphql-tag'
+import {gql} from '@apollo/client'
+import {graphql} from '@apollo/client/react/hoc'
 import {withRouter} from 'next/router'
 
 import Loader from 'src/components/Loader'
@@ -12,6 +12,8 @@ import DetailHead from 'src/components/DetailHead'
 import {A, Meta} from 'src/components/Styled'
 import {withT} from 'src/components/Message'
 import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from 'constants'
+
+import {withInitialProps} from 'lib/apolloClient'
 
 const orgQuery = gql`
   query getOrganisation($locale: Locale!, $id: ID!) {
@@ -128,4 +130,4 @@ const Page = ({router: {query: {locale, id}}, serverContext}) => (
   </Frame>
 )
 
-export default withRouter(Page)
+export default withInitialProps(withRouter(Page))

@@ -19,7 +19,7 @@ or with env settings
 
 ```bash
 npm install
-PUBLIC_BASE_URL='http://lobbywatch.local' DEBUG_INFORMATION=1 npm run dev
+NEXT_PUBLIC_PUBLIC_BASE_URL='http://lobbywatch.local' NEXT_PUBLIC_DEBUG_INFORMATION=1 npm run dev
 ```
 
 ## Deploy

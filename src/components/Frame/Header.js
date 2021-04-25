@@ -23,6 +23,7 @@ import SearchIcon from '../../assets/Search'
 import Menu from './Menu'
 import Toggle from './Toggle'
 import { JsonLd } from '../JsonLd'
+import LoadingBar from './LoadingBar'
 
 const titleStyle = css({
   fontSize: 24,
@@ -200,6 +201,7 @@ class Header extends Component {
 
     return (
       <header>
+        <LoadingBar />
         <JsonLd data={{"@context": "http://schema.org/", "@type": "WPHeader"}} />
         <Head>
           {localizedRoutes.map(({locale, href}) => (

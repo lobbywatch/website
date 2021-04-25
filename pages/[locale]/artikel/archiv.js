@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {graphql} from 'react-apollo'
-import gql from 'graphql-tag'
+import {gql} from '@apollo/client'
+import {graphql} from '@apollo/client/react/hoc'
 import {withRouter} from 'next/router'
 
 import Loader from 'src/components/Loader'
@@ -12,6 +12,8 @@ import Grid, {GridItem} from 'src/components/Grid'
 import {H1} from 'src/components/Styled'
 import Message from 'src/components/Message'
 import PageNavigation from 'src/components/PageNavigation'
+
+import {withInitialProps} from 'lib/apolloClient'
 
 const blogQuery = gql`
   query blog($locale: Locale!, $page: Int!) {
@@ -69,4 +71,4 @@ const Page = ({router: {query: {locale, page}}}) => (
   </Frame>
 )
 
-export default withRouter(Page)
+export default withInitialProps(withRouter(Page))

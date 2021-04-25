@@ -1,8 +1,7 @@
 import React from 'react'
 
-import {graphql} from 'react-apollo'
-import gql from 'graphql-tag'
-import {withRouter} from 'next/router'
+import {gql, useQuery} from '@apollo/client'
+import {useRouter} from 'next/router'
 
 import Loader from 'src/components/Loader'
 import Frame, {Center} from 'src/components/Frame'
@@ -11,7 +10,7 @@ import RawHtml from 'src/components/RawHtml'
 import Cover, {NARROW_WIDTH} from 'src/components/Cover'
 import {H1, Meta} from 'src/components/Styled'
 
-import {NotFound} from 'pages/404'
+import {createGetStaticProps} from 'lib/apolloClientSchemaLink'
 
 const pageQuery = gql`
   query page($locale: Locale!, $path: [String!]!) {
@@ -37,8 +36,16 @@ const pageQuery = gql`
   }
 `
 
-const Page = ({loading, error, page, router: {query: {locale}}}) => (
-  <Frame localizeHref={(targetLocale) => {
+const Page = () => {
+  const {query: {locale, path}, isFallback} = useRouter()
+  const {loading, error, data: { page }} = useQuery(pageQuery, {
+    variables: {
+      locale,
+      path
+    }
+  })
+  
+  return <Frame localizeHref={(targetLocale) => {
     const translation = !!page && (
       page.translations
         .find(t => t.locale === targetLocale)
@@ -48,10 +55,7 @@ const Page = ({loading, error, page, router: {query: {locale}}}) => (
     }
     return `/${targetLocale}/${translation.path.join('/')}`
   }}>
-    <Loader loading={loading} error={error} render={() => {
-      if (page.statusCode === 404) {
-        return <NotFound />
-      }
+    <Loader loading={loading || isFallback} error={error} render={() => {
       return (
         <>
           <MetaTags locale={locale} title={page.title} description={page.lead} image={page.image} page={page}/>
@@ -71,46 +75,34 @@ const Page = ({loading, error, page, router: {query: {locale}}}) => (
       )
     }} />
   </Frame>
-)
+}
 
-const PageWithQuery = graphql(pageQuery, {
-  options: ({router: { query: { locale, path }}}) => {
-    return {
-      variables: {
-        locale,
-        path
+export const getStaticProps = createGetStaticProps({
+  pageQuery: pageQuery,
+  getVariables: ({ params: { path } }) => ({
+    path
+  }),
+  getCustomStaticProps: ({ data: { page } }, { params }) => {
+    if (page.statusCode === 404) {
+      return {
+        notFound: true
       }
     }
-  },
-  props: ({data, ownProps: {router, router: {query: { locale, path }}, serverContext}}) => {
-    const page = data.page
-    const redirect = (
-      !data.loading &&
-      page &&
-      page.path &&
-      page.statusCode !== 404 &&
-      page.path.join('/') !== path.join('/')
-    )
-    if (serverContext) {
-      if (redirect) {
-        serverContext.res.redirect(301, `/${locale}/${page.path.join('/')}`)
-        serverContext.res.end()
-      } else if (page && page.statusCode) {
-        serverContext.res.statusCode = page.statusCode
+    if (page.path.join('/') !== params.path.join('/')) {
+      return {
+        redirect: {
+          destination: `/${params.locale}/${page.path.join('/')}`,
+          permanent: true
+        }
       }
-    } else {
-      if (redirect) {
-        router.replace(
-          `/${locale}/${page.path.join('/')}`
-        )
-      }
-    }
-    return {
-      loading: data.loading,
-      error: data.error,
-      page
     }
   }
-})(Page)
+})
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking'
+  }
+}
 
-export default withRouter(PageWithQuery)
+export default Page

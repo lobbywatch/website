@@ -1,35 +1,23 @@
 import React from 'react'
 import {css} from 'glamor'
 
-import {graphql} from 'react-apollo'
-import gql from 'graphql-tag'
+import {graphql} from '@apollo/client/react/hoc'
 import {stratify} from 'd3-hierarchy'
 import {withRouter} from 'next/router'
+import Link from 'next/link'
 
 import {Center} from './index'
 import SocialMedia from './SocialMedia'
 import Newsletter from './Newsletter'
-import {StyledLink, A, Hr, metaStyle, Strong, Clear} from '../Styled'
+import {A, Hr, metaStyle, Strong, Clear} from '../Styled'
 import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../../theme'
 import CreativeCommons from '../../assets/CreativeCommons'
 import Message from '../Message'
 import Loader from '../Loader'
 import {locales} from '../../../constants'
 import BlockRegion from '../BlockRegion'
-import { JsonLd } from '../JsonLd'
-
-const metaQuery = gql`
-  query meta($locale: Locale!) {
-    meta(locale: $locale) {
-      links {
-        id
-        parentId
-        title
-        href
-      }
-    }
-  }
-`
+import {JsonLd} from '../JsonLd'
+import {metaQuery} from '../../../lib/baseQueries'
 
 const footerStyle = css({
   backgroundColor: GREY_SOFT,
@@ -105,12 +93,12 @@ const groupLinks = (links) => {
   ]).children || []
 }
 
-const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
+const Footer = ({loading, error, links, blocks, locale, router: {pathname, query}}) => (
   <footer style={{ marginTop: 20 }}>
     <JsonLd data={{"@context": "http://schema.org/", "@type": "WPFooter"}} />
     <Center>
-      {!(pathname === '/[locale]/[...path]' && query.path.join('') === 'unterstuetzen') &&
-        <BlockRegion locale={locale} region='rooster_home' compact first={pathname !== '/[locale]'} />
+      {!(pathname === '/[locale]/[...path]' && query.path?.join() === 'unterstuetzen') &&
+        <BlockRegion blocks={blocks} compact first={pathname !== '/[locale]'} />
       }
       <Clear {...columnContainerStyle}>
         <div {...columnStyle}><SocialMedia locale={locale} /></div>
@@ -132,9 +120,9 @@ const Footer = ({loading, error, links, locale, router: {pathname, query}}) => (
                         const supportedPath = href.match(/^\/([^/]+)/)
                         if (supportedPath && locales.indexOf(supportedPath[1]) !== -1) {
                           link = (
-                            <StyledLink href={href}>
-                              {title}
-                            </StyledLink>
+                            <Link href={href} prefetch={false} passHref>
+                              <A>{title}</A>
+                            </Link>
                           )
                         } else {
                           link = (
@@ -181,7 +169,8 @@ const FooterWithQuery = graphql(metaQuery, {
     return {
       loading: data.loading,
       error: data.error,
-      links: data.meta ? data.meta.links : []
+      links: data.meta ? data.meta.links : [],
+      blocks: data.meta ? data.meta.blocks : []
     }
   }
 })(Footer)

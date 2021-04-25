@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import Head from 'next/head'
-import {withT} from './Message'
+import {useT} from './Message'
 import {set, nest} from 'd3-collection'
 import {descending} from 'd3-array'
 import {A, H2, Meta} from './Styled'
@@ -551,7 +551,9 @@ const generateJsonLds = (locale, t, fromT, item, props, rest) => {
   return jsonLds
 }
 
-const MetaTags = ({locale, t, fromT, data, page, ...rest}) => {
+const MetaTags = ({locale, fromT, data, page, ...rest}) => {
+  const t = useT(locale)
+
   let props = rest
   if (fromT) {
     props = {
@@ -582,13 +584,17 @@ const MetaTags = ({locale, t, fromT, data, page, ...rest}) => {
   return <Raw {...props} />
 }
 
-export default withT(MetaTags)
+export default MetaTags
 
-export const GooglePreview = ({data, t, path}) => (
-  <div style={{maxWidth: 600}}>
-    <Meta style={{marginBottom: 0}}>Google Snippet Preview</Meta>
-    <H2 style={{margin: 0, fontSize: 18}}>{data.name} – Lobbywatch.ch</H2>
-    <A style={{margin: 0, fontSize: 14}}>https://lobbywatch.ch{path}</A>
-    <Meta style={{margin: 0, marginTop: 3, fontSize: 13}}>{description(data, t)}</Meta>
-  </div>
-)
+export const GooglePreview = ({data, locale, path}) => {
+  const t = useT(locale)
+
+  return (
+    <div style={{maxWidth: 600}}>
+      <Meta style={{marginBottom: 0}}>Google Snippet Preview</Meta>
+      <H2 style={{margin: 0, fontSize: 18}}>{data.name} – Lobbywatch.ch</H2>
+      <A style={{margin: 0, fontSize: 14}}>https://lobbywatch.ch{path}</A>
+      <Meta style={{margin: 0, marginTop: 3, fontSize: 13}}>{description(data, t)}</Meta>
+    </div>
+  )
+}

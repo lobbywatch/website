@@ -51,7 +51,7 @@ const ListView = ({locale, items, title, subtitle, maxWidth}) => {
     const {__typename, id, portrait} = item
     const Icon = Icons[__typename]
     return (
-      <Link key={id} href={itemPath(item, locale)}>
+      <Link key={id} href={itemPath(item, locale)} prefetch={false}>
         <a {...aStyle}>
           {!!portrait && <img {...symbolStyle} {...portraitStyle}
             src={portrait} alt='' />}

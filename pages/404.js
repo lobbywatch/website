@@ -3,6 +3,7 @@ import React from 'react'
 import Frame, {Center} from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import {H1, P} from 'src/components/Styled'
+import {createGetStaticProps} from 'lib/apolloClientSchemaLink'
 
 export const NotFound = () => <>
   <MetaTags locale='de' title='404' />
@@ -14,13 +15,14 @@ export const NotFound = () => <>
   </Center>
 </>
 
-const Page = ({ serverContext }) => {
-  if (serverContext) {
-    serverContext.res.statusCode = 404
-  }
+const Page = () => {
   return <Frame>
     <NotFound />
   </Frame>
 }
+
+export const getStaticProps = createGetStaticProps({
+  defaultLocale: 'de'
+})
 
 export default Page
