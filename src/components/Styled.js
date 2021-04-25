@@ -18,7 +18,7 @@ export const StyledLink = ({children, className, ...props}) => (
   <NextLink {...props}><a className={className} {...linkRule}>{children}</a></NextLink>
 )
 
-export const A = ({children, ...props}) => <a {...props} {...linkRule}>{children}</a>
+export const A = React.forwardRef(({children, ...props}, ref) => <a ref={ref} {...props} {...linkRule}>{children}</a>)
 
 export const buttonLinkStyle = {
   display: 'inline-block',
