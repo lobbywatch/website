@@ -1,10 +1,7 @@
-const {
-  NEXT_PUBLIC_BASE_URL,
-  NEXT_PUBLIC_VERCEL_URL,
-  NEXT_PUBLIC_GA_TRACKING_ID,
-  NEXT_PUBLIC_DEBUG_INFORMATION,
-  PORT
-} = process?.env
+const NEXT_PUBLIC_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL
+const NEXT_PUBLIC_VERCEL_URL = process.env.NEXT_PUBLIC_VERCEL_URL
+const NEXT_PUBLIC_GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_TRACKING_ID
+const NEXT_PUBLIC_DEBUG_INFORMATION = process.env.NEXT_PUBLIC_DEBUG_INFORMATION
 
 const locales = ['de', 'fr']
 exports.locales = locales
@@ -27,7 +24,7 @@ exports.GRAPHQL_URI = location
   ? `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}/graphql`
   : PUBLIC_BASE_URL
     ? `${PUBLIC_BASE_URL}/graphql`
-    : `http://127.0.0.1:${PORT || 3000}/graphql`
+    : `http://127.0.0.1:${process.env.PORT || 3000}/graphql`
 
 exports.GA_TRACKING_ID = NEXT_PUBLIC_GA_TRACKING_ID
 
