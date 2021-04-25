@@ -1,13 +1,15 @@
 const {
-  NEXT_PUBLIC_PUBLIC_BASE_URL,
+  NEXT_PUBLIC_BASE_URL,
   NEXT_PUBLIC_VERCEL_URL,
   NEXT_PUBLIC_GA_TRACKING_ID,
-  NEXT_PUBLIC_DEBUG_INFORMATION
-} = process.env
+  NEXT_PUBLIC_DEBUG_INFORMATION,
+  PORT
+} = process?.env
 
-exports.locales = ['de', 'fr']
-exports.localeSegment = `:locale(${exports.locales.join('|')})`
-exports.getSafeLocale = locale => exports.locales.includes(locale)
+const locales = ['de', 'fr']
+exports.locales = locales
+exports.localeSegment = `:locale(${locales.join('|')})`
+exports.getSafeLocale = locale => locales.includes(locale)
   ? locale
   : 'de'
 
@@ -15,17 +17,17 @@ exports.DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
 exports.DRUPAL_DATA_BASE_URL = 'https://cms.lobbywatch.ch'
 exports.DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
 
-exports.PUBLIC_BASE_URL = NEXT_PUBLIC_PUBLIC_BASE_URL || NEXT_PUBLIC_VERCEL_URL
-
-const serverPort = (typeof process !== 'undefined' && process.env.PORT) || 3000
+const PUBLIC_BASE_URL = NEXT_PUBLIC_BASE_URL || (
+  NEXT_PUBLIC_VERCEL_URL ? `https://${NEXT_PUBLIC_VERCEL_URL}` : undefined
+)
+exports.PUBLIC_BASE_URL = PUBLIC_BASE_URL
 
 const location = typeof window !== 'undefined' && window.location
-const hostname = location ? location.hostname : '127.0.0.1'
-const port = location ? location.port : serverPort
-const protocol = location ? location.protocol : 'http:'
-exports.GRAPHQL_URI = NEXT_PUBLIC_VERCEL_URL
-  ? `https://${NEXT_PUBLIC_VERCEL_URL}/graphql`
-  : `${protocol}//${hostname}${port ? `:${port}` : ''}/graphql`
+exports.GRAPHQL_URI = location
+  ? `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}/graphql`
+  : PUBLIC_BASE_URL
+    ? `${PUBLIC_BASE_URL}/graphql`
+    : `http://127.0.0.1:${PORT || 3000}/graphql`
 
 exports.GA_TRACKING_ID = NEXT_PUBLIC_GA_TRACKING_ID
 
