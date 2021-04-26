@@ -1,8 +1,7 @@
 import React from 'react'
 
-import {gql} from '@apollo/client'
-import {graphql} from '@apollo/client/react/hoc'
-import {withRouter} from 'next/router'
+import {gql, useQuery} from '@apollo/client'
+import {useRouter} from 'next/router'
 
 import Loader from 'src/components/Loader'
 import Frame, {Center} from 'src/components/Frame'
@@ -13,7 +12,7 @@ import {A, Meta} from 'src/components/Styled'
 import {withT} from 'src/components/Message'
 import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from 'constants'
 
-import {withInitialProps} from 'lib/apolloClient'
+import {createGetStaticProps} from 'lib/apolloClientSchemaLink'
 
 const branchQuery = gql`
   query getBranch($locale: Locale!, $id: ID!) {
@@ -70,55 +69,64 @@ const CONNECTION_WEIGHTS = {
   Organisation: 0
 }
 
-const Branch = ({loading, error, branch, t, locale, id}) => (
-  <Loader loading={loading} error={error} render={() => {
-    const {__typename, name} = branch
-    const rawId = id.replace(`${__typename}-`, '')
-    const path = `/${locale}/daten/branch/${rawId}/${name}`
-    return (
-      <div>
-        <MetaTags locale={locale} data={branch} />
-        <Center>
-          <DetailHead locale={locale} data={branch} />
-        </Center>
-        <Connections locale={locale}
-          directness={1}
-          data={branch.connections}
-          groupByDestination
-          connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
-        {DEBUG_INFORMATION && <Center>
-          <Meta>
-            Original Profil:
-            {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
-            {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
-          </Meta>
-          <GooglePreview data={branch} t={t} path={path} />
-        </Center>}
-      </div>
-    )
-  }} />
-)
+const Branch = () => {
+  const {query: {locale, id}, isFallback} = useRouter()
+  const {loading, error, data} = useQuery(branchQuery, {
+    variables: {
+      locale,
+      id
+    }
+  })
 
-const BranchWithQuery = withT(graphql(branchQuery, {
-  props: ({data, ownProps: {serverContext, t}}) => {
-    const notFound = !data.loading && !data.getBranch
-    if (serverContext) {
-      if (notFound) {
-        serverContext.res.statusCode = 404
+  return <Frame>
+    <Loader loading={loading || isFallback} error={error} render={() => {
+      const { getBranch: branch } = data
+      const {__typename, name} = branch
+      const rawId = id.replace(`${__typename}-`, '')
+      const path = `/${locale}/daten/branch/${rawId}/${name}`
+      return (
+        <div>
+          <MetaTags locale={locale} data={branch} />
+          <Center>
+            <DetailHead locale={locale} data={branch} />
+          </Center>
+          <Connections locale={locale}
+            directness={1}
+            data={branch.connections}
+            groupByDestination
+            connectionWeight={connection => CONNECTION_WEIGHTS[connection.to.__typename]} />
+          {DEBUG_INFORMATION && <Center>
+            <Meta>
+              Original Profil:
+              {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
+              {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
+            </Meta>
+            <GooglePreview data={branch} t={t} path={path} />
+          </Center>}
+        </div>
+      )
+    }} />
+  </Frame>
+}
+
+export const getStaticProps = createGetStaticProps({
+  pageQuery: branchQuery,
+  getVariables: ({ params: { id } }) => ({
+    id
+  }),
+  getCustomStaticProps: ({ data }) => {
+    if (!data.getBranch) {
+      return {
+        notFound: true
       }
     }
-    return {
-      loading: data.loading,
-      error: data.error || (notFound && t('branch/error/404')),
-      branch: data.getBranch
-    }
   }
-})(Branch))
+})
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking'
+  }
+}
 
-const Page = ({router: {query: {locale, id}}, serverContext}) => (
-  <Frame>
-    <BranchWithQuery locale={locale} id={id} serverContext={serverContext} />
-  </Frame>
-)
-
-export default withInitialProps(withRouter(Page))
+export default Branch
