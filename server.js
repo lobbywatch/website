@@ -16,7 +16,11 @@ app.prepare().then(() => {
   if (!dev && NEXT_PUBLIC_BASE_URL) {
     server.enable('trust proxy')
     server.use((req, res, next) => {
-      if (`${req.protocol}://${req.get('Host')}` !== NEXT_PUBLIC_BASE_URL) {
+      if (
+        // allow 127.0.0.1 for graphql queries during SSR
+        req.hostname !== '127.0.0.1' &&
+        `${req.protocol}://${req.get('Host')}` !== NEXT_PUBLIC_BASE_URL
+      ) {
         return res.redirect(NEXT_PUBLIC_BASE_URL + req.url)
       }
       return next()
