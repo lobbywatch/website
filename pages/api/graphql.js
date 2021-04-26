@@ -11,7 +11,11 @@ const apolloServer = new ApolloServer({
   playground: true,
   context: () => ({
     loaders: createLoaders()
-  })
+  }),
+  formatError: (err) => {
+    console.error('[graphql]', err)
+    return err
+  }
 })
 
 export const config = {
