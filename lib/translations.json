@@ -1,5 +1,5 @@
 {
-  "updated": "2020-06-29T19:27:31.415Z",
+  "updated": "2021-04-26T21:50:27.701Z",
   "title": "translations",
   "data": [
     {
@@ -14,7 +14,7 @@
     },
     {
       "key": "menu/parliamentarians",
-      "de": "Parlamentarier/in",
+      "de": "Parlamentarier:in",
       "fr": "Parlementaires"
     },
     {
@@ -399,30 +399,9 @@
       "fr": "Invitée par"
     },
     {
-      "key": "guest/error/404",
-      "de": "Zutrittsberechtigte(r) nicht gefunden",
-      "fr": "Accrédité non trouvé",
-      "undefined": "Accréditée non trouvée"
-    },
-    {
-      "key": "parliamentarian/error/404",
-      "de": "Parlamentarier(in) nicht gefunden",
-      "fr": "Parlementaire non trouvé"
-    },
-    {
-      "key": "organisation/error/404",
-      "de": "Organisation nicht gefunden",
-      "fr": "Organisation non trouvée"
-    },
-    {
       "key": "lobbygroup/error/404",
       "de": "Lobbygruppe nicht gefunden",
       "fr": "Groupe d'intérêt non trouvé"
-    },
-    {
-      "key": "branch/error/404",
-      "de": "Branche nicht gefunden",
-      "fr": "Branche non trouvé"
     },
     {
       "key": "connections/legend/type/title",
