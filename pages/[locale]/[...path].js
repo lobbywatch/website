@@ -38,7 +38,7 @@ const pageQuery = gql`
 
 const Page = () => {
   const {query: {locale, path}, isFallback} = useRouter()
-  const {loading, error, data: { page }} = useQuery(pageQuery, {
+  const {loading, error, data: { page } = {}} = useQuery(pageQuery, {
     variables: {
       locale,
       path
