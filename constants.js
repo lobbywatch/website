@@ -10,9 +10,13 @@ exports.getSafeLocale = locale => locales.includes(locale)
   ? locale
   : 'de'
 
+exports.NEXT_PUBLIC_BASE_URL = NEXT_PUBLIC_BASE_URL
 exports.DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
 exports.DRUPAL_DATA_BASE_URL = 'https://cms.lobbywatch.ch'
 exports.DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
+
+const SERVER_PORT = (typeof process !== 'undefined' && process.env.PORT) || 3000
+exports.SERVER_PORT = SERVER_PORT
 
 const PUBLIC_BASE_URL = NEXT_PUBLIC_BASE_URL || (
   NEXT_PUBLIC_VERCEL_URL ? `https://${NEXT_PUBLIC_VERCEL_URL}` : undefined
@@ -24,7 +28,7 @@ exports.GRAPHQL_URI = location
   ? `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ''}/graphql`
   : NEXT_PUBLIC_VERCEL_URL
     ? `${PUBLIC_BASE_URL}/graphql` // on vercel there is no local http server, we need to go via public url
-    : `http://127.0.0.1:${process.env.PORT || 3000}/graphql` // for fast access on heroku and for localhost
+    : `http://127.0.0.1:${SERVER_PORT}/graphql` // for fast access on heroku and for localhost
 
 exports.GA_TRACKING_ID = NEXT_PUBLIC_GA_TRACKING_ID
 
