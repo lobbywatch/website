@@ -1,8 +1,7 @@
 import React from 'react'
 
-import {gql} from '@apollo/client'
-import {graphql} from '@apollo/client/react/hoc'
-import {withRouter} from 'next/router'
+import {gql, useQuery} from '@apollo/client'
+import {useRouter} from 'next/router'
 
 import Loader from 'src/components/Loader'
 import Frame, {Center} from 'src/components/Frame'
@@ -10,10 +9,9 @@ import MetaTags, {GooglePreview} from 'src/components/MetaTags'
 import Connections, {hoverValues} from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import {Meta, A} from 'src/components/Styled'
-import {withT} from 'src/components/Message'
 import {DRUPAL_BASE_URL, DEBUG_INFORMATION} from 'constants'
 
-import {withInitialProps} from 'lib/apolloClient'
+import {createGetStaticProps} from 'lib/apolloClientSchemaLink'
 
 const guestQuery = gql`
   query getGuest($locale: Locale!, $id: ID!) {
@@ -62,61 +60,70 @@ const guestQuery = gql`
   }
 `
 
-const Guest = ({loading, error, guest, t, locale, id}) => (
-  <Loader loading={loading} error={error} render={() => {
-    const {__typename, updated, published, name} = guest
-    const rawId = id.replace(`${__typename}-`, '')
-    const path = `/${locale}/daten/zutrittsberechtigter/${rawId}/${name}`
-    return (
-      <div>
-        <MetaTags locale={locale} data={guest} />
-        <Center>
-          <DetailHead locale={locale} data={guest} />
-        </Center>
-        <Connections locale={locale} potency
-          updated={updated}
-          published={published}
-          data={guest.connections}
-          maxGroups={7}
-          hoverValues={hoverValues.concat([
-            [
-              'connections/context/lobbygroup',
-              hover => hover.data.connection.group !== hover.parent.data.label && hover.data.connection.group
-            ]
-          ])} />
-        {DEBUG_INFORMATION && <Center>
-          <Meta>
-            Original Profil:
-            {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
-            {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
-          </Meta>
-          <GooglePreview data={guest} t={t} path={path} />
-        </Center>}
-      </div>
-    )
-  }} />
-)
+const Guest = () => {
+  const {query: {locale, id}, isFallback} = useRouter()
+  const {loading, error, data} = useQuery(guestQuery, {
+    variables: {
+      locale,
+      id
+    }
+  })
+  
+  return <Frame>
+    <Loader loading={loading || isFallback} error={error} render={() => {
+      const { getGuest: guest } = data
+      const {__typename, updated, published, name} = guest
+      const rawId = id.replace(`${__typename}-`, '')
+      const path = `/${locale}/daten/zutrittsberechtigter/${rawId}/${name}`
+      return (
+        <div>
+          <MetaTags locale={locale} data={guest} />
+          <Center>
+            <DetailHead locale={locale} data={guest} />
+          </Center>
+          <Connections locale={locale} potency
+            updated={updated}
+            published={published}
+            data={guest.connections}
+            maxGroups={7}
+            hoverValues={hoverValues.concat([
+              [
+                'connections/context/lobbygroup',
+                hover => hover.data.connection.group !== hover.parent.data.label && hover.data.connection.group
+              ]
+            ])} />
+          {DEBUG_INFORMATION && <Center>
+            <Meta>
+              Original Profil:
+              {' '}<A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>Staging</A>
+              {', '}<A target='_blank' href={`https://lobbywatch.ch${path}`}>Live</A>
+            </Meta>
+            <GooglePreview data={guest} t={t} path={path} />
+          </Center>}
+        </div>
+      )
+    }} />
+  </Frame>
+}
 
-const GuestWithQuery = withT(graphql(guestQuery, {
-  props: ({data, ownProps: {serverContext, t}}) => {
-    const notFound = !data.loading && !data.getGuest
-    if (serverContext) {
-      if (notFound) {
-        serverContext.res.statusCode = 404
+export const getStaticProps = createGetStaticProps({
+  pageQuery: guestQuery,
+  getVariables: ({ params: { id } }) => ({
+    id
+  }),
+  getCustomStaticProps: ({ data }) => {
+    if (!data.getGuest) {
+      return {
+        notFound: true
       }
     }
-    return {
-      loading: data.loading,
-      error: data.error || (notFound && t('guest/error/404')),
-      guest: data.getGuest
-    }
   }
-})(Guest))
+})
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking'
+  }
+}
 
-const Page = ({router: {query: {locale, id}}, serverContext}) => (
-  <Frame>
-    <GuestWithQuery locale={locale} id={id} serverContext={serverContext} />
-  </Frame>
-)
-
-export default withInitialProps(withRouter(Page))
+export default Guest
