@@ -591,12 +591,14 @@ const mapParliamentarian = (exports.mapParliamentarian = (raw, t) => {
 
 exports.mapPage = (locale, raw, statusCode) => {
   const image = raw.field_image && raw.field_image[0] && raw.field_image[0].url
-  const content = raw.body.value.replace(
-    /"(\/sites\/lobbywatch\.ch\/files\/)/g,
-    (_, path) => {
-      return `"${DRUPAL_IMAGE_BASE_URL}${path}`
-    }
-  )
+  const content = raw.body.value
+    ? raw.body.value.replace(
+        /"(\/sites\/lobbywatch\.ch\/files\/)/g,
+        (_, path) => {
+          return `"${DRUPAL_IMAGE_BASE_URL}${path}`
+        }
+      )
+    : 'Nicht unterstützter Inhalt / Contenu non pris en charge'
   return Object.assign({}, raw, {
     statusCode,
     path: raw.path.split('/'),
