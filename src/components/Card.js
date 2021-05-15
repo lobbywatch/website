@@ -7,7 +7,7 @@ import { h2Rule, metaRule, ButtonLink, P, TextCenter } from './Styled'
 import Message from './Message'
 
 import { css } from 'glamor'
-import { WHITE, GREY_SOFT, GREY_LIGHT } from '../theme'
+import { WHITE, GREY_SOFT } from '../theme'
 import { locales } from '../../constants'
 
 const containerStyle = css({
@@ -20,9 +20,6 @@ const containerStyle = css({
 })
 const headStyle = css({
   textDecoration: 'none',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundColor: GREY_LIGHT,
   minHeight: 160,
   padding: '16px 24px',
   position: 'relative',
