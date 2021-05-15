@@ -1,79 +1,87 @@
 const api = require('./api')
-const {ascending} = require('d3-array')
-const {getFormatter} = require('../src/utils/translate')
+const { ascending } = require('d3-array')
+const { getFormatter } = require('../src/utils/translate')
 const {
-  mapPage, mapMeta,
-  mapParliamentarian, parliamentarianIdPrefix,
-  mapGuest, guestIdPrefix,
-  mapOrganisation, orgIdPrefix,
-  mapLobbyGroup, lobbyGroupIdPrefix,
-  mapBranch, branchIdPrefix
+  mapPage,
+  mapMeta,
+  mapParliamentarian,
+  parliamentarianIdPrefix,
+  mapGuest,
+  guestIdPrefix,
+  mapOrganisation,
+  orgIdPrefix,
+  mapLobbyGroup,
+  lobbyGroupIdPrefix,
+  mapBranch,
+  branchIdPrefix,
 } = require('./mappers')
 
 const resolveFunctions = {
   Person: {
-    __resolveType (data, context, info) {
+    __resolveType(data, context, info) {
       const [type] = data.id.split('-')
       return info.schema.getType(type)
-    }
+    },
   },
   Entity: {
-    __resolveType (data, context, info) {
+    __resolveType(data, context, info) {
       const [type] = data.id.split('-')
       return info.schema.getType(type)
-    }
+    },
   },
   RootQuery: {
-    meta (_, {locale}, {loaders: {meta}}) {
-      return meta.load(locale).then(data => mapMeta(locale, data))
+    meta(_, { locale }, { loaders: { meta } }) {
+      return meta.load(locale).then((data) => mapMeta(locale, data))
     },
-    page (_, {locale, path}) {
+    page(_, { locale, path }) {
       const query = {
         'load-entity-refs': 'taxonomy_term,file',
-        'url': path.join('/')
+        url: path.join('/'),
       }
-      return api.drupal(locale, 'daten/page', query)
-        .then(
-          ({json, response}) => mapPage(locale, json, response.status),
-          error => {
-            if (error.response && error.response.status === 404) {
-              return {
-                nid: 0,
-                type: 'page',
-                statusCode: 404,
-                title: '404',
-                path: ['404'],
-                translations: [],
-                lead: ''
-              }
-            } else {
-              throw error
+      return api.drupal(locale, 'daten/page', query).then(
+        ({ json, response }) => mapPage(locale, json, response.status),
+        (error) => {
+          if (error.response && error.response.status === 404) {
+            return {
+              nid: 0,
+              type: 'page',
+              statusCode: 404,
+              title: '404',
+              path: ['404'],
+              translations: [],
+              lead: '',
             }
+          } else {
+            throw error
           }
-        )
+        }
+      )
     },
-    articles (_, {locale, limit, page}) {
+    articles(_, { locale, limit, page }) {
       const query = {
         'load-entity-refs': 'taxonomy_term,file',
         limit,
-        page
+        page,
       }
 
-      return api.drupal(locale, 'daten/articles', query)
-        .then(({json}) => {
-          return {
-            pages: +json.pages,
-            list: json.list.map(article => mapPage(locale, article))
-          }
-        })
+      return api.drupal(locale, 'daten/articles', query).then(({ json }) => {
+        return {
+          pages: +json.pages,
+          list: json.list.map((article) => mapPage(locale, article)),
+        }
+      })
     },
-    parliamentarians (_, {locale}, {loaders: {translations}}, info) {
+    parliamentarians(_, { locale }, { loaders: { translations } }, info) {
       const queriedFields = new Set(
-        info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
+        info.fieldNodes[0].selectionSet.selections.map(
+          (node) => node.name.value
+        )
       )
 
       if (queriedFields.has('connections')) {
-        throw new Error('Connections currently only supported in getParliamentarian')
+        throw new Error(
+          'Connections currently only supported in getParliamentarian'
+        )
       }
       if (queriedFields.has('guests')) {
         throw new Error('Guests currently only supported in getParliamentarian')
@@ -81,48 +89,78 @@ const resolveFunctions = {
 
       return Promise.all([
         translations.load(locale).then(getFormatter),
-        api.data(locale, 'data/interface/v1/json/table/parlamentarier/flat/list'),
-        queriedFields.has('commissions') && api.data(locale, 'data/interface/v1/json/relation/in_kommission_liste/flat/list')
-      ]).then(([t, {json: {data: parliamentarians}}, commissions]) => {
-        if (commissions) {
-          const commissionIndex = commissions.json.data.reduce(
-            (index, commission) => {
-              index[commission.parlamentarier_id] = index[commission.parlamentarier_id] || []
-              index[commission.parlamentarier_id].push(commission)
-              return index
-            },
-            {}
+        api.data(
+          locale,
+          'data/interface/v1/json/table/parlamentarier/flat/list'
+        ),
+        queriedFields.has('commissions') &&
+          api.data(
+            locale,
+            'data/interface/v1/json/relation/in_kommission_liste/flat/list'
+          ),
+      ]).then(
+        ([
+          t,
+          {
+            json: { data: parliamentarians },
+          },
+          commissions,
+        ]) => {
+          if (commissions) {
+            const commissionIndex = commissions.json.data.reduce(
+              (index, commission) => {
+                index[commission.parlamentarier_id] =
+                  index[commission.parlamentarier_id] || []
+                index[commission.parlamentarier_id].push(commission)
+                return index
+              },
+              {}
+            )
+
+            for (const parliamentarian of parliamentarians) {
+              parliamentarian.in_kommission =
+                commissionIndex[parliamentarian.id]
+            }
+          }
+
+          const result = parliamentarians.map((p) => mapParliamentarian(p, t))
+
+          // default: sort by lastname
+          result.sort((a, b) =>
+            ascending(a.lastName.toLowerCase(), b.lastName.toLowerCase())
           )
 
-          parliamentarians.forEach(parliamentarian => {
-            parliamentarian.in_kommission = commissionIndex[parliamentarian.id]
-          })
+          return result
         }
-
-        const result = parliamentarians.map(p => mapParliamentarian(p, t))
-
-        // default: sort by lastname
-        result.sort((a, b) => ascending(
-          a.lastName.toLowerCase(),
-          b.lastName.toLowerCase()
-        ))
-
-        return result
-      })
+      )
     },
-    getParliamentarian (_, {locale, id}, {loaders: {translations}}) {
+    getParliamentarian(_, { locale, id }, { loaders: { translations } }) {
       const rawId = id.replace(parliamentarianIdPrefix, '')
       // ToDo handle inactive – could send `includeInactive=1` but would need permission fixing on php side
       return Promise.all([
-        api.data(locale, `data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(rawId)}`),
-        translations.load(locale).then(getFormatter)
-      ]).then(([{json: {data: parliamentarian}}, t]) => {
-        return parliamentarian && mapParliamentarian(parliamentarian, t)
-      })
+        api.data(
+          locale,
+          `data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(
+            rawId
+          )}`
+        ),
+        translations.load(locale).then(getFormatter),
+      ]).then(
+        ([
+          {
+            json: { data: parliamentarian },
+          },
+          t,
+        ]) => {
+          return parliamentarian && mapParliamentarian(parliamentarian, t)
+        }
+      )
     },
-    guests (_, {locale}, {loaders: {translations}}, info) {
+    guests(_, { locale }, { loaders: { translations } }, info) {
       const queriedFields = new Set(
-        info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
+        info.fieldNodes[0].selectionSet.selections.map(
+          (node) => node.name.value
+        )
       )
 
       if (queriedFields.has('connections')) {
@@ -134,106 +172,183 @@ const resolveFunctions = {
 
       return Promise.all([
         translations.load(locale).then(getFormatter),
-        api.data(locale, 'data/interface/v1/json/table/zutrittsberechtigung/flat/list')
-      ]).then(([t, {json: {data: guests}}]) => {
-        const result = (guests || []).map(g => mapGuest(g, t))
+        api.data(
+          locale,
+          'data/interface/v1/json/table/zutrittsberechtigung/flat/list'
+        ),
+      ]).then(
+        ([
+          t,
+          {
+            json: { data: guests },
+          },
+        ]) => {
+          const result = (guests || []).map((g) => mapGuest(g, t))
 
-        // default: sort by lastname
-        result.sort((a, b) => ascending(
-          a.lastName.toLowerCase(),
-          b.lastName.toLowerCase()
-        ))
+          // default: sort by lastname
+          result.sort((a, b) =>
+            ascending(a.lastName.toLowerCase(), b.lastName.toLowerCase())
+          )
 
-        return result
-      })
+          return result
+        }
+      )
     },
-    getGuest (_, {locale, id}, {loaders: {translations}}) {
+    getGuest(_, { locale, id }, { loaders: { translations } }) {
       const rawId = id.replace(guestIdPrefix, '')
       return Promise.all([
         translations.load(locale).then(getFormatter),
-        api.data(locale, `data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(rawId)}`)
-      ]).then(([t, {json: {data: guest}}]) => {
-        return guest && mapGuest(guest, t)
-      })
+        api.data(
+          locale,
+          `data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(
+            rawId
+          )}`
+        ),
+      ]).then(
+        ([
+          t,
+          {
+            json: { data: guest },
+          },
+        ]) => {
+          return guest && mapGuest(guest, t)
+        }
+      )
     },
-    getOrganisation (_, {locale, id}, {loaders: {translations}}) {
+    getOrganisation(_, { locale, id }, { loaders: { translations } }) {
       const rawId = id.replace(orgIdPrefix, '')
       return Promise.all([
-        api.data(locale, `data/interface/v1/json/table/organisation/aggregated/id/${encodeURIComponent(rawId)}`),
-        translations.load(locale).then(getFormatter)
-      ]).then(([{json: {data: org}}, t]) => {
-        return org && mapOrganisation(org, t)
-      })
+        api.data(
+          locale,
+          `data/interface/v1/json/table/organisation/aggregated/id/${encodeURIComponent(
+            rawId
+          )}`
+        ),
+        translations.load(locale).then(getFormatter),
+      ]).then(
+        ([
+          {
+            json: { data: org },
+          },
+          t,
+        ]) => {
+          return org && mapOrganisation(org, t)
+        }
+      )
     },
-    lobbyGroups (_, {locale}, {loaders: {translations}}, info) {
+    lobbyGroups(_, { locale }, { loaders: { translations } }, info) {
       const queriedFields = new Set(
-        info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
+        info.fieldNodes[0].selectionSet.selections.map(
+          (node) => node.name.value
+        )
       )
 
       if (queriedFields.has('connections')) {
-        throw new Error('Connections currently only supported in getParliamentarian')
+        throw new Error(
+          'Connections currently only supported in getParliamentarian'
+        )
       }
 
       return Promise.all([
         translations.load(locale).then(getFormatter),
-        api.data(locale, 'data/interface/v1/json/table/interessengruppe/flat/list')
-      ]).then(([t, {json: {data: lobbyGroups}}]) => {
-        // default: sort by name
-        lobbyGroups.sort((a, b) => ascending(
-          a.name.toLowerCase(),
-          b.name.toLowerCase()
-        ))
+        api.data(
+          locale,
+          'data/interface/v1/json/table/interessengruppe/flat/list'
+        ),
+      ]).then(
+        ([
+          t,
+          {
+            json: { data: lobbyGroups },
+          },
+        ]) => {
+          // default: sort by name
+          lobbyGroups.sort((a, b) =>
+            ascending(a.name.toLowerCase(), b.name.toLowerCase())
+          )
 
-        return lobbyGroups.map(l => mapLobbyGroup(l, t))
-      })
+          return lobbyGroups.map((l) => mapLobbyGroup(l, t))
+        }
+      )
     },
-    getLobbyGroup (_, {locale, id}, {loaders: {translations}}, info) {
+    getLobbyGroup(_, { locale, id }, { loaders: { translations } }) {
       const rawId = id.replace(lobbyGroupIdPrefix, '')
       return Promise.all([
-        api.data(locale, `data/interface/v1/json/table/interessengruppe/aggregated/id/${encodeURIComponent(rawId)}`),
-        translations.load(locale).then(getFormatter)
-      ]).then(([{json: {data: lobbyGroup}}, t]) => {
-        return lobbyGroup && mapLobbyGroup(lobbyGroup, t)
-      })
-    },
-    branchs (_, {locale}, {loaders: {translations}}, info) {
-      const queriedFields = new Set(
-        info.fieldNodes[0].selectionSet.selections.map(node => node.name.value)
+        api.data(
+          locale,
+          `data/interface/v1/json/table/interessengruppe/aggregated/id/${encodeURIComponent(
+            rawId
+          )}`
+        ),
+        translations.load(locale).then(getFormatter),
+      ]).then(
+        ([
+          {
+            json: { data: lobbyGroup },
+          },
+          t,
+        ]) => {
+          return lobbyGroup && mapLobbyGroup(lobbyGroup, t)
+        }
       )
+    },
+    branchs(_, { locale }, { loaders: { translations } }) {
+      // const queriedFields = new Set(
+      //   info.fieldNodes[0].selectionSet.selections.map(
+      //     (node) => node.name.value
+      //   )
+      // )
 
       return Promise.all([
         translations.load(locale).then(getFormatter),
-        api.data(locale, 'data/interface/v1/json/table/branche/flat/list')
-      ]).then(([t, {json: {data: branchs}}]) => {
-        // default: sort by name
-        branchs.sort((a, b) => ascending(
-          a.name.toLowerCase(),
-          b.name.toLowerCase()
-        ))
+        api.data(locale, 'data/interface/v1/json/table/branche/flat/list'),
+      ]).then(
+        ([
+          t,
+          {
+            json: { data: branchs },
+          },
+        ]) => {
+          // default: sort by name
+          branchs.sort((a, b) =>
+            ascending(a.name.toLowerCase(), b.name.toLowerCase())
+          )
 
-        return branchs.map(l => mapBranch(l, t))
-      })
+          return branchs.map((l) => mapBranch(l, t))
+        }
+      )
     },
-    getBranch (_, {locale, id}, {loaders: {translations}}, info) {
+    getBranch(_, { locale, id }, { loaders: { translations } }) {
       const rawId = id.replace(branchIdPrefix, '')
       return Promise.all([
-        api.data(locale, `data/interface/v1/json/table/branche/aggregated/id/${encodeURIComponent(rawId)}`),
-        translations.load(locale).then(getFormatter)
-      ]).then(([{json: {data: branch}}, t]) => {
-        return branch && mapBranch(branch, t)
-      })
+        api.data(
+          locale,
+          `data/interface/v1/json/table/branche/aggregated/id/${encodeURIComponent(
+            rawId
+          )}`
+        ),
+        translations.load(locale).then(getFormatter),
+      ]).then(
+        ([
+          {
+            json: { data: branch },
+          },
+          t,
+        ]) => {
+          return branch && mapBranch(branch, t)
+        }
+      )
     },
-    search (_, {locale, term}, {loaders: {translations, search}}) {
+    search(_, { locale, term }, { loaders: { translations, search } }) {
       return Promise.all([
         translations.load(locale).then(getFormatter),
-        search.load(locale)
-      ])
-        .then(([t, search]) => search(term, t))
+        search.load(locale),
+      ]).then(([t, search]) => search(term, t))
     },
-    translations (_, {locale}, {loaders: {translations}}) {
+    translations(_, { locale }, { loaders: { translations } }) {
       return translations.load(locale)
-    }
-  }
+    },
+  },
 }
 
 module.exports = resolveFunctions

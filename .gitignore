@@ -17,3 +17,4 @@ npm-debug.log
 LW_frontend.code-workspace
 
 .vercel
+.eslintcache

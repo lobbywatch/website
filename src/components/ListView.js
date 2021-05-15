@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 
-import {metaRule} from './Styled'
-import {LW_BLUE, GREY_LIGHT, mediaM} from '../theme'
-import {css} from 'glamor'
+import { metaRule } from './Styled'
+import { LW_BLUE, GREY_LIGHT, mediaM } from '../theme'
+import { css } from 'glamor'
 import Link from 'next/link'
-import {itemPath} from '../utils/routes'
-import Grid, {GridItem} from './Grid'
+import { itemPath } from '../utils/routes'
+import Grid, { GridItem } from './Grid'
 
 import Icons from '../assets/TypeIcons'
 
@@ -17,10 +17,10 @@ const symbolStyle = css({
   left: 0,
   display: 'block',
   width: SYMBOL_SIZE,
-  height: SYMBOL_SIZE
+  height: SYMBOL_SIZE,
 })
 const portraitStyle = css({
-  borderRadius: '50%'
+  borderRadius: '50%',
 })
 const aStyle = css({
   display: 'block',
@@ -33,34 +33,36 @@ const aStyle = css({
   paddingLeft: SYMBOL_SIZE + 10,
   position: 'relative',
   ':hover': {
-    color: LW_BLUE
-  }
+    color: LW_BLUE,
+  },
 })
 const metaStyle = css(metaRule, {
   lineHeight: '16px',
   [mediaM]: {
-    lineHeight: '16px'
+    lineHeight: '16px',
   },
   'a:hover &': {
-    color: LW_BLUE
-  }
+    color: LW_BLUE,
+  },
 })
 
-const ListView = ({locale, items, title, subtitle, maxWidth}) => {
+const ListView = ({ locale, items, title, subtitle, maxWidth }) => {
   const elements = items.map((item) => {
-    const {__typename, id, portrait} = item
+    const { __typename, id, portrait } = item
     const Icon = Icons[__typename]
     return (
       <Link key={id} href={itemPath(item, locale)} prefetch={false}>
         <a {...aStyle}>
-          {!!portrait && <img {...symbolStyle} {...portraitStyle}
-            src={portrait} alt='' />}
-          {!portrait && !!Icon && <Icon className={symbolStyle} size={SYMBOL_SIZE} />}
+          {!!portrait && (
+            <img {...symbolStyle} {...portraitStyle} src={portrait} alt='' />
+          )}
+          {!portrait && !!Icon && (
+            <Icon className={symbolStyle} size={SYMBOL_SIZE} />
+          )}
           <span>
-            {title(item)}<br />
-            <span {...metaStyle}>
-              {subtitle(item) || ' '}
-            </span>
+            {title(item)}
+            <br />
+            <span {...metaStyle}>{subtitle(item) || ' '}</span>
           </span>
         </a>
       </Link>
@@ -68,15 +70,11 @@ const ListView = ({locale, items, title, subtitle, maxWidth}) => {
   })
 
   if (maxWidth) {
-    return (
-      <div style={{maxWidth, margin: '0 auto'}}>
-        {elements}
-      </div>
-    )
+    return <div style={{ maxWidth, margin: '0 auto' }}>{elements}</div>
   }
   return (
     <Grid>
-      {elements.map(element => (
+      {elements.map((element) => (
         <GridItem key={element.key} paddingBottom={0}>
           {element}
         </GridItem>
@@ -101,38 +99,43 @@ ListView.defaultProps = {
         return [
           item.councilTitle,
           item.partyMembership && item.partyMembership.party.abbr,
-          item.canton
-        ].filter(Boolean).join(', ')
+          item.canton,
+        ]
+          .filter(Boolean)
+          .join(', ')
       case 'Guest':
-        return item['function']
+        return item.function
       case 'LobbyGroup':
         return item.branch.name
       case 'Branch':
         return item.commissions
-          .map(commission => commission.name)
-          .filter(Boolean).join(', ')
+          .map((commission) => commission.name)
+          .filter(Boolean)
+          .join(', ')
       case 'Organisation':
-        return item.lobbyGroups
-          .map(lobbyGroup => lobbyGroup.name)
-          .concat([
-            item.legalForm,
-            item.location
-          ])
-          .filter(Boolean).join(', ')
+        return [
+          ...item.lobbyGroups.map((lobbyGroup) => lobbyGroup.name),
+          item.legalForm,
+          item.location,
+        ]
+          .filter(Boolean)
+          .join(', ')
     }
-  }
+  },
 }
 
 ListView.propTypes = {
   locale: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.shape({
-    __typename: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    portrait: PropTypes.string
-  })).isRequired,
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      __typename: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      portrait: PropTypes.string,
+    })
+  ).isRequired,
   title: PropTypes.func.isRequired,
-  subtitle: PropTypes.func.isRequired
+  subtitle: PropTypes.func.isRequired,
 }
 
 export default ListView

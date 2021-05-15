@@ -3,24 +3,21 @@ export const intersperse = (list, separator) => {
     return []
   }
 
-  return list.slice(1).reduce((items, item, i) => {
-    return items.concat([separator, item])
-  }, [list[0]])
+  return list.slice(1).reduce(
+    (items, item) => {
+      return [...items, separator, item]
+    },
+    [list[0]]
+  )
 }
 
-export const NBSP = '\u00a0'
+export const NBSP = '\u00A0'
 
 export const preventWidow = (string) => {
   const words = string.split(' ')
   const length = words.length
   if (length > 2) {
-    words.splice(
-      -2,
-      2,
-      words[length - 2] +
-      NBSP +
-      words[length - 1]
-    )
+    words.splice(-2, 2, words[length - 2] + NBSP + words[length - 1])
   }
   return words.join(' ')
 }
@@ -35,12 +32,12 @@ export const shallowEqual = (a, b) => {
   let countA = 0
   let countB = 0
 
-  for (let key in a) {
+  for (const key in a) {
     if (hasOwn.call(a, key) && a[key] !== b[key]) return false
     countA++
   }
 
-  for (let key in b) {
+  for (const key in b) {
     if (hasOwn.call(b, key)) countB++
   }
 
@@ -51,27 +48,36 @@ export const shallowEqual = (a, b) => {
 // From https://stackoverflow.com/questions/18515254/recursively-remove-null-values-from-javascript-object
 // And https://stackoverflow.com/questions/41828787/javascript-filter-null-object-properties
 // Reverse iterate https://stackoverflow.com/questions/9882284/looping-through-array-and-removing-items-without-breaking-for-loop
-export const recursivelyRemoveNullsInPlace = (obj) => {
-  if (Array.isArray(obj)) {
-    var k = obj.length
+export const recursivelyRemoveNullsInPlace = (object) => {
+  if (Array.isArray(object)) {
+    var k = object.length
     while (k--) {
-      if (obj[k] === null || obj[k] === undefined || obj[k].length === 0) {
-        obj.splice(k, 1) // splice reindexes array, thus a forward loop does not work
-      } else if (typeof obj[k] == "object" || Array.isArray(obj[k])) {
-        recursivelyRemoveNullsInPlace(obj[k])
-        if (obj[k].length === 0) {
-          obj.splice(k, 1) // splice reindexes array, thus a forward loop does not work
+      if (
+        object[k] === null ||
+        object[k] === undefined ||
+        object[k].length === 0
+      ) {
+        object.splice(k, 1) // splice reindexes array, thus a forward loop does not work
+      } else if (typeof object[k] === 'object' || Array.isArray(object[k])) {
+        recursivelyRemoveNullsInPlace(object[k])
+        if (object[k].length === 0) {
+          object.splice(k, 1) // splice reindexes array, thus a forward loop does not work
         }
       }
     }
-  } else { // object
-    for (var k in obj) {
-      if (obj[k] === null || obj[k] === undefined || obj[k].length === 0) {
-        delete obj[k]
-      } else if (typeof obj[k] == "object" || Array.isArray(obj[k])) {
-        recursivelyRemoveNullsInPlace(obj[k])
-        if (obj[k].length === 0) {
-          delete obj[k]
+  } else {
+    // object
+    for (k in object) {
+      if (
+        object[k] === null ||
+        object[k] === undefined ||
+        object[k].length === 0
+      ) {
+        delete object[k]
+      } else if (typeof object[k] === 'object' || Array.isArray(object[k])) {
+        recursivelyRemoveNullsInPlace(object[k])
+        if (object[k].length === 0) {
+          delete object[k]
         }
       }
     }

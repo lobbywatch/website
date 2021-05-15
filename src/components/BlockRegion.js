@@ -1,9 +1,9 @@
 import React from 'react'
 
-import {gql} from '@apollo/client'
-import {graphql} from '@apollo/client/react/hoc'
+import { gql } from '@apollo/client'
+import { graphql } from '@apollo/client/react/hoc'
 
-import {H2, H3} from './Styled'
+import { H2, H3 } from './Styled'
 import RawHtml from './RawHtml'
 import Loader from './Loader'
 
@@ -20,31 +20,32 @@ const query = gql`
   }
 `
 
-const Region = ({loading, error, blocks, style, compact, first}) => (
-  <Loader loading={loading} error={error} render={() => (
-    <div>
-      {blocks.slice(0, first ? 1 : undefined).map(block => (
-        <div key={block.id} style={style}>
-          {compact
-            ? <H3>{block.title}</H3>
-            : <H2>{block.title}</H2>
-          }
-          <RawHtml dangerouslySetInnerHTML={{__html: block.content}} />
-        </div>
-      ))}
-    </div>
-  )} />
+const Region = ({ loading, error, blocks, style, compact, first }) => (
+  <Loader
+    loading={loading}
+    error={error}
+    render={() => (
+      <div>
+        {blocks.slice(0, first ? 1 : undefined).map((block) => (
+          <div key={block.id} style={style}>
+            {compact ? <H3>{block.title}</H3> : <H2>{block.title}</H2>}
+            <RawHtml dangerouslySetInnerHTML={{ __html: block.content }} />
+          </div>
+        ))}
+      </div>
+    )}
+  />
 )
 
 const RegionWithQuery = graphql(query, {
   skip: ({ blocks }) => !!blocks,
-  props: ({data}) => {
+  props: ({ data }) => {
     return {
       loading: data.loading,
       error: data.error,
-      blocks: data.meta ? data.meta.blocks : []
+      blocks: data.meta ? data.meta.blocks : [],
     }
-  }
+  },
 })(Region)
 
 export default RegionWithQuery

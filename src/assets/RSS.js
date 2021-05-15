@@ -1,9 +1,15 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {LW_BLUE_DARK, WHITE} from '../theme'
+import { LW_BLUE_DARK, WHITE } from '../theme'
 
-const Icon = ({size, style, className}) => (
-  <svg width={size} height={size} style={style} className={className} viewBox='0 0 40 40'>
+const Icon = ({ size, style, className }) => (
+  <svg
+    width={size}
+    height={size}
+    style={style}
+    className={className}
+    viewBox='0 0 40 40'
+  >
     <circle fill={LW_BLUE_DARK} cx='20' cy='20' r='20' />
     <g fill={WHITE}>
       <path d='M14.375 23.438c-1.563 0-2.813 1.25-2.813 2.812 0 1.563 1.25 2.813 2.813 2.813 1.563 0 2.813-1.25 2.813-2.813 0-1.563-1.25-2.813-2.813-2.813z' />
@@ -14,11 +20,11 @@ const Icon = ({size, style, className}) => (
 )
 
 Icon.defaultProps = {
-  size: 40
+  size: 40,
 }
 Icon.propTypes = {
   size: PropTypes.number.isRequired,
-  style: PropTypes.object
+  style: PropTypes.object,
 }
 
 export default Icon

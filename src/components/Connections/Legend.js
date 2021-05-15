@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {css, merge} from 'glamor'
+import { css, merge } from 'glamor'
 import Link from 'next/link'
 
-import {LW_BLUE, GREY_DARK, mediaM} from '../../theme'
-import {intersperse} from '../../utils/helpers'
-import {Clear} from '../Styled'
+import { LW_BLUE, GREY_DARK, mediaM } from '../../theme'
+import { intersperse } from '../../utils/helpers'
+import { Clear } from '../Styled'
 
 const legendContainer = css({
   paddingTop: 20,
@@ -18,25 +18,25 @@ const legendContainer = css({
   textAlign: 'left',
   [mediaM]: {
     fontSize: 14,
-    textAlign: 'right'
-  }
+    textAlign: 'right',
+  },
 })
 
 const legendLabel = css({
   color: GREY_DARK,
   [mediaM]: {
-    marginRight: 10
-  }
+    marginRight: 10,
+  },
 })
 const legendLink = merge(legendLabel, {
   textDecoration: 'none',
-  color: LW_BLUE
+  color: LW_BLUE,
 })
 const legendValues = css({
-  float: 'right'
+  float: 'right',
 })
 const legendValue = css({
-  whiteSpace: 'nowrap'
+  whiteSpace: 'nowrap',
 })
 
 const legendBubble = css({
@@ -45,22 +45,35 @@ const legendBubble = css({
   marginLeft: 5,
   width: 8,
   height: 8,
-  borderRadius: '50%'
+  borderRadius: '50%',
 })
 
-const Legend = ({locale, title, pagePath, items}) => (
+const Legend = ({ locale, title, pagePath, items }) => (
   <Clear {...legendContainer}>
-    {!!pagePath && <Link href={`/${locale}/${pagePath.join('/')}`}>
-      <a {...legendLink}>{title}</a>
-    </Link>}
+    {!!pagePath && (
+      <Link href={`/${locale}/${pagePath.join('/')}`}>
+        <a {...legendLink}>{title}</a>
+      </Link>
+    )}
     {!pagePath && <span {...legendLabel}>{title}</span>}
 
     <span {...legendValues}>
-      {intersperse(items.map(({label, color, textColor, border}, i) => (
-        <span key={i} {...legendValue} style={{color: textColor || color}}>
-          <span {...legendBubble} style={{backgroundColor: color, border}} />{label}
-        </span>
-      )), ' ')}
+      {intersperse(
+        items.map(({ label, color, textColor, border }, index) => (
+          <span
+            key={index}
+            {...legendValue}
+            style={{ color: textColor || color }}
+          >
+            <span
+              {...legendBubble}
+              style={{ backgroundColor: color, border }}
+            />
+            {label}
+          </span>
+        )),
+        ' '
+      )}
     </span>
   </Clear>
 )
@@ -69,10 +82,12 @@ Legend.propTypes = {
   title: PropTypes.string.isRequired,
   pagePath: PropTypes.array,
   locale: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(PropTypes.shape({
-    label: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired
-  }))
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+    })
+  ),
 }
 
 export default Legend

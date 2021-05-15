@@ -7,5 +7,5 @@ export default {
   Guest,
   LobbyGroup,
   Branch,
-  Organisation
+  Organisation,
 }

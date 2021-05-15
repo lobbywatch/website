@@ -9,8 +9,9 @@
     "dev": "nodemon -w next.config.js -w jsconfig.json --exec 'next dev'",
     "build": "next build",
     "start": "next start -p ${PORT:=3000}",
-    "test": "standard 'src/**/*.js' 'pages/**/*.js'",
-    "standardize": "standard --fix 'src/**/*.js' 'pages/**/*.js'",
+    "prepare": "husky install",
+    "lint": "eslint --fix .",
+    "test": "eslint",
     "translations": "gsheets --key=1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg --title=translations --pretty --out lib/translations.json",
     "klog": "find . -name '*.js' -not -path \"./node_modules*\" -not -path \"./.next*\" | xargs wc -l"
   },
@@ -23,8 +24,8 @@
   "bugs": {
     "url": "https://github.com/lobbywatch/website/issues"
   },
-  "standard": {
-    "parser": "babel-eslint"
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
   },
   "dependencies": {
     "@apollo/client": "^3.3.18",
@@ -54,9 +55,19 @@
     "striptags": "^3.0.1"
   },
   "devDependencies": {
-    "babel-eslint": "^10.1.0",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-security": "^1.4.0",
+    "eslint-plugin-sonarjs": "^0.7.0",
+    "husky": "^6.0.0",
+    "lint-staged": "^11.0.0",
     "nodemon": "^2.0.7",
-    "standard": "^16.0.3"
+    "prettier": "^2.3.0"
   },
   "cacheDirectories": [
     "node_modules",

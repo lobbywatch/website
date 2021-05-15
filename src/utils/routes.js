@@ -1,14 +1,15 @@
-const getRawId = ({ id, __typename }, locale) => id
-  ?.split('-')
-  .filter(part => part !== __typename && part !== locale)
-  .join('-')
+const getRawId = ({ id, __typename }, locale) =>
+  id
+    ?.split('-')
+    .filter((part) => part !== __typename && part !== locale)
+    .join('-')
 
 export const typeSegments = {
   Parliamentarian: 'daten/parlamentarier',
   LobbyGroup: 'daten/lobbygruppe',
   Branch: 'daten/branche',
   Organisation: 'daten/organisation',
-  Guest: 'daten/zutrittsberechtigter'
+  Guest: 'daten/zutrittsberechtigter',
 }
 
 export const itemPath = (item, locale) => {
@@ -18,5 +19,7 @@ export const itemPath = (item, locale) => {
     console.warn('[itemPath] Unkown type', __typename, item)
     return '/'
   }
-  return `/${encodeURIComponent(locale)}/${typeSegment}/${encodeURIComponent(getRawId(item, locale))}${name ? `/${encodeURIComponent(name)}` : ''}`
+  return `/${encodeURIComponent(locale)}/${typeSegment}/${encodeURIComponent(
+    getRawId(item, locale)
+  )}${name ? `/${encodeURIComponent(name)}` : ''}`
 }

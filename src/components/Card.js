@@ -3,12 +3,12 @@ import React from 'react'
 import Link from 'next/link'
 // import Image from 'next/image'
 
-import {h2Rule, metaRule, ButtonLink, P, TextCenter} from './Styled'
+import { h2Rule, metaRule, ButtonLink, P, TextCenter } from './Styled'
 import Message from './Message'
 
-import {css} from 'glamor'
-import {WHITE, GREY_SOFT, GREY_LIGHT} from '../theme'
-import {locales} from '../../constants'
+import { css } from 'glamor'
+import { WHITE, GREY_SOFT, GREY_LIGHT } from '../theme'
+import { locales } from '../../constants'
 
 const containerStyle = css({
   overflow: 'hidden',
@@ -16,7 +16,7 @@ const containerStyle = css({
   backgroundColor: GREY_SOFT,
   minHeight: '100%',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
 })
 const headStyle = css({
   textDecoration: 'none',
@@ -26,7 +26,7 @@ const headStyle = css({
   minHeight: 160,
   padding: '16px 24px',
   position: 'relative',
-  display: 'flex'
+  display: 'flex',
 })
 const shadeStyle = css({
   display: 'block',
@@ -35,31 +35,31 @@ const shadeStyle = css({
   top: 0,
   bottom: 0,
   right: 0,
-  backgroundColor: 'rgba(0,0,0,0.3)'
+  backgroundColor: 'rgba(0,0,0,0.3)',
 })
 const titleStyle = css(h2Rule, {
   position: 'relative',
   marginTop: 0,
   marginBottom: 0,
   color: WHITE,
-  alignSelf: 'flex-end'
+  alignSelf: 'flex-end',
 })
 const bodyStyle = css({
   padding: '16px 24px',
   flexGrow: 1,
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
 })
 const pStyle = css({
-  flexGrow: 1
+  flexGrow: 1,
 })
 
-const Card = ({image, path, title, author, published, lead, locale}) => {
+const Card = ({ image, path, title, author, published, lead, locale }) => {
   const fullPath = `/${locale}/${path.join('/')}`
   return (
     <div {...containerStyle}>
       <Link href={fullPath}>
-        <a {...headStyle} style={{backgroundImage: image && `url(${image})`}}>
+        <a {...headStyle} style={{ backgroundImage: image && `url(${image})` }}>
           {/* Next Image consumes too much memory on Heroku */}
           {/* <Image
             src={image}
@@ -93,7 +93,7 @@ Card.propTypes = {
   title: PropTypes.string.isRequired,
   published: PropTypes.string.isRequired,
   lead: PropTypes.string.isRequired,
-  image: PropTypes.string
+  image: PropTypes.string,
 }
 
 export default Card

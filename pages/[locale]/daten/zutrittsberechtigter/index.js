@@ -1,19 +1,19 @@
 import React from 'react'
 
-import {gql} from '@apollo/client'
-import {graphql} from '@apollo/client/react/hoc'
-import {withRouter} from 'next/router'
+import { gql } from '@apollo/client'
+import { graphql } from '@apollo/client/react/hoc'
+import { withRouter } from 'next/router'
 
-import {H1, TextCenter} from 'src/components/Styled'
+import { H1, TextCenter } from 'src/components/Styled'
 import Message from 'src/components/Message'
 
 import Loader from 'src/components/Loader'
-import Frame, {Center} from 'src/components/Frame'
+import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
-import {withInitialProps} from 'lib/apolloClient'
+import { withInitialProps } from 'lib/apolloClient'
 
 const guestsQuery = gql`
   query guests($locale: Locale!) {
@@ -28,35 +28,50 @@ const guestsQuery = gql`
   }
 `
 
-const Guests = ({loading, error, guests, locale}) => (
-  <Loader loading={loading} error={error} render={() => (
-    <Center>
-      <MetaTags locale={locale} fromT={t => ({
-        title: t('guests/meta/title'),
-        description: t('guests/meta/description', {count: guests.length})
-      })} />
-      <TextCenter>
-        <H1><Message id='guests/meta/title' locale={locale} /></H1>
-      </TextCenter>
-      <ListView locale={locale} items={guests} />
-      <BlockRegion locale={locale}
-        region='rooster_guests'
-        style={{paddingTop: 50}} />
-    </Center>
-  )} />
+const Guests = ({ loading, error, guests, locale }) => (
+  <Loader
+    loading={loading}
+    error={error}
+    render={() => (
+      <Center>
+        <MetaTags
+          locale={locale}
+          fromT={(t) => ({
+            title: t('guests/meta/title'),
+            description: t('guests/meta/description', { count: guests.length }),
+          })}
+        />
+        <TextCenter>
+          <H1>
+            <Message id='guests/meta/title' locale={locale} />
+          </H1>
+        </TextCenter>
+        <ListView locale={locale} items={guests} />
+        <BlockRegion
+          locale={locale}
+          region='rooster_guests'
+          style={{ paddingTop: 50 }}
+        />
+      </Center>
+    )}
+  />
 )
 
 const GuestsWithQuery = graphql(guestsQuery, {
-  props: ({data}) => {
+  props: ({ data }) => {
     return {
       loading: data.loading,
       error: data.error,
-      guests: data.guests
+      guests: data.guests,
     }
-  }
+  },
 })(Guests)
 
-const Page = ({router: {query: {locale, id}}}) => (
+const Page = ({
+  router: {
+    query: { locale },
+  },
+}) => (
   <Frame>
     <GuestsWithQuery locale={locale} />
   </Frame>
