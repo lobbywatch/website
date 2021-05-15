@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import Link from 'next/link'
-// import Image from 'next/image'
+import Image from 'next/image'
 
 import { h2Rule, metaRule, ButtonLink, P, TextCenter } from './Styled'
 import Message from './Message'
@@ -59,15 +59,14 @@ const Card = ({ image, path, title, author, published, lead, locale }) => {
   return (
     <div {...containerStyle}>
       <Link href={fullPath}>
-        <a {...headStyle} style={{ backgroundImage: image && `url(${image})` }}>
-          {/* Next Image consumes too much memory on Heroku */}
-          {/* <Image
+        <a {...headStyle}>
+          <Image
             src={image}
             priority
             layout='fill'
             objectFit='cover'
             quality={90}
-          /> */}
+          />
           <span {...shadeStyle} />
           <h2 {...titleStyle}>{title}</h2>
         </a>
