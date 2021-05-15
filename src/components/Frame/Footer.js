@@ -1,33 +1,33 @@
 import React from 'react'
-import {css} from 'glamor'
+import { css } from 'glamor'
 
-import {graphql} from '@apollo/client/react/hoc'
-import {stratify} from 'd3-hierarchy'
-import {withRouter} from 'next/router'
+import { graphql } from '@apollo/client/react/hoc'
+import { stratify } from 'd3-hierarchy'
+import { withRouter } from 'next/router'
 import Link from 'next/link'
 
-import {Center} from './index'
+import { Center } from './index'
 import SocialMedia from './SocialMedia'
 import Newsletter from './Newsletter'
-import {A, Hr, metaStyle, Strong, Clear} from '../Styled'
-import {GREY_SOFT, GREY_DARK, GREY_MID, mediaM} from '../../theme'
+import { A, Hr, metaStyle, Strong, Clear } from '../Styled'
+import { GREY_SOFT, GREY_DARK, GREY_MID, mediaM } from '../../theme'
 import CreativeCommons from '../../assets/CreativeCommons'
 import Message from '../Message'
 import Loader from '../Loader'
-import {locales} from '../../../constants'
+import { locales } from '../../../constants'
 import BlockRegion from '../BlockRegion'
-import {JsonLd} from '../JsonLd'
-import {metaQuery} from '../../../lib/baseQueries'
+import { JsonLd } from '../JsonLd'
+import { metaQuery } from '../../../lib/baseQueries'
 
 const footerStyle = css({
   backgroundColor: GREY_SOFT,
   color: GREY_DARK,
   '& a, & a:visited': {
-    color: GREY_DARK
+    color: GREY_DARK,
   },
   '& a:hover': {
-    color: GREY_MID
-  }
+    color: GREY_MID,
+  },
 })
 
 const footerColumnPadding = 10
@@ -37,21 +37,21 @@ const footerColumnStyle = css({
   fontSize: 14,
   [mediaM]: {
     float: 'left',
-    width: '25%'
-  }
+    width: '25%',
+  },
 })
 
 const footerListStyle = css({
   listStyle: 'none',
   margin: 0,
-  padding: 0
+  padding: 0,
 })
 
 const ccContainerStyle = css({
   [mediaM]: {
     display: 'flex',
-    alignItems: 'center'
-  }
+    alignItems: 'center',
+  },
 })
 const ccLogoStyle = css({
   display: 'block',
@@ -59,8 +59,8 @@ const ccLogoStyle = css({
   [mediaM]: {
     marginLeft: 0,
     marginRight: 0,
-    minWidth: 88
-  }
+    minWidth: 88,
+  },
 })
 const ccTextStyle = css({
   ...metaStyle,
@@ -69,110 +69,124 @@ const ccTextStyle = css({
     ...metaStyle[mediaM],
     margin: 0,
     textAlign: 'left',
-    paddingLeft: 30
-  }
+    paddingLeft: 30,
+  },
 })
 
 const columnPadding = 10
 const columnContainerStyle = css({
-  margin: `0 ${-columnPadding}px`
+  margin: `0 ${-columnPadding}px`,
 })
 const columnStyle = css({
   padding: `0 ${columnPadding}px`,
   margin: '25px 0',
   [mediaM]: {
     float: 'left',
-    width: '50%'
-  }
+    width: '50%',
+  },
 })
 
 const groupLinks = (links) => {
-  return stratify()([
-    {id: 'MenuLink-Root'},
-    ...links
-  ]).children || []
+  return stratify()([{ id: 'MenuLink-Root' }, ...links]).children || []
 }
 
-const Footer = ({loading, error, links, blocks, locale, router: {pathname, query}}) => (
+const Footer = ({
+  loading,
+  error,
+  links,
+  blocks,
+  locale,
+  router: { pathname, query },
+}) => (
   <footer style={{ marginTop: 20 }}>
-    <JsonLd data={{"@context": "http://schema.org/", "@type": "WPFooter"}} />
+    <JsonLd data={{ '@context': 'http://schema.org/', '@type': 'WPFooter' }} />
     <Center>
-      {!(pathname === '/[locale]/[...path]' && query.path?.join() === 'unterstuetzen') &&
+      {!(
+        pathname === '/[locale]/[...path]' &&
+        query.path?.join() === 'unterstuetzen'
+      ) && (
         <BlockRegion blocks={blocks} compact first={pathname !== '/[locale]'} />
-      }
+      )}
       <Clear {...columnContainerStyle}>
-        <div {...columnStyle}><SocialMedia locale={locale} /></div>
-        <div {...columnStyle}><Newsletter locale={locale} /></div>
+        <div {...columnStyle}>
+          <SocialMedia locale={locale} />
+        </div>
+        <div {...columnStyle}>
+          <Newsletter locale={locale} />
+        </div>
       </Clear>
     </Center>
     <div {...footerStyle}>
       <Center>
-        <Loader height={300} loading={loading} error={error} render={() => (
-          <div>
-            <Clear style={{margin: `0 -${footerColumnPadding}px`}}>
-              {groupLinks(links).map(({data, children}) => (
-                <div key={data.id} {...footerColumnStyle}>
-                  <Strong>{data.title}</Strong>
-                  <ul {...footerListStyle}>
-                    {
-                      children.map(({data: {id, title, href}}) => {
+        <Loader
+          height={300}
+          loading={loading}
+          error={error}
+          render={() => (
+            <div>
+              <Clear style={{ margin: `0 -${footerColumnPadding}px` }}>
+                {groupLinks(links).map(({ data, children }) => (
+                  <div key={data.id} {...footerColumnStyle}>
+                    <Strong>{data.title}</Strong>
+                    <ul {...footerListStyle}>
+                      {children.map(({ data: { id, title, href } }) => {
                         let link
                         const supportedPath = href.match(/^\/([^/]+)/)
-                        if (supportedPath && locales.indexOf(supportedPath[1]) !== -1) {
-                          link = (
+                        link =
+                          supportedPath &&
+                          locales.includes(supportedPath[1]) ? (
                             <Link href={href} prefetch={false} passHref>
                               <A>{title}</A>
                             </Link>
-                          )
-                        } else {
-                          link = (
-                            <A href={href}
-                              target={!href.match(/^mailto:/) ? '_blank' : undefined}>
+                          ) : (
+                            <A
+                              href={href}
+                              target={
+                                !href.startsWith('mailto:')
+                                  ? '_blank'
+                                  : undefined
+                              }
+                            >
                               {title}
                             </A>
                           )
-                        }
-                        return (
-                          <li key={id}>
-                            {link}
-                          </li>
-                        )
-                      })
-                    }
-                  </ul>
-                </div>
-              ))}
-            </Clear>
-            <Hr />
-            <div {...ccContainerStyle}>
-              <CreativeCommons className={ccLogoStyle} />
-              <p {...ccTextStyle}>
-                <Message id='footer/cc' locale={locale} raw />
-              </p>
+                        return <li key={id}>{link}</li>
+                      })}
+                    </ul>
+                  </div>
+                ))}
+              </Clear>
+              <Hr />
+              <div {...ccContainerStyle}>
+                <CreativeCommons className={ccLogoStyle} />
+                <p {...ccTextStyle}>
+                  <Message id='footer/cc' locale={locale} raw />
+                </p>
+              </div>
             </div>
-          </div>
-        )} />
+          )}
+        />
       </Center>
     </div>
   </footer>
 )
 
 const FooterWithQuery = graphql(metaQuery, {
-  options: ({locale}) => {
+  options: ({ locale }) => {
     return {
       variables: {
-        locale
-      }
+        locale,
+      },
     }
   },
-  props: ({data}) => {
+  props: ({ data }) => {
     return {
       loading: data.loading,
       error: data.error,
       links: data.meta ? data.meta.links : [],
-      blocks: data.meta ? data.meta.blocks : []
+      blocks: data.meta ? data.meta.blocks : [],
     }
-  }
+  },
 })(Footer)
 
 export default withRouter(FooterWithQuery)

@@ -1,39 +1,45 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {css} from 'glamor'
-import {useRouter} from 'next/router'
+import { css } from 'glamor'
+import { useRouter } from 'next/router'
 
 import Header from './Header'
 import Footer from './Footer'
-import {BLACK, FRAME_PADDING} from '../../theme'
-import {getSafeLocale} from '../../../constants'
+import { BLACK, FRAME_PADDING } from '../../theme'
+import { getSafeLocale } from '../../../constants'
 
 const centerStyle = css({
   maxWidth: 800,
   padding: FRAME_PADDING,
-  margin: '0 auto'
+  margin: '0 auto',
 })
-export const Center = ({children, ...props}) => (
-  <div {...props} {...centerStyle}>{children}</div>
+export const Center = ({ children, ...properties }) => (
+  <div {...properties} {...centerStyle}>
+    {children}
+  </div>
 )
 
-css.global('html', {boxSizing: 'border-box'})
-css.global('*, *:before, *:after', {boxSizing: 'inherit'})
-css.global('body, h1, h2, h3, h4, h5, h6, input, textarea', {fontFamily: "'Roboto', sans-serif"})
-css.global('body', {color: BLACK})
+css.global('html', { boxSizing: 'border-box' })
+css.global('*, *:before, *:after', { boxSizing: 'inherit' })
+css.global('body, h1, h2, h3, h4, h5, h6, input, textarea', {
+  fontFamily: "'Roboto', sans-serif",
+})
+css.global('body', { color: BLACK })
 
 const containerStyle = css({
   minHeight: '100vh',
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
 })
 
 const bodyGrowerStyle = css({
-  flexGrow: 1
+  flexGrow: 1,
 })
 
-const Frame = ({localizeHref, children}) => {
-  const {query: {locale: queryLocale, term}} = useRouter()
+const Frame = ({ localizeHref, children }) => {
+  const {
+    query: { locale: queryLocale, term },
+  } = useRouter()
   const locale = getSafeLocale(queryLocale)
   return (
     <div {...containerStyle}>
@@ -48,7 +54,7 @@ const Frame = ({localizeHref, children}) => {
 
 Frame.propTypes = {
   children: PropTypes.node,
-  localizeHref: PropTypes.func
+  localizeHref: PropTypes.func,
 }
 
 export default Frame

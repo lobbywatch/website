@@ -1,21 +1,21 @@
 import React from 'react'
 
-import {gql} from '@apollo/client'
-import {graphql} from '@apollo/client/react/hoc'
+import { gql } from '@apollo/client'
+import { graphql } from '@apollo/client/react/hoc'
 
-import {withRouter} from 'next/router'
+import { withRouter } from 'next/router'
 
-import {P} from 'src/components/Styled'
+import { P } from 'src/components/Styled'
 import Message from 'src/components/Message'
-import {SEARCH_MAX_WIDTH} from 'src/components/Frame/Header'
+import { SEARCH_MAX_WIDTH } from 'src/components/Frame/Header'
 import BlockRegion from 'src/components/BlockRegion'
 
 import Loader from 'src/components/Loader'
-import Frame, {Center} from 'src/components/Frame'
+import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 
-import {withInitialProps} from 'lib/apolloClient'
+import { withInitialProps } from 'lib/apolloClient'
 
 const searchQuery = gql`
   query search($locale: Locale!, $term: String!) {
@@ -72,43 +72,61 @@ const searchQuery = gql`
   }
 `
 
-const Search = ({loading, error, term, results, locale}) => (
-  <Loader loading={loading} error={error} render={() => (
-    <Center>
-      <MetaTags locale={locale} fromT={t => ({
-        title: t('search/meta/title'),
-        description: t.pluralize('search/meta/description', {count: results.length, term})
-      })} />
-      <ListView locale={locale} items={results} maxWidth={SEARCH_MAX_WIDTH} />
-      {results.length === 30 && (
-        <P style={{
-          maxWidth: SEARCH_MAX_WIDTH,
-          margin: '20px auto 0'
-        }}>
-          <Message locale={locale} id='search/more' />
-         </P>
-      )}
-      {!results.length && !!term.length && (
-        <BlockRegion locale={locale} region='rooster_noresults' />
-      )}
-      {!results.length && !term.length && (
-        <P><Message locale={locale} id='search/hint' /></P>
-      )}
-    </Center>
-  )} />
+const Search = ({ loading, error, term, results, locale }) => (
+  <Loader
+    loading={loading}
+    error={error}
+    render={() => (
+      <Center>
+        <MetaTags
+          locale={locale}
+          fromT={(t) => ({
+            title: t('search/meta/title'),
+            description: t.pluralize('search/meta/description', {
+              count: results.length,
+              term,
+            }),
+          })}
+        />
+        <ListView locale={locale} items={results} maxWidth={SEARCH_MAX_WIDTH} />
+        {results.length === 30 && (
+          <P
+            style={{
+              maxWidth: SEARCH_MAX_WIDTH,
+              margin: '20px auto 0',
+            }}
+          >
+            <Message locale={locale} id='search/more' />
+          </P>
+        )}
+        {results.length === 0 && term.length > 0 && (
+          <BlockRegion locale={locale} region='rooster_noresults' />
+        )}
+        {results.length === 0 && term.length === 0 && (
+          <P>
+            <Message locale={locale} id='search/hint' />
+          </P>
+        )}
+      </Center>
+    )}
+  />
 )
 
 const SearchWithQuery = graphql(searchQuery, {
-  props: ({data}) => {
+  props: ({ data }) => {
     return {
       loading: data.loading,
       error: data.error,
-      results: data.search
+      results: data.search,
     }
-  }
+  },
 })(Search)
 
-const Page = ({router: {query: {locale, term}}}) => (
+const Page = ({
+  router: {
+    query: { locale, term },
+  },
+}) => (
   <Frame>
     <SearchWithQuery locale={locale} term={term || ''} />
   </Frame>

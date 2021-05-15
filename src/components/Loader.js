@@ -1,15 +1,17 @@
-import React, {Component} from 'react'
-import {css} from 'glamor'
-import {GREY_MID, HEADER_HEIGHT} from '../theme'
-import {Center} from './Frame'
+import React, { Component } from 'react'
+import { css } from 'glamor'
+import { GREY_MID, HEADER_HEIGHT } from '../theme'
+import { Center } from './Frame'
 
 const spacerStyle = css({
   position: 'relative',
   minWidth: '100%',
-  minHeight: ['100vh', `calc(100vh - ${HEADER_HEIGHT}px)`]
+  minHeight: ['100vh', `calc(100vh - ${HEADER_HEIGHT}px)`],
 })
-const Spacer = ({height, width, children}) => (
-  <div {...spacerStyle} style={{minWidth: width, minHeight: height}}>{children}</div>
+const Spacer = ({ height, width, children }) => (
+  <div {...spacerStyle} style={{ minWidth: width, minHeight: height }}>
+    {children}
+  </div>
 )
 
 const containerStyle = css({
@@ -17,11 +19,11 @@ const containerStyle = css({
   width: 50,
   height: 50,
   top: '50%',
-  left: '50%'
+  left: '50%',
 })
 const spin = css.keyframes({
-  '0%': {opacity: 1},
-  '100%': {opacity: 0.15}
+  '0%': { opacity: 1 },
+  '100%': { opacity: 0.15 },
 })
 const barStyle = css({
   animation: `${spin} 1.2s linear infinite`,
@@ -31,49 +33,48 @@ const barStyle = css({
   width: '20%',
   height: '7.8%',
   top: '-3.9%',
-  left: '-10%'
+  left: '-10%',
 })
 
 class Loader extends Component {
-  constructor (props) {
-    super(props)
+  constructor(properties) {
+    super(properties)
     this.state = {
-      visible: false
+      visible: false,
     }
   }
-  componentDidMount () {
-    this.timeout = setTimeout(() => this.setState({visible: true}), this.props.delay)
+
+  componentDidMount() {
+    this.timeout = setTimeout(
+      () => this.setState({ visible: true }),
+      this.props.delay
+    )
   }
-  componentWillUnmount () {
+
+  componentWillUnmount() {
     clearTimeout(this.timeout)
   }
-  render () {
-    const {visible} = this.state
-    const {
-      width, height,
-      loading, error, render
-    } = this.props
+
+  render() {
+    const { visible } = this.state
+    const { width, height, loading, error, render } = this.props
     if (loading && !visible) {
       return <Spacer width={width} height={height} />
     } else if (loading) {
-      let bars = []
-      for (let i = 0; i < 12; i++) {
-        let style = {}
+      const bars = []
+      for (let index = 0; index < 12; index++) {
+        const style = {}
         style.WebkitAnimationDelay = style.animationDelay =
-          (i - 12) / 10 + 's'
+          (index - 12) / 10 + 's'
         style.WebkitTransform = style.transform =
-          'rotate(' + (i * 30) + 'deg) translate(146%)'
+          'rotate(' + index * 30 + 'deg) translate(146%)'
 
-        bars.push(
-          <div {...barStyle} style={style} key={i} />
-        )
+        bars.push(<div {...barStyle} style={style} key={index} />)
       }
 
       return (
         <Spacer width={width} height={height}>
-          <div {...containerStyle}>
-            {bars}
-          </div>
+          <div {...containerStyle}>{bars}</div>
         </Spacer>
       )
     } else if (error) {
@@ -88,7 +89,7 @@ class Loader extends Component {
 }
 
 Loader.defaultProps = {
-  delay: 500
+  delay: 500,
 }
 
 export default Loader

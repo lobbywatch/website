@@ -24,15 +24,4 @@ NEXT_PUBLIC_PUBLIC_BASE_URL='http://lobbywatch.local' NEXT_PUBLIC_DEBUG_INFORMAT
 
 ## Deploy
 
-Get the [Heroku cli](https://devcenter.heroku.com/articles/heroku-cli), login and setup the remote:
-
-```bash
-heroku login
-heroku git:remote -a lobbywatch
-```
-
-Afterwards you can simply git push to deploy:
-
-```bash
-git push heroku
-```
+The `main` branch is automatically deployed to production by Vercel.

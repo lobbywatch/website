@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import {css} from 'glamor'
-import {StyledLink} from '../Styled'
+import { css } from 'glamor'
+import { StyledLink } from '../Styled'
 import {
-  LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE,
-  mediaM, mediaSOnly,
-  HEADER_HEIGHT
+  LW_BLUE_LIGHT,
+  LW_BLUE_DARK,
+  WHITE,
+  mediaM,
+  mediaSOnly,
+  HEADER_HEIGHT,
 } from '../../theme'
 
 const ITEM_MARGIN_LEFT = 15
@@ -25,19 +28,19 @@ const menuStyle = css({
     visibility: 'hidden',
     opacity: 0,
     transition: 'opacity 0.2s ease-in-out, visibility 0s linear 0.2s',
-    '&[aria-expanded=true]': {
+    '&[data-expanded=true]': {
       opacity: 1,
       visibility: 'visible',
-      transition: 'opacity 0.2s ease-in-out'
-    }
+      transition: 'opacity 0.2s ease-in-out',
+    },
   },
   [mediaM]: {
     display: 'block',
     whiteSpace: 'none',
     position: 'absolute',
     top: 30,
-    right: 20
-  }
+    right: 20,
+  },
 })
 
 const listStyle = css({
@@ -45,33 +48,33 @@ const listStyle = css({
   listStyle: 'none',
   margin: 0,
   paddingLeft: 0,
-  lineHeight: '24px'
+  lineHeight: '24px',
 })
 
 const listItemStyle = css({
   [mediaSOnly]: {
     lineHeight: '56px',
-    paddingLeft: 30
+    paddingLeft: 30,
   },
   [mediaM]: {
     float: 'left',
     marginLeft: ITEM_MARGIN_LEFT,
-    position: 'relative'
+    position: 'relative',
   },
   '& a, & a:visited, & a:hover': {
-    color: LW_BLUE_LIGHT
+    color: LW_BLUE_LIGHT,
   },
   '& a:hover': {
-    color: WHITE
+    color: WHITE,
   },
   '& a.active': {
-    color: WHITE
-  }
+    color: WHITE,
+  },
 })
 const listItemSeparatorStyle = css({
   [mediaSOnly]: {
     display: 'block',
-    height: 56
+    height: 56,
   },
   [mediaM]: {
     display: 'inline-block',
@@ -81,19 +84,17 @@ const listItemSeparatorStyle = css({
     marginLeft: 25 - ITEM_MARGIN_LEFT,
     opacity: 0.2,
     width: 1,
-    height: 24
-  }
+    height: 24,
+  },
 })
 
-const Menu = ({items, expanded, id}) => (
-  <nav {...menuStyle} role='navigation' id={id} aria-expanded={expanded}>
+const Menu = ({ items, expanded, id }) => (
+  <nav {...menuStyle} role='navigation' id={id} data-expanded={expanded}>
     <ul {...listStyle}>
-      {items.map(({label, href, active, separator}, i) => (
-        <li {...listItemStyle} key={i}>
+      {items.map(({ label, href, active, separator }, index) => (
+        <li {...listItemStyle} key={index}>
           {separator && <span {...listItemSeparatorStyle} />}
-          <StyledLink
-            href={href}
-            className={active ? 'active' : ''}>
+          <StyledLink href={href} className={active ? 'active' : ''}>
             {label}
           </StyledLink>
         </li>
@@ -103,12 +104,17 @@ const Menu = ({items, expanded, id}) => (
 )
 
 Menu.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({
-    href: PropTypes.oneOfType([PropTypes.string.isRequired, PropTypes.object.isRequired]).isRequired,
-    label: PropTypes.node.isRequired,
-    separator: PropTypes.bool
-  })),
-  expanded: PropTypes.bool
+  items: PropTypes.arrayOf(
+    PropTypes.shape({
+      href: PropTypes.oneOfType([
+        PropTypes.string.isRequired,
+        PropTypes.object.isRequired,
+      ]).isRequired,
+      label: PropTypes.node.isRequired,
+      separator: PropTypes.bool,
+    })
+  ),
+  expanded: PropTypes.bool,
 }
 
 export default Menu

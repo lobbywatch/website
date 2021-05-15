@@ -1,6 +1,6 @@
 // exports instead of named export for graphql server
 
-module.exports.getFormatter = translations => {
+module.exports.getFormatter = (translations) => {
   if (!Array.isArray(translations)) {
     return () => ''
   }
@@ -11,23 +11,26 @@ module.exports.getFormatter = translations => {
   }, {})
 
   const formatter = (key, replacements, missingValue) => {
-    let message = index[key] || (missingValue !== undefined ? missingValue : `TK(${key})`)
+    let message =
+      index[key] || (missingValue !== undefined ? missingValue : `TK(${key})`)
     if (replacements) {
-      Object.keys(replacements).forEach(replacementKey => {
-        message = message.replace(`{${replacementKey}}`, replacements[replacementKey])
-      })
+      for (const replacementKey of Object.keys(replacements)) {
+        message = message.replace(
+          `{${replacementKey}}`,
+          replacements[replacementKey]
+        )
+      }
     }
     return message
   }
 
   formatter.locale = translations.locale
 
-  const firstKey = keys => (
-    keys.find(k => index[k] !== undefined) || keys[keys.length - 1]
-  )
+  const firstKey = (keys) =>
+    keys.find((k) => index[k] !== undefined) || keys[keys.length - 1]
   const pluralizationKeys = (baseKey, replacements) => [
     `${baseKey}/${replacements.count}`,
-    `${baseKey}/other`
+    `${baseKey}/other`,
   ]
 
   formatter.first = (keys, replacements, missingValue) => {
@@ -41,7 +44,7 @@ module.exports.getFormatter = translations => {
     )
   }
 
-  const createReplacementReducer = replacements => (r, part) => {
+  const createReplacementReducer = (replacements) => (r, part) => {
     if (part[0] === '{') {
       r.push(replacements[part.slice(1, -1)] || '')
     } else {
@@ -51,7 +54,7 @@ module.exports.getFormatter = translations => {
   }
   formatter.elements = (key, replacements, missingValue) => {
     return formatter(key, undefined, missingValue)
-      .split(/(\{[^{}]+\})/g)
+      .split(/({[^{}]+})/g)
       .filter(Boolean)
       .reduce(createReplacementReducer(replacements), [])
   }

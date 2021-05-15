@@ -1,23 +1,24 @@
-import {css, merge} from 'glamor'
+import { css, merge } from 'glamor'
 
-import {LW_BLUE_DARK, WHITE, GREY_LIGHT, GREY_DARK, mediaM} from '../../theme'
-import {PADDING_BOTTOM} from './layout'
+import { LW_BLUE_DARK, WHITE, GREY_LIGHT, GREY_DARK, mediaM } from '../../theme'
+import { PADDING_BOTTOM } from './layout'
+import { plainButtonRule } from '../Styled'
 
 export const edge = css({
   position: 'relative',
   backgroundColor: GREY_LIGHT,
-  marginBottom: 20
+  marginBottom: 20,
 })
 export const container = css({
   position: 'relative',
-  padding: `0 0 ${PADDING_BOTTOM}px`
+  padding: `0 0 ${PADDING_BOTTOM}px`,
 })
 export const root = css({
   position: 'absolute',
   left: '50%',
-  top: 0
+  top: 0,
 })
-export const bubble = css({
+export const bubble = css(plainButtonRule, {
   display: 'inline-block',
   fontSize: 14,
   lineHeight: '24px',
@@ -28,12 +29,12 @@ export const bubble = css({
   marginRight: 10,
   marginBottom: 10,
   minHeight: 40,
-  zIndex: 1
+  zIndex: 1,
 })
 export const bubbleVia = merge(bubble, {
   color: LW_BLUE_DARK,
   backgroundColor: WHITE,
-  border: `1px solid ${LW_BLUE_DARK}`
+  border: `1px solid ${LW_BLUE_DARK}`,
 })
 export const count = css({
   display: 'inline-block',
@@ -46,16 +47,16 @@ export const count = css({
   marginRight: 3,
   backgroundColor: WHITE,
   color: LW_BLUE_DARK,
-  fontWeight: 500
+  fontWeight: 500,
 })
 export const countVia = merge(count, {
   color: WHITE,
-  backgroundColor: LW_BLUE_DARK
+  backgroundColor: LW_BLUE_DARK,
 })
 export const icon = css({
   marginLeft: -8,
   marginRight: 3,
-  verticalAlign: 'middle'
+  verticalAlign: 'middle',
 })
 
 export const connection = css({
@@ -69,19 +70,19 @@ export const connection = css({
   padding: '5px 10px',
   verticalAlign: 'middle',
   marginRight: 10,
-  marginBottom: 10
+  marginBottom: 10,
 })
 export const connectionIndirect = merge(connection, {
   backgroundColor: WHITE,
   color: GREY_DARK,
-  border: `1px solid ${GREY_DARK}`
+  border: `1px solid ${GREY_DARK}`,
 })
 
 export const hidden = css({
   position: 'absolute',
   left: 0,
   top: 0,
-  visibility: 'hidden'
+  visibility: 'hidden',
 })
 
 export const metaBox = css({
@@ -92,18 +93,18 @@ export const metaBox = css({
   textAlign: 'center',
   lineHeight: '16px',
   [mediaM]: {
-    lineHeight: '20px'
-  }
+    lineHeight: '20px',
+  },
 })
 
 export const pathSegment = css({
   position: 'relative',
   display: 'block',
-  paddingLeft: 20
+  paddingLeft: 20,
 })
 
 export const pathSegmentIcon = css({
   position: 'absolute',
   top: 2,
-  left: 0
+  left: 0,
 })

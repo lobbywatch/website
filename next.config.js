@@ -1,6 +1,4 @@
-const {
-  localeSegment
-} = require('./constants')
+const { localeSegment } = require('./constants')
 
 module.exports = {
   future: {
@@ -9,12 +7,12 @@ module.exports = {
   images: {
     domains: ['cms.lobbywatch.ch'],
   },
-  webpack: (config, { dev }) => {
+  webpack: (config) => {
     const alias = { ...config.resolve.alias }
     delete alias.url // alias to native-url
     config.resolve = {
       ...config.resolve,
-      alias
+      alias,
     }
 
     return config
@@ -46,10 +44,10 @@ module.exports = {
       {
         source: '/graphiql',
         destination: '/graphql',
-        permanent: false
-      }
+        permanent: false,
+      },
     ]
   },
   poweredByHeader: false,
-  useFileSystemPublicRoutes: true
+  useFileSystemPublicRoutes: true,
 }

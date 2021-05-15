@@ -1,19 +1,19 @@
 import React from 'react'
 
-import {gql} from '@apollo/client'
-import {graphql} from '@apollo/client/react/hoc'
-import {withRouter} from 'next/router'
+import { gql } from '@apollo/client'
+import { graphql } from '@apollo/client/react/hoc'
+import { withRouter } from 'next/router'
 
-import {H1, TextCenter} from 'src/components/Styled'
+import { H1, TextCenter } from 'src/components/Styled'
 import Message from 'src/components/Message'
 
 import Loader from 'src/components/Loader'
-import Frame, {Center} from 'src/components/Frame'
+import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
-import {withInitialProps} from 'lib/apolloClient'
+import { withInitialProps } from 'lib/apolloClient'
 
 const lobbyGroupsQuery = gql`
   query lobbyGroups($locale: Locale!) {
@@ -29,35 +29,52 @@ const lobbyGroupsQuery = gql`
   }
 `
 
-const LobbyGroups = ({loading, error, lobbyGroups, locale}) => (
-  <Loader loading={loading} error={error} render={() => (
-    <Center>
-      <MetaTags locale={locale} fromT={t => ({
-        title: t('menu/lobbygroups'),
-        description: t('lobbygroups/meta/description', {count: lobbyGroups.length})
-      })} />
-      <TextCenter>
-        <H1><Message id='menu/lobbygroups' locale={locale} /></H1>
-      </TextCenter>
-      <ListView locale={locale} items={lobbyGroups} />
-      <BlockRegion locale={locale}
-        region='rooster_lobbygroups'
-        style={{paddingTop: 50}} />
-    </Center>
-  )} />
+const LobbyGroups = ({ loading, error, lobbyGroups, locale }) => (
+  <Loader
+    loading={loading}
+    error={error}
+    render={() => (
+      <Center>
+        <MetaTags
+          locale={locale}
+          fromT={(t) => ({
+            title: t('menu/lobbygroups'),
+            description: t('lobbygroups/meta/description', {
+              count: lobbyGroups.length,
+            }),
+          })}
+        />
+        <TextCenter>
+          <H1>
+            <Message id='menu/lobbygroups' locale={locale} />
+          </H1>
+        </TextCenter>
+        <ListView locale={locale} items={lobbyGroups} />
+        <BlockRegion
+          locale={locale}
+          region='rooster_lobbygroups'
+          style={{ paddingTop: 50 }}
+        />
+      </Center>
+    )}
+  />
 )
 
 const LobbyGroupsWithQuery = graphql(lobbyGroupsQuery, {
-  props: ({data}) => {
+  props: ({ data }) => {
     return {
       loading: data.loading,
       error: data.error,
-      lobbyGroups: data.lobbyGroups
+      lobbyGroups: data.lobbyGroups,
     }
-  }
+  },
 })(LobbyGroups)
 
-const Page = ({router: {query: {locale, id}}}) => (
+const Page = ({
+  router: {
+    query: { locale },
+  },
+}) => (
   <Frame>
     <LobbyGroupsWithQuery locale={locale} />
   </Frame>

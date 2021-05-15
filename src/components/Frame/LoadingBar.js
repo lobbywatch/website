@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Router from 'next/router'
 
-import {css} from 'glamor'
-import {LW_BLUE_LIGHT} from '../../theme'
+import { css } from 'glamor'
+import { LW_BLUE_LIGHT } from '../../theme'
 
 const styles = {
   loadingBar: css({
@@ -12,8 +12,8 @@ const styles = {
     left: 0,
     height: 2,
     backgroundColor: LW_BLUE_LIGHT,
-    transition: 'width 200ms linear, opacity 200ms linear'
-  })
+    transition: 'width 200ms linear, opacity 200ms linear',
+  }),
 }
 
 class LoadingBar extends Component {
@@ -22,25 +22,26 @@ class LoadingBar extends Component {
 
     this.state = {
       loading: false,
-      progress: 0
+      progress: 0,
     }
-  }
-  onRouteChangeStart = url => {
-    clearTimeout(this.timeout)
-    this.setState({ loading: true, progress: 0.02 })
 
-    const { onRouteChangeStart } = this.props
-    if (onRouteChangeStart) {
-      onRouteChangeStart(url)
+    this.onRouteChangeStart = (url) => {
+      clearTimeout(this.timeout)
+      this.setState({ loading: true, progress: 0.02 })
+
+      const { onRouteChangeStart } = this.props
+      if (onRouteChangeStart) {
+        onRouteChangeStart(url)
+      }
     }
-  }
-  onRouteChangeComplete = () => {
-    clearTimeout(this.timeout)
-    this.setState({ loading: false })
-  }
-  onRouteChangeError = () => {
-    clearTimeout(this.timeout)
-    this.setState({ loading: false })
+    this.onRouteChangeComplete = () => {
+      clearTimeout(this.timeout)
+      this.setState({ loading: false })
+    }
+    this.onRouteChangeError = () => {
+      clearTimeout(this.timeout)
+      this.setState({ loading: false })
+    }
   }
   componentDidMount() {
     Router.events.on('routeChangeStart', this.onRouteChangeStart)
@@ -69,7 +70,7 @@ class LoadingBar extends Component {
             amount = 0.005
           }
           return {
-            progress: progress + amount
+            progress: progress + amount,
           }
         })
       }, 200)
@@ -82,7 +83,7 @@ class LoadingBar extends Component {
         {...styles.loadingBar}
         style={{
           opacity: loading ? 1 : 0,
-          width: `${progress * 100}%`
+          width: `${progress * 100}%`,
         }}
       />
     )

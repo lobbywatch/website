@@ -2,16 +2,16 @@
 
 let count = 0
 
-const jsonp = (url, opts = {}, fn) => {
-  const prefix = opts.prefix || '__jp'
+const jsonp = (url, options = {}, fn) => {
+  const prefix = options.prefix || '__jp'
 
   // use the callback name that was passed if one was provided.
   // otherwise generate a unique name by incrementing our counter.
-  const id = opts.name || (prefix + (count++))
+  const id = options.name || prefix + count++
 
-  const param = opts.param || 'callback'
-  const timeout = opts.timeout || 60000
-  const target = document.getElementsByTagName('script')[0]
+  const param = options.param || 'callback'
+  const timeout = options.timeout || 60000
+  const target = document.querySelectorAll('script')[0]
   let script
   let timer
 
@@ -23,7 +23,7 @@ const jsonp = (url, opts = {}, fn) => {
   }
 
   const cleanup = () => {
-    if (script.parentNode) script.parentNode.removeChild(script)
+    if (script.parentNode) script.remove()
     window[id] = () => {}
     if (timer) clearTimeout(timer)
   }
@@ -34,7 +34,7 @@ const jsonp = (url, opts = {}, fn) => {
     }
   }
 
-  window[id] = data => {
+  window[id] = (data) => {
     cleanup()
     if (fn) fn(null, data)
   }

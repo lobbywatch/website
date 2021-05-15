@@ -1,11 +1,7 @@
 export const START_Y = 70
 export const PADDING_BOTTOM = 60
 
-const layout = ({
-  hierarchy,
-  nodes, links,
-  width, open
-}) => {
+const layout = ({ hierarchy, width, open }) => {
   const MARGIN = 10
   const Y_SPACE = 10
   const Y_SPACE_BIG = 30
@@ -16,10 +12,7 @@ const layout = ({
   let lastType
   const nextRow = (rowHeight, bigSpace) => {
     x = 0
-    y += rowHeight + (
-      bigSpace
-      ? Y_SPACE_BIG : Y_SPACE
-    )
+    y += rowHeight + (bigSpace ? Y_SPACE_BIG : Y_SPACE)
     row += 1
   }
   const visit = (node, align = 0.5) => {
@@ -32,15 +25,15 @@ const layout = ({
     const newRow = (newType) => {
       const xLeftOver = width - x
       const xPush = xLeftOver * align // center
-      rowChildren.forEach(rowChild => {
+      for (const rowChild of rowChildren) {
         rowChild.x += xPush
-      })
+      }
       nextRow(rowHeight, newType || openChildren.length)
       rowHeight = 0
       rowChildren = []
-      if (openChildren.length) {
+      if (openChildren.length > 0) {
         lastType = null
-        openChildren.forEach(c => {
+        for (const c of openChildren) {
           let align = 0.5
           const cx = c.x + c.data.measurements.width / 2
           if (cx > width * 0.7) {
@@ -49,18 +42,15 @@ const layout = ({
             align = 0
           }
           visit(c, align)
-        })
+        }
         openChildren = []
       }
     }
-    node.children.forEach(child => {
+    for (const child of node.children) {
       const measurements = child.data.measurements
 
       const newType = lastType && lastType !== child.data.type
-      if (
-        (x + measurements.width > width) ||
-        newType
-      ) {
+      if (x + measurements.width > width || newType) {
         newRow(newType)
       }
 
@@ -74,7 +64,7 @@ const layout = ({
         openChildren.push(child)
       }
       lastType = child.data.type
-    })
+    }
     newRow(true)
   }
   visit(hierarchy)

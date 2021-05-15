@@ -10,18 +10,18 @@ const apolloServer = new ApolloServer({
   introspection: true,
   playground: true,
   context: () => ({
-    loaders: createLoaders()
+    loaders: createLoaders(),
   }),
-  formatError: (err) => {
-    console.error('[graphql]', err)
-    return err
-  }
+  formatError: (error) => {
+    console.error('[graphql]', error)
+    return error
+  },
 })
 
 export const config = {
   api: {
-    bodyParser: false
-  }
+    bodyParser: false,
+  },
 }
 
 export default apolloServer.createHandler({ path: '/graphql' })
