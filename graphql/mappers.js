@@ -122,7 +122,7 @@ const mapParliamentariansFromConnections = (raw, t, origin) => {
       const rawGuest = raw.zutrittsberechtigte
           .find(g => g.person_id === connection.person_id)
       if (!rawGuest) {
-        console.error(
+        console.warn(
           `[mappers] Connection: missing guest ${connection.person_id} ${connection.zutrittsberechtigter} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`
         )
         // can happen when e.g. the guest is not published yet
