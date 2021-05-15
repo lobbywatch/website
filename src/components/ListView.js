@@ -5,6 +5,7 @@ import { metaRule } from './Styled'
 import { LW_BLUE, GREY_LIGHT, mediaM } from '../theme'
 import { css } from 'glamor'
 import Link from 'next/link'
+import Image from 'next/image'
 import { itemPath } from '../utils/routes'
 import Grid, { GridItem } from './Grid'
 
@@ -21,6 +22,7 @@ const symbolStyle = css({
 })
 const portraitStyle = css({
   borderRadius: '50%',
+  overflow: 'hidden',
 })
 const aStyle = css({
   display: 'block',
@@ -54,7 +56,14 @@ const ListView = ({ locale, items, title, subtitle, maxWidth }) => {
       <Link key={id} href={itemPath(item, locale)} prefetch={false}>
         <a {...aStyle}>
           {!!portrait && (
-            <img {...symbolStyle} {...portraitStyle} src={portrait} alt='' />
+            <span {...symbolStyle} {...portraitStyle}>
+              <Image
+                width={SYMBOL_SIZE}
+                height={SYMBOL_SIZE}
+                src={portrait}
+                alt=''
+              />
+            </span>
           )}
           {!portrait && !!Icon && (
             <Icon className={symbolStyle} size={SYMBOL_SIZE} />

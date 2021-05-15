@@ -1,5 +1,8 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
+import Image from 'next/image'
+import { css } from 'glamor'
+
 import { A, StyledLink, Clear, h1Rule, metaRule, TextCenter } from './Styled'
 import { withT } from './Message'
 import { ContextBoxValue } from './ContextBox'
@@ -10,7 +13,6 @@ import { itemPath } from '../utils/routes'
 import { GREY_LIGHT } from '../theme'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
-import { css } from 'glamor'
 
 const titleStyle = css(h1Rule, {
   marginTop: 0,
@@ -22,10 +24,12 @@ const metaStyle = css(metaRule, {
 const symbolStyle = css({
   display: 'inline-block',
 })
+const SYMBOL_SIZE = 64
 const imageStyle = css({
-  width: 64,
-  height: 64,
+  width: SYMBOL_SIZE,
+  height: SYMBOL_SIZE,
   borderRadius: '50%',
+  overflow: 'hidden',
 })
 
 const detailBoxStyle = css({
@@ -62,8 +66,12 @@ class DetailHead extends Component {
     const detailFields = details(data, t, locale)
     return (
       <TextCenter>
-        {!!img && <img {...symbolStyle} {...imageStyle} src={img} alt='' />}
-        {!img && !!Icon && <Icon className={symbolStyle} size={64} />}
+        {!!img && (
+          <span {...symbolStyle} {...imageStyle}>
+            <Image width={SYMBOL_SIZE} height={SYMBOL_SIZE} src={img} alt='' />
+          </span>
+        )}
+        {!img && !!Icon && <Icon className={symbolStyle} size={SYMBOL_SIZE} />}
         <h1 {...titleStyle}>{title(data, t, locale)}</h1>
         <p {...metaStyle}>{subtitle(data, t, locale)}</p>
         {detailFields.length > 0 && (
