@@ -51,7 +51,16 @@ const pStyle = css({
   flexGrow: 1,
 })
 
-const Card = ({ image, path, title, author, published, lead, locale }) => {
+const Card = ({
+  image,
+  path,
+  title,
+  author,
+  published,
+  lead,
+  locale,
+  priority,
+}) => {
   const fullPath = `/${locale}/${path.join('/')}`
   return (
     <div {...containerStyle}>
@@ -59,7 +68,8 @@ const Card = ({ image, path, title, author, published, lead, locale }) => {
         <a {...headStyle}>
           <Image
             src={image}
-            priority
+            priority={priority}
+            sizes='370px'
             layout='fill'
             objectFit='cover'
             quality={90}

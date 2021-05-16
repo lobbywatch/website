@@ -50,7 +50,7 @@ const Blog = ({ loading, error, articles, page, locale }) => (
         <Grid>
           {articles.list.map((article, index) => (
             <GridItem key={index}>
-              <Card locale={locale} {...article} />
+              <Card locale={locale} {...article} priority={index < 2} />
             </GridItem>
           ))}
         </Grid>
