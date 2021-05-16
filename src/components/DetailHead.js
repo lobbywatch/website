@@ -68,7 +68,13 @@ class DetailHead extends Component {
       <TextCenter>
         {!!img && (
           <span {...symbolStyle} {...imageStyle}>
-            <Image width={SYMBOL_SIZE} height={SYMBOL_SIZE} src={img} alt='' />
+            <Image
+              width={SYMBOL_SIZE}
+              height={SYMBOL_SIZE}
+              src={img}
+              priority
+              alt=''
+            />
           </span>
         )}
         {!img && !!Icon && <Icon className={symbolStyle} size={SYMBOL_SIZE} />}
