@@ -61,7 +61,7 @@ const Index = () => {
               <Grid>
                 {data.articles.list.map((article, index) => (
                   <GridItem key={index}>
-                    <Card locale={locale} {...article} />
+                    <Card locale={locale} {...article} priority />
                   </GridItem>
                 ))}
               </Grid>

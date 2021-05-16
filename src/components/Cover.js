@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { css } from 'glamor'
 
-import { mediaM, mediaL } from '../theme'
+import { mediaM } from '../theme'
 import { H1 } from './Styled'
 import { preventWidow } from '../utils/helpers'
 
@@ -11,7 +11,7 @@ export const NARROW_WIDTH = 640
 const coverStyle = css({
   width: '100%',
   position: 'relative',
-  [mediaL]: {
+  [mediaM]: {
     minHeight: 500,
     height: ['400px', '50vh'],
     backgroundSize: 'cover',
@@ -21,7 +21,7 @@ const coverStyle = css({
 const coverImageStyle = css({
   display: 'block',
   width: '100%',
-  [mediaL]: {
+  [mediaM]: {
     display: 'none',
   },
 })
@@ -62,7 +62,7 @@ const titleStyle = css({
 const Cover = ({ src, title }) => (
   <div
     {...coverStyle}
-    {...css({ [mediaL]: { backgroundImage: `url('${src}')` } })}
+    {...css({ [mediaM]: { backgroundImage: `url('${src}')` } })}
   >
     <img {...coverImageStyle} src={src} alt='' />
     <div {...leadStyle}>

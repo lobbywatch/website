@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types'
 import React from 'react'
 import Link from 'next/link'
-// import Image from 'next/image'
+import Image from 'next/image'
 
 import { h2Rule, metaRule, ButtonLink, P, TextCenter } from './Styled'
 import Message from './Message'
 
 import { css } from 'glamor'
-import { WHITE, GREY_SOFT, GREY_LIGHT } from '../theme'
+import { WHITE, GREY_SOFT } from '../theme'
 import { locales } from '../../constants'
 
 const containerStyle = css({
@@ -20,9 +20,6 @@ const containerStyle = css({
 })
 const headStyle = css({
   textDecoration: 'none',
-  backgroundSize: 'cover',
-  backgroundPosition: 'center',
-  backgroundColor: GREY_LIGHT,
   minHeight: 160,
   padding: '16px 24px',
   position: 'relative',
@@ -54,20 +51,29 @@ const pStyle = css({
   flexGrow: 1,
 })
 
-const Card = ({ image, path, title, author, published, lead, locale }) => {
+const Card = ({
+  image,
+  path,
+  title,
+  author,
+  published,
+  lead,
+  locale,
+  priority,
+}) => {
   const fullPath = `/${locale}/${path.join('/')}`
   return (
     <div {...containerStyle}>
       <Link href={fullPath}>
-        <a {...headStyle} style={{ backgroundImage: image && `url(${image})` }}>
-          {/* Next Image consumes too much memory on Heroku */}
-          {/* <Image
+        <a {...headStyle}>
+          <Image
             src={image}
-            priority
+            priority={priority}
+            sizes='370px'
             layout='fill'
             objectFit='cover'
             quality={90}
-          /> */}
+          />
           <span {...shadeStyle} />
           <h2 {...titleStyle}>{title}</h2>
         </a>
