@@ -24,11 +24,8 @@ const compensationTransparenceStateMap = {
 
 const mapFunction = (
   t,
-  { beschreibung, art, funktion_im_gremium: funktion, rechtsform, gender }
+  { art, funktion_im_gremium: funktion, rechtsform, gender }
 ) => {
-  if (beschreibung) {
-    return beschreibung
-  }
   let translated = t.first(
     [
       `connection/function/${rechtsform}-${art}-${funktion}-${gender}`,
@@ -202,6 +199,7 @@ exports.mapLobbyGroup = (raw, t) => {
         name: connection.name,
       },
       group: t('connections/organisation'),
+      description: connection.beschreibung,
     }))
 
     const parliamentarians = mapParliamentariansFromConnections(
@@ -256,6 +254,7 @@ exports.mapBranch = (raw, t) => {
         name: connection.name,
       },
       group: t('connections/lobbyGroup'),
+      description: connection.beschreibung,
     }))
     const parliamentarians = mapParliamentariansFromConnections(raw, t, branch)
     return parliamentarians.concat(lobbygroups).filter(Boolean)
@@ -308,6 +307,7 @@ const mapOrganisation = (exports.mapOrganisation = (raw, t) => {
             rechtsform: org.legalFormId,
           })
         ),
+        description: directConnection.beschreibung,
       }
     })
     const indirect = []
@@ -328,6 +328,7 @@ const mapOrganisation = (exports.mapOrganisation = (raw, t) => {
                   rechtsform: org.legalFormId,
                 })
               ),
+              description: rawGuest.beschreibung,
             },
           ],
           to: parliamentarian,
@@ -345,6 +346,7 @@ const mapOrganisation = (exports.mapOrganisation = (raw, t) => {
       },
       vias: [],
       group: t(`connections/groups/${connection.art}`),
+      description: connection.beschreibung,
     }))
     return [...direct, ...indirect].concat(relations)
   }
@@ -393,6 +395,7 @@ const mapMandate = (origin, connection, t) => ({
     connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index],
   function: () =>
     mapFunction(t, Object.assign({ gender: origin.gender }, connection)),
+  description: connection.beschreibung,
   compensations: mapCompensations(connection.verguetungen_pro_jahr),
   compensation:
     connection.verguetung !== null

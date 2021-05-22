@@ -30,6 +30,8 @@ const branchQuery = gql`
       }
       connections {
         group
+        function
+        description
         to {
           __typename
           ... on LobbyGroup {

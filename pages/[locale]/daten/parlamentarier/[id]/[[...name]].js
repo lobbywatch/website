@@ -69,6 +69,7 @@ const parliamentarianQuery = gql`
         group
         potency
         function
+        description
         compensations {
           year
           money

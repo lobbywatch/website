@@ -233,6 +233,7 @@ type Connection {
   group: String
   potency: Potency
   function: String
+  description: String
 }
 
 type Parliamentarian implements Person {

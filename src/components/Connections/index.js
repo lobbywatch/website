@@ -447,46 +447,6 @@ class Connections extends Component {
 }
 
 export const hoverValues = [
-  ['connections/context/function', ({ data }) => data.connection.function],
-  [
-    'connections/context/compensation',
-    ({
-      data: {
-        connection,
-        connection: { compensations },
-      },
-    }) =>
-      !!compensations &&
-      compensations.length > 0 &&
-      (connection.from?.__typename === 'Parliamentarian' ||
-        connection.to?.__typename === 'Parliamentarian') &&
-      connection.vias.length === 0,
-    (
-      {
-        data: {
-          connection: { compensations },
-        },
-      },
-      { t }
-    ) =>
-      compensations
-        .filter((e, index) => index < 3)
-        .map((compensation, index) => (
-          <div key={`compensation-${index}`}>
-            {compensation.year}
-            {': '}
-            {compensation.money !== null
-              ? t.pluralize('connections/context/compensation/money', {
-                  count: compensation.money,
-                  formatted: chfFormat(compensation.money),
-                }) +
-                (compensation.description
-                  ? ` (${compensation.description})`
-                  : '')
-              : t('connections/context/compensation/notAvailable')}
-          </div>
-        )),
-  ],
   [
     null,
     ({
@@ -528,6 +488,50 @@ export const hoverValues = [
           </span>
         </ContextBoxValue>
       )),
+  ],
+  ['connections/context/function', ({ data }) => data.connection.function],
+  [
+    'connections/context/description',
+    ({ data }) => data.connection.description,
+  ],
+  [
+    'connections/context/compensation',
+    ({
+      data: {
+        connection,
+        connection: { compensations },
+      },
+    }) =>
+      !!compensations &&
+      compensations.length > 0 &&
+      (connection.from?.__typename === 'Parliamentarian' ||
+        connection.to?.__typename === 'Parliamentarian') &&
+      connection.vias.length === 0,
+    (
+      {
+        data: {
+          connection: { compensations },
+        },
+      },
+      { t }
+    ) =>
+      compensations
+        .filter((e, index) => index < 3)
+        .map((compensation, index) => (
+          <div key={`compensation-${index}`}>
+            {compensation.year}
+            {': '}
+            {compensation.money !== null
+              ? t.pluralize('connections/context/compensation/money', {
+                  count: compensation.money,
+                  formatted: chfFormat(compensation.money),
+                }) +
+                (compensation.description
+                  ? ` (${compensation.description})`
+                  : '')
+              : t('connections/context/compensation/notAvailable')}
+          </div>
+        )),
   ],
 ]
 

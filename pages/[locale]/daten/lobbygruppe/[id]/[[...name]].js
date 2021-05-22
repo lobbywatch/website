@@ -36,6 +36,8 @@ const lobbyGroupQuery = gql`
       wikidata_url
       connections {
         group
+        function
+        description
         to {
           __typename
           ... on Organisation {
