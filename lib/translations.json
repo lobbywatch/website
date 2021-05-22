@@ -399,11 +399,6 @@
       "fr": "Invitée par"
     },
     {
-      "key": "lobbygroup/error/404",
-      "de": "Lobbygruppe nicht gefunden",
-      "fr": "Groupe d'intérêt non trouvé"
-    },
-    {
       "key": "connections/legend/type/title",
       "de": "Verbindungsart",
       "fr": "Lien"

@@ -1,8 +1,7 @@
 import React from 'react'
 
-import { gql } from '@apollo/client'
-import { graphql } from '@apollo/client/react/hoc'
-import { withRouter } from 'next/router'
+import { gql, useQuery } from '@apollo/client'
+import { useRouter } from 'next/router'
 
 import { nest } from 'd3-collection'
 import { ascending } from 'd3-array'
@@ -38,83 +37,70 @@ const parliamentariansQuery = gql`
   }
 `
 
-const Parliamentarians = ({
-  router: { isFallback },
-  loading,
-  error,
-  parliamentarians,
-  locale,
-}) => (
-  <Loader
-    loading={loading || isFallback}
-    error={error}
-    render={() => (
-      <Center>
-        <MetaTags
-          locale={locale}
-          fromT={(t) => ({
-            title: t('parliamentarians/meta/title'),
-            description: t('parliamentarians/meta/description', {
-              count: parliamentarians.length,
-            }),
-          })}
-        />
-        <TextCenter>
-          <H1>
-            <Message id='parliamentarians/meta/title' locale={locale} />
-          </H1>
-        </TextCenter>
-        {nest()
-          .key((item) => item.canton)
-          .sortKeys(ascending)
-          .entries(parliamentarians)
-          .map(({ key, values }) => (
-            <div key={key} style={{ marginBottom: 50 }}>
-              <H2>{key}</H2>
-              <ListView
-                locale={locale}
-                items={values}
-                subtitle={(item) =>
-                  [
-                    item.councilTitle,
-                    item.partyMembership && item.partyMembership.party.abbr,
-                  ]
-                    .filter(Boolean)
-                    .join(', ')
-                }
-              />
-            </div>
-          ))}
-        <BlockRegion
-          locale={locale}
-          region='rooster_parliamentarians'
-          style={{ paddingTop: 50 }}
-        />
-      </Center>
-    )}
-  />
-)
-
-const ParliamentariansWithQuery = graphql(parliamentariansQuery, {
-  props: ({ data }) => {
-    return {
-      loading: data.loading,
-      error: data.error,
-      parliamentarians: data.parliamentarians,
-    }
-  },
-})(Parliamentarians)
-
-const Page = ({
-  router,
-  router: {
+const Parliamentarians = () => {
+  const {
     query: { locale },
-  },
-}) => (
-  <Frame>
-    <ParliamentariansWithQuery router={router} locale={locale} />
-  </Frame>
-)
+    isFallback,
+  } = useRouter()
+  const { loading, error, data } = useQuery(parliamentariansQuery, {
+    variables: {
+      locale,
+    },
+  })
+
+  return (
+    <Frame>
+      <Loader
+        loading={loading || isFallback}
+        error={error}
+        render={() => (
+          <Center>
+            <MetaTags
+              locale={locale}
+              fromT={(t) => ({
+                title: t('parliamentarians/meta/title'),
+                description: t('parliamentarians/meta/description', {
+                  count: data.parliamentarians.length,
+                }),
+              })}
+            />
+            <TextCenter>
+              <H1>
+                <Message id='parliamentarians/meta/title' locale={locale} />
+              </H1>
+            </TextCenter>
+            {nest()
+              .key((item) => item.canton)
+              .sortKeys(ascending)
+              .entries(data.parliamentarians)
+              .map(({ key, values }) => (
+                <div key={key} style={{ marginBottom: 50 }}>
+                  <H2>{key}</H2>
+                  <ListView
+                    locale={locale}
+                    items={values}
+                    subtitle={(item) =>
+                      [
+                        item.councilTitle,
+                        item.partyMembership && item.partyMembership.party.abbr,
+                      ]
+                        .filter(Boolean)
+                        .join(', ')
+                    }
+                  />
+                </div>
+              ))}
+            <BlockRegion
+              locale={locale}
+              region='rooster_parliamentarians'
+              style={{ paddingTop: 50 }}
+            />
+          </Center>
+        )}
+      />
+    </Frame>
+  )
+}
 
 export const getStaticProps = createGetStaticProps({
   pageQuery: parliamentariansQuery,
@@ -126,4 +112,4 @@ export async function getStaticPaths() {
   }
 }
 
-export default withRouter(Page)
+export default Parliamentarians
