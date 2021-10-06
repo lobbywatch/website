@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags, { GooglePreview } from 'src/components/MetaTags'
-import Connections from 'src/components/Connections'
+import Connections, { hoverValues } from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
 import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
@@ -110,6 +110,18 @@ const LobbyGroup = () => {
                 connectionWeight={(connection) =>
                   CONNECTION_WEIGHTS[connection.to.__typename]
                 }
+                hoverValues={[
+                  [
+                    'connections/context/occupation',
+                    ({ data: { connection } }) =>
+                      connection.to?.__typename === 'Parliamentarian' &&
+                      connection.vias.length === 0 &&
+                      connection.function,
+                  ],
+                  ...hoverValues.filter(
+                    ([key]) => key !== 'connections/context/function'
+                  ),
+                ]}
               />
               {DEBUG_INFORMATION && (
                 <Center>
