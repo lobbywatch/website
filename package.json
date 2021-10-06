@@ -12,7 +12,7 @@
     "prepare": "husky install",
     "lint": "eslint --fix .",
     "test": "eslint",
-    "translations": "gsheets --key=1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg --title=translations --pretty --out lib/translations.json",
+    "translations": "NODE_OPTIONS='-r dotenv/config' gsheets --key=1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg --title=translations --pretty --out lib/translations.json",
     "klog": "find . -name '*.js' -not -path \"./node_modules*\" -not -path \"./.next*\" | xargs wc -l"
   },
   "author": "Thomas Preusse <t@preus.se> (https://t.preus.se/)",
@@ -44,7 +44,7 @@
     "glamor": "^2.20.22",
     "graphql": "^15.5.0",
     "graphql-tools": "^7.0.5",
-    "gsheets": "^2.0.0",
+    "gsheets": "^3.0.1",
     "isomorphic-unfetch": "^3.1.0",
     "lru-cache": "^6.0.0",
     "next": "^10.2.2",
@@ -55,6 +55,7 @@
     "striptags": "^3.0.1"
   },
   "devDependencies": {
+    "dotenv": "^10.0.0",
     "eslint": "^7.26.0",
     "eslint-config-airbnb": "^18.2.1",
     "eslint-config-prettier": "^8.3.0",
