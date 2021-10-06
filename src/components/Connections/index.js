@@ -446,7 +446,14 @@ class Connections extends Component {
   }
 }
 
-export const hoverValues = [
+const hoverValues = [
+  [
+    'connections/context/occupation',
+    ({ data: { connection } }, { origin }) =>
+      origin === 'LobbyGroup' &&
+      connection.vias.length === 0 &&
+      connection.function,
+  ],
   [
     null,
     ({
@@ -489,7 +496,12 @@ export const hoverValues = [
         </ContextBoxValue>
       )),
   ],
-  ['connections/context/function', ({ data }) => data.connection.function],
+  [
+    'connections/context/function',
+    ({ data }, { origin }) =>
+      (origin === 'Parliamentarian' || origin === 'Guest') &&
+      data.connection.function,
+  ],
   [
     'connections/context/description',
     ({ data }) => data.connection.description,
@@ -532,6 +544,13 @@ export const hoverValues = [
               : t('connections/context/compensation/notAvailable')}
           </div>
         )),
+  ],
+  [
+    'connections/context/lobbygroup',
+    (hover, { origin }) =>
+      (origin === 'Parliamentarian' || origin === 'Guest') &&
+      hover.data.connection.group !== hover.parent.data.label &&
+      hover.data.connection.group,
   ],
 ]
 

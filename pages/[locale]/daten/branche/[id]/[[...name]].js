@@ -99,6 +99,7 @@ const Branch = () => {
                 <DetailHead locale={locale} data={branch} />
               </Center>
               <Connections
+                origin={__typename}
                 locale={locale}
                 directness={1}
                 data={branch.connections}

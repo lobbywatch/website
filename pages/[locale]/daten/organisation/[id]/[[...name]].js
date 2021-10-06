@@ -107,6 +107,7 @@ const Org = () => {
                 <DetailHead locale={locale} data={organisation} />
               </Center>
               <Connections
+                origin={__typename}
                 locale={locale}
                 data={organisation.connections}
                 groupByDestination
