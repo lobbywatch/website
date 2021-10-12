@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags, { GooglePreview } from 'src/components/MetaTags'
-import Connections, { hoverValues } from 'src/components/Connections'
+import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
 import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
@@ -130,6 +130,7 @@ const Parliamentarian = () => {
                 <DetailHead locale={locale} data={parliamentarian} />
               </Center>
               <Connections
+                origin={__typename}
                 locale={locale}
                 potency
                 data={parliamentarian.connections}
@@ -140,15 +141,6 @@ const Parliamentarian = () => {
                   connection.vias.length > 0 ? connection.vias[0].to.id : ''
                 }
                 intermediates={parliamentarian.guests}
-                hoverValues={[
-                  ...hoverValues,
-                  [
-                    'connections/context/lobbygroup',
-                    (hover) =>
-                      hover.data.connection.group !== hover.parent.data.label &&
-                      hover.data.connection.group,
-                  ],
-                ]}
               />
               {DEBUG_INFORMATION && (
                 <Center>

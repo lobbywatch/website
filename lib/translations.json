@@ -1,6 +1,4 @@
 {
-  "updated": "2021-05-22T15:05:07.518Z",
-  "title": "translations",
   "data": [
     {
       "key": "menu/locales/de",
@@ -467,6 +465,11 @@
       "key": "connections/context/function",
       "de": "Funktion",
       "fr": "Fonction"
+    },
+    {
+      "key": "connections/context/occupation",
+      "de": "Beruf",
+      "fr": "profession"
     },
     {
       "key": "connections/context/description",
@@ -1063,19 +1066,13 @@
       "fr": "Conseil/Comité de patronage/Commission d'experts/Advisory Board"
     },
     {
-      "key": "banner/text",
-      "de": null,
-      "fr": null
+      "key": "banner/text"
     },
     {
-      "key": "banner/link/text",
-      "de": null,
-      "fr": null
+      "key": "banner/link/text"
     },
     {
-      "key": "banner/link/href",
-      "de": null,
-      "fr": null
+      "key": "banner/link/href"
     }
   ]
 }

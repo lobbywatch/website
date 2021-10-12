@@ -103,6 +103,7 @@ const LobbyGroup = () => {
                 <DetailHead locale={locale} data={lobbyGroup} />
               </Center>
               <Connections
+                origin={__typename}
                 locale={locale}
                 directness={1}
                 data={lobbyGroup.connections}

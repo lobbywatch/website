@@ -202,13 +202,32 @@ exports.mapLobbyGroup = (raw, t) => {
       description: connection.beschreibung,
     }))
 
-    const parliamentarians = mapParliamentariansFromConnections(
+    const parliamentariansViaProfession = raw.parlamentarier
+      .filter((p) => p.beruf_interessengruppe_id === raw.id)
+      .map((parliamentarianRaw) => {
+        const parliamentarian = mapParliamentarian(parliamentarianRaw, t)
+
+        return {
+          from: lobbyGroup,
+          vias: [],
+          function: parliamentarianRaw.beruf,
+          to: parliamentarian,
+          group: parliamentarian.partyMembership
+            ? parliamentarian.partyMembership.party.abbr
+            : t('connections/party/none'),
+        }
+      })
+
+    const parliamentariansViaCon = mapParliamentariansFromConnections(
       raw,
       t,
       lobbyGroup
     )
 
-    return organisations.concat(parliamentarians).filter(Boolean)
+    return organisations
+      .concat(parliamentariansViaProfession)
+      .concat(parliamentariansViaCon)
+      .filter(Boolean)
   }
 
   const lobbyGroup = {
