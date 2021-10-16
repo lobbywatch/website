@@ -162,7 +162,11 @@ class Header extends Component {
         const href = localizeHref
           ? localizeHref(locale)
           : router.asPath
-              .replace(new RegExp(`^\\/${currentLocale}`), `/${locale}`)
+              .split('/')
+              .map((segment, i) =>
+                i === 1 && segment === currentLocale ? locale : segment
+              )
+              .join('/')
               .split('?')[0]
         return {
           locale,

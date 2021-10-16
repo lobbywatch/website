@@ -2,7 +2,7 @@
   "name": "lobbywatch-frontend",
   "version": "1.0.0",
   "engines": {
-    "node": "14.4.0"
+    "node": "14.x"
   },
   "description": "Lobbywatch.ch Frontend",
   "scripts": {
@@ -57,6 +57,7 @@
   "devDependencies": {
     "dotenv": "^10.0.0",
     "eslint": "^8.0.1",
+    "eslint-config-next": "11.1.2",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-prettier": "^4.0.0",

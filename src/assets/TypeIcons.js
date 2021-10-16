@@ -3,9 +3,11 @@ import LobbyGroup from './LobbyGroup'
 import Branch from './Branch'
 import Organisation from './Organisation'
 
-export default {
+const TypeIcons = {
   Guest,
   LobbyGroup,
   Branch,
   Organisation,
 }
+
+export default TypeIcons

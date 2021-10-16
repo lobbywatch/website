@@ -17,6 +17,7 @@ module.exports = {
     },
   },
   extends: [
+    'next/core-web-vitals',
     'eslint:recommended',
     'plugin:jsx-a11y/recommended',
     'plugin:react/recommended',
@@ -29,5 +30,6 @@ module.exports = {
     'no-control-regex': 'off',
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
+    '@next/next/no-img-element': 'off',
   },
 }
