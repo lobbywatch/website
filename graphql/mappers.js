@@ -662,7 +662,7 @@ exports.mapPage = (locale, raw, statusCode) => {
 exports.mapMeta = (locale, raw) => {
   return Object.assign(
     {
-      id: 'Meta',
+      id: `Meta-${locale}`,
     },
     raw,
     {
