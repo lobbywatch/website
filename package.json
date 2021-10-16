@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.4.16",
+    "@graphql-tools/schema": "^8.2.0",
     "accept-language": "^3.0.15",
     "apollo-server-micro": "^3.4.0",
     "core-js": "^3.18.3",
@@ -43,7 +44,6 @@
     "express": "^4.17.1",
     "glamor": "^2.20.22",
     "graphql": "^15.6.1",
-    "graphql-tools": "^8.2.0",
     "gsheets": "^3.0.1",
     "isomorphic-unfetch": "^3.1.0",
     "lru-cache": "^6.0.0",

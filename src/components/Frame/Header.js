@@ -10,8 +10,6 @@ import { typeSegments } from '../../utils/routes'
 import { withRouter } from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
-// https://github.com/vercel/next.js/discussions/22025
-import { resolveHref } from 'next/dist/next-server/lib/router/router'
 
 import {
   LW_BLUE_LIGHT,
@@ -163,13 +161,9 @@ class Header extends Component {
       .map((locale) => {
         const href = localizeHref
           ? localizeHref(locale)
-          : {
-              pathname: router.pathname,
-              query: {
-                ...router.query,
-                locale,
-              },
-            }
+          : router.asPath
+              .replace(new RegExp(`^\\/${currentLocale}`), `/${locale}`)
+              .split('?')[0]
         return {
           locale,
           href,
@@ -213,16 +207,7 @@ class Header extends Component {
         />
         <Head>
           {localizedRoutes.map(({ locale, href }) => (
-            <link
-              key={locale}
-              rel='alternate'
-              hrefLang={locale}
-              href={
-                typeof href === 'string'
-                  ? href
-                  : resolveHref(router.pathname, href, true)[1]
-              }
-            />
+            <link key={locale} rel='alternate' hrefLang={locale} href={href} />
           ))}
         </Head>
         <div {...barStyle}>

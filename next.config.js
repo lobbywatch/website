@@ -1,9 +1,6 @@
 const { localeSegment } = require('./constants')
 
 module.exports = {
-  future: {
-    webpack5: true,
-  },
   images: {
     domains: ['cms.lobbywatch.ch'],
   },
