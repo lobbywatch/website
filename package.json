@@ -31,7 +31,7 @@
     "@apollo/client": "^3.4.16",
     "@graphql-tools/schema": "^8.2.0",
     "accept-language": "^3.0.15",
-    "apollo-server-micro": "^3.4.0",
+    "apollo-server-micro": "^2.25.2",
     "core-js": "^3.18.3",
     "d3-array": "^1.0.2",
     "d3-collection": "^1.0.2",
