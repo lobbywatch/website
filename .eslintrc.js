@@ -31,5 +31,6 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     '@next/next/no-img-element': 'off',
+    '@next/next/next-script-for-ga': 'off',
   },
 }
