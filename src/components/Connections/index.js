@@ -455,6 +455,11 @@ const hoverValues = [
       connection.function,
   ],
   [
+    'connections/context/paths/direct',
+    ({ data }, { origin }) =>
+      origin === 'Organisation' && data.connection.function,
+  ],
+  [
     null,
     ({
       data: {
@@ -489,6 +494,7 @@ const hoverValues = [
                     <Icon className={style.pathSegmentIcon} size={16} />
                     {via.to.name}
                     <br />
+                    <span {...style.pathSegmentFunction}>{via.function}</span>
                   </span>
                 )
               })}

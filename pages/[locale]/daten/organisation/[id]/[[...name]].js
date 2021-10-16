@@ -61,6 +61,7 @@ const orgQuery = gql`
         }
         vias {
           __typename
+          function
           to {
             ... on Guest {
               id

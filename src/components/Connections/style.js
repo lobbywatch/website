@@ -103,6 +103,10 @@ export const pathSegment = css({
   paddingLeft: 20,
 })
 
+export const pathSegmentFunction = css({
+  color: GREY_DARK,
+})
+
 export const pathSegmentIcon = css({
   position: 'absolute',
   top: 2,
