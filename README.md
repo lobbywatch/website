@@ -25,3 +25,23 @@ NEXT_PUBLIC_PUBLIC_BASE_URL='http://lobbywatch.local' NEXT_PUBLIC_DEBUG_INFORMAT
 ## Deploy
 
 The `main` branch is automatically deployed to production by Vercel.
+
+## Translations
+
+Google sheet containing the translations:
+
+https://docs.google.com/spreadsheets/d/1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg/edit
+
+Importing Google sheet translations requires a Google API Key, see https://github.com/interactivethings/gsheets#google-sheets-api-key
+
+Save your API in the `.env` file:
+
+```bash
+GSHEETS_API_KEY=
+```
+
+Finally, import the translations:
+
+```bash
+npm run translations
+```
