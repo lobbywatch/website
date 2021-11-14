@@ -746,8 +746,8 @@
     },
     {
       "key": "organisation/legalForm/KG",
-      "de": "KG",
-      "fr": "Société en commandite"
+      "de": "Kollektivgesellschaft",
+      "fr": "Société en nom collectif"
     },
     {
       "key": "organisation/legalForm/Genossenschaft",
