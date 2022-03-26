@@ -6,14 +6,7 @@ const api = require('./api')
 const translationJson = require('../lib/translations.json')
 
 const createDataLoaderLruCache = (options) => {
-  const cache = new LRU(options)
-
-  return {
-    get: (k) => cache.get(k),
-    set: (k, v) => cache.set(k, v),
-    delete: (k) => cache.del(k),
-    clear: () => cache.reset(),
-  }
+  return new LRU(options)
 }
 
 const mapTranslations = (locales, data) => {
@@ -50,14 +43,14 @@ const loadTranslations = !process.env.LIVE_TRANSLATIONS
 const cachedTranslations = new DataLoader(loadTranslations, {
   cacheMap: createDataLoaderLruCache({
     max: 2,
-    maxAge: 30 * 1000, // ms
+    ttl: 30 * 1000, // ms
   }),
 })
 
 const cachedSearch = new DataLoader(loadSearch, {
   cacheMap: createDataLoaderLruCache({
     max: 2,
-    maxAge: 5 * 60 * 1000, // ms
+    ttl: 5 * 60 * 1000, // ms
   }),
 })
 
@@ -72,7 +65,7 @@ const loadMeta = (locales) => {
 const cachedMeta = new DataLoader(loadMeta, {
   cacheMap: createDataLoaderLruCache({
     max: 2,
-    maxAge: 5 * 60 * 1000, // ms
+    ttl: 5 * 60 * 1000, // ms
   }),
 })
 
