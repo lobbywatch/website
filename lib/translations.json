@@ -771,6 +771,11 @@
       "fr": "Société simple"
     },
     {
+      "key": "organisation/legalForm/Parlamentarische Freundschaftsgruppe",
+      "de": "Parlamentarische Freundschaftsgruppe",
+      "fr": "Groupe d'amitié parlementaire"
+    },
+    {
       "key": "connection/art/taetig",
       "de": "tätig",
       "fr": "actif"

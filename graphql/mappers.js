@@ -378,7 +378,11 @@ const mapOrganisation = (exports.mapOrganisation = (raw, t) => {
     publishedIso: () => formatDateIso(new Date(raw.freigabe_datum_unix * 1000)),
     name: raw.name,
     abbr: raw.abkuerzung,
-    legalForm: t(`organisation/legalForm/${raw.rechtsform}`),
+    legalForm: t(
+      `organisation/legalForm/${raw.rechtsform}`,
+      {},
+      raw.rechtsform
+    ),
     legalFormId: raw.rechtsform,
     location: raw.ort,
     postalCode: raw.adresse_plz,
