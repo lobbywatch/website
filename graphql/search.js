@@ -110,6 +110,8 @@ module.exports.loadSearch = (locales) => {
               'interessengruppe3_fr',
               'interessengruppe3_id',
               'uid',
+              'alias_namen_de',
+              'alias_namen_fr',
             ].join(','),
           }
         ),
@@ -167,7 +169,9 @@ module.exports.loadSearch = (locales) => {
                 raw: lobbyGroup,
                 keywords: cleanKeywords([
                   lobbyGroup.name,
-                  lobbyGroup.alias_namen,
+                  ...(lobbyGroup.alias_namen
+                    ? lobbyGroup.alias_namen.split(';')
+                    : []),
                   lobbyGroup.branche,
                   lobbyGroup.kommission1_abkuerzung,
                   lobbyGroup.kommission2_abkuerzung,
@@ -191,6 +195,9 @@ module.exports.loadSearch = (locales) => {
                   organisation.name,
                   organisation.uid,
                   organisation.abkuerzung,
+                  ...(organisation.alias_namen
+                    ? organisation.alias_namen.split(';')
+                    : []),
                   organisation.interessengruppe,
                   organisation.interessengruppe2,
                   organisation.interessengruppe3,
