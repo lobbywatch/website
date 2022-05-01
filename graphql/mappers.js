@@ -125,7 +125,7 @@ const mapParliamentariansFromConnections = (raw, t, origin) => {
       mapOrganisation(rawIntermediateOrganisation, t)
 
     let directFunction
-    if (!intermediateOrganisation && !connection.person_id) {
+    if (!intermediateOrganisation && !connection.id) {
       directFunction = () =>
         mapFunction(
           t,
@@ -149,13 +149,13 @@ const mapParliamentariansFromConnections = (raw, t, origin) => {
         function: t(`connections/art/${connection.zwischen_organisation_art}`),
       })
     }
-    if (connection.person_id && raw.zutrittsberechtigte) {
+    if (connection.id && raw.zutrittsberechtigte) {
       const rawGuest = raw.zutrittsberechtigte.find(
-        (g) => g.person_id === connection.person_id
+        (g) => g.id === connection.id
       )
       if (!rawGuest) {
         console.warn(
-          `[mappers] Connection: missing guest ${connection.person_id} ${connection.zutrittsberechtigter} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`
+          `[mappers] Connection: missing guest ${connection.id} ${connection.zutrittsberechtigter} (${raw.id} ${raw.name} -> ${connection.parlamentarier_id} ${connection.parlamentarier_name})`
         )
         // can happen when e.g. the guest is not published yet
         // kill the connection
@@ -433,7 +433,7 @@ const mapMandate = (origin, connection, t) => ({
 const guestIdPrefix = (exports.guestIdPrefix = 'Guest-')
 const mapGuest = (exports.mapGuest = (raw, t) => {
   const guest = {
-    id: `${guestIdPrefix}${raw.person_id}-${t.locale}`,
+    id: `${guestIdPrefix}${raw.id}-${t.locale}`,
     updated: () => formatDate(new Date(raw.last_modified_date_unix * 1000)),
     published: () => formatDate(new Date(raw.freigabe_datum_unix * 1000)),
     updatedIso: () => formatDateIso(new Date(raw.updated_date_unix * 1000)),
