@@ -9,6 +9,7 @@ import MetaTags, { GooglePreview } from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { Meta, A } from 'src/components/Styled'
+import { itemPath } from 'src/utils/routes'
 import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
 
 import { createGetStaticProps } from 'lib/apolloClientSchemaLink'
@@ -126,7 +127,37 @@ export const getStaticProps = createGetStaticProps({
   getVariables: ({ params: { id } }) => ({
     id,
   }),
-  getCustomStaticProps: ({ data }) => {
+  getCustomStaticProps: async (
+    { data },
+    { params: { locale, name } },
+    apolloClient
+  ) => {
+    if (name && data.getGuest?.name !== name[0]) {
+      // name mismatch, try to find exact name match
+      // - because ids recently changed we prioritize name over id match
+      const allGuests = await apolloClient.query({
+        query: gql`
+          query guestNames($locale: Locale!) {
+            guests(locale: $locale) {
+              __typename
+              id
+              name
+            }
+          }
+        `,
+        variables: {
+          locale,
+        },
+      })
+      const exactMatch = allGuests.data.guests.find((g) => g.name === name[0])
+      if (exactMatch) {
+        return {
+          redirect: {
+            destination: itemPath(exactMatch, locale),
+          },
+        }
+      }
+    }
     if (!data.getGuest) {
       return {
         notFound: true,

@@ -73,7 +73,7 @@ module.exports.loadSearch = (locales) => {
           'data/interface/v1/json/table/zutrittsberechtigung/flat/list',
           {
             select_fields: [
-              'person_id',
+              'id',
               'vorname',
               'nachname',
               'beruf',
