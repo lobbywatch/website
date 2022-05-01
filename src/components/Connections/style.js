@@ -35,6 +35,7 @@ export const bubbleVia = merge(bubble, {
   color: LW_BLUE_DARK,
   backgroundColor: WHITE,
   border: `1px solid ${LW_BLUE_DARK}`,
+  textDecoration: 'none',
 })
 export const count = css({
   display: 'inline-block',

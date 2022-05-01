@@ -9,7 +9,7 @@ import Legend from './Legend'
 import Message, { withT } from '../Message'
 import { shallowEqual, intersperse } from '../../utils/helpers'
 import { chfFormat } from '../../utils/formats'
-import { itemPath } from '../../utils/routes'
+import { itemPath, shouldIgnoreClick } from '../../utils/routes'
 import { withRouter } from 'next/router'
 import layout, { START_Y } from './layout'
 import nest from './nest'
@@ -332,18 +332,32 @@ class Connections extends Component {
                   return (
                     <span key={data.id}>
                       {!!isFirst && <br />}
-                      <button
+                      <a
                         ref={setRef}
                         {...style.bubbleVia}
                         className={!isVisible ? style.hidden : undefined}
-                        onClick={toggle}
+                        href={itemPath(
+                          {
+                            __typename: 'Guest',
+                            id: data.id,
+                            name: data.label,
+                          },
+                          locale
+                        )}
+                        onClick={(e) => {
+                          if (shouldIgnoreClick(e)) {
+                            return
+                          }
+
+                          toggle()
+                        }}
                         style={{
                           cursor:
                             children && children.length > 0 ? 'pointer' : '',
                         }}
                       >
                         <GuestIcon className={style.icon} /> {data.label}
-                      </button>
+                      </a>
                       {!!isLast && <br />}
                     </span>
                   )
@@ -375,6 +389,9 @@ class Connections extends Component {
                       ref={setRef}
                       href={detailPath}
                       onClick={(e) => {
+                        if (shouldIgnoreClick(e)) {
+                          return
+                        }
                         e.preventDefault()
 
                         // ensure Android only navigates on second tap
