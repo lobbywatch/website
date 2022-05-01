@@ -45,3 +45,7 @@ Finally, import the translations:
 ```bash
 npm run translations
 ```
+
+## License
+
+The source code is «BSD 3-clause» licensed.
