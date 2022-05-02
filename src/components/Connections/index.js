@@ -348,7 +348,7 @@ class Connections extends Component {
                           if (shouldIgnoreClick(e)) {
                             return
                           }
-
+                          e.preventDefault()
                           toggle()
                         }}
                         style={{
