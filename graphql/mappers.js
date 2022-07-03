@@ -101,8 +101,11 @@ const mapParliamentariansFromConnections = (raw, t, origin) => {
     }
     // filter out simple memberships of parlamentarian groups
     // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1603379470004900
+    // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1654865241867899
     if (
-      rawConnectorOrganisation.rechtsform === 'Parlamentarische Gruppe' &&
+      (rawConnectorOrganisation.rechtsform === 'Parlamentarische Gruppe' ||
+        rawConnectorOrganisation.rechtsform ===
+          'Parlamentarische Freundschaftsgruppe') &&
       connection.art === 'mitglied'
     ) {
       return null
@@ -475,11 +478,14 @@ const mapParliamentarian = (exports.mapParliamentarian = (raw, t) => {
   const connections = () => {
     // filter out simple memberships of parlamentarian groups
     // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1603379470004900
+    // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1654865241867899
     const direct = raw.interessenbindungen
       .filter(
         (directConnection) =>
           !(
-            directConnection.rechtsform === 'Parlamentarische Gruppe' &&
+            (directConnection.rechtsform === 'Parlamentarische Gruppe' ||
+              directConnection.rechtsform ===
+                'Parlamentarische Freundschaftsgruppe') &&
             directConnection.art === 'mitglied'
           )
       )
