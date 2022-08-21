@@ -7,6 +7,7 @@ import Header from './Header'
 import Footer from './Footer'
 import { BLACK, FRAME_PADDING } from '../../theme'
 import { getSafeLocale } from '../../../constants'
+import SearchContext, { useSearchContextState } from './SearchContext'
 
 const centerStyle = css({
   maxWidth: 800,
@@ -36,19 +37,27 @@ const bodyGrowerStyle = css({
   flexGrow: 1,
 })
 
-const Frame = ({ localizeHref, children }) => {
+const Frame = ({ localizeHref, children, landing }) => {
   const {
     query: { locale: queryLocale, term },
   } = useRouter()
   const locale = getSafeLocale(queryLocale)
+  const searchContextState = useSearchContextState()
   return (
-    <div {...containerStyle}>
-      <div {...bodyGrowerStyle}>
-        <Header locale={locale} term={term} localizeHref={localizeHref} />
-        {children}
+    <SearchContext.Provider value={searchContextState}>
+      <div {...containerStyle}>
+        <div {...bodyGrowerStyle}>
+          <Header
+            locale={locale}
+            term={term}
+            localizeHref={localizeHref}
+            landing={landing}
+          />
+          {children}
+        </div>
+        <Footer locale={locale} />
       </div>
-      <Footer locale={locale} />
-    </div>
+    </SearchContext.Provider>
   )
 }
 

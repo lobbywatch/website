@@ -44,7 +44,7 @@ const Translate = ({ id, replacements, raw, locale }) => {
       <RawHtml type='span' dangerouslySetInnerHTML={{ __html: translation }} />
     )
   }
-  return <span>{translation}</span>
+  return <>{translation}</>
 }
 
 Translate.propTypes = {

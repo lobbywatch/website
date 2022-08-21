@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { css, merge } from 'glamor'
+import { css } from 'glamor'
 
 import { withT } from '../Message'
-import { inputStyle } from '../Styled'
 import { Center } from './index'
 import { locales } from '../../../constants'
 import { typeSegments } from '../../utils/routes'
@@ -21,11 +20,12 @@ import {
   FRAME_PADDING,
 } from '../../theme'
 import Logo from '../../assets/Logo'
-import SearchIcon from '../../assets/Search'
 import Menu from './Menu'
 import Toggle from './Toggle'
 import { JsonLd } from '../JsonLd'
 import LoadingBar from './LoadingBar'
+import Cover from './Cover'
+import SearchField from './SearchField'
 
 const titleStyle = css({
   fontSize: 24,
@@ -67,26 +67,6 @@ export const SEARCH_MAX_WIDTH = 600
 const searchBoxStyle = css({
   margin: '0 auto',
   maxWidth: SEARCH_MAX_WIDTH,
-  position: 'relative',
-})
-
-const searchInputStyle = merge(inputStyle, {
-  backgroundColor: WHITE,
-  paddingRight: 8 + 21 + 5,
-  [mediaM]: {
-    height: 56,
-    paddingRight: 16 + 21 + 5,
-  },
-})
-
-const searchIconStyle = css({
-  position: 'absolute',
-  top: '50%',
-  marginTop: -10,
-  right: 8,
-  [mediaM]: {
-    right: 16,
-  },
 })
 
 const promoContainerStyle = css({
@@ -107,9 +87,6 @@ const promoStyle = css({
   },
 })
 
-let beforeSearch
-let isFocused
-
 class Header extends Component {
   constructor(properties, context) {
     super(properties, context)
@@ -118,26 +95,15 @@ class Header extends Component {
     }
   }
 
-  componentDidMount() {
-    const { router } = this.props
-    const isSearchRoute = router.pathname === '/[locale]/search'
-    if (
-      isSearchRoute ||
-      (isFocused && beforeSearch && beforeSearch.pathname === router.pathname)
-    ) {
-      this.searchInput.focus()
-      this.searchInput.selectionStart = this.searchInput.selectionEnd =
-        this.searchInput.value.length
-      if (!isSearchRoute) {
-        beforeSearch = null
-      }
-    }
-    router.prefetch('/[locale]/search')
-  }
-
   render() {
     const { expanded } = this.state
-    const { locale: currentLocale, t, router, localizeHref } = this.props
+    const {
+      locale: currentLocale,
+      t,
+      router,
+      localizeHref,
+      landing,
+    } = this.props
     const menuItems = [
       {
         label: t('menu/parliamentarians'),
@@ -182,27 +148,6 @@ class Header extends Component {
       }
     })
 
-    const onSearch = (event) => {
-      const term = event.target.value
-
-      const as = `/${encodeURIComponent(
-        currentLocale
-      )}/search?term=${encodeURIComponent(term)}`
-      if (term.length === 0) {
-        router.replace(beforeSearch || `/${currentLocale}`)
-        return
-      }
-      if (router.pathname !== '/[locale]/search') {
-        beforeSearch = {
-          pathname: router.pathname,
-          query: router.query,
-        }
-        router.push(as)
-      } else {
-        router.replace(as)
-      }
-    }
-
     return (
       <header>
         <LoadingBar />
@@ -214,47 +159,40 @@ class Header extends Component {
             <link key={locale} rel='alternate' hrefLang={locale} href={href} />
           ))}
         </Head>
-        <div {...barStyle}>
-          <Link href={`/${encodeURIComponent(currentLocale)}`}>
-            <a {...titleStyle}>
-              <Logo size={32} />
-              <span {...titleTextStyle}>Lobbywatch</span>
-            </a>
-          </Link>
-          <Menu
-            expanded={expanded}
-            id='primary-menu'
-            items={menuItems.concat(localeLinks)}
-          />
-          <Toggle
-            expanded={expanded}
-            id='primary-menu'
-            onClick={() => this.setState({ expanded: !expanded })}
-          />
-        </div>
-        <div {...searchContainerStyle}>
-          <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
-            <div {...searchBoxStyle}>
-              <input
-                {...searchInputStyle}
-                type='text'
-                ref={(reference) => {
-                  this.searchInput = reference
-                }}
-                onChange={onSearch}
-                onFocus={() => {
-                  isFocused = true
-                }}
-                onBlur={() => {
-                  isFocused = false
-                }}
-                value={router.query.term || ''}
-                placeholder={t('search/placeholder')}
+        {landing ? (
+          <Cover locale={currentLocale} localeLinks={localeLinks} />
+        ) : (
+          <>
+            <div {...barStyle}>
+              {!landing && (
+                <Link href={`/${encodeURIComponent(currentLocale)}`}>
+                  <a {...titleStyle}>
+                    <Logo size={32} />
+                    <span {...titleTextStyle}>Lobbywatch</span>
+                  </a>
+                </Link>
+              )}
+              <Menu
+                expanded={expanded}
+                id='primary-menu'
+                items={menuItems.concat(localeLinks)}
               />
-              <SearchIcon className={searchIconStyle} />
+              <Toggle
+                expanded={expanded}
+                id='primary-menu'
+                onClick={() => this.setState({ expanded: !expanded })}
+              />
             </div>
-          </Center>
-        </div>
+            <div {...searchContainerStyle}>
+              <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
+                <div {...searchBoxStyle}>
+                  <SearchField />
+                </div>
+              </Center>
+            </div>
+          </>
+        )}
+
         {t('banner/text', undefined, false) && (
           <div {...promoContainerStyle}>
             <div {...promoStyle}>

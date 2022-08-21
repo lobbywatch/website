@@ -1,6 +1,10 @@
 {
   "data": [
     {
+      "key": "claim",
+      "de": "Gut zu wissen, wer Politik macht"
+    },
+    {
       "key": "menu/locales/de",
       "de": "Deutsch",
       "fr": "Deutsch"
@@ -49,6 +53,10 @@
       "key": "blog/title",
       "de": "Blog",
       "fr": "Blog"
+    },
+    {
+      "key": "index/search/title",
+      "de": "Durchsuchen Sie die Netzwerke des Parlaments"
     },
     {
       "key": "index/blog/title",

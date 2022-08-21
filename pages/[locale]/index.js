@@ -9,10 +9,11 @@ import MetaTags from 'src/components/MetaTags'
 import Message from 'src/components/Message'
 import Card from 'src/components/Card'
 import Grid, { GridItem } from 'src/components/Grid'
-import { H1, StyledLink } from 'src/components/Styled'
+import { H2, StyledLink } from 'src/components/Styled'
 
 import { createGetStaticProps } from 'lib/apolloClientSchemaLink'
 import { locales } from '../../constants'
+import SearchField from 'src/components/Frame/SearchField'
 
 const indexQuery = gql`
   query index($locale: Locale!) {
@@ -41,7 +42,7 @@ const Index = () => {
   })
 
   return (
-    <Frame>
+    <Frame landing>
       <Loader
         loading={loading || isFallback}
         error={error}
@@ -55,9 +56,9 @@ const Index = () => {
               })}
             />
             <Center>
-              <H1 style={{ textAlign: 'center' }}>
+              <H2>
                 <Message id='index/blog/title' locale={locale} />
-              </H1>
+              </H2>
               <Grid>
                 {data.articles.list.map((article, index) => (
                   <GridItem key={index}>
@@ -65,11 +66,15 @@ const Index = () => {
                   </GridItem>
                 ))}
               </Grid>
-              <div style={{ textAlign: 'center', margin: '10px 0 0' }}>
+              <div style={{ marginBottom: 40 }}>
                 <StyledLink href={`/${locale}/artikel/archiv`}>
                   <Message locale={locale} id='index/blog/link' />
                 </StyledLink>
               </div>
+              <H2>
+                <Message id='index/search/title' locale={locale} />
+              </H2>
+              <SearchField />
             </Center>
           </div>
         )}
