@@ -5,6 +5,46 @@
       "de": "Gut zu wissen, wer Politik macht"
     },
     {
+      "key": "index/explore/title",
+      "de": "Beispiele der Netzwerke des Parlaments"
+    },
+    {
+      "key": "index/explore/link",
+      "de": "Alle Lobbygruppen ansehen"
+    },
+    {
+      "key": "index/explore/58",
+      "de": "Mit diesem Netzwerk verhinderten die Lobbygruppe der Anwälte und Treuhänder unter anderem, dass ihre Branche unter die Geldwäscherei-Gesetzgebung gestellt wird."
+    },
+    {
+      "key": "index/explore/53",
+      "de": "Auf diese Organisationen stützen sich die Gewerkschaften, wenn sie gegen ein höheres Rentenalter für Frauen kämpfen."
+    },
+    {
+      "key": "purpose/research/title",
+      "de": "Interessenskonflikte"
+    },
+    {
+      "key": "purpose/research/text",
+      "de": "Politik muss transparent sein. Deshalb zeigen wir auf, für welche Unternehmen sich Nationalrätinnen und Ständeräte engagieren."
+    },
+    {
+      "key": "purpose/independence/title",
+      "de": "Wir sind unabhängig"
+    },
+    {
+      "key": "purpose/independence/text",
+      "de": "Lobbywatch ist eine unabhängige journalistische Plattform. Frei zugänglich für interessierte Bürger:innen und alle Redaktionen."
+    },
+    {
+      "key": "purpose/nonprofit/title",
+      "de": "Gemeinnütziger Verein"
+    },
+    {
+      "key": "purpose/nonprofit/text",
+      "de": "Rund 150 Mitglieder engagieren sich bei uns für eine lebendige und transparente Demokratie. Bald auch Sie?"
+    },
+    {
       "key": "menu/locales/de",
       "de": "Deutsch",
       "fr": "Deutsch"
@@ -53,10 +93,6 @@
       "key": "blog/title",
       "de": "Blog",
       "fr": "Blog"
-    },
-    {
-      "key": "index/search/title",
-      "de": "Durchsuchen Sie die Netzwerke des Parlaments"
     },
     {
       "key": "index/blog/title",

@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
-import Message from 'src/components/Message'
+import { useT } from 'src/components/Message'
 import Card from 'src/components/Card'
 import Grid, { GridItem } from 'src/components/Grid'
 import { H2, H3, P, StyledLink } from 'src/components/Styled'
@@ -19,15 +19,9 @@ import { lobbyGroupDetailFragment } from 'lib/fragments'
 import Connections from 'src/components/Connections'
 import LobbyGroupIcon from 'src/assets/LobbyGroup'
 
-const EXAMPLES = [
-  {
-    id: '58',
-    text: 'Mit diesem Netzwerk verhinderten die Lobbygruppe der Anwälte und Treuhänder unter anderem, dass ihre Branche unter die Geldwäscherei-Gesetzgebung gestellt wird',
-  },
-  {
-    id: '53',
-    text: 'Auf diese Organisationen stützen sich die Gewerkschaften, wenn sie gegen ein höheres Rentenalter für Frauen kämpfen',
-  },
+const LOBBYGROUP_EXAMPLE_IDS = [
+  '58', // Advokaturen/Treuhand
+  '53', // Arbeitnehmerorganisationen
 ]
 
 const indexQuery = gql`
@@ -42,10 +36,10 @@ const indexQuery = gql`
         path
       }
     }
-    lg1: getLobbyGroup(locale: $locale, id: ${EXAMPLES[0].id}) {
+    lg1: getLobbyGroup(locale: $locale, id: ${LOBBYGROUP_EXAMPLE_IDS[0]}) {
       ...LobbyGroupDetailFragment
     }
-    lg2: getLobbyGroup(locale: $locale, id: ${EXAMPLES[1].id}) {
+    lg2: getLobbyGroup(locale: $locale, id: ${LOBBYGROUP_EXAMPLE_IDS[1]}) {
       ...LobbyGroupDetailFragment
     }
   }
@@ -67,6 +61,7 @@ const Index = () => {
       locale: locale,
     },
   })
+  const t = useT(locale)
 
   return (
     <Frame landing>
@@ -84,34 +79,14 @@ const Index = () => {
             />
             <Center style={{ paddingBottom: 0 }}>
               <PurposeList>
-                <PurposeItem>
-                  <H3>Interessenskonflikte</H3>
-                  <P>
-                    Politik muss transparent sein. Deshalb zeigen wir auf, für
-                    welche Unternehmen sich Nationalrätinnen und Ständeräte
-                    engagieren.
-                  </P>
-                </PurposeItem>
-                <PurposeItem>
-                  <H3>Wir sind unabhängig</H3>
-                  <P>
-                    Lobbywatch ist eine unabhängige journalistische Plattform.
-                    Frei zugänglich für interessierte Bürger:innen und alle
-                    Redaktionen.
-                  </P>
-                </PurposeItem>
-                <PurposeItem>
-                  <H3>Gemeinnütziger Verein</H3>
-                  <P>
-                    Rund 150 Mitglieder engagieren sich bei uns für eine
-                    lebendige und transparente Demokratie.
-                    Bald&nbsp;auch&nbsp;Sie?
-                  </P>
-                </PurposeItem>
+                {['research', 'independence', 'nonprofit'].map((key) => (
+                  <PurposeItem key={key}>
+                    <H3>{t(`purpose/${key}/title`)}</H3>
+                    <P>{t(`purpose/${key}/text`)}</P>
+                  </PurposeItem>
+                ))}
               </PurposeList>
-              <H2>
-                <Message id='index/blog/title' locale={locale} />
-              </H2>
+              <H2>{t('index/blog/title')}</H2>
               <Grid>
                 {data.articles.list.map((article, index) => (
                   <GridItem key={index}>
@@ -121,15 +96,17 @@ const Index = () => {
               </Grid>
               <div style={{ marginBottom: 40 }}>
                 <StyledLink href={`/${locale}/artikel/archiv`}>
-                  <Message locale={locale} id='index/blog/link' />
+                  {t('index/blog/link')}
                 </StyledLink>
               </div>
-              <H2>Beispiele der Netzwerke des Parlaments</H2>
+              <H2>{t('index/explore/title')}</H2>
             </Center>
             {[data.lg1, data.lg2].map((lg) => {
-              const text = EXAMPLES.find(
-                (e) => e.id === lg.id.split('-')[1]
-              )?.text
+              const text = t(
+                `index/explore/${lg.id.split('-')[1]}`,
+                undefined,
+                ''
+              )
               return (
                 <Fragment key={lg.id}>
                   <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
@@ -161,7 +138,7 @@ const Index = () => {
             })}
             <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
               <StyledLink href={`/${locale}/${typeSegments.LobbyGroup}`}>
-                Alle Lobbygruppen ansehen
+                {t('index/explore/link')}
               </StyledLink>
             </Center>
           </div>

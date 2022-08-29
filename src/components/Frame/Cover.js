@@ -4,7 +4,7 @@ import { LW_BLUE_LIGHT, LW_BLUE_DARK, WHITE } from '../../theme'
 import Logo from '../../assets/Logo'
 import { Center } from '.'
 import { StyledLink } from '../Styled'
-import Message from '../Message'
+import { useT } from '../Message'
 import SearchField from './SearchField'
 
 const styles = {
@@ -64,6 +64,7 @@ const styles = {
 }
 
 const Cover = ({ locale, localeLinks, menuItems }) => {
+  const t = useT(locale)
   return (
     <div {...styles.container}>
       <Center style={{ paddingTop: 0, paddingBottom: 0, textAlign: 'center' }}>
@@ -71,9 +72,7 @@ const Cover = ({ locale, localeLinks, menuItems }) => {
           <Logo size={48} />
           <span {...styles.logoText}>Lobbywatch</span>
         </p>
-        <p {...styles.claim}>
-          <Message locale={locale} id='claim' />
-        </p>
+        <p {...styles.claim}>{t('claim')}</p>
 
         <div
           style={{
