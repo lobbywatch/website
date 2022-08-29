@@ -85,26 +85,27 @@ const Index = () => {
             <Center style={{ paddingBottom: 0 }}>
               <PurposeList>
                 <PurposeItem>
-                  <H3>Wir recherchieren Interessenskonflikte</H3>
+                  <H3>Interessenskonflikte</H3>
                   <P>
-                    Politik muss transparent sein. Deshalb schauen wir, für
-                    welche Unternehmen und Organisationen sich Nationalrätinnen
-                    und Ständeräte engagieren.
+                    Politik muss transparent sein. Deshalb zeigen wir auf, für
+                    welche Unternehmen sich Nationalrätinnen und Ständeräte
+                    engagieren.
                   </P>
                 </PurposeItem>
                 <PurposeItem>
                   <H3>Wir sind unabhängig</H3>
                   <P>
                     Lobbywatch ist eine unabhängige journalistische Plattform.
-                    Wir sind gemeinnützig – finanziert durch Mitglieder,
-                    Stiftungen und Gönner:innen.
+                    Frei zugänglich für interessierte Bürger:innen und alle
+                    Redaktionen.
                   </P>
                 </PurposeItem>
                 <PurposeItem>
-                  <H3>Werden Sie Lobbywatcher:in</H3>
+                  <H3>Gemeinnütziger Verein</H3>
                   <P>
-                    Werden Sie Mitglied von Lobbywatch und engagieren Sie sich
-                    so für eine lebendige und transparente Demokratie.
+                    Rund 150 Mitglieder engagieren sich bei uns für eine
+                    lebendige und transparente Demokratie.
+                    Bald&nbsp;auch&nbsp;Sie?
                   </P>
                 </PurposeItem>
               </PurposeList>
