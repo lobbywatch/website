@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
@@ -9,7 +9,7 @@ import MetaTags from 'src/components/MetaTags'
 import Message, { useT } from 'src/components/Message'
 import Card from 'src/components/Card'
 import Grid, { GridItem } from 'src/components/Grid'
-import { H2, H3, P, StyledLink } from 'src/components/Styled'
+import { H2, H3, P, StyledLink, TextCenter } from 'src/components/Styled'
 
 import { createGetStaticProps } from 'lib/apolloClientSchemaLink'
 import { locales } from '../../constants'
@@ -17,6 +17,20 @@ import SearchField from 'src/components/Frame/SearchField'
 import { PurposeList, PurposeItem } from 'src/components/Purpose'
 import { typeSegments } from 'src/utils/routes'
 import { intersperse } from 'src/utils/helpers'
+import { lobbyGroupDetailFragment } from 'lib/fragments'
+import Connections from 'src/components/Connections'
+import LobbyGroupIcon from 'src/assets/LobbyGroup'
+
+const EXAMPLES = [
+  {
+    id: '58',
+    text: 'Mit diesem Netzwerk verhinderten die Lobbygruppe der Anwälte und Treuhänder unter anderem, dass ihre Branche unter die Geldwäscherei-Gesetzgebung gestellt wird',
+  },
+  {
+    id: '53',
+    text: 'Auf diese Organisationen stützen sich die Gewerkschaften, wenn sie gegen ein höheres Rentenalter für Frauen kämpfen',
+  },
+]
 
 const indexQuery = gql`
   query index($locale: Locale!) {
@@ -30,8 +44,20 @@ const indexQuery = gql`
         path
       }
     }
+    lg1: getLobbyGroup(locale: $locale, id: ${EXAMPLES[0].id}) {
+      ...LobbyGroupDetailFragment
+    }
+    lg2: getLobbyGroup(locale: $locale, id: ${EXAMPLES[1].id}) {
+      ...LobbyGroupDetailFragment
+    }
   }
+  ${lobbyGroupDetailFragment}
 `
+
+const CONNECTION_WEIGHTS = {
+  Parliamentarian: 0.1,
+  Organisation: 1000,
+}
 
 const Index = () => {
   const {
@@ -128,6 +154,39 @@ const Index = () => {
                 )}
               </P>
             </Center>
+            {[data.lg1, data.lg2].map((lg) => {
+              const text = EXAMPLES.find(
+                (e) => e.id === lg.id.split('-')[1]
+              )?.text
+              return (
+                <Fragment key={lg.id}>
+                  <TextCenter>
+                    <H3 style={{ marginBottom: 5 }}>
+                      <LobbyGroupIcon
+                        style={{
+                          verticalAlign: 'middle',
+                          margin: '-3px 5px 0 0',
+                        }}
+                      />{' '}
+                      {lg.name}
+                    </H3>
+                    <P style={{ maxWidth: 300, margin: '0 auto 15px' }}>
+                      {text}
+                    </P>
+                  </TextCenter>
+                  <Connections
+                    origin={lg.__typename}
+                    locale={locale}
+                    directness={1}
+                    data={lg.connections}
+                    groupByDestination
+                    connectionWeight={(connection) =>
+                      CONNECTION_WEIGHTS[connection.to.__typename]
+                    }
+                  />
+                </Fragment>
+              )
+            })}
           </div>
         )}
       />

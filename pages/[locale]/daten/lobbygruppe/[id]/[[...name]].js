@@ -10,63 +10,16 @@ import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
 import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
-
+import { lobbyGroupDetailFragment } from 'lib/fragments'
 import { createGetStaticProps } from 'lib/apolloClientSchemaLink'
 
 const lobbyGroupQuery = gql`
   query getLobbyGroup($locale: Locale!, $id: ID!) {
     getLobbyGroup(locale: $locale, id: $id) {
-      __typename
-      id
-      updated
-      published
-      name
-      branch {
-        id
-        name
-      }
-      description
-      commissions {
-        name
-        abbr
-      }
-      wikipedia_url
-      wikidata_url
-      connections {
-        group
-        function
-        description
-        to {
-          __typename
-          ... on Organisation {
-            id
-            name
-            uid
-            wikidata_url
-          }
-          ... on Parliamentarian {
-            id
-            name
-            wikidata_url
-            parlament_biografie_url
-          }
-        }
-        vias {
-          __typename
-          to {
-            ... on Organisation {
-              id
-              name
-            }
-            ... on Guest {
-              id
-              name
-            }
-          }
-        }
-      }
+      ...LobbyGroupDetailFragment
     }
   }
+  ${lobbyGroupDetailFragment}
 `
 
 const CONNECTION_WEIGHTS = {

@@ -227,29 +227,6 @@ class Connections extends Component {
                 })}
               </ContextBox>
             )}
-            <div {...style.metaBox} {...metaRule}>
-              {intersperse(
-                [
-                  !!published && (
-                    <Message
-                      key='published'
-                      locale={locale}
-                      id='published'
-                      replacements={{ date: published }}
-                    />
-                  ),
-                  !!updated && (
-                    <Message
-                      key='updated'
-                      locale={locale}
-                      id='updated'
-                      replacements={{ date: updated }}
-                    />
-                  ),
-                ],
-                <br key='br' />
-              )}
-            </div>
             <svg
               width={width}
               ref={(reference) => {
@@ -427,6 +404,31 @@ class Connections extends Component {
               })}
             </div>
           </div>
+          {!!(published || updated) && (
+            <div {...style.metaBox} {...metaRule}>
+              {intersperse(
+                [
+                  !!published && (
+                    <Message
+                      key='published'
+                      locale={locale}
+                      id='published'
+                      replacements={{ date: published }}
+                    />
+                  ),
+                  !!updated && (
+                    <Message
+                      key='updated'
+                      locale={locale}
+                      id='updated'
+                      replacements={{ date: updated }}
+                    />
+                  ),
+                ],
+                <br key='br' />
+              )}
+            </div>
+          )}
         </Center>
         {potency && (
           <Legend

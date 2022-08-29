@@ -1,5 +1,4 @@
 export const START_Y = 70
-export const PADDING_BOTTOM = 60
 
 const layout = ({ hierarchy, width, open }) => {
   const MARGIN = 10
@@ -71,9 +70,7 @@ const layout = ({ hierarchy, width, open }) => {
   hierarchy.y = 0
   hierarchy.x = width / 2
 
-  const height = y + PADDING_BOTTOM
-
-  return Math.max(height, window.innerHeight * 0.5)
+  return Math.max(y, 160)
 }
 
 export default layout
