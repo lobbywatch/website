@@ -6,17 +6,15 @@ import { useRouter } from 'next/router'
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
-import Message, { useT } from 'src/components/Message'
+import Message from 'src/components/Message'
 import Card from 'src/components/Card'
 import Grid, { GridItem } from 'src/components/Grid'
-import { H2, H3, P, StyledLink, TextCenter } from 'src/components/Styled'
+import { H2, H3, P, StyledLink } from 'src/components/Styled'
 
 import { createGetStaticProps } from 'lib/apolloClientSchemaLink'
 import { locales } from '../../constants'
-import SearchField from 'src/components/Frame/SearchField'
 import { PurposeList, PurposeItem } from 'src/components/Purpose'
-import { typeSegments } from 'src/utils/routes'
-import { intersperse } from 'src/utils/helpers'
+import { itemPath, typeSegments } from 'src/utils/routes'
 import { lobbyGroupDetailFragment } from 'lib/fragments'
 import Connections from 'src/components/Connections'
 import LobbyGroupIcon from 'src/assets/LobbyGroup'
@@ -69,7 +67,6 @@ const Index = () => {
       locale: locale,
     },
   })
-  const t = useT(locale)
 
   return (
     <Frame landing>
@@ -85,7 +82,7 @@ const Index = () => {
                 description: t('index/meta/description'),
               })}
             />
-            <Center>
+            <Center style={{ paddingBottom: 0 }}>
               <PurposeList>
                 <PurposeItem>
                   <H3>Wir recherchieren Interessenskonflikte</H3>
@@ -126,33 +123,7 @@ const Index = () => {
                   <Message locale={locale} id='index/blog/link' />
                 </StyledLink>
               </div>
-              <H2>
-                <Message id='index/search/title' locale={locale} />
-              </H2>
-              <SearchField />
-              <P>
-                {intersperse(
-                  [
-                    {
-                      label: t('menu/parliamentarians'),
-                      href: `/${locale}/${typeSegments.Parliamentarian}`,
-                    },
-                    {
-                      label: t('menu/guests'),
-                      href: `/${locale}/${typeSegments.Guest}`,
-                    },
-                    {
-                      label: t('menu/lobbygroups'),
-                      href: `/${locale}/${typeSegments.LobbyGroup}`,
-                    },
-                  ].map(({ label, href }) => (
-                    <StyledLink key={href} href={href}>
-                      {label}
-                    </StyledLink>
-                  )),
-                  ' – '
-                )}
-              </P>
+              <H2>Beispiele der Netzwerke des Parlaments</H2>
             </Center>
             {[data.lg1, data.lg2].map((lg) => {
               const text = EXAMPLES.find(
@@ -160,20 +131,20 @@ const Index = () => {
               )?.text
               return (
                 <Fragment key={lg.id}>
-                  <TextCenter>
+                  <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
                     <H3 style={{ marginBottom: 5 }}>
-                      <LobbyGroupIcon
-                        style={{
-                          verticalAlign: 'middle',
-                          margin: '-3px 5px 0 0',
-                        }}
-                      />{' '}
-                      {lg.name}
+                      <StyledLink href={itemPath(lg, locale)}>
+                        <LobbyGroupIcon
+                          style={{
+                            verticalAlign: 'middle',
+                            margin: '-3px 5px 0 0',
+                          }}
+                        />{' '}
+                        {lg.name}
+                      </StyledLink>
                     </H3>
-                    <P style={{ maxWidth: 300, margin: '0 auto 15px' }}>
-                      {text}
-                    </P>
-                  </TextCenter>
+                    <P style={{ margin: '0 auto 15px' }}>{text}</P>
+                  </Center>
                   <Connections
                     origin={lg.__typename}
                     locale={locale}
@@ -187,6 +158,11 @@ const Index = () => {
                 </Fragment>
               )
             })}
+            <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
+              <StyledLink href={`/${locale}/${typeSegments.LobbyGroup}`}>
+                Alle Lobbygruppen ansehen
+              </StyledLink>
+            </Center>
           </div>
         )}
       />

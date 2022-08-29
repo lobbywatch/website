@@ -160,7 +160,11 @@ class Header extends Component {
           ))}
         </Head>
         {landing ? (
-          <Cover locale={currentLocale} localeLinks={localeLinks} />
+          <Cover
+            locale={currentLocale}
+            menuItems={menuItems}
+            localeLinks={localeLinks}
+          />
         ) : (
           <>
             <div {...barStyle}>

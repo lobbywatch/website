@@ -5,11 +5,12 @@ import Logo from '../../assets/Logo'
 import { Center } from '.'
 import { StyledLink } from '../Styled'
 import Message from '../Message'
+import SearchField from './SearchField'
 
 const styles = {
   container: css({
     position: 'relative',
-    padding: '80px 0',
+    padding: '60px 0 45px',
     backgroundColor: LW_BLUE_DARK,
     color: LW_BLUE_LIGHT,
   }),
@@ -29,19 +30,15 @@ const styles = {
     fontSize: 20,
     margin: 0,
   }),
-  localeList: css({
-    position: 'absolute',
-    top: 26,
-    right: 26,
-    fontSize: 16,
+  list: css({
     listStyle: 'none',
     margin: 0,
-    paddingLeft: 0,
+    padding: 0,
+    fontSize: 16,
     lineHeight: '24px',
   }),
-  localeListItem: css({
-    float: 'left',
-    marginLeft: 15,
+  item: css({
+    display: 'inline-block',
     '& a, & a:visited, & a:hover': {
       color: LW_BLUE_LIGHT,
     },
@@ -49,9 +46,24 @@ const styles = {
       color: WHITE,
     },
   }),
+  menuList: css({
+    marginTop: 30,
+    textAlign: 'center',
+  }),
+  menuItem: css({
+    margin: '0 15px',
+  }),
+  localeList: css({
+    position: 'absolute',
+    top: 26,
+    right: 26,
+  }),
+  localeItem: css({
+    marginLeft: 15,
+  }),
 }
 
-const Cover = ({ locale, localeLinks }) => {
+const Cover = ({ locale, localeLinks, menuItems }) => {
   return (
     <div {...styles.container}>
       <Center style={{ paddingTop: 0, paddingBottom: 0, textAlign: 'center' }}>
@@ -62,10 +74,27 @@ const Cover = ({ locale, localeLinks }) => {
         <p {...styles.claim}>
           <Message locale={locale} id='claim' />
         </p>
+
+        <div
+          style={{
+            margin: '30px auto',
+            maxWidth: 600,
+          }}
+        >
+          <SearchField />
+        </div>
+
+        <ol {...styles.list} {...styles.menuList}>
+          {menuItems.map(({ label, href }, index) => (
+            <li {...styles.item} {...styles.menuItem} key={index}>
+              <StyledLink href={href}>{label}</StyledLink>
+            </li>
+          ))}
+        </ol>
       </Center>
-      <ul {...styles.localeList}>
+      <ul {...styles.list} {...styles.localeList}>
         {localeLinks.map(({ label, href }, index) => (
-          <li {...styles.localeListItem} key={index}>
+          <li {...styles.item} {...styles.localeItem} key={index}>
             <StyledLink href={href}>{label}</StyledLink>
           </li>
         ))}
