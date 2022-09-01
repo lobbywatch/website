@@ -2,47 +2,58 @@
   "data": [
     {
       "key": "claim",
-      "de": "Gut zu wissen, wer Politik macht"
+      "de": "Gut zu wissen, wer Politik macht",
+      "fr": "Bon à savoir, qui façonne la politique"
     },
     {
       "key": "index/explore/title",
-      "de": "Beispiele der Netzwerke des Parlaments"
+      "de": "Beispiele der Netzwerke des Parlaments",
+      "fr": "Exemples de réseaux du Parlement"
     },
     {
       "key": "index/explore/link",
-      "de": "Alle Lobbygruppen ansehen"
+      "de": "Alle Lobbygruppen ansehen",
+      "fr": "Voir tous les groupes d'intérêt"
     },
     {
       "key": "index/explore/58",
-      "de": "Mit diesem Netzwerk verhinderten die Lobbygruppe der Anwälte und Treuhänder unter anderem, dass ihre Branche unter die Geldwäscherei-Gesetzgebung gestellt wird."
+      "de": "Mit diesem Netzwerk verhinderten die Lobbygruppe der Anwälte und Treuhänder unter anderem, dass ihre Branche unter die Geldwäscherei-Gesetzgebung gestellt wird.",
+      "fr": "Grâce à ce réseau, le groupe d'intérêt des avocats et des fiduciaires a notamment empêché que la branche soit soumise à la législation sur le blanchiment d'argent."
     },
     {
       "key": "index/explore/53",
-      "de": "Auf diese Organisationen stützen sich die Gewerkschaften, wenn sie gegen ein höheres Rentenalter für Frauen kämpfen."
+      "de": "Auf diese Organisationen stützen sich die Gewerkschaften, wenn sie gegen ein höheres Rentenalter für Frauen kämpfen.",
+      "fr": "C'est sur ces organisations que s'appuient les syndicats pour lutter contre le relèvement de l'âge de la retraite des femmes."
     },
     {
       "key": "purpose/research/title",
-      "de": "Interessenskonflikte"
+      "de": "Interessenskonflikte",
+      "fr": "Conflits d'intérêts"
     },
     {
       "key": "purpose/research/text",
-      "de": "Politik muss transparent sein. Deshalb zeigen wir auf, für welche Unternehmen sich Nationalrätinnen und Ständeräte engagieren."
+      "de": "Politik muss transparent sein. Deshalb zeigen wir auf, für welche Unternehmen sich Nationalrätinnen und Ständeräte engagieren.",
+      "fr": "La politique doit être transparente. C'est pourquoi nous indiquons les entreprises pour lesquelles les conseillers-ères nationaux-ales et les conseillers-ères aux États s'engagent."
     },
     {
       "key": "purpose/independence/title",
-      "de": "Wir sind unabhängig"
+      "de": "Wir sind unabhängig",
+      "fr": "Nous sommes indépendants"
     },
     {
       "key": "purpose/independence/text",
-      "de": "Lobbywatch ist eine unabhängige journalistische Plattform. Frei zugänglich für interessierte Bürger:innen und alle Redaktionen."
+      "de": "Lobbywatch ist eine unabhängige journalistische Plattform. Frei zugänglich für interessierte Bürger:innen und alle Redaktionen.",
+      "fr": "Lobbywatch est une plateforme journalistique indépendante. Elle est librement accessible aux citoyens-nes intéressés-ées et à toutes les rédactions."
     },
     {
       "key": "purpose/nonprofit/title",
-      "de": "Gemeinnütziger Verein"
+      "de": "Gemeinnütziger Verein",
+      "fr": "Association à but non lucratif"
     },
     {
       "key": "purpose/nonprofit/text",
-      "de": "Rund 150 Mitglieder engagieren sich bei uns für eine lebendige und transparente Demokratie. Bald auch Sie?"
+      "de": "Rund 150 Mitglieder engagieren sich bei uns für eine lebendige und transparente Demokratie. Bald auch Sie?",
+      "fr": "Environ 150 membres s'engagent chez nous pour une démocratie vivante et transparente. Bientôt vous aussi ?"
     },
     {
       "key": "menu/locales/de",
