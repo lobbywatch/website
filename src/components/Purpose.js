@@ -7,7 +7,7 @@ const mediaColumns = '@media only screen and (min-width: 640px)'
 const styles = {
   list: css({
     listStyle: 'none',
-    margin: `15px -${PADDING}px 30px`,
+    margin: `15px -${PADDING}px`,
     padding: 0,
     display: 'flex',
     flexWrap: 'wrap',

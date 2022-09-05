@@ -10,7 +10,6 @@ import {
   MAILCHIMP_U,
   MAILCHIMP_ID_FOR_LOCALE,
 } from '../../../constants'
-import { mediaM } from '../../theme'
 
 const flexIconsStyle = css({
   display: 'flex',
@@ -25,12 +24,6 @@ const flexIconsStyle = css({
     marginLeft: 8,
     width: 'auto',
     flexGrow: 1,
-  },
-})
-const titleStyle = css({
-  textAlign: 'center',
-  [mediaM]: {
-    textAlign: 'left',
   },
 })
 
@@ -85,11 +78,11 @@ class Newsletter extends Component {
 
   render() {
     const { message, email } = this.state
-    const { t, locale } = this.props
+    const { t, locale, title = true } = this.props
 
     return (
       <div>
-        <H3 {...titleStyle}>{t('newsletter/title')}</H3>
+        {title && <H3>{t('newsletter/title')}</H3>}
         <form
           {...flexIconsStyle}
           target='_blank'

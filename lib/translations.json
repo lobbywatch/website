@@ -6,6 +6,10 @@
       "fr": "Bon à savoir, qui façonne la politique"
     },
     {
+      "key": "index/newsletter/text",
+      "de": "Der Herbst 2022 wird bei Lobbywatch im Zeichen des Ausbaus stehen – bleiben Sie in Kontakt:"
+    },
+    {
       "key": "index/explore/title",
       "de": "Beispiele der Netzwerke des Parlaments",
       "fr": "Exemples de réseaux du Parlement"
@@ -52,8 +56,8 @@
     },
     {
       "key": "purpose/nonprofit/text",
-      "de": "Rund 150 Mitglieder engagieren sich bei uns für eine lebendige und transparente Demokratie. Bald auch Sie?",
-      "fr": "Environ 150 membres s'engagent chez nous pour une démocratie vivante et transparente. Bientôt vous aussi ?"
+      "de": "Rund 250 Mitglieder engagieren sich bei uns für eine lebendige und transparente Demokratie. Bald auch Sie?",
+      "fr": "Environ 250 membres s'engagent chez nous pour une démocratie vivante et transparente. Bientôt vous aussi ?"
     },
     {
       "key": "menu/locales/de",

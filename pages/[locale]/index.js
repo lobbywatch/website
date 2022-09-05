@@ -18,6 +18,7 @@ import { itemPath, typeSegments } from 'src/utils/routes'
 import { lobbyGroupDetailFragment } from 'lib/fragments'
 import Connections from 'src/components/Connections'
 import LobbyGroupIcon from 'src/assets/LobbyGroup'
+import Newsletter from 'src/components/Frame/Newsletter'
 
 const LOBBYGROUP_EXAMPLE_IDS = [
   '58', // Advokaturen/Treuhand
@@ -86,6 +87,13 @@ const Index = () => {
                   </PurposeItem>
                 ))}
               </PurposeList>
+              <div>
+                <H3 style={{ marginBottom: 5 }}>{t('newsletter/title')}</H3>
+                <P style={{ marginTop: 0 }}>
+                  {t('index/newsletter/text', undefined, '')}
+                </P>
+                <Newsletter title={false} locale={locale} />
+              </div>
               <H2>{t('index/blog/title')}</H2>
               <Grid>
                 {data.articles.list.map((article, index) => (

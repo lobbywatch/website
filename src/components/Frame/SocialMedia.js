@@ -4,7 +4,6 @@ import FacebookIcon from '../../assets/Facebook'
 import TwitterIcon from '../../assets/Twitter'
 import RSSIcon from '../../assets/RSS'
 import InstagramIcon from '../../assets/Instagram'
-import { mediaM, mediaSOnly } from '../../theme'
 
 import Message from '../Message'
 import { H3 } from '../Styled'
@@ -15,22 +14,11 @@ const flexIconsStyle = css({
   justifyContent: 'space-between',
   width: '100%',
   maxWidth: 180,
-  [mediaSOnly]: {
-    marginLeft: 'auto',
-    marginRight: 'auto',
-  },
-})
-
-const titleStyle = css({
-  textAlign: 'center',
-  [mediaM]: {
-    textAlign: 'left',
-  },
 })
 
 const SocialMedia = ({ locale }) => (
   <div>
-    <H3 {...titleStyle}>
+    <H3>
       <Message locale={locale} id='social/title' />
     </H3>
     <div {...flexIconsStyle}>
