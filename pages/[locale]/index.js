@@ -87,7 +87,7 @@ const Index = () => {
                   </PurposeItem>
                 ))}
               </PurposeList>
-              <div>
+              <div style={{ marginBottom: 40 }}>
                 <H3 style={{ marginBottom: 5 }}>{t('newsletter/title')}</H3>
                 <P style={{ marginTop: 0 }}>
                   {t('index/newsletter/text', undefined, '')}
