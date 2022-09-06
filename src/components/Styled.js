@@ -90,6 +90,7 @@ export const h1Style = {
     fontSize: 36,
     lineHeight: '42px',
   },
+  margin: '0.7em 0',
 }
 export const h1Rule = css(h1Style)
 export const H1 = ({ children, ...props }) => (
@@ -102,6 +103,7 @@ export const h2Style = {
   fontSize: 24,
   lineHeight: '32px',
   fontWeight: 400,
+  margin: '0.8em 0',
 }
 export const h2Rule = css(h2Style)
 export const H2 = ({ children, ...props }) => (
@@ -114,7 +116,7 @@ export const h3Style = {
   fontSize: 18,
   lineHeight: '24px',
   fontWeight: 700,
-  margin: '0 0 20px',
+  margin: '0 0 1em',
 }
 export const h3Rule = css(h3Style)
 export const H3 = ({ children, ...props }) => (

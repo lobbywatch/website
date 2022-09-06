@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
 import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
@@ -6,13 +6,24 @@ import { useRouter } from 'next/router'
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
-import Message from 'src/components/Message'
+import { useT } from 'src/components/Message'
 import Card from 'src/components/Card'
 import Grid, { GridItem } from 'src/components/Grid'
-import { H1, StyledLink } from 'src/components/Styled'
+import { H2, H3, P, StyledLink } from 'src/components/Styled'
 
 import { createGetStaticProps } from 'lib/apolloClientSchemaLink'
 import { locales } from '../../constants'
+import { PurposeList, PurposeItem } from 'src/components/Purpose'
+import { itemPath, typeSegments } from 'src/utils/routes'
+import { lobbyGroupDetailFragment } from 'lib/fragments'
+import Connections from 'src/components/Connections'
+import LobbyGroupIcon from 'src/assets/LobbyGroup'
+import Newsletter from 'src/components/Frame/Newsletter'
+
+const LOBBYGROUP_EXAMPLE_IDS = [
+  '58', // Advokaturen/Treuhand
+  '53', // Arbeitnehmerorganisationen
+]
 
 const indexQuery = gql`
   query index($locale: Locale!) {
@@ -26,8 +37,20 @@ const indexQuery = gql`
         path
       }
     }
+    lg1: getLobbyGroup(locale: $locale, id: ${LOBBYGROUP_EXAMPLE_IDS[0]}) {
+      ...LobbyGroupDetailFragment
+    }
+    lg2: getLobbyGroup(locale: $locale, id: ${LOBBYGROUP_EXAMPLE_IDS[1]}) {
+      ...LobbyGroupDetailFragment
+    }
   }
+  ${lobbyGroupDetailFragment}
 `
+
+const CONNECTION_WEIGHTS = {
+  Parliamentarian: 0.1,
+  Organisation: 1000,
+}
 
 const Index = () => {
   const {
@@ -39,9 +62,10 @@ const Index = () => {
       locale: locale,
     },
   })
+  const t = useT(locale)
 
   return (
-    <Frame>
+    <Frame landing>
       <Loader
         loading={loading || isFallback}
         error={error}
@@ -54,10 +78,23 @@ const Index = () => {
                 description: t('index/meta/description'),
               })}
             />
-            <Center>
-              <H1 style={{ textAlign: 'center' }}>
-                <Message id='index/blog/title' locale={locale} />
-              </H1>
+            <Center style={{ paddingBottom: 0 }}>
+              <PurposeList>
+                {['research', 'independence', 'nonprofit'].map((key) => (
+                  <PurposeItem key={key}>
+                    <H3>{t(`purpose/${key}/title`)}</H3>
+                    <P>{t(`purpose/${key}/text`)}</P>
+                  </PurposeItem>
+                ))}
+              </PurposeList>
+              <div style={{ marginBottom: 40 }}>
+                <H3 style={{ marginBottom: 5 }}>{t('newsletter/title')}</H3>
+                <P style={{ marginTop: 0 }}>
+                  {t('index/newsletter/text', undefined, '')}
+                </P>
+                <Newsletter title={false} locale={locale} />
+              </div>
+              <H2>{t('index/blog/title')}</H2>
               <Grid>
                 {data.articles.list.map((article, index) => (
                   <GridItem key={index}>
@@ -65,11 +102,52 @@ const Index = () => {
                   </GridItem>
                 ))}
               </Grid>
-              <div style={{ textAlign: 'center', margin: '10px 0 0' }}>
+              <div style={{ marginBottom: 40 }}>
                 <StyledLink href={`/${locale}/artikel/archiv`}>
-                  <Message locale={locale} id='index/blog/link' />
+                  {t('index/blog/link')}
                 </StyledLink>
               </div>
+              <H2>{t('index/explore/title')}</H2>
+            </Center>
+            {[data.lg1, data.lg2].map((lg) => {
+              const text = t(
+                `index/explore/${lg.id.split('-')[1]}`,
+                undefined,
+                ''
+              )
+              return (
+                <Fragment key={lg.id}>
+                  <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
+                    <H3 style={{ marginBottom: 5 }}>
+                      <StyledLink href={itemPath(lg, locale)}>
+                        <LobbyGroupIcon
+                          style={{
+                            verticalAlign: 'middle',
+                            margin: '-3px 5px 0 0',
+                          }}
+                        />{' '}
+                        {lg.name}
+                      </StyledLink>
+                    </H3>
+                    <P style={{ margin: '0 auto 15px' }}>{text}</P>
+                  </Center>
+                  <Connections
+                    origin={lg.__typename}
+                    locale={locale}
+                    directness={1}
+                    data={lg.connections}
+                    groupByDestination
+                    connectionWeight={(connection) =>
+                      CONNECTION_WEIGHTS[connection.to.__typename]
+                    }
+                  />
+                </Fragment>
+              )
+            })}
+            <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
+              <StyledLink href={`/${locale}/${typeSegments.LobbyGroup}`}>
+                {t('index/explore/link')}
+              </StyledLink>
             </Center>
           </div>
         )}

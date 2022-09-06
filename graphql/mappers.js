@@ -689,7 +689,7 @@ exports.mapMeta = (locale, raw) => {
           ? raw.blocks.filter((block) => block.region === region)
           : raw.blocks
         ).map((block) => ({
-          id: block.key,
+          id: `${block.key}-${locale}`,
           ...block,
         })),
     }

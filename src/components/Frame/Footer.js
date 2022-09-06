@@ -105,7 +105,11 @@ const Footer = ({
         pathname === '/[locale]/[...path]' &&
         query.path?.join() === 'unterstuetzen'
       ) && (
-        <BlockRegion blocks={blocks} compact first={pathname !== '/[locale]'} />
+        <BlockRegion
+          blocks={blocks}
+          compact={pathname !== '/[locale]'}
+          first={pathname !== '/[locale]'}
+        />
       )}
       <Clear {...columnContainerStyle}>
         <div {...columnStyle}>

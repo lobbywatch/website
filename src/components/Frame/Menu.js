@@ -38,8 +38,8 @@ const menuStyle = css({
     display: 'block',
     whiteSpace: 'none',
     position: 'absolute',
-    top: 30,
-    right: 20,
+    top: 26,
+    right: 26,
   },
 })
 

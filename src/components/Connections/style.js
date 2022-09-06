@@ -1,7 +1,6 @@
 import { css, merge } from 'glamor'
 
 import { LW_BLUE_DARK, WHITE, GREY_LIGHT, GREY_DARK, mediaM } from '../../theme'
-import { PADDING_BOTTOM } from './layout'
 import { plainButtonRule } from '../Styled'
 
 export const edge = css({
@@ -11,7 +10,6 @@ export const edge = css({
 })
 export const container = css({
   position: 'relative',
-  padding: `0 0 ${PADDING_BOTTOM}px`,
 })
 export const root = css({
   position: 'absolute',
@@ -87,15 +85,12 @@ export const hidden = css({
 })
 
 export const metaBox = css({
-  position: 'absolute',
-  right: 0,
-  left: 0,
-  bottom: 10,
   textAlign: 'center',
   lineHeight: '16px',
   [mediaM]: {
     lineHeight: '20px',
   },
+  padding: 10,
 })
 
 export const pathSegment = css({

@@ -2,7 +2,7 @@ import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { renderStatic } from 'glamor/server'
 
 import { LW_BLUE_LIGHT, WHITE } from '../src/theme'
-import { GA_TRACKING_ID, PUBLIC_BASE_URL } from '../constants'
+import { GA_TRACKING_ID, PUBLIC_BASE_URL, getSafeLocale } from '../constants'
 
 import 'glamor/reset'
 
@@ -17,7 +17,7 @@ export default class MyDocument extends Document {
     return {
       ...page,
       ...styles,
-      locale,
+      locale: getSafeLocale(locale),
     }
   }
 
