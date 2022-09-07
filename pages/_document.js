@@ -1,5 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
-import { renderStatic } from 'glamor/server'
+import { renderStaticOptimized } from 'glamor/server'
 
 import { LW_BLUE_LIGHT, WHITE } from '../src/theme'
 import { GA_TRACKING_ID, PUBLIC_BASE_URL, getSafeLocale } from '../constants'
@@ -12,7 +12,7 @@ const fontFaces =
 export default class MyDocument extends Document {
   static async getInitialProps({ renderPage, query: { locale } }) {
     const page = renderPage()
-    const styles = renderStatic(() => page.html)
+    const styles = renderStaticOptimized(() => page.html)
 
     return {
       ...page,
