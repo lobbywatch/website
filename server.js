@@ -1,5 +1,6 @@
 const express = require('express')
 const next = require('next')
+const v8 = require('v8')
 
 const { SERVER_PORT, NEXT_PUBLIC_BASE_URL } = require('./constants')
 
@@ -31,5 +32,11 @@ app.prepare().then(() => {
   server.listen(SERVER_PORT, (error) => {
     if (error) throw error
     console.log(`> Listening on ${SERVER_PORT}`)
+    console.log(
+      `> Heap Limit: ${Math.round(
+        v8.getHeapStatistics().total_available_size / 1024 / 1024
+      )}mb`
+    )
+    console.log(`> NODE_OPTIONS: ${process.env.NODE_OPTIONS}`)
   })
 })
