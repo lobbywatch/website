@@ -20,6 +20,7 @@ const PUBLIC_BASE_URL =
   NEXT_PUBLIC_BASE_URL ||
   (NEXT_PUBLIC_VERCEL_URL ? `https://${NEXT_PUBLIC_VERCEL_URL}` : undefined)
 exports.PUBLIC_BASE_URL = PUBLIC_BASE_URL
+exports.CDN_FRONTEND_BASE_URL = PUBLIC_BASE_URL
 
 const location = typeof window !== 'undefined' && window.location
 exports.GRAPHQL_URI = location
@@ -40,3 +41,5 @@ exports.MAILCHIMP_ID_FOR_LOCALE = {
 }
 
 exports.DEBUG_INFORMATION = !!NEXT_PUBLIC_DEBUG_INFORMATION
+
+exports.STATUS_POLL_INTERVAL_MS = +process.env.NEXT_PUBLIC_STATUS_POLL_INTERVAL_MS || 0

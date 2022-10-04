@@ -101,16 +101,7 @@ const Footer = ({
   <footer style={{ marginTop: 20 }}>
     <JsonLd data={{ '@context': 'http://schema.org/', '@type': 'WPFooter' }} />
     <Center>
-      {!(
-        pathname === '/[locale]/[...path]' &&
-        query.path?.join() === 'unterstuetzen'
-      ) && (
-        <BlockRegion
-          blocks={blocks}
-          compact={pathname !== '/[locale]'}
-          first={pathname !== '/[locale]'}
-        />
-      )}
+      {/* global pledge ad */}
       <Clear {...columnContainerStyle}>
         <div {...columnStyle}>
           <SocialMedia locale={locale} />

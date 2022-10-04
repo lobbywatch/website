@@ -1138,6 +1138,170 @@
     },
     {
       "key": "banner/link/href"
+    },
+    {
+      "key": "crowdfunding/status/goal/people",
+      "de": "von {count} Mitgliedern"
+    },
+    {
+      "key": "crowdfunding/status/goal/memberships",
+      "de": "von {count} Mitgliedschaften"
+    },
+    {
+      "key": "crowdfunding/status/goal/money",
+      "de": "von {count}"
+    },
+    {
+      "key": "crowdfunding/status/time/label",
+      "de": "bis Deadline"
+    },
+    {
+      "key": "crowdfunding/status/time/days/1",
+      "de": "1 Tag"
+    },
+    {
+      "key": "crowdfunding/status/time/days/other",
+      "de": "{count} Tage"
+    },
+    {
+      "key": "crowdfunding/status/time/hours/1",
+      "de": "1 Stunde"
+    },
+    {
+      "key": "crowdfunding/status/time/hours/other",
+      "de": "{count} Stunden"
+    },
+    {
+      "key": "crowdfunding/status/time/minutes/1",
+      "de": "1 Minute"
+    },
+    {
+      "key": "crowdfunding/status/time/minutes/other",
+      "de": "{count} Minuten"
+    },
+    {
+      "key": "crowdfunding/status/time/seconds/1",
+      "de": "1 Sekunde"
+    },
+    {
+      "key": "crowdfunding/status/time/seconds/other",
+      "de": "{count} Sekunden"
+    },
+    {
+      "key": "crowdfunding/status/time/ended",
+      "de": "Das Crowdfunding ist vorbei."
+    },
+    {
+      "key": "actionbar/share",
+      "de": "Teilen"
+    },
+    {
+      "key": "actionbar/facebook/title",
+      "de": "Auf Facebook teilen"
+    },
+    {
+      "key": "actionbar/facebook/label",
+      "de": "Facebook"
+    },
+    {
+      "key": "actionbar/twitter/title",
+      "de": "Auf Twitter teilen"
+    },
+    {
+      "key": "actionbar/twitter/label",
+      "de": "Twitter"
+    },
+    {
+      "key": "actionbar/whatsapp/title",
+      "de": "Auf WhatsApp teilen"
+    },
+    {
+      "key": "actionbar/whatsapp/label",
+      "de": "WhatsApp"
+    },
+    {
+      "key": "actionbar/threema/title",
+      "de": "Auf Threema teilen"
+    },
+    {
+      "key": "actionbar/threema/label",
+      "de": "Threema"
+    },
+    {
+      "key": "actionbar/telegram/title",
+      "de": "Auf Telegram teilen"
+    },
+    {
+      "key": "actionbar/telegram/label",
+      "de": "Telegram"
+    },
+    {
+      "key": "actionbar/email/title",
+      "de": "Per E-Mail verschicken"
+    },
+    {
+      "key": "actionbar/email/label",
+      "de": "E-Mail"
+    },
+    {
+      "key": "actionbar/download",
+      "de": "Herunterladen"
+    },
+    {
+      "key": "actionbar/link/title",
+      "de": "Link kopieren"
+    },
+    {
+      "key": "actionbar/link/label",
+      "de": "Link kopieren"
+    },
+    {
+      "key": "actionbar/link/label/success",
+      "de": "Link kopiert!"
+    },
+    {
+      "key": "actionbar/link/label/error",
+      "de": "Nicht unterstützt :("
+    },
+    {
+      "key": "Goodies/title",
+      "de": "Noch etwas Handfestes?"
+    },
+    {
+      "key": "Goodie/dropdown/label",
+      "de": "Anzahl"
+    },
+    {
+      "key": "package/price",
+      "de": "{formattedCHF}"
+    },
+    {
+      "key": "package/price/free",
+      "de": "kostenlos"
+    },
+    {
+      "key": "package/customize/price/payMore",
+      "de": "Können Sie Ihr Investment erhöhen?"
+    },
+    {
+      "key": "package/customize/price/payMore/1.5",
+      "de": "Ich bin für Grosszügigkeit: {formattedCHF}"
+    },
+    {
+      "key": "package/customize/price/payMore/thx",
+      "de": "Danke!"
+    },
+    {
+      "key": "package/customize/price/payMore/2",
+      "de": "Tollkühne {formattedCHF}"
+    },
+    {
+      "key": "package/customize/price/payMore/thx/2",
+      "de": "Herzlichen Dank!"
+    },
+    {
+      "key": "package/customize/price/payRegular",
+      "de": "Auf den regulären Betrag zurücksetzen"
     }
   ]
 }

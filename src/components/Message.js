@@ -1,40 +1,33 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import RawHtml from './RawHtml'
-import { useQuery } from '@apollo/client'
-import { graphql } from '@apollo/client/react/hoc'
+import { useRouter } from 'next/router'
 
-import { getFormatter } from '../utils/translate'
+import { useQuery } from '@apollo/client'
+import { createFormatter } from '@project-r/styleguide'
+
 import { translationsQuery } from '../../lib/baseQueries'
-import { locales } from '../../constants'
+import { getSafeLocale, locales } from '../../constants'
+import RawHtml from './RawHtml'
 
 export const useT = (locale) => {
+  const { query } = useRouter()
   const { data } = useQuery(translationsQuery, {
     variables: {
-      locale,
+      locale: locale || getSafeLocale(query.locale),
     },
   })
-  return getFormatter(data?.translations)
+  return createFormatter(data?.translations)
 }
 
 export const withT = (
-  Component,
-  getLocale = (ownProperties) => ownProperties.locale
-) =>
-  graphql(translationsQuery, {
-    options: (ownProperties) => {
-      return {
-        variables: {
-          locale: getLocale(ownProperties),
-        },
-      }
-    },
-    props: ({ data }) => {
-      return {
-        t: getFormatter(data.translations),
-      }
-    },
-  })(Component)
+  Component
+) => {
+  const WithT = (props) => {
+    const t = useT(props.locale)
+    return <Component {...props} t={t} />
+  }
+  return WithT
+}
 
 const Translate = ({ id, replacements, raw, locale }) => {
   const t = useT(locale)

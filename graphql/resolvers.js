@@ -1,6 +1,6 @@
 const api = require('./api')
 const { ascending } = require('d3-array')
-const { getFormatter } = require('../src/utils/translate')
+const { createFormatter } = require('@project-r/styleguide')
 const {
   mapPage,
   mapMeta,
@@ -88,7 +88,7 @@ const resolveFunctions = {
       }
 
       return Promise.all([
-        translations.load(locale).then(getFormatter),
+        translations.load(locale).then(createFormatter),
         api.data(
           locale,
           'data/interface/v1/json/table/parlamentarier/flat/list'
@@ -144,7 +144,7 @@ const resolveFunctions = {
             rawId
           )}`
         ),
-        translations.load(locale).then(getFormatter),
+        translations.load(locale).then(createFormatter),
       ]).then(
         ([
           {
@@ -171,7 +171,7 @@ const resolveFunctions = {
       }
 
       return Promise.all([
-        translations.load(locale).then(getFormatter),
+        translations.load(locale).then(createFormatter),
         api.data(
           locale,
           'data/interface/v1/json/table/zutrittsberechtigung/flat/list'
@@ -197,7 +197,7 @@ const resolveFunctions = {
     getGuest(_, { locale, id }, { loaders: { translations } }) {
       const rawId = id.replace(guestIdPrefix, '')
       return Promise.all([
-        translations.load(locale).then(getFormatter),
+        translations.load(locale).then(createFormatter),
         api.data(
           locale,
           `data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(
@@ -224,7 +224,7 @@ const resolveFunctions = {
             rawId
           )}`
         ),
-        translations.load(locale).then(getFormatter),
+        translations.load(locale).then(createFormatter),
       ]).then(
         ([
           {
@@ -250,7 +250,7 @@ const resolveFunctions = {
       }
 
       return Promise.all([
-        translations.load(locale).then(getFormatter),
+        translations.load(locale).then(createFormatter),
         api.data(
           locale,
           'data/interface/v1/json/table/interessengruppe/flat/list'
@@ -280,7 +280,7 @@ const resolveFunctions = {
             rawId
           )}`
         ),
-        translations.load(locale).then(getFormatter),
+        translations.load(locale).then(createFormatter),
       ]).then(
         ([
           {
@@ -300,7 +300,7 @@ const resolveFunctions = {
       // )
 
       return Promise.all([
-        translations.load(locale).then(getFormatter),
+        translations.load(locale).then(createFormatter),
         api.data(locale, 'data/interface/v1/json/table/branche/flat/list'),
       ]).then(
         ([
@@ -327,7 +327,7 @@ const resolveFunctions = {
             rawId
           )}`
         ),
-        translations.load(locale).then(getFormatter),
+        translations.load(locale).then(createFormatter),
       ]).then(
         ([
           {
@@ -341,7 +341,7 @@ const resolveFunctions = {
     },
     search(_, { locale, term }, { loaders: { translations, search } }) {
       return Promise.all([
-        translations.load(locale).then(getFormatter),
+        translations.load(locale).then(createFormatter),
         search.load(locale),
       ]).then(([t, search]) => search(term, t))
     },

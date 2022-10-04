@@ -2,7 +2,7 @@
   "name": "lobbywatch-frontend",
   "version": "1.0.0",
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   },
   "description": "Lobbywatch.ch Frontend",
   "scripts": {
@@ -32,30 +32,42 @@
     "@graphql-tools/schema": "^8.3.5",
     "accept-language": "^3.0.15",
     "apollo-server-micro": "^2.25.3",
+    "body-scroll-lock": "^3.1.5",
+    "clipboard-copy": "^4.0.1",
     "core-js": "^3.21.1",
     "d3-array": "^1.0.2",
     "d3-collection": "^1.0.2",
+    "d3-ease": "^1.0.7",
     "d3-format": "^1.4.5",
     "d3-hierarchy": "^1.1.9",
+    "d3-interpolate": "^1.4.0",
     "d3-time": "^1.1.0",
     "d3-time-format": "^2.3.0",
+    "d3-timer": "^1.0.10",
     "dataloader": "^2.0.0",
+    "downshift": "^2.2.2",
     "entities": "^3.0.1",
     "express": "^4.17.3",
     "glamor": "^2.20.22",
     "graphql": "^15.8.0",
     "gsheets": "^3.0.1",
     "isomorphic-unfetch": "^3.1.0",
+    "lodash": "^4.17.21",
     "lru-cache": "^7.0.0",
     "next": "^12.1.1",
     "prop-types": "^15.8.1",
     "querystring": "^0.2.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
+    "react-maskedinput": "^4.0.1",
+    "react-textarea-autosize": "^7.1.2",
+    "scroll-into-view": "^1.15.0",
     "sharp": "^0.30.3",
     "striptags": "^3.2.0"
   },
   "devDependencies": {
+    "@types/react": "^17.0.38",
     "dotenv": "^10.0.0",
     "eslint": "^8.12.0",
     "eslint-config-next": "11.1.2",
@@ -69,7 +81,8 @@
     "husky": "^7.0.4",
     "lint-staged": "^11.2.6",
     "nodemon": "^2.0.15",
-    "prettier": "^2.6.1"
+    "prettier": "^2.6.1",
+    "typescript": "^4.7.2"
   },
   "cacheDirectories": [
     "node_modules",
