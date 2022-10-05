@@ -1,5 +1,3 @@
-import { getJson } from './env'
-
 // some defaults are precomputed colors from d3-scale-chromatic
 /*
  sequential = [
@@ -33,89 +31,25 @@ const discrete = [
   '#17becf',
 ]
 
-const colorsDeprecated = {
-  primary: '#00508C',
-  primaryBg: '#BFE1FF',
-  containerBg: '#FFF',
-  secondary: '#00335A',
-  secondaryBg: '#D8EEFF',
-  disabled: '#B8BDC1',
-  text: '#191919',
-  lightText: '#979797',
-  fill: '#000',
-  lightFill: '#E9E9E9',
-  error: '#9F2500',
-  divider: '#DBDCDD',
-  online: '#00DC00',
-  social: '#E9A733',
-  editorial: '#00B4FF',
-  meta: '#64966E',
-  feuilleton: '#555555',
-  scribble: '#ef4533',
-  flyer: '#405080',
-  neutral: '#bbb',
-  highlight: '#FFFFCC',
-  sequential: [
-    'rgb(8, 48, 107)',
-    'rgb(8, 61, 126)',
-    'rgb(10, 74, 144)',
-    'rgb(15, 87, 159)',
-    'rgb(24, 100, 170)',
-    'rgb(34, 113, 180)',
-    'rgb(47, 126, 188)',
-    'rgb(60, 139, 195)',
-    'rgb(75, 151, 201)',
-    'rgb(91, 163, 207)',
-    'rgb(109, 174, 213)',
-  ],
-  sequential3: ['rgb(8,48,107)', 'rgb(24,100,170)', 'rgb(75,151,201)'],
-  opposite3: ['rgb(103,0,13)', 'rgb(187,21,26)', 'rgb(239,69,51)'],
-  discrete,
-  negative: {
-    containerBg: '#111',
-    primaryBg: '#191919',
-    text: '#f0f0f0',
-    lightText: '#828282',
-    divider: '#5b5b5b',
-    fill: '#FFF',
-    lightFill: '#555',
-    error: 'rgb(239,69,51)',
-    disabled: '#242424',
-  },
-  ...getJson('COLORS'),
-}
-
-// ToDos
-// - mv getJson('COLORS') to a var
-// - deep merge into light and dark
-// - create open source color scheme, mv brand values to env via internal handbook
-
 const colors = {
   light: {
-    logo: '#000000',
-    default: '#FFFFFF',
-    overlay: '#FFFFFF',
-    hover: '#F6F8F7',
-    alert: '#E4F5E1',
-    error: '#9F2500',
-    defaultInverted: '#191919',
+    logo: '#74D7FF',
+    default: '#fff',
+    overlay: '#fff',
+    hover: '#f2f2f2',
+    alert: '#C7EFFF',
+    error: '#b2182b',
+    defaultInverted: '#000',
     overlayInverted: '#1F1F1F',
-    divider: '#DADDDC',
+    divider: '#ddd',
     dividerInverted: '#4C4D4C',
-    primary: '#00AA00',
-    primaryHover: '#008800',
-    text: '#282828',
-    textInverted: '#F0F0F0',
-    textSoft: '#757575',
+    primary: '#0077D7',
+    primaryHover: '#004C88',
+    text: '#000',
+    textInverted: '#fff',
+    textSoft: '#666',
     textSoftInverted: '#A9A9A9',
-    disabled: '#949494',
-    accentColorBriefing: '#0A99B8',
-    accentColorInteraction: '#00AA00',
-    accentColorOppinion: '#D0913C',
-    accentColorFormats: '#d44438',
-    accentColorMeta: '#000000',
-    accentColorAudio: '#000000',
-    accentColorFlyer: '#405080',
+    disabled: '#f2f2f2',
     overlayShadow: '0 0 15px rgba(0,0,0,0.1)',
     fadeOutGradientDefault:
       'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)',
@@ -140,91 +74,11 @@ const colors = {
     neutral: '#bbb',
     discrete,
     chartsInverted: '#000000',
-    flyerBg: '#AEC3FE',
-    flyerText: '#141414',
-    flyerMetaText: '#405080',
-    flyerFormatText: '#D50033',
   },
-  dark: {
-    logo: '#FFFFFF',
-    default: '#191919',
-    overlay: '#1F1F1F',
-    hover: '#292929',
-    alert: '#144313',
-    error: '#F0400A',
-    defaultInverted: '#FFFFFF',
-    overlayInverted: '#FFFFFF',
-    divider: '#4C4D4C',
-    dividerInverted: '#DADDDC',
-    primary: '#00AA00',
-    primaryHover: '#008800',
-    text: '#F0F0F0',
-    textInverted: '#282828',
-    textSoft: '#A9A9A9',
-    textSoftInverted: '#757575',
-    disabled: '#6E6E6E',
-    accentColorBriefing: '#0A99B8',
-    accentColorInteraction: '#00AA00',
-    accentColorOppinion: '#D0913C',
-    accentColorFormats: '#d44438',
-    accentColorMeta: '#FFFFFF',
-    accentColorAudio: '#FFFFFF',
-    accentColorFlyer: '#A3B5E6',
-    overlayShadow: '0 0 15px rgba(0,0,0,0.3)',
-    fadeOutGradientDefault:
-      'linear-gradient(0deg, rgba(25,25,25,1) 0%, rgba(25,25,25,0) 100%)',
-    fadeOutGradientOverlay:
-      'linear-gradient(0deg, rgba(31,31,31,1) 0%, rgba(31,31,31,0) 100%)',
-    displayLight: 'none',
-    displayDark: 'block',
-    sequential100: 'rgb(24, 100, 170)',
-    sequential95: 'rgb(34, 113, 180)',
-    sequential90: 'rgb(47, 126, 188)',
-    sequential85: 'rgb(60, 139, 195)',
-    sequential80: 'rgb(75, 151, 201)',
-    sequential75: 'rgb(91, 163, 207)',
-    sequential70: 'rgb(109, 174, 213)',
-    sequential65: 'rgb(128, 185, 218)',
-    sequential60: 'rgb(147, 195, 223)',
-    sequential55: 'rgb(165, 204, 228)',
-    sequential50: 'rgb(181, 212, 233)',
-    opposite100: 'rgb(187,21,26)',
-    opposite80: 'rgb(239,69,51)',
-    opposite60: 'rgb(252, 138, 107)',
-    neutral: '#bbb',
-    discrete,
-    chartsInverted: '#FFFFFF',
-    flyerBg: '#011651',
-    flyerText: '#F0F0F0',
-    flyerMetaText: '#A3B5E6',
-    flyerFormatText: '#FF2A5C',
-  },
-  mappings: {
-    format: {
-      '#000': 'accentColorMeta',
-      '#000000': 'accentColorMeta',
-      '#282828': 'accentColorMeta',
-      '#07809A': 'accentColorBriefing',
-      '#07809a': 'accentColorBriefing',
-      '#405080': 'accentColorFlyer',
-    },
-    charts: {
-      '#000': 'chartsInverted',
-      '#000000': 'chartsInverted',
-    },
-  },
+  mappings: {},
 }
 
-export const localInvertedColors = {
-  light: colors.dark,
-  dark: colors.light,
-}
-
-// add all deprecated colors, but only if they don't exist in new colors (no overwrites)
-Object.keys(colorsDeprecated).forEach((key) => {
-  if (!colors[key]) {
-    colors[key] = colorsDeprecated[key]
-  }
-})
+// no dark mode
+colors.dark = colors.light
 
 export default colors

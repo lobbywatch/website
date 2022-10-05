@@ -1,30 +1,20 @@
-import SG, { getJson } from './env'
-
-const FONT_STYLES = getJson('FONT_STYLES')
-
 export const fontFamilies = {
-  serifTitle: 'Georgia, serif',
-  serifRegular: 'Georgia, serif',
-  serifItalic: 'Georgia, serif',
-  serifBold: 'Georgia, serif',
-  serifBoldItalic: 'Georgia, serif',
-  sansSerifRegular: 'Helvetica Neue, Helvetica, sans-serif',
-  sansSerifItalic: 'Helvetica Neue, Helvetica, sans-serif',
-  sansSerifMedium: 'Helvetica Neue, Helvetica, sans-serif',
+  serifTitle: 'Roboto Serif, serif',
+  serifRegular: 'Roboto Serif, serif',
+  serifItalic: 'Roboto Serif, serif',
+  serifBold: 'Roboto Serif, serif',
+  serifBoldItalic: 'Roboto Serif, serif',
+  sansSerifRegular: 'Roboto, sans-serif',
+  sansSerifItalic: 'Roboto, sans-serif',
+  sansSerifMedium: 'Roboto, sans-serif',
   monospaceRegular: 'Menlo, Courier, monospace',
   cursiveTitle: 'sans-serif',
-  ...getJson('FONT_FAMILIES'),
-  // FONT_STYLES supersedes FONT_FAMILIES
-  ...Object.keys(FONT_STYLES).reduce((fams, key) => {
-    fams[key] = FONT_STYLES[key].fontFamily
-    return fams
-  }, {}),
 }
 
 export const fontStyles = {
   serifTitle: {
     fontFamily: fontFamilies.serifTitle,
-    fontWeight: 900,
+    fontWeight: 700,
   },
   serifRegular: {
     fontFamily: fontFamilies.serifRegular,
@@ -61,7 +51,76 @@ export const fontStyles = {
     fontWeight: 500,
     fontStyle: 'italic',
   },
-  ...FONT_STYLES,
 }
 
-export const fontFaces = () => SG.FONT_FACES || ''
+export const fontFaces = () =>
+  `
+@font-face{
+  font-family:Roboto;
+  font-style:normal;
+  font-weight:300;
+  src:url(/static/fonts/roboto-v30-latin-300.woff2) format('woff2'),url(/static/fonts/roboto-v30-latin-300.woff) format('woff');
+  font-display:swap
+}
+@font-face{
+  font-family:Roboto;
+  font-style:normal;
+  font-weight:400;
+  src:url(/static/fonts/roboto-v30-latin-regular.woff2) format('woff2'),url(/static/fonts/roboto-v30-latin-regular.woff) format('woff');
+  font-display:swap
+}
+@font-face{
+  font-family:Roboto;
+  font-style:italic;
+  font-weight:400;
+  src:url(/static/fonts/roboto-v30-latin-italic.woff2) format('woff2'),url(/static/fonts/roboto-v30-latin-italic.woff) format('woff');
+  font-display:swap
+}
+@font-face{
+  font-family:Roboto;
+  font-style:normal;
+  font-weight:500;
+  src:url(/static/fonts/roboto-v30-latin-500.woff2) format('woff2'),url(/static/fonts/roboto-v30-latin-500.woff) format('woff');
+  font-display:swap
+}
+@font-face{
+  font-family:Roboto;
+  font-style:normal;
+  font-weight:700;
+  src:url(/static/fonts/roboto-v30-latin-700.woff2) format('woff2'),url(/static/fonts/roboto-v30-latin-700.woff) format('woff');
+  font-display:swap
+}
+
+
+@font-face {
+  font-family:'Roboto Serif';
+  font-style:normal;
+  font-weight:400;
+  src:url('/static/fonts/roboto-serif-v8-latin-regular.woff2') format('woff2'),url('/static/fonts/roboto-serif-v8-latin-regular.woff') format('woff');
+  font-display:swap
+}
+@font-face {
+  font-family:'Roboto Serif';
+  font-style:normal;
+  font-weight:700;
+  src:url('/static/fonts/roboto-serif-v8-latin-700.woff2') format('woff2'),url('/static/fonts/roboto-serif-v8-latin-700.woff') format('woff');
+  font-display:swap
+}
+@font-face {
+  font-family:'Roboto Serif';
+  font-style:italic;
+  font-weight:400;
+  src:url('/static/fonts/roboto-serif-v8-latin-italic.woff2') format('woff2'),url('/static/fonts/roboto-serif-v8-latin-italic.woff') format('woff');
+  font-display:swap
+}
+@font-face {
+  font-family: 'Roboto Serif';
+  font-style: italic;
+  font-weight: 700;
+  src:url('/static/fonts/roboto-serif-v8-latin-700italic.woff2') format('woff2'),url('/static/fonts/roboto-serif-v8-latin-700italic.woff') format('woff');
+  font-display:swap
+}
+`
+    .trim()
+    .replaceAll('\n  ', '')
+    .replaceAll('\n', '')

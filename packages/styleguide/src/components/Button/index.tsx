@@ -32,7 +32,7 @@ const styles = {
     ...fontStyles.sansSerifRegular,
     borderWidth: 1,
     borderStyle: 'solid',
-    borderRadius: 0,
+    borderRadius: 4,
   }),
   block: css({
     width: '100%',

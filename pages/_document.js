@@ -1,13 +1,11 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { renderStaticOptimized } from 'glamor/server'
+import { fontFaces } from '@project-r/styleguide'
 
 import { LW_BLUE_LIGHT, WHITE } from '../src/theme'
 import { GA_TRACKING_ID, PUBLIC_BASE_URL, getSafeLocale } from '../constants'
 
 import 'glamor/reset'
-
-const fontFaces =
-  "@font-face{font-family:Roboto;font-style:normal;font-weight:300;src:local('Roboto Light'),local('Roboto-Light'),url(/static/fonts/roboto-v16-latin-300.woff2) format('woff2'),url(/static/fonts/roboto-v16-latin-300.woff) format('woff');font-display:swap}@font-face{font-family:Roboto;font-style:normal;font-weight:400;src:local('Roboto'),local('Roboto-Regular'),url(/static/fonts/roboto-v16-latin-regular.woff2) format('woff2'),url(/static/fonts/roboto-v16-latin-regular.woff) format('woff');font-display:swap}@font-face{font-family:Roboto;font-style:normal;font-weight:500;src:local('Roboto Medium'),local('Roboto-Medium'),url(/static/fonts/roboto-v16-latin-500.woff2) format('woff2'),url(/static/fonts/roboto-v16-latin-500.woff) format('woff');font-display:swap}@font-face{font-family:Roboto;font-style:normal;font-weight:700;src:local('Roboto Bold'),local('Roboto-Bold'),url(/static/fonts/roboto-v16-latin-700.woff2) format('woff2'),url(/static/fonts/roboto-v16-latin-700.woff) format('woff');font-display:swap}"
 
 export default class MyDocument extends Document {
   static async getInitialProps({ renderPage, query: { locale } }) {
@@ -33,7 +31,7 @@ export default class MyDocument extends Document {
         <Head>
           <script dangerouslySetInnerHTML={{ __html: motivationComment }} />
           <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-          <style dangerouslySetInnerHTML={{ __html: fontFaces }} />
+          <style dangerouslySetInnerHTML={{ __html: fontFaces() }} />
           {css ? <style dangerouslySetInnerHTML={{ __html: css }} /> : null}
           <link
             rel='apple-touch-icon'
