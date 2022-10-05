@@ -1,6 +1,9 @@
 const { localeSegment } = require('./constants')
 
 module.exports = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     domains: ['cms.lobbywatch.ch'],
   },
