@@ -5,7 +5,7 @@ import { useRouter } from 'next/router'
 
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
-import Cover from 'src/components/Cover'
+import Cover from 'src/components/Frame/Cover'
 import MetaTags from 'src/components/MetaTags'
 import { useT } from 'src/components/Message'
 import Card from 'src/components/Card'
