@@ -48,10 +48,15 @@ const promoStyle = css({
   },
 })
 
-const Frame = ({ localizeHref, children, Header = DefaultHeader }) => {
+const Frame = ({
+  localizeHref,
+  children,
+  Header = DefaultHeader,
+  footerProps,
+}) => {
   const {
     asPath,
-    query: { locale: queryLocale, term },
+    query: { locale: queryLocale },
   } = useRouter()
   const currentLocale = getSafeLocale(queryLocale)
   const searchContextState = useSearchContextState()
@@ -141,7 +146,7 @@ const Frame = ({ localizeHref, children, Header = DefaultHeader }) => {
           </header>
           {children}
         </div>
-        <Footer locale={currentLocale} />
+        <Footer {...footerProps} locale={currentLocale} />
       </div>
     </SearchContext.Provider>
   )

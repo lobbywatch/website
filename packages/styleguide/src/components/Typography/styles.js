@@ -48,6 +48,11 @@ export const serifTitle16 = {
 }
 
 // serifRegular
+export const serifRegular28 = {
+  ...fontStyles.serifRegular,
+  fontSize: 28,
+  lineHeight: '37px',
+}
 export const serifRegular25 = {
   ...fontStyles.serifRegular,
   fontSize: 25,

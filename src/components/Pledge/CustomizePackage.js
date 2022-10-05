@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { css } from 'glamor'
 import AutosizeInput from 'react-textarea-autosize'
 import { nest } from 'd3-collection'
-import { sum, min, ascending } from 'd3-array'
+import { sum, min } from 'd3-array'
 import { timeDay } from 'd3-time'
 import compose from 'lodash/flowRight'
 import omit from 'lodash/omit'
@@ -21,12 +21,11 @@ import {
   Field,
   Radio,
   Checkbox,
-  fontFamilies,
+  fontStyles,
   Interaction,
   Label,
   mediaQueries,
   Editorial,
-  fontStyles,
   RawHtml,
   shouldIgnoreClick,
 } from '@project-r/styleguide'
@@ -72,7 +71,7 @@ const calculateMinPrice = (pkg, values, userPrice) => {
   if (groups.length) {
     return (
       min(groups, (option) =>
-        option.userPrice && userPrice ? 0 : option.price,
+        option.userPrice && userPrice ? 0 : option.price
       ) || absolutMinPrice
     )
   }
@@ -152,7 +151,7 @@ const styles = {
     width: '50%',
   }),
   title: css({
-    fontFamily: fontFamilies.sansSerifRegular,
+    ...fontStyles.sansSerifRegular,
     fontSize: 19,
     lineHeight: '28px',
   }),
@@ -203,7 +202,7 @@ class CustomizePackage extends Component {
         ...values,
         ...nextFields.values,
       },
-      userPrice,
+      userPrice
     )
 
     let price = values.price
@@ -241,7 +240,7 @@ class CustomizePackage extends Component {
               },
             },
             undefined,
-            { shallow: router.pathname === '/angebote' },
+            { shallow: router.pathname === '/angebote' }
           )
         }
       }
@@ -296,7 +295,7 @@ class CustomizePackage extends Component {
         value: undefined,
         error: undefined,
         dirty: undefined,
-      }),
+      })
     )
   }
   resetUserPrice() {
@@ -306,7 +305,7 @@ class CustomizePackage extends Component {
       undefined,
       {
         shallow: router.pathname === '/angebote',
-      },
+      }
     )
   }
   componentWillUnmount() {
@@ -380,7 +379,7 @@ class CustomizePackage extends Component {
           value: price,
           error,
           dirty: shouldValidate,
-        }),
+        })
       )
     }
 
@@ -389,7 +388,7 @@ class CustomizePackage extends Component {
         .filter(
           (option) =>
             option.additionalPeriods &&
-            option.additionalPeriods.find((period) => period.kind === 'BONUS'),
+            option.additionalPeriods.find((period) => period.kind === 'BONUS')
         )
         .map((option) => {
           const value = getOptionValue(option, values)
@@ -403,9 +402,9 @@ class CustomizePackage extends Component {
                 days +
                 timeDay.count(
                   new Date(period.beginDate),
-                  new Date(period.endDate),
+                  new Date(period.endDate)
                 ),
-              0,
+              0
             )
           const regularDays = option.additionalPeriods
             .filter((period) => period.kind === 'REGULAR')
@@ -414,16 +413,16 @@ class CustomizePackage extends Component {
                 days +
                 timeDay.count(
                   new Date(period.beginDate),
-                  new Date(period.endDate),
+                  new Date(period.endDate)
                 ),
-              0,
+              0
             )
           return (
             Math.ceil(((option.price / regularDays) * bonusDays) / 100) *
             100 *
             value
           )
-        }),
+        })
     )
     const payMoreSuggestions =
       pkg.name === 'DONATE' ||
@@ -454,18 +453,18 @@ class CustomizePackage extends Component {
       })
 
     const configurableGoodieFields = configurableFields.filter(
-      (field) => field.option.reward.__typename === 'Goodie',
+      (field) => field.option.reward.__typename === 'Goodie'
     )
     const optionGroups = nest()
       .key((d) =>
         d.option.optionGroup
           ? d.option.optionGroup
-          : [d.option.reward.__typename].filter(Boolean).join(),
+          : [d.option.reward.__typename].filter(Boolean).join()
       )
       .entries(
         configurableFields.filter(
-          (field) => !configurableGoodieFields.includes(field),
-        ),
+          (field) => !configurableGoodieFields.includes(field)
+        )
       )
       .map(({ key: groupKey, values: fields }) => {
         const options = fields
@@ -526,7 +525,7 @@ class CustomizePackage extends Component {
                   `package/${pkg.name}/reactivate/pageTitle`,
                 `package/${pkg.name}/pageTitle`,
                 `package/${pkg.name}/title`,
-              ].filter(Boolean),
+              ].filter(Boolean)
             )}
           </Interaction.H2>
           <Link
@@ -565,7 +564,7 @@ class CustomizePackage extends Component {
               isAboGive,
               additionalPeriods,
             },
-            gi,
+            gi
           ) => {
             const reset = group &&
               optionGroups.length > 1 &&
@@ -593,8 +592,8 @@ class CustomizePackage extends Component {
                                 error: undefined,
                                 dirty: false,
                               })(fields)
-                            }, {}),
-                          ),
+                            }, {})
+                          )
                         )
                       }}
                     >
@@ -690,7 +689,7 @@ class CustomizePackage extends Component {
                         ],
                         {
                           count: value,
-                        },
+                        }
                       )
 
                       const onFieldChange = (_, value, shouldValidate) => {
@@ -758,7 +757,7 @@ class CustomizePackage extends Component {
                               ].filter(Boolean),
                               {
                                 formattedCHF: chfFormat(option.price / 100),
-                              },
+                              }
                             )}
                           </span>
                         )
@@ -771,7 +770,7 @@ class CustomizePackage extends Component {
                                 onFieldChange(
                                   undefined,
                                   +checked,
-                                  dirty[fieldKey],
+                                  dirty[fieldKey]
                                 )
                               }}
                             >
@@ -850,7 +849,7 @@ class CustomizePackage extends Component {
                                   onFieldChange(
                                     undefined,
                                     value + 1,
-                                    dirty[fieldKey],
+                                    dirty[fieldKey]
                                   )
                                 })
                               }
@@ -860,7 +859,7 @@ class CustomizePackage extends Component {
                                   onFieldChange(
                                     undefined,
                                     value - 1,
-                                    dirty[fieldKey],
+                                    dirty[fieldKey]
                                   )
                                 })
                               }
@@ -879,7 +878,7 @@ class CustomizePackage extends Component {
                     <div style={{ marginBottom: 20 }}>
                       {additionalPeriods
                         .filter(
-                          (period, i) => period.kind !== 'REGULAR' || i > 0,
+                          (period, i) => period.kind !== 'REGULAR' || i > 0
                         )
                         .map((period) => {
                           const beginDate = new Date(period.beginDate)
@@ -895,7 +894,7 @@ class CustomizePackage extends Component {
                             {
                               formattedEndDate,
                               days,
-                            },
+                            }
                           )
                           const explanation = t.first(
                             [
@@ -906,7 +905,7 @@ class CustomizePackage extends Component {
                               formattedEndDate,
                               days,
                             },
-                            '',
+                            ''
                           )
 
                           return (
@@ -929,8 +928,8 @@ class CustomizePackage extends Component {
                               new Date(
                                 additionalPeriods[
                                   additionalPeriods.length - 1
-                                ].endDate,
-                              ),
+                                ].endDate
+                              )
                             ),
                           })}
                         </Interaction.Emphasis>
@@ -949,7 +948,7 @@ class CustomizePackage extends Component {
                 )}
               </Fragment>
             )
-          },
+          }
         )}
         <GoodieOptions
           t={t}
@@ -982,7 +981,7 @@ class CustomizePackage extends Component {
                       value,
                       error: reasonError(value, t),
                       dirty: shouldValidate,
-                    }),
+                    })
                   )
                 }}
               />
@@ -1000,9 +999,7 @@ class CustomizePackage extends Component {
           ) : (
             <Field
               label={t(
-                `package/customize/price/label${
-                  multipleThings ? '/total' : ''
-                }`,
+                `package/customize/price/label${multipleThings ? '/total' : ''}`
               )}
               ref={
                 configurableFields.length || userPrice
@@ -1035,7 +1032,7 @@ class CustomizePackage extends Component {
                           'package/customize/price/payMore/userPrice',
                         `package/customize/price/payMore/${pkg.name}`,
                         'package/customize/price/payMore',
-                      ].filter(Boolean),
+                      ].filter(Boolean)
                     )}
                   </Interaction.Emphasis>
                   <ul {...styles.ul}>
@@ -1044,7 +1041,7 @@ class CustomizePackage extends Component {
                         `package/customize/price/payMore/${key}`,
                         {
                           formattedCHF: chfFormat(value / 100),
-                        },
+                        }
                       )
                       if (price >= value) {
                         return <li key={key}>{label}</li>
@@ -1101,18 +1098,18 @@ class CustomizePackage extends Component {
                           e.preventDefault()
 
                           const aboGive = this.props.packages.find(
-                            (p) => p.name === 'ABO_GIVE',
+                            (p) => p.name === 'ABO_GIVE'
                           )
                           if (aboGive) {
                             const numMembershipMonths = pkg.options.find(
                               (o) =>
                                 o.reward &&
-                                o.reward.__typename === 'MembershipType',
+                                o.reward.__typename === 'MembershipType'
                             )
                             const numMembershipYears = aboGive.options.find(
                               (o) =>
                                 o.reward &&
-                                o.reward.__typename === 'MembershipType',
+                                o.reward.__typename === 'MembershipType'
                             )
                             if (numMembershipMonths && numMembershipYears) {
                               onChange(
@@ -1122,22 +1119,22 @@ class CustomizePackage extends Component {
                                     Math.max(
                                       getOptionValue(
                                         numMembershipMonths,
-                                        values,
+                                        values
                                       ),
-                                      numMembershipYears.minAmount,
+                                      numMembershipYears.minAmount
                                     ),
-                                    numMembershipYears.maxAmount,
+                                    numMembershipYears.maxAmount
                                   ),
                                   error: undefined,
                                   dirty: true,
-                                }),
+                                })
                               )
                             }
 
                             aboGive.options
                               .filter(
                                 (o) =>
-                                  o.reward && o.reward.__typename === 'Goodie',
+                                  o.reward && o.reward.__typename === 'Goodie'
                               )
                               .forEach((oYears) => {
                                 const oMonths = pkg.options.find(
@@ -1145,7 +1142,7 @@ class CustomizePackage extends Component {
                                     d.reward &&
                                     d.reward.__typename ===
                                       oYears.reward.__typename &&
-                                    d.reward.name === oYears.reward.name,
+                                    d.reward.name === oYears.reward.name
                                 )
                                 if (!oMonths) {
                                   return
@@ -1156,13 +1153,13 @@ class CustomizePackage extends Component {
                                     value: Math.min(
                                       Math.max(
                                         getOptionValue(oMonths, values),
-                                        oYears.minAmount,
+                                        oYears.minAmount
                                       ),
-                                      oYears.maxAmount,
+                                      oYears.maxAmount
                                     ),
                                     error: undefined,
                                     dirty: true,
-                                  }),
+                                  })
                                 )
                               })
                           }
@@ -1174,7 +1171,7 @@ class CustomizePackage extends Component {
                                 query: { package: 'ABO_GIVE' },
                               },
                               undefined,
-                              { shallow: router.pathname === '/angebote' },
+                              { shallow: router.pathname === '/angebote' }
                             )
                             .then(() => {
                               this.resetPrice()
@@ -1188,11 +1185,11 @@ class CustomizePackage extends Component {
                               pkg.options.find(
                                 (option) =>
                                   option.reward &&
-                                  option.reward.__typename === 'MembershipType',
+                                  option.reward.__typename === 'MembershipType'
                               ),
-                              values,
+                              values
                             ),
-                          },
+                          }
                         )}
                       </Editorial.A>
                     </li>
@@ -1218,7 +1215,7 @@ class CustomizePackage extends Component {
                           value: regularMinPrice,
                           error: undefined,
                           dirty: true,
-                        }),
+                        })
                       )
 
                       router.replace(
@@ -1227,7 +1224,7 @@ class CustomizePackage extends Component {
                           query: omit(query, ['price', 'userPrice']),
                         },
                         undefined,
-                        { shallow: router.pathname === '/angebote' },
+                        { shallow: router.pathname === '/angebote' }
                       )
                     }}
                   >
@@ -1238,7 +1235,7 @@ class CustomizePackage extends Component {
                       ],
                       {
                         formattedCHF: chfFormat(regularMinPrice / 100),
-                      },
+                      }
                     )}
                   </Editorial.A>
                   <br />
@@ -1262,19 +1259,19 @@ class CustomizePackage extends Component {
                           return (
                             getOptionValue(option, values) && option.userPrice
                           )
-                        },
+                        }
                       )
                       if (!selectedUserPriceOption) {
                         const firstUserPriceOption = pkg.options.find(
                           (option) => {
                             return option.userPrice
-                          },
+                          }
                         )
                         onChange(
                           FieldSet.utils.fieldsState({
                             field: getOptionFieldKey(firstUserPriceOption),
                             value: firstUserPriceOption.maxAmount,
-                          }),
+                          })
                         )
                       }
 
@@ -1285,7 +1282,7 @@ class CustomizePackage extends Component {
                             query: { ...omit(query, ['price']), userPrice: 1 },
                           },
                           undefined,
-                          { shallow: router.pathname === '/angebote' },
+                          { shallow: router.pathname === '/angebote' }
                         )
                         .then(() => {
                           this.resetPrice()

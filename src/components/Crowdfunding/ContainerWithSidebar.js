@@ -27,10 +27,26 @@ const styles = {
       paddingRight: CONTENT_PADDING * 2 + SIDEBAR_WIDTH,
     },
   }),
+  footerContent: css({
+    padding: 20,
+    [mUp]: {
+      paddingLeft: CONTENT_PADDING,
+      paddingRight: CONTENT_PADDING,
+    },
+    [lUp]: {
+      paddingRight: CONTENT_PADDING * 2,
+    },
+  }),
 }
 
 export const Content = ({ children }) => (
   <div {...styles.content}>{children}</div>
+)
+
+export const FooterContainer = ({ children }) => (
+  <Container>
+    <div {...styles.footerContent}>{children}</div>
+  </Container>
 )
 
 const ContainerWithSidebar = ({ sidebarProps, children }) => {

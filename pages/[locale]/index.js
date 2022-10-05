@@ -14,21 +14,21 @@ import {
   H2,
   Interaction,
   Editorial,
+  mediaQueries,
 } from '@project-r/styleguide'
 
 import ActionBar from 'src/components/ActionBar'
 import VideoCover from 'src/components/Crowdfunding/VideoCover'
 import List, { Highlight } from 'src/components/Crowdfunding/List'
-import ContainerWithSidebar from 'src/components/Crowdfunding/ContainerWithSidebar'
+import ContainerWithSidebar, {
+  FooterContainer,
+} from 'src/components/Crowdfunding/ContainerWithSidebar'
 
 import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import { useT } from 'src/components/Message'
 
-import {
-  getSafeLocale,
-  PUBLIC_BASE_URL,
-} from '../../constants'
+import { getSafeLocale, PUBLIC_BASE_URL } from '../../constants'
 
 const styles = {
   mediaDiversity: css({
@@ -48,16 +48,26 @@ const styles = {
     fontSize: 17,
     lineHeight: '25px',
   }),
+  mobilePledgeLink: css({
+    display: 'none',
+    [mediaQueries.onlyS]: {
+      display: 'block',
+    },
+  }),
 }
 
 const Page = () => {
   const router = useRouter()
   const locale = getSafeLocale(router.query.locale)
   const t = useT(locale)
-  const pledgeLink = (
-    <Link href='/angebote' passHref>
-      <A>Jetzt mitmachen!</A>
-    </Link>
+  const mobilePledgeLink = (
+    <div {...styles.mobilePledgeLink}>
+      <Interaction.P>
+        <Link href='/angebote' passHref>
+          <A>Jetzt mitmachen!</A>
+        </Link>
+      </Interaction.P>
+    </div>
   )
 
   const links = [
@@ -98,7 +108,13 @@ const Page = () => {
   }
 
   return (
-    <Frame Header={VideoCover}>
+    <Frame
+      Header={VideoCover}
+      footerProps={{
+        pledgeAd: false,
+        Container: FooterContainer,
+      }}
+    >
       <MetaTags locale={locale} title='Crowdfunding' />
 
       <ContainerWithSidebar
@@ -128,7 +144,7 @@ const Page = () => {
           und helfen Sie mit, fragwürdige Mandate und Interessenkonflikte
           aufzudecken und in Bundesbern für gleich lange Spiesse zu sorgen.
         </P>
-        <P>{pledgeLink}</P>
+        {mobilePledgeLink}
 
         <div style={{ margin: '15px 0 0' }}>
           <Label style={{ display: 'block', marginBottom: 5 }}>
@@ -200,7 +216,7 @@ const Page = () => {
           anerkannt. Spenden und Mitgliederbeiträge können deshalb von den
           Steuern abgezogen werden.
         </P>
-        <P>{pledgeLink}</P>
+        {mobilePledgeLink}
         <H1>Warum Transparenz wichtig ist</H1>
         <P>
           Wundern Sie sich manchmal, warum in der Gesundheitskommission immer
@@ -238,12 +254,12 @@ const Page = () => {
             fair und transparent abläuft.
           </strong>
         </P>
-
         <P>
           Der Erfolg gibt uns recht: Dank unserer Initiative deklariert
           mittlerweile mehr als ein Drittel der Parlamentarier:innen freiwillig
           ihre Einkünfte – Tendenz steigend.
         </P>
+        {mobilePledgeLink}
 
         <H1>Sei dabei</H1>
         <P>
@@ -279,6 +295,7 @@ const Page = () => {
           Wählen Sie also das für Sie passende Format und unterstützen Sie
           Lobbywatch!
         </P>
+        {mobilePledgeLink}
 
         <H2>Das Team</H2>
 

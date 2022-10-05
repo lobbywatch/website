@@ -1,4 +1,4 @@
-export const fontFamilies = {
+const fontFamilies = {
   serifTitle: 'Roboto Serif, serif',
   serifRegular: 'Roboto Serif, serif',
   serifItalic: 'Roboto Serif, serif',

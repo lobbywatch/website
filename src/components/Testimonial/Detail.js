@@ -6,7 +6,7 @@ import { PUBLIC_BASE_URL, ASSETS_SERVER_BASE_URL } from '../../lib/constants'
 
 import {
   Interaction,
-  fontFamilies,
+  fontStyles,
   P as SerifP,
   A,
   VideoPlayer,
@@ -31,11 +31,11 @@ const styles = {
   }),
   detailRole: css({
     fontSize: 17,
-    fontFamily: fontFamilies.sansSerifRegular,
+    ...fontStyles.sansSerifRegular,
   }),
   number: css({
     marginBottom: 20,
-    fontFamily: fontFamilies.sansSerifMedium,
+    ...fontStyles.sansSerifMedium,
   }),
 }
 
@@ -122,9 +122,9 @@ const Detail = ({
           <ActionBar
             share={shareObject}
             download={`${ASSETS_SERVER_BASE_URL}/render?width=1200&height=628&updatedAt=${encodeURIComponent(
-              updatedAt,
+              updatedAt
             )}&url=${encodeURIComponent(
-              `${PUBLIC_BASE_URL}/community?share=${id}`,
+              `${PUBLIC_BASE_URL}/community?share=${id}`
             )}`}
           />
         )}

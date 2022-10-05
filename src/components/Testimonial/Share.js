@@ -14,7 +14,7 @@ import CardLogo from '../Card/Logo'
 import Card, { styles as cardStyles } from '../Card/Card'
 import { BACKGROUND_COLOR } from '../Card/Container'
 
-import { Logo, BrandMark, fontFamilies, inQuotes } from '@project-r/styleguide'
+import { Logo, BrandMark, fontStyles, inQuotes } from '@project-r/styleguide'
 
 const WIDTH = 1200
 const HEIGHT = 628
@@ -50,12 +50,12 @@ const styles = {
   quote: css({
     fontSize: 27,
     lineHeight: 1.42,
-    fontFamily: fontFamilies.serifRegular,
+    ...fontStyles.serifRegular,
     margin: '20px 0',
   }),
   number: css({
     fontSize: 30,
-    fontFamily: fontFamilies.sansSerifMedium,
+    ...fontStyles.sansSerifMedium,
   }),
   videoTitle: css({
     fontSize: 60,
@@ -64,7 +64,7 @@ const styles = {
   }),
   headline: css({
     fontSize: 32,
-    fontFamily: fontFamilies.sansSerifMedium,
+    ...fontStyles.sansSerifMedium,
   }),
 }
 
@@ -92,7 +92,7 @@ const Item = ({
   pkg,
   error,
   t,
-  statement: { cards, statement, portrait, name, sequenceNumber } = {},
+  statement: { cards, statement, portrait, sequenceNumber } = {},
 }) => {
   return (
     <Loader
@@ -151,7 +151,7 @@ const Item = ({
         const headline = t(
           `testimonial/detail/share/package/${pkg}`,
           undefined,
-          '',
+          ''
         )
         const invert = pkg === 'PROLONG'
 
@@ -170,7 +170,7 @@ const Item = ({
             <Head>
               <meta name='robots' content='noindex' />
             </Head>
-            <img {...styles.image} src={portrait} />
+            <img {...styles.image} alt='' src={portrait} />
             <div {...styles.text}>
               {headline && <div {...styles.headline}>{headline}</div>}
               {statement && (
@@ -241,7 +241,7 @@ const query = gql`
 export default compose(
   withT,
   graphql(query, {
-    props: ({ data, ownProps: { name } }) => {
+    props: ({ data }) => {
       return {
         loading: data.loading,
         error: data.error,
@@ -252,5 +252,5 @@ export default compose(
             data.statements.nodes[0],
       }
     },
-  }),
+  })
 )(Item)

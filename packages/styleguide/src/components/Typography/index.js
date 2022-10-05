@@ -69,6 +69,9 @@ const styles = {
   }),
   lead: css({
     ...fontStyles.serifRegular25,
+    [mUp]: {
+      ...fontStyles.serifRegular28,
+    },
     margin: '20px 0 20px 0',
   }),
   p: css({
@@ -108,7 +111,7 @@ export const A = React.forwardRef(({ children, ...props }, ref) => {
           },
         },
       }),
-    [colorScheme],
+    [colorScheme]
   )
   return (
     <a {...props} {...linkStyleRule} ref={ref}>
@@ -116,6 +119,7 @@ export const A = React.forwardRef(({ children, ...props }, ref) => {
     </a>
   )
 })
+A.displayName = 'A'
 
 export const H1 = ({ children, ...props }) => {
   const [colorScheme] = useColorContext()

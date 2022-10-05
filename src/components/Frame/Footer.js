@@ -15,7 +15,6 @@ import CreativeCommons from '../../assets/CreativeCommons'
 import Message from '../Message'
 import Loader from '../Loader'
 import { locales } from '../../../constants'
-import BlockRegion from '../BlockRegion'
 import { JsonLd } from '../JsonLd'
 import { metaQuery } from '../../../lib/baseQueries'
 
@@ -94,25 +93,27 @@ const Footer = ({
   loading,
   error,
   links,
-  blocks,
   locale,
-  router: { pathname, query },
+  pledgeAd = true,
+  Container = Center,
 }) => (
-  <footer style={{ marginTop: 20 }}>
+  <footer style={{ marginTop: 20, zIndex: 1 }}>
     <JsonLd data={{ '@context': 'http://schema.org/', '@type': 'WPFooter' }} />
-    <Center>
-      {/* global pledge ad */}
-      <Clear {...columnContainerStyle}>
-        <div {...columnStyle}>
-          <SocialMedia locale={locale} />
-        </div>
-        <div {...columnStyle}>
-          <Newsletter locale={locale} />
-        </div>
-      </Clear>
-    </Center>
+    {pledgeAd && (
+      <Container>
+        {/* ToDo: add pledge ad */}
+        <Clear {...columnContainerStyle}>
+          <div {...columnStyle}>
+            <SocialMedia locale={locale} />
+          </div>
+          <div {...columnStyle}>
+            <Newsletter locale={locale} />
+          </div>
+        </Clear>
+      </Container>
+    )}
     <div {...footerStyle}>
-      <Center>
+      <Container>
         <Loader
           height={300}
           loading={loading}
@@ -161,7 +162,7 @@ const Footer = ({
             </div>
           )}
         />
-      </Center>
+      </Container>
     </div>
   </footer>
 )

@@ -10,7 +10,7 @@ import withT from '../../lib/withT'
 import Loader from '../Loader'
 
 import {
-  fontFamilies,
+  fontStyles,
   Interaction,
   Logo,
   P,
@@ -62,7 +62,7 @@ const styles = {
   }),
   number: css({
     fontSize: toViewport(30),
-    fontFamily: fontFamilies.sansSerifMedium,
+    ...fontStyles.sansSerifMedium,
   }),
   name: css({
     fontSize: toViewport(60),
@@ -113,7 +113,7 @@ const Item = ({ loading, error, t, statement }) => (
             <Head>
               <meta name='robots' content='noindex' />
             </Head>
-            <img {...styles.image} src={portrait} />
+            <img {...styles.image} alt='' src={portrait} />
             <div {...styles.text}>
               <Interaction.H2 {...styles.name}>{name}</Interaction.H2>
               <Interaction.P {...styles.role}>{role}</Interaction.P>
@@ -122,7 +122,7 @@ const Item = ({ loading, error, t, statement }) => (
                   {...styles.quote}
                   style={{
                     fontSize: toViewport(
-                      24 + fontSizeBoost(statementString.length),
+                      24 + fontSizeBoost(statementString.length)
                     ),
                   }}
                 >
@@ -176,5 +176,5 @@ export default compose(
     options: ({ duration }) => ({
       pollInterval: duration,
     }),
-  }),
+  })
 )(Item)

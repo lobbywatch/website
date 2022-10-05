@@ -1,10 +1,6 @@
 import { css } from 'glamor'
 
-import {
-  fontFamilies,
-  fontStyles,
-  useColorContext,
-} from '@project-r/styleguide'
+import { fontStyles, useColorContext } from '@project-r/styleguide'
 
 const styles = {
   list: css({
@@ -22,10 +18,7 @@ const styles = {
       borderBottomStyle: 'solid',
     },
   }),
-  highlight: css({
-    fontFamily: fontFamilies.sansSerifMedium,
-    fontWeight: 'normal',
-  }),
+  highlight: css(fontStyles.sansSerifMedium),
 }
 
 export const Item = ({ children }) => {

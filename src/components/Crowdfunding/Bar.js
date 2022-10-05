@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { css, merge } from 'glamor'
 
-import { fontFamilies, RawHtml, useColorContext } from '@project-r/styleguide'
+import { fontStyles, RawHtml, useColorContext } from '@project-r/styleguide'
 
 const HEIGHT = 8
 
@@ -34,7 +34,7 @@ const styles = {
     borderRightStyle: 'solid',
   }),
   goalNumber: css({
-    fontFamiliy: fontFamilies.sansSerifMedium,
+    ...fontStyles.sansSerifMedium,
     fontSize: 14,
     lineHeight: '14px',
     borderRightWidth: 1,
@@ -54,7 +54,7 @@ const styles = {
     top: 40,
     left: 5,
     right: 5,
-    fontFamiliy: fontFamilies.sansSerifMedium,
+    ...fontStyles.sansSerifMedium,
     fontSize: 14,
     lineHeight: '19px',
     padding: '12px 17px',

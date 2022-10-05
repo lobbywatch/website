@@ -20,7 +20,7 @@ import {
 import {
   Interaction,
   mediaQueries,
-  fontFamilies,
+  fontStyles,
   Field,
   A,
   useColorContext,
@@ -46,7 +46,7 @@ const getItemStyles = (singleRow, minColumns = 1, maxColumns = 5) => {
   const sizes = [
     { minWidth: 0, columns: minColumns },
     ...SIZES.filter(
-      ({ minWidth, columns }) => columns > minColumns && columns <= maxColumns,
+      ({ columns }) => columns > minColumns && columns <= maxColumns
     ),
   ]
   return css({
@@ -137,7 +137,7 @@ const styles = {
       lineHeight: '21px',
     },
     color: '#fff',
-    fontFamily: fontFamilies.sansSerifMedium,
+    ...fontStyles.sansSerifMedium,
   }),
   play: css({
     position: 'absolute',
@@ -167,7 +167,7 @@ export const Item = forwardRef(
       maxColumns,
       style,
     },
-    ref,
+    ref
   ) => {
     const [colorScheme] = useColorContext()
 
@@ -198,7 +198,7 @@ export const Item = forwardRef(
               }}
             />
           ) : (
-            <img src={image} {...styles.aspectImg} />
+            <img src={image} alt='' {...styles.aspectImg} />
           )}
           <span {...styles.aspectFade} style={{ opacity: isActive ? 0 : 1 }} />
         </span>
@@ -215,8 +215,9 @@ export const Item = forwardRef(
         )}
       </Element>
     )
-  },
+  }
 )
+Item.displayName = 'Item'
 
 const AUTO_INFINITE = 300
 
@@ -233,7 +234,7 @@ export class List extends Component {
     this.measure = () => {
       const maxColumns = this.getMaxColumns()
       const sizeIndex = max(SIZES, (d, i) =>
-        d.minWidth <= window.innerWidth && maxColumns >= d.columns ? i : -1,
+        d.minWidth <= window.innerWidth && maxColumns >= d.columns ? i : -1
       )
       const size = SIZES[sizeIndex]
       const columns = size.columns
@@ -274,7 +275,7 @@ export class List extends Component {
                 this.props.focus,
                 this.props.query,
               ].join('_'))
-              this.props.loadMore().then(({ data }) => {
+              this.props.loadMore().then(() => {
                 if (query !== this.query) {
                   this.setState(
                     () => ({
@@ -282,7 +283,7 @@ export class List extends Component {
                     }),
                     () => {
                       this.onScroll()
-                    },
+                    }
                   )
                   return
                 }
@@ -290,7 +291,7 @@ export class List extends Component {
                   isFetchingMore: false,
                 }))
               })
-            },
+            }
           )
         }
       }
@@ -365,7 +366,7 @@ export class List extends Component {
             const openId = open[row - 1]
             if (!singleRow && openId && offset === 0) {
               const openItem = statements.find(
-                (statement) => statement.id === openId,
+                (statement) => statement.id === openId
               )
               if (openItem) {
                 items.push(
@@ -374,7 +375,7 @@ export class List extends Component {
                     share={share}
                     t={t}
                     data={openItem}
-                  />,
+                  />
                 )
               }
             }
@@ -412,13 +413,13 @@ export class List extends Component {
                     },
                   }))
                 }}
-              />,
+              />
             )
 
             const lastOpenId = open[row]
             if (!singleRow && i === lastIndex && lastOpenId) {
               const openItem = statements.find(
-                (statement) => statement.id === lastOpenId,
+                (statement) => statement.id === lastOpenId
               )
               if (openItem) {
                 items.push(
@@ -427,7 +428,7 @@ export class List extends Component {
                     share={share}
                     t={t}
                     data={openItem}
-                  />,
+                  />
                 )
               }
             }
@@ -439,13 +440,13 @@ export class List extends Component {
                 title: t('testimonial/meta/single/title', focusItem),
                 description: t(
                   'testimonial/meta/single/description',
-                  focusItem,
+                  focusItem
                 ),
                 url: `${PUBLIC_BASE_URL}/community?id=${focusItem.id}`,
                 image: `${ASSETS_SERVER_BASE_URL}/render?viewport=1200x628&updatedAt=${encodeURIComponent(
-                  focusItem.updatedAt,
+                  focusItem.updatedAt
                 )}&url=${encodeURIComponent(
-                  `${PUBLIC_BASE_URL}/community?share=${focusItem.id}`,
+                  `${PUBLIC_BASE_URL}/community?share=${focusItem.id}`
                 )}`,
               }
             : {
@@ -477,7 +478,7 @@ export class List extends Component {
                             }),
                             () => {
                               this.onScroll()
-                            },
+                            }
                           )
                         }}
                       >
@@ -550,10 +551,7 @@ export const ListWithQuery = compose(
         hasMore: data.statements && data.statements.pageInfo.hasNextPage,
         loadMore() {
           return data.fetchMore({
-            updateQuery: (
-              previousResult,
-              { fetchMoreResult, queryVariables },
-            ) => {
+            updateQuery: (previousResult, { fetchMoreResult }) => {
               const nodes = [
                 ...previousResult.statements.nodes,
                 ...fetchMoreResult.statements.nodes,
@@ -564,7 +562,7 @@ export const ListWithQuery = compose(
                   ...fetchMoreResult.statements,
                   nodes: nodes.filter(
                     ({ id }, index, all) =>
-                      index === all.findIndex((node) => node.id === id),
+                      index === all.findIndex((node) => node.id === id)
                   ),
                 },
               }
@@ -576,7 +574,7 @@ export const ListWithQuery = compose(
         },
       }
     },
-  }),
+  })
 )(List)
 
 ListWithQuery.defaultProps = {
@@ -626,7 +624,7 @@ class Container extends Component {
                     router.replace('/community', undefined, {
                       shallow: router.pathname === '/community',
                     })
-                  },
+                  }
                 )
               }
             }}
@@ -651,7 +649,7 @@ class Container extends Component {
                 router.push('/community', undefined, {
                   shallow: router.pathname === '/community',
                 })
-              },
+              }
             )
           }}
           search={query}
