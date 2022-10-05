@@ -88,20 +88,26 @@ const listItemSeparatorStyle = css({
   },
 })
 
-const Menu = ({ items, expanded, id }) => (
-  <nav {...menuStyle} role='navigation' id={id} data-expanded={expanded}>
-    <ul {...listStyle}>
-      {items.map(({ label, href, active, separator }, index) => (
-        <li {...listItemStyle} key={index}>
-          {separator && <span {...listItemSeparatorStyle} />}
-          <StyledLink href={href} className={active ? 'active' : ''}>
-            {label}
-          </StyledLink>
-        </li>
-      ))}
-    </ul>
-  </nav>
-)
+const Menu = ({ items, expanded, id }) => {
+  return (
+    <nav {...menuStyle} role='navigation' id={id} data-expanded={expanded}>
+      <ul {...listStyle}>
+        {items.map(({ label, href, active, separator }, index) => (
+          <li {...listItemStyle} key={index}>
+            {separator && <span key='separator' {...listItemSeparatorStyle} />}
+            <StyledLink
+              key='link'
+              href={href}
+              className={active ? 'active' : ''}
+            >
+              {label}
+            </StyledLink>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}
 
 Menu.propTypes = {
   items: PropTypes.arrayOf(

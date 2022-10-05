@@ -1,6 +1,8 @@
 import { PUBLIC_BASE_URL, PAYPAL_BUSINESS } from '../../lib/constants'
 import { format } from 'd3-format'
 
+import { PLEDGE_PATH } from 'constants'
+
 const amountFormat = format('.2f')
 
 export const getParams = ({ itemName, amount }) => {
@@ -47,11 +49,11 @@ export const getParams = ({ itemName, amount }) => {
     },
     {
       key: 'return',
-      value: `${PUBLIC_BASE_URL}/angebote`,
+      value: `${PUBLIC_BASE_URL}${PLEDGE_PATH}`,
     },
     {
       key: 'cancel_return',
-      value: `${PUBLIC_BASE_URL}/angebote?item_name=${itemName}&st=Cancel`,
+      value: `${PUBLIC_BASE_URL}${PLEDGE_PATH}?item_name=${itemName}&st=Cancel`,
     },
     {
       key: 'bn',

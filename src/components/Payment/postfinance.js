@@ -1,6 +1,8 @@
 import { ascending } from 'd3-array'
 import { PUBLIC_BASE_URL, PF_PSPID } from '../../lib/constants'
 
+import { PLEDGE_PATH } from 'constants'
+
 export const getParams = ({ /* alias, */ userId, orderId, amount, sha }) => {
   const params = [
     {
@@ -33,19 +35,19 @@ export const getParams = ({ /* alias, */ userId, orderId, amount, sha }) => {
     },
     {
       key: 'ACCEPTURL',
-      value: `${PUBLIC_BASE_URL}/angebote`,
+      value: `${PUBLIC_BASE_URL}${PLEDGE_PATH}`,
     },
     {
       key: 'EXCEPTIONURL',
-      value: `${PUBLIC_BASE_URL}/angebote`,
+      value: `${PUBLIC_BASE_URL}${PLEDGE_PATH}`,
     },
     {
       key: 'DECLINEURL',
-      value: `${PUBLIC_BASE_URL}/angebote`,
+      value: `${PUBLIC_BASE_URL}${PLEDGE_PATH}`,
     },
     {
       key: 'CANCELURL',
-      value: `${PUBLIC_BASE_URL}/angebote`,
+      value: `${PUBLIC_BASE_URL}${PLEDGE_PATH}`,
     },
     // {
     //   key: 'ALIAS',

@@ -42,4 +42,8 @@ exports.MAILCHIMP_ID_FOR_LOCALE = {
 
 exports.DEBUG_INFORMATION = !!NEXT_PUBLIC_DEBUG_INFORMATION
 
-exports.STATUS_POLL_INTERVAL_MS = +process.env.NEXT_PUBLIC_STATUS_POLL_INTERVAL_MS || 0
+exports.STATUS_POLL_INTERVAL_MS =
+  +process.env.NEXT_PUBLIC_STATUS_POLL_INTERVAL_MS || 0
+// This needs to be in synch with PSPs
+// ToDo: specify path once pledge page is integrated
+exports.PLEDGE_PATH = '/'

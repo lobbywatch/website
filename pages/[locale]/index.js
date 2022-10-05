@@ -28,7 +28,7 @@ import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import { useT } from 'src/components/Message'
 
-import { getSafeLocale, PUBLIC_BASE_URL } from '../../constants'
+import { PLEDGE_PATH, getSafeLocale, PUBLIC_BASE_URL } from '../../constants'
 
 const styles = {
   mediaDiversity: css({
@@ -63,7 +63,7 @@ const Page = () => {
   const mobilePledgeLink = (
     <div {...styles.mobilePledgeLink}>
       <Interaction.P>
-        <Link href='/angebote' passHref>
+        <Link href={PLEDGE_PATH} passHref>
           <A>Jetzt mitmachen!</A>
         </Link>
       </Interaction.P>
@@ -73,7 +73,7 @@ const Page = () => {
   const links = [
     {
       href: {
-        pathname: '/angebote',
+        pathname: PLEDGE_PATH,
         query: { package: 'WORKSHOP' },
       },
       text: 'Etwas für Ihre ganze Crew? Lobbywatch-Workshop buchen.',
@@ -103,8 +103,9 @@ const Page = () => {
 
   const shareObject = {
     overlayTitle: t('actionbar/share'),
-    url: PUBLIC_BASE_URL + router.pathname,
-    emailSubject: 'Es ist Zeit.',
+    url: PUBLIC_BASE_URL,
+    emailSubject: 'Lobbywatch erhalten',
+    emailAttachUrl: true,
   }
 
   return (
@@ -132,7 +133,7 @@ const Page = () => {
 
         <P>
           In genau einem Jahr sind Wahlen – und die Lobbys stehen bereits
-          Schlange. Mit den neuen MItgliedern im National- und Ständerat werden
+          Schlange. Mit den neuen Mitgliedern im National- und Ständerat werden
           wiederum unzählige Organisationen, Verbände und Unternehmen ins
           Bundeshaus drängen und dort versuchen, ihre Interessen durchzusetzen.
         </P>
@@ -143,6 +144,15 @@ const Page = () => {
           Unterstützerinnen und Unterstützer. Werden Sie Mitglied bei Lobbywatch
           und helfen Sie mit, fragwürdige Mandate und Interessenkonflikte
           aufzudecken und in Bundesbern für gleich lange Spiesse zu sorgen.
+        </P>
+        <P>
+          <Label style={{ backgroundColor: 'yellow' }}>
+            [Wird nur angezeigt bis wird das initiale Ziel erreichen]
+          </Label>
+          <br />
+          Konkret brauchen wir mindestens 1000 Mitglieder, um die
+          Geschäftsstelle und die Recherche in der nächsten Legislatur 2023 bis
+          2027 vorzuführen.
         </P>
         {mobilePledgeLink}
 
@@ -155,15 +165,16 @@ const Page = () => {
 
         <div {...styles.stretchLead}>
           <Interaction.P {...styles.stretchP} style={{ marginBottom: 10 }}>
-            Wir wollen unsere Arbeit professionalisieren. Dazu brauchen wir eine
-            Redaktion, Zeit für Recherche und eine Geschäftsstelle.
+            <Label style={{ backgroundColor: 'yellow' }}>
+              [Erscheint erst wenn 1000 erreicht wird]
+            </Label>
+            <br />
+            Damit wir Lobbywatch weiter betreiben können haben wir 1000
+            Mitglieder gesucht. Dieses Ziel haben wir zusammen mit Ihnen am
+            ersten Tag des Crowdfundings erreicht. Herzlichen Dank! Lobbywatch
+            will wachsen – deshalb sammeln wir weiter!
           </Interaction.P>
           <List>
-            <List.Item>
-              <Highlight>1000 Mitglieder:</Highlight> Damit können wir die
-              Recherche auch nach dem Wahljahr 2023 bewältigen, weitere Daten
-              analysieren und Netzwerke aufdecken.
-            </List.Item>
             <List.Item>
               <Highlight>1500 Mitglieder:</Highlight> Wir professionalisieren
               unsere Redaktion und liefern Ihnen mindestens monatlich ein
@@ -334,7 +345,7 @@ const Page = () => {
         </P>
         <P>Willkommen an Bord!</P>
         <br />
-        <Link href='/angebote' key='pledge' passHref>
+        <Link href={PLEDGE_PATH} key='pledge' passHref>
           <Button primary style={{ minWidth: 300 }}>
             Jetzt mitmachen!
           </Button>

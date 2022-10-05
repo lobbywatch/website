@@ -80,12 +80,12 @@ class PledgeReceivePayment extends Component {
               href={`mailto:${EMAIL_PAYMENT}?subject=${encodeURIComponent(
                 t('pledge/recievePayment/pf/mailto/subject', {
                   status: query.STATUS || '',
-                }),
+                })
               )}&body=${encodeURIComponent(
                 t('pledge/recievePayment/pf/mailto/body', {
                   pledgeId: query.orderID,
                   payload: JSON.stringify(query, null, 2),
-                }),
+                })
               )}`}
             >
               {EMAIL_PAYMENT}
@@ -170,12 +170,12 @@ class PledgeReceivePayment extends Component {
               href={`mailto:${EMAIL_PAYMENT}?subject=${encodeURIComponent(
                 t('pledge/recievePayment/paypal/mailto/subject', {
                   status: query.st || '',
-                }),
+                })
               )}&body=${encodeURIComponent(
                 t('pledge/recievePayment/paypal/mailto/body', {
                   pledgeId: query.item_name,
                   payload: JSON.stringify(query, null, 2),
-                }),
+                })
               )}`}
             >
               {EMAIL_PAYMENT}
@@ -277,14 +277,14 @@ class PledgeReceivePayment extends Component {
                 ...baseQuery,
                 email: pledge.user.email,
                 ...encodeSignInResponseQuery(signIn),
-              }),
+              })
             )
             .catch((error) =>
               gotoMerci({
                 ...baseQuery,
                 email: pledge.user.email,
                 signInError: errorToString(error),
-              }),
+              })
             )
         } else {
           gotoMerci(baseQuery)
@@ -300,7 +300,7 @@ class PledgeReceivePayment extends Component {
   componentDidMount() {
     // TODO: Test and re-enable psp payload purging after processing it
     // const url = {
-    //   route: '/angebote',
+    //   route: PLEDGE_PATH,
     //   params: this.queryFromPledge()
     // }
     // Router.replaceRoute(route, params, {shallow: true})
@@ -361,7 +361,7 @@ const PledgeReceivePaymentById = compose(
     },
   }),
   withPay,
-  withMe,
+  withMe
 )(PledgeReceivePayment)
 
 export default PledgeReceivePaymentById

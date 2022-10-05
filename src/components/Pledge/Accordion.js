@@ -18,6 +18,8 @@ import {
 } from '@project-r/styleguide'
 import Link from 'next/link'
 
+import { PLEDGE_PATH } from 'constants'
+
 const styles = {
   packageHeader: css({
     position: 'relative',
@@ -235,7 +237,7 @@ class Accordion extends Component {
           {groups.map(({ key: group, values: pkgs }) => {
             const links = [
               group === 'ME' && {
-                pathname: '/angebote',
+                pathname: PLEDGE_PATH,
                 query: { package: 'ABO', userPrice: 1 },
                 text: t('package/ABO/userPrice/teaser'),
               },
@@ -266,7 +268,7 @@ class Accordion extends Component {
                   ) || 0
               }
               return {
-                pathname: '/angebote',
+                pathname: PLEDGE_PATH,
                 query: { package: pkg.name },
                 name: pkg.name,
                 price,
@@ -280,7 +282,7 @@ class Accordion extends Component {
               // TMP Marketing Trial for Students
               if (benefactorIndex !== -1) {
                 pkgItems.splice(benefactorIndex + 1, 0, {
-                  pathname: '/angebote',
+                  pathname: PLEDGE_PATH,
                   query: {
                     package: 'ABO',
                     userPrice: 1,

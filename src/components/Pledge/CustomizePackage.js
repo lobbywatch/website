@@ -33,6 +33,8 @@ import {
 import ManageMembership from '../Account/Memberships/Manage'
 import Link from 'next/link'
 
+import { PLEDGE_PATH } from 'constants'
+
 const dayFormat = timeFormat('%d. %B %Y')
 
 const { P } = Interaction
@@ -233,14 +235,14 @@ class CustomizePackage extends Component {
         if (pkg.suggestedTotal < regularMinPrice && !userPrice) {
           router.replace(
             {
-              pathname: '/angebote',
+              pathname: PLEDGE_PATH,
               query: {
                 ...router.query,
                 userPrice: '1',
               },
             },
             undefined,
-            { shallow: router.pathname === '/angebote' }
+            { shallow: router.pathname === PLEDGE_PATH }
           )
         }
       }
@@ -301,10 +303,10 @@ class CustomizePackage extends Component {
   resetUserPrice() {
     const { router } = this.props
     router.replace(
-      { pathname: '/angebote', query: omit(router.query, ['userPrice']) },
+      { pathname: PLEDGE_PATH, query: omit(router.query, ['userPrice']) },
       undefined,
       {
-        shallow: router.pathname === '/angebote',
+        shallow: router.pathname === PLEDGE_PATH,
       }
     )
   }
@@ -530,7 +532,7 @@ class CustomizePackage extends Component {
           </Interaction.H2>
           <Link
             href={{
-              pathname: '/angebote',
+              pathname: PLEDGE_PATH,
               query:
                 pkg.group && pkg.group !== 'ME'
                   ? { group: pkg.group }
@@ -1088,7 +1090,7 @@ class CustomizePackage extends Component {
                     <li>
                       <Editorial.A
                         href={format({
-                          pathname: '/angebote',
+                          pathname: PLEDGE_PATH,
                           query: { package: 'ABO_GIVE' },
                         })}
                         onClick={(e) => {
@@ -1167,11 +1169,11 @@ class CustomizePackage extends Component {
                           router
                             .push(
                               {
-                                pathname: '/angebote',
+                                pathname: PLEDGE_PATH,
                                 query: { package: 'ABO_GIVE' },
                               },
                               undefined,
-                              { shallow: router.pathname === '/angebote' }
+                              { shallow: router.pathname === PLEDGE_PATH }
                             )
                             .then(() => {
                               this.resetPrice()
@@ -1200,7 +1202,7 @@ class CustomizePackage extends Component {
                 <Fragment>
                   <Editorial.A
                     href={format({
-                      pathname: '/angebote',
+                      pathname: PLEDGE_PATH,
                       query: omit(query, ['price', 'userPrice']),
                     })}
                     onClick={(e) => {
@@ -1220,11 +1222,11 @@ class CustomizePackage extends Component {
 
                       router.replace(
                         {
-                          pathname: '/angebote',
+                          pathname: PLEDGE_PATH,
                           query: omit(query, ['price', 'userPrice']),
                         },
                         undefined,
-                        { shallow: router.pathname === '/angebote' }
+                        { shallow: router.pathname === PLEDGE_PATH }
                       )
                     }}
                   >
@@ -1245,7 +1247,7 @@ class CustomizePackage extends Component {
                 <Fragment>
                   <Editorial.A
                     href={format({
-                      pathname: '/angebote',
+                      pathname: PLEDGE_PATH,
                       query: { ...omit(query, ['price']), userPrice: 1 },
                     })}
                     onClick={(e) => {
@@ -1278,11 +1280,11 @@ class CustomizePackage extends Component {
                       router
                         .replace(
                           {
-                            pathname: '/angebote',
+                            pathname: PLEDGE_PATH,
                             query: { ...omit(query, ['price']), userPrice: 1 },
                           },
                           undefined,
-                          { shallow: router.pathname === '/angebote' }
+                          { shallow: router.pathname === PLEDGE_PATH }
                         )
                         .then(() => {
                           this.resetPrice()

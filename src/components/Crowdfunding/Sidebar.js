@@ -3,13 +3,14 @@ import Link from 'next/link'
 
 import { PackageItem, PackageBuffer } from '../Pledge/Accordion'
 
-import { withStatus, RawStatus } from './Status'
+import { RawStatus } from './Status' // withStatus
 
 import { css } from 'glamor'
 
 import { SIDEBAR_WIDTH } from './constants'
 
 import { Button, A, mediaQueries } from '@project-r/styleguide'
+import { PLEDGE_PATH } from '../../../constants'
 
 export const minWindowHeight = 400
 
@@ -63,7 +64,7 @@ const SidebarInner = (props) => {
           <Link
             key={pack.name}
             href={{
-              pathname: '/angebote',
+              pathname: PLEDGE_PATH,
               query: { ...pack.params, package: pack.name },
             }}
             passHref
@@ -83,7 +84,7 @@ const SidebarInner = (props) => {
         <div {...styles.button}>
           <Link
             href={{
-              pathname: '/angebote',
+              pathname: PLEDGE_PATH,
               query: primaryQuery,
             }}
             passHref
@@ -181,15 +182,17 @@ class Sidebar extends Component {
     const {
       sticky,
       t,
-      crowdfunding = {// mock pending backend
+      crowdfunding = {
+        // mock pending backend
         id: '2fd24f48-979f-42c7-abd6-43bdc33dea4a',
         name: 'LOBBYWATCH',
         goals: [
           {
-            "people": 1000,
+            people: 1000,
             // "money": 5000000,
-            "description": "Dank Ihnen gibt es Lobbywatch auch in der nächsten Legislatur."
-          }
+            description:
+              'Dank Ihnen gibt es Lobbywatch auch in der nächsten Legislatur.',
+          },
         ],
         status: {
           people: 151,

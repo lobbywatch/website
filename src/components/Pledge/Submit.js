@@ -50,6 +50,8 @@ import usePaymentRequest, {
 import { getPayerInformationFromEvent } from '../Payment/PaymentRequest/PaymentRequestEventHelper'
 import { css } from 'glamor'
 
+import { PLEDGE_PATH } from 'constants'
+
 const { P } = Interaction
 
 const styles = {
@@ -110,7 +112,7 @@ const SubmitWithHooks = ({ paymentMethods, ...props }) => {
   const contactFields = useMemo(
     () =>
       getContactFields(t).filter((field) => !customMe || !customMe[field.name]),
-    [t, customMe],
+    [t, customMe]
   )
 
   const defaultContactState = useMemo(() => {
@@ -142,13 +144,13 @@ const SubmitWithHooks = ({ paymentMethods, ...props }) => {
           }
         : {}),
     }),
-    [userAddress],
+    [userAddress]
   )
 
   const addressState = useFieldSetState(addressFields, defaultAddress)
   const shippingAddressState = useFieldSetState(
     addressFields,
-    props.basePledge?.pledgeShippingAddress || defaultAddress,
+    props.basePledge?.pledgeShippingAddress || defaultAddress
   )
 
   const [syncAddresses, setSyncAddresses] = useState(true)
@@ -280,7 +282,7 @@ class Submit extends Component {
               user[field.name] = contactState.values[field.name]
               return user
             },
-            customMe ? { email: customMe.email } : {},
+            customMe ? { email: customMe.email } : {}
           )
         : undefined,
       address: this.isStripeWalletPayment()
@@ -365,7 +367,7 @@ class Submit extends Component {
       return this.payPledge(
         this.state.pledgeId,
         this.state.pledgeResponse,
-        stripePaymentMethod,
+        stripePaymentMethod
       )
     }
 
@@ -404,7 +406,7 @@ class Submit extends Component {
         return this.payPledge(
           data.submitPledge.pledgeId,
           data.submitPledge,
-          stripePaymentMethod,
+          stripePaymentMethod
         )
       })
       .catch((error) => {
@@ -452,7 +454,7 @@ class Submit extends Component {
       }),
       () => {
         this.payment.payPalForm.submit()
-      },
+      }
     )
   }
 
@@ -469,7 +471,7 @@ class Submit extends Component {
       }),
       () => {
         this.payment.postFinanceForm.submit()
-      },
+      }
     )
   }
 
@@ -521,14 +523,14 @@ class Submit extends Component {
                 ...baseQuery,
                 email: email,
                 ...encodeSignInResponseQuery(signIn),
-              }),
+              })
             )
             .catch((error) =>
               gotoMerci({
                 ...baseQuery,
                 email: email,
                 signInError: errorToString(error),
-              }),
+              })
             )
         } else {
           gotoMerci(baseQuery)
@@ -606,7 +608,7 @@ class Submit extends Component {
     const { t } = this.props
     this.setState({
       loading: t(
-        `account/pledges/payment/method/${this.props.paymentRequest.usedWallet}`,
+        `account/pledges/payment/method/${this.props.paymentRequest.usedWallet}`
       ),
       paymentError: undefined,
     })
@@ -651,7 +653,7 @@ class Submit extends Component {
           loading: false,
           paymentError: t('account/pledges/payment/canceled'),
         })
-      },
+      }
     )
   }
 
@@ -681,9 +683,9 @@ class Submit extends Component {
               this.props.paymentRequest.loading &&
               t('account/pledges/payment/methods/wallet/loading', {
                 wallet: t(
-                  `account/pledges/payment/method/${this.props.paymentRequest.usedWallet}`,
+                  `account/pledges/payment/method/${this.props.paymentRequest.usedWallet}`
                 ),
-              }),
+              })
           )
           .concat(objectValues(this.state.errors))
           .concat([
@@ -698,7 +700,7 @@ class Submit extends Component {
           .concat(
             requireShippingAddress &&
               !isStripeWalletPayment &&
-              objectValues(shippingAddressState.errors),
+              objectValues(shippingAddressState.errors)
           )
           .filter(Boolean),
       },
@@ -708,7 +710,7 @@ class Submit extends Component {
           .concat(
             selectedPaymentMethod === 'PAYMENTSLIP' &&
               !syncAddresses &&
-              objectValues(addressState.errors),
+              objectValues(addressState.errors)
           )
           .filter(Boolean),
       },
@@ -755,7 +757,7 @@ class Submit extends Component {
         'pledge/submit/autoPay/note',
       ],
       undefined,
-      null,
+      null
     )
 
     return (
@@ -822,7 +824,7 @@ class Submit extends Component {
     const contactPreface = t.first(
       [`pledge/contact/preface/${packageName}`, 'pledge/contact/preface'],
       undefined,
-      '',
+      ''
     )
 
     const showSignIn = this.state.showSignIn && !me
@@ -897,7 +899,7 @@ class Submit extends Component {
               ) : (
                 <Link
                   href={{
-                    pathname: '/angebote',
+                    pathname: PLEDGE_PATH,
                     query: {
                       package: packageName,
                     },
@@ -1187,10 +1189,10 @@ export const withPay = (Component) => {
             } = response
             if (payPledge.stripeClientSecret) {
               const stripeClient = await loadStripe(
-                payPledge.stripePublishableKey,
+                payPledge.stripePublishableKey
               )
               const confirmResult = await stripeClient.confirmCardPayment(
-                payPledge.stripeClientSecret,
+                payPledge.stripeClientSecret
               )
               if (confirmResult.error) {
                 throw confirmResult.error.message
@@ -1225,16 +1227,16 @@ export const withPay = (Component) => {
                     }, 500)
                   }),
                 payPledge.stripePaymentIntentId && syncPaymentIntent(payPledge),
-              ].filter(Boolean),
+              ].filter(Boolean)
             )
 
             return response
           }),
       }),
     }),
-    withSignIn,
+    withSignIn
   )(Component)
-  return (props) => <EnhancedComponent {...props} />
+  return EnhancedComponent
 }
 
 const SubmitWithMutations = compose(
@@ -1252,7 +1254,7 @@ const SubmitWithMutations = compose(
   withSignOut,
   withPay,
   withMe,
-  withT,
+  withT
 )(SubmitWithHooks)
 
 export default SubmitWithMutations
