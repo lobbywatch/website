@@ -57,6 +57,7 @@ const styles = {
     width: 'calc(100% + 20px)',
     borderBottom: 'none',
     borderTop: 'none',
+    borderRadius: 4,
   }),
   groupTitle: css({
     marginTop: 40,
@@ -141,51 +142,52 @@ const query = gql`
   }
 `
 
-export const PackageItem = forwardRef(
-  (
-    { t, hover, setHover, crowdfundingName, name, title, price, onClick, href },
-    ref,
-  ) => {
-    const [colorScheme] = useColorContext()
-    return (
-      <a
-        {...merge(styles.package, hover === name && styles.packageHighlighted)}
-        {...colorScheme.set('color', 'logo')}
-        {...colorScheme.set('borderTopColor', 'divider')}
-        {...colorScheme.set('borderBottomColor', 'divider')}
-        {...(hover === name && colorScheme.set('background', 'alert'))}
-        onMouseOver={() => setHover(name)}
-        onMouseOut={() => setHover(undefined)}
-        onClick={onClick}
-        href={href}
-        ref={ref}
-      >
-        <div {...styles.packageHeader}>
-          <div {...styles.packageTitle}>
-            {title ||
-              t.first([
-                `package/${crowdfundingName}/${name}/title`,
-                `package/${name}/title`,
-              ])}
-          </div>
-          {!!price && (
-            <div
-              {...styles.packagePrice}
-              {...colorScheme.set('color', 'primary')}
-            >
-              {t.first([`package/${name}/price`, 'package/price'], {
-                formattedCHF: `CHF ${price / 100}`,
-              })}
-            </div>
-          )}
-          <span {...styles.packageIcon}>
-            <ChevronRightIcon size={24} />
-          </span>
+const PackageItemRaw = (
+  { t, hover, setHover, crowdfundingName, name, title, price, onClick, href },
+  ref
+) => {
+  const [colorScheme] = useColorContext()
+  return (
+    <a
+      {...merge(styles.package, hover === name && styles.packageHighlighted)}
+      {...colorScheme.set('color', 'text')}
+      {...colorScheme.set('borderTopColor', 'divider')}
+      {...colorScheme.set('borderBottomColor', 'divider')}
+      {...(hover === name && colorScheme.set('background', 'alert'))}
+      onMouseOver={() => setHover(name)}
+      onFocus={() => setHover(name)}
+      onMouseOut={() => setHover(undefined)}
+      onBlur={() => setHover(undefined)}
+      onClick={onClick}
+      href={href}
+      ref={ref}
+    >
+      <div {...styles.packageHeader}>
+        <div {...styles.packageTitle}>
+          {title ||
+            t.first([
+              `package/${crowdfundingName}/${name}/title`,
+              `package/${name}/title`,
+            ])}
         </div>
-      </a>
-    )
-  },
-)
+        {!!price && (
+          <div
+            {...styles.packagePrice}
+            {...colorScheme.set('color', 'primary')}
+          >
+            {t.first([`package/${name}/price`, 'package/price'], {
+              formattedCHF: `CHF ${price / 100}`,
+            })}
+          </div>
+        )}
+        <span {...styles.packageIcon}>
+          <ChevronRightIcon size={24} />
+        </span>
+      </div>
+    </a>
+  )
+}
+export const PackageItem = forwardRef(PackageItemRaw)
 
 export const PackageBuffer = () => <div {...styles.buffer} />
 
@@ -212,7 +214,7 @@ class Accordion extends Component {
     const groups = nest()
       .key((d) => d.group)
       .entries(
-        packages.filter(filter ? (p) => filter.includes(p.name) : Boolean),
+        packages.filter(filter ? (p) => filter.includes(p.name) : Boolean)
       )
 
     if (group) {
@@ -221,8 +223,8 @@ class Accordion extends Component {
           ascending(+(a !== group), +(b !== group)) ||
           ascending(
             groups.findIndex((d) => d.key === a),
-            groups.findIndex((d) => d.key === b),
-          ),
+            groups.findIndex((d) => d.key === b)
+          )
       )
     }
 
@@ -244,7 +246,7 @@ class Accordion extends Component {
             let pkgItems = pkgs.map((pkg) => {
               let price = pkg.options.reduce(
                 (amount, option) => amount + option.price * option.minAmount,
-                0,
+                0
               )
               if (!price && pkg.name !== 'PROLONG') {
                 price =
@@ -252,15 +254,15 @@ class Accordion extends Component {
                     pkg.options
                       .filter(
                         (o) =>
-                          o.reward && o.reward.__typename === 'MembershipType',
+                          o.reward && o.reward.__typename === 'MembershipType'
                       )
                       .map(
                         (option) =>
                           option.price *
                           (option.minAmount ||
                             option.defaultAmount ||
-                            Math.min(1, option.maxAmount)),
-                      ),
+                            Math.min(1, option.maxAmount))
+                      )
                   ) || 0
               }
               return {
@@ -273,7 +275,7 @@ class Accordion extends Component {
 
             if (group === 'ME') {
               const benefactorIndex = pkgItems.findIndex(
-                (item) => item.name === 'BENEFACTOR',
+                (item) => item.name === 'BENEFACTOR'
               )
               // TMP Marketing Trial for Students
               if (benefactorIndex !== -1) {

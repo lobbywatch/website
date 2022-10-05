@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { css, merge } from 'glamor'
 
 import { fontFamilies, RawHtml, useColorContext } from '@project-r/styleguide'
@@ -11,6 +11,8 @@ const styles = {
     marginTop: -20,
     marginBottom: 20,
     position: 'relative',
+    borderRadius: 4,
+    overflow: 'hidden',
   }),
   barInner: css({
     height: '100%',
@@ -82,26 +84,15 @@ const widthForGoal = (goal, status, accessor) => {
   )
 }
 
-const GoalBar = ({ status, goals, accessor, format, showLast, color }) => {
+const GoalBar = ({ status, goals, accessor, format, showLast }) => {
   const [colorScheme] = useColorContext()
-  const [hover, setHover] = useState(undefined)
-  const [goal, setGoal] = useState(undefined)
-  const [uniqueGoals, setUniqueGoals] = useState([])
 
-  useEffect(() => {
-    setGoal(goals[goals.length - 1])
-    setUniqueGoals(
-      goals
-        .filter(
-          (d, i) => i === goals.findIndex((g) => g[accessor] === d[accessor]),
-        )
-        .reverse(),
-    )
-  }, goals)
+  const goal = goals[goals.length - 1]
+  const uniqueGoals = goals
+    .filter((d, i) => i === goals.findIndex((g) => g[accessor] === d[accessor]))
+    .reverse()
 
-  useEffect(() => {
-    setHover(showLast ? uniqueGoals[0] : undefined)
-  }, uniqueGoals)
+  const [hover, setHover] = useState(showLast ? uniqueGoals[0] : undefined)
 
   if (!goal) return null
 
@@ -127,7 +118,7 @@ const GoalBar = ({ status, goals, accessor, format, showLast, color }) => {
             {...merge(
               styles.goal,
               i === 0 && styles.currentGoal,
-              i > 0 && status[accessor] < goal[accessor] && styles.lowerGoal,
+              i > 0 && status[accessor] < goal[accessor] && styles.lowerGoal
             )}
             {...colorScheme.set('borderRightColor', 'default')}
             style={{
@@ -139,7 +130,9 @@ const GoalBar = ({ status, goals, accessor, format, showLast, color }) => {
             }}
             onTouchEnd={() => setHover(undefined)}
             onMouseOver={() => setHover(uniqueGoal)}
+            onFocus={() => setHover(uniqueGoal)}
             onMouseOut={() => setHover(undefined)}
+            onBlur={() => setHover(undefined)}
           >
             {uniqueGoal === hover && (
               <div {...styles.noInteraction}>
