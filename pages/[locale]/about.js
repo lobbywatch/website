@@ -12,7 +12,7 @@ import Card from 'src/components/Card'
 import Grid, { GridItem } from 'src/components/Grid'
 import { H2, H3, P, StyledLink } from 'src/components/Styled'
 
-import { createGetStaticProps } from 'lib/apolloClientSchemaLink'
+import { createGetStaticProps } from 'lib/createGetStaticProps'
 import { locales } from '../../constants'
 import { PurposeList, PurposeItem } from 'src/components/Purpose'
 import { itemPath, typeSegments } from 'src/utils/routes'

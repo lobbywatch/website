@@ -11,7 +11,7 @@ import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
 import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
 
-import { createGetStaticProps } from 'lib/apolloClientSchemaLink'
+import { createGetStaticProps } from 'lib/createGetStaticProps'
 
 const parliamentarianQuery = gql`
   query getParliamentarian($locale: Locale!, $id: ID!) {

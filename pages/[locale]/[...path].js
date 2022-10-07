@@ -10,7 +10,7 @@ import RawHtml from 'src/components/RawHtml'
 import Cover, { NARROW_WIDTH } from 'src/components/Cover'
 import { H1, Meta } from 'src/components/Styled'
 
-import { createGetStaticProps } from 'lib/apolloClientSchemaLink'
+import { createGetStaticProps } from 'lib/createGetStaticProps'
 
 const pageQuery = gql`
   query page($locale: Locale!, $path: [String!]!) {

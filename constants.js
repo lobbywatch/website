@@ -22,14 +22,7 @@ const PUBLIC_BASE_URL =
 exports.PUBLIC_BASE_URL = PUBLIC_BASE_URL
 exports.CDN_FRONTEND_BASE_URL = PUBLIC_BASE_URL
 
-const location = typeof window !== 'undefined' && window.location
-exports.GRAPHQL_URI = location
-  ? `${location.protocol}//${location.hostname}${
-      location.port ? `:${location.port}` : ''
-    }/graphql`
-  : NEXT_PUBLIC_VERCEL_URL
-  ? `${PUBLIC_BASE_URL}/graphql` // on vercel there is no local http server, we need to go via public url
-  : `http://127.0.0.1:${SERVER_PORT}/graphql` // for fast access on heroku and for localhost
+exports.GRAPHQL_URL = process.env.NEXT_PUBLIC_GRAPHQL_URL
 
 exports.GA_TRACKING_ID = NEXT_PUBLIC_GA_TRACKING_ID
 

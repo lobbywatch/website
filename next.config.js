@@ -1,4 +1,4 @@
-const { localeSegment } = require('./constants')
+const { GRAPHQL_URL, localeSegment } = require('./constants')
 
 module.exports = {
   eslint: {
@@ -28,7 +28,7 @@ module.exports = {
       },
       {
         source: '/graphql',
-        destination: '/api/graphql',
+        destination: GRAPHQL_URL,
       },
     ]
   },
@@ -46,7 +46,7 @@ module.exports = {
       },
       {
         source: '/graphiql',
-        destination: '/graphql',
+        destination: GRAPHQL_URL.replace('/graphql', '/graphiql'),
         permanent: false,
       },
     ]

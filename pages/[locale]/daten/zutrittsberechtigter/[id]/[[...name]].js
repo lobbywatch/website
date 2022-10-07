@@ -12,7 +12,7 @@ import { Meta, A } from 'src/components/Styled'
 import { itemPath } from 'src/utils/routes'
 import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
 
-import { createGetStaticProps } from 'lib/apolloClientSchemaLink'
+import { createGetStaticProps } from 'lib/createGetStaticProps'
 
 const guestQuery = gql`
   query getGuest($locale: Locale!, $id: ID!) {
