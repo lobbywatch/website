@@ -15,10 +15,17 @@ export default class MyDocument extends Document {
     return {
       ...page,
       ...styles,
+      env: require('../constants'),
       locale: getSafeLocale(locale),
     }
   }
-
+  constructor(props) {
+    super(props)
+    const { __NEXT_DATA__, env } = props
+    if (env) {
+      __NEXT_DATA__.env = this.props.env
+    }
+  }
   render() {
     const { css, locale } = this.props
     const motivationComment = `/*
