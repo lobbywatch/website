@@ -82,7 +82,7 @@ const Page = () => {
   const packages = [
     {
       name: 'MEMBERSHIP',
-      title: 'Für ein Jahr',
+      title: 'Für mindestens ein Jahr',
       price: 5000,
     },
     {
@@ -127,32 +127,40 @@ const Page = () => {
           title: 'Werden Sie Mitglied:',
         }}
       >
-        <Lead>
-          Willkommen zum Crowdfunding für die nächste Legislatur von Lobbywatch
-        </Lead>
+        <Lead>Transparenz ist nicht gratis – Lobbywatch braucht Sie!</Lead>
 
         <P>
-          In genau einem Jahr sind Wahlen – und die Lobbys stehen bereits
-          Schlange. Mit den neuen Mitgliedern im National- und Ständerat werden
-          wiederum unzählige Organisationen, Verbände und Unternehmen ins
-          Bundeshaus drängen und dort versuchen, ihre Interessen durchzusetzen.
+          In einem Jahr sind Wahlen – und die Lobbys stehen längst in den
+          Startlöchern. Auf Lobbywatch wartet sehr viel Arbeit. Darauf müssen
+          wir uns vorbereiten!
         </P>
         <P>
-          Darauf müssen wir vorbereitet sein, denn die Schweizer Politik muss
-          transparenter werden. Die Stimmbürger:innen haben ein Recht zu wissen,
-          wer sich im Bundeshaus für wen einsetzt. Dazu brauchen wir
-          Unterstützerinnen und Unterstützer. Werden Sie Mitglied bei Lobbywatch
-          und helfen Sie mit, fragwürdige Mandate und Interessenkonflikte
-          aufzudecken und in Bundesbern für gleich lange Spiesse zu sorgen.
+          Bis heute leistet das Lobbywatch-Team unzählige Stunden Gratisarbeit,
+          um als einzige Plattform in der Schweiz den Lobbyismus systematisch zu
+          dokumentieren. Doch die Recherchen, die Infrastruktur und unsere
+          Geschäftsstelle kosten. Bisher konnten wir dank der Hilfe von rund 200
+          Mitgliedern, einigen Gönner:innen und einzelnen Stiftungen über Wasser
+          halten.
+        </P>
+        <P>
+          Aber wenn wir jetzt nichts unternehmen, können wir unser Engagement
+          für die Zivilgesellschaft spätestens in einem Jahr nicht mehr
+          weiterführen. Dann geht uns das Geld aus.
         </P>
         <P>
           <Label style={{ backgroundColor: 'yellow' }}>
-            [Wird nur angezeigt bis wird das initiale Ziel erreichen]
+            [Dieser Paragraph wird nur angezeigt bis wird das initiale Ziel
+            erreichen]
           </Label>
           <br />
-          Konkret brauchen wir mindestens 1000 Mitglieder, um die
-          Geschäftsstelle und die Recherche in der nächsten Legislatur 2023 bis
-          2027 vorzuführen.
+          Wir brauchen 1000 Mitglieder. Mindestens. Nur so können wir unsere
+          Recherchen und die Geschäftsstelle in den nächsten Jahren
+          aufrechterhalten und den nötigen Ausbau realisieren.
+        </P>
+        <P>
+          Werden Sie Mitglied bei Lobbywatch und helfen Sie mit, fragwürdige
+          Mandate und Interessenkonflikte aufzudecken und in Bundesbern für
+          gleich lange Spiesse zu sorgen.
         </P>
         {mobilePledgeLink}
 
@@ -169,15 +177,17 @@ const Page = () => {
               [Erscheint erst wenn 1000 erreicht wird]
             </Label>
             <br />
-            Damit wir Lobbywatch weiter betreiben können haben wir 1000
+            Damit wir Lobbywatch weiter betreiben können, haben wir 1000
             Mitglieder gesucht. Dieses Ziel haben wir zusammen mit Ihnen am
-            ersten Tag des Crowdfundings erreicht. Herzlichen Dank! Lobbywatch
-            will wachsen – deshalb sammeln wir weiter!
+            ersten Tag des Crowdfundings erreicht. Herzlichen Dank!
+          </Interaction.P>
+          <Interaction.P {...styles.stretchP} style={{ marginBottom: 10 }}>
+            Lobbywatch will wachsen – deshalb sammeln wir weiter!
           </Interaction.P>
           <List>
             <List.Item>
-              <Highlight>1500 Mitglieder:</Highlight> Wir professionalisieren
-              unsere Redaktion und liefern Ihnen mindestens monatlich ein
+              <Highlight>1500 Mitglieder:</Highlight> Wir schaffen eine bezahlte
+              Redaktionsstelle und liefern Ihnen mindestens monatlich ein
               Briefing aus der Lobbying-Welt: Neue Mandate, wichtige Recherchen
               und Tips aus der Redaktion.
             </List.Item>
@@ -187,12 +197,10 @@ const Page = () => {
               direkt bei uns sehen, wer mit welchem Mandat wie abgestimmt hat.
             </List.Item>
             <List.Item>
-              <Highlight>3000 Mitglieder:</Highlight> Wir berichten aus den
-              Sessionen und ordnen das Abstimmungsverhalten aus dem Blickwinkel
-              Transparenz und Lobbyismus ein. (Alternative: Wir bauen die
-              Redaktion weiter aus und berichten aus allen Sessionen und ordnen
-              das Abstimmungsverhalten systematisch aus dem Blickwinkel
-              Transparenz und Lobbyismus ein.)
+              <Highlight>3000 Mitglieder:</Highlight> Wir bauen die Redaktion
+              weiter aus und berichten aus den Sessionen und ordnen das
+              Abstimmungsverhalten systematisch aus dem Blickwinkel Transparenz
+              und Lobbyismus ein.
             </List.Item>
           </List>
         </div>
@@ -201,13 +209,20 @@ const Page = () => {
         <H1>Was ist Lobbywatch</H1>
         <P>
           Lobbywatch ist die zentrale journalistische Auskunftsplattform für
-          Lobbymandate / Interessenbindungen von eidgenössischen
-          Politiker:innen. In unserer Datenbank führen wir mittlerweile über 40
-          000 (???) Datensätze zu Ratsmitgliedern und ihren Verbindungen zu
-          Verbänden, Organisationen und Unternehmen. Zudem dokumentieren wir,
-          welche Parlamentarier:innen durch die ihnen zur Verfügung stehenden
+          Interessenbindungen von eidgenössischen Politiker:innen. Auf unserer
+          Website können interessierte Bürger:innen und Medienschaffende deshalb
+          jederzeit und gratis nachsehen, welche Parlamentarier:innen in Bern
+          welche Tätigkeiten ausüben und wessen Interessen sie vertreten. Mit
+          Datenanalysen und Blogbeiträgen greifen wir zudem aktuelle Themen aus
+          der eidgenössischen Politik auf.
+        </P>
+        <P>
+          In unserer Datenbank führen wir mittlerweile über 40 000 (???)
+          Datensätze zu Ratsmitgliedern und ihren Verbindungen zu Verbänden,
+          Organisationen und Unternehmen. Zudem dokumentieren wir, welche
+          Parlamentarier:innen durch die ihnen zur Verfügung stehenden
           Zutrittsausweise welchen Lobbyist:innen den Zutritt zum Bundeshaus
-          ermöglichen und für wen diese Lobbyist:innen tätig sind.
+          ermöglichen und für wen diese tätig sind.
         </P>
         <P>
           Diese Informationen werden von jungen Medienschaffenden im Auftrag von
@@ -215,17 +230,10 @@ const Page = () => {
           Applikationen ständig aktuell gehalten.
         </P>
         <P>
-          Auf unserer Website können interessierte Bürger:innen und
-          Medienschaffende deshalb jederzeit und gratis nachsehen, welche
-          Parlamentarier:innen in Bern wessen Interessen vertreten. Mit
-          Datenanalysen und Blogbeiträgen greifen wir zudem aktuelle Themen aus
-          der eidgenössischen Politik auf.
-        </P>
-        <P>
           Mit Ausnahme der Rechercheur:innen und der Geschäftsstelle arbeiten
           bei Lobbywatch alle ehrenamtlich. Unser Verein ist als gemeinnützig
-          anerkannt. Spenden und Mitgliederbeiträge können deshalb von den
-          Steuern abgezogen werden.
+          anerkannt und steuerbefreit. Spenden und Mitgliederbeiträge können
+          deshalb von den Steuern abgezogen werden.
         </P>
         {mobilePledgeLink}
         <H1>Warum Transparenz wichtig ist</H1>
@@ -272,33 +280,32 @@ const Page = () => {
         </P>
         {mobilePledgeLink}
 
-        <H1>Sei dabei</H1>
+        <H1>Seien Sie dabei</H1>
         <P>
           Mitglied bei Lobbywatch zu werden bedeutet, sich für mehr Transparenz
-          in der Politik einzusetzen – aber auch von Vorteilen und
-          Exklusivitäten zu profitieren.
+          in der Politik einzusetzen – aber auch von Vorteilen und exklusiven
+          Informationen zu profitieren.
         </P>
 
         <Editorial.OL>
           <Editorial.LI>
-            Als Mitglied erhalten Sie exklusive Newsletter mit den neuesten
-            Einträgen aus unserer Datenbank und unseren Kommentaren.
+            Als Mitglied erhalten Sie unseren Newsletter mit unseren neusten
+            Recherchen und Datenanalysen zum Lobbying in Bundesbern.
           </Editorial.LI>
           <Editorial.LI>
-            Asserdem erhalten Sie einen jährlichen Bericht über den Stand
-            unserer Aktivitäten und können an unseren Hauptversammlungen
-            teilnehmen, um an den Entscheidungen über unsere langfristigen Ziele
-            teilzuhaben.
+            Sie bestimmen mit – nicht im Bundeshaus, aber an unserer
+            Mitgliederversammlung: über unsere Finanzen und darüber, welchen
+            Themen wir uns widmen sollen.
           </Editorial.LI>
           <Editorial.LI>
-            Mitglied zu sein bedeutet auch, das Team bei unseren Lobby Walks in
-            Bern während der Parlamentssitzungen kennenzulernen – um die neusten
-            Lobbying-News frisch aus der Bundespolitik zu haben.
+            Mitglied zu sein bedeutet auch, bei Lobbyspaziergängen in Bern und
+            weiteren Anlässen direkt mit dem Team von Lobbywatch in Kontakt zu
+            kommen – um die neusten Lobbying-News aus der Bundespolitik zu
+            erhalten.
           </Editorial.LI>
           <Editorial.LI>
-            Schließlich ist unser Verein als gemeinnützig anerkannt und Ihre
-            Spenden und Zuwendungen können daher von der Steuer abgesetzt
-            werden.
+            Unser Verein ist als gemeinnützig anerkannt. Sie können Ihre Spenden
+            und Zuwendungen daher von den Steuern abziehen.
           </Editorial.LI>
         </Editorial.OL>
 
@@ -343,7 +350,9 @@ const Page = () => {
         <P>
           So weit unser Versprechen. Jetzt ist es Zeit für Ihre Entscheidung.
         </P>
-        <P>Willkommen an Bord!</P>
+        <P>
+          <strong>Willkommen an Bord!</strong>
+        </P>
         <br />
         <Link href={PLEDGE_PATH} key='pledge' passHref>
           <Button primary style={{ minWidth: 300 }}>
