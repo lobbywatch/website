@@ -91,7 +91,7 @@ const styles = {
   }),
   progress: css({
     position: 'absolute',
-    backgroundColor: colors.primary,
+    backgroundColor: colors.light.primary,
     bottom: -PROGRESS_HEIGHT,
     left: 0,
     height: PROGRESS_HEIGHT,
