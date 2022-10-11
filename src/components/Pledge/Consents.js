@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { ascending } from 'd3-array'
 import { Checkbox, RawHtml, shouldIgnoreClick } from '@project-r/styleguide'
 
-import withT from '../../lib/withT'
+import { withT } from 'src/components/Message'
 import LegalOverlay, { SUPPORTED_HREFS } from './LegalOverlay'
 
 const stringifyCombo = (combo = []) =>

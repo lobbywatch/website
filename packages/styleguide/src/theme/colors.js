@@ -47,9 +47,9 @@ const colors = {
     primaryHover: '#004C88',
     text: '#000',
     textInverted: '#fff',
-    textSoft: '#666',
+    textSoft: '#999',
     textSoftInverted: '#A9A9A9',
-    disabled: '#f2f2f2',
+    disabled: '#ddd',
     overlayShadow: '0 0 15px rgba(0,0,0,0.1)',
     fadeOutGradientDefault:
       'linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0) 100%)',

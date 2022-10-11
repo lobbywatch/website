@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 
-import FieldSet from '../FieldSet'
+import { FieldSet } from '@project-r/styleguide'
 
 const getValues = (fields, defaultValues) =>
   fields.reduce((acumulator, { name }) => {

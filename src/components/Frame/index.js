@@ -53,6 +53,7 @@ const Frame = ({
   children,
   Header = DefaultHeader,
   footerProps,
+  focusMode = false
 }) => {
   const {
     asPath,
@@ -129,6 +130,7 @@ const Frame = ({
               locale={currentLocale}
               menuItems={menuItems}
               localeLinks={localeLinks}
+              focusMode={focusMode}
             />
             {t('banner/text', undefined, false) && (
               <div {...promoContainerStyle}>
@@ -146,7 +148,7 @@ const Frame = ({
           </header>
           {children}
         </div>
-        <Footer {...footerProps} locale={currentLocale} />
+        <Footer {...footerProps} focusMode={focusMode} locale={currentLocale} />
       </div>
     </SearchContext.Provider>
   )

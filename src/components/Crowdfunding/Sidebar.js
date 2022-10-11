@@ -10,7 +10,7 @@ import { css } from 'glamor'
 import { SIDEBAR_WIDTH } from './constants'
 
 import { Button, A, mediaQueries } from '@project-r/styleguide'
-import { PLEDGE_PATH } from '../../../constants'
+import { PLEDGE_PATH } from 'src/constants'
 
 export const minWindowHeight = 400
 
@@ -52,7 +52,8 @@ const styles = {
 }
 
 const SidebarInner = (props) => {
-  const { t, crowdfunding, title, links, packages, primaryQuery } = props
+  const { t, locale, crowdfunding, title, links, packages, primaryQuery } =
+    props
 
   const [hover, setHover] = useState()
 
@@ -65,7 +66,7 @@ const SidebarInner = (props) => {
             key={pack.name}
             href={{
               pathname: PLEDGE_PATH,
-              query: { ...pack.params, package: pack.name },
+              query: { ...pack.params, package: pack.name, locale },
             }}
             passHref
           >
@@ -85,7 +86,7 @@ const SidebarInner = (props) => {
           <Link
             href={{
               pathname: PLEDGE_PATH,
-              query: primaryQuery,
+              query: { ...primaryQuery, locale },
             }}
             passHref
           >
@@ -182,6 +183,7 @@ class Sidebar extends Component {
     const {
       sticky,
       t,
+      locale,
       crowdfunding = {
         // mock pending backend
         id: '2fd24f48-979f-42c7-abd6-43bdc33dea4a',
@@ -206,7 +208,6 @@ class Sidebar extends Component {
       links,
       packages,
       statusProps,
-      inNativeIOSApp,
     } = this.props
 
     const onChange = (state) => this.setState(() => state)
@@ -225,42 +226,40 @@ class Sidebar extends Component {
           {...statusProps}
         />
 
-        {!inNativeIOSApp && (
-          <>
-            <div
-              ref={this.innerRef}
-              style={{
-                visibility: sticky.sidebar ? 'hidden' : 'visible',
-              }}
-            >
+          <div
+            ref={this.innerRef}
+            style={{
+              visibility: sticky.sidebar ? 'hidden' : 'visible',
+            }}
+          >
+            <SidebarInner
+              title={title}
+              links={links}
+              packages={packages}
+              primaryQuery={primaryQuery}
+              t={t}
+              locale={locale}
+              crowdfunding={crowdfunding}
+              onChange={onChange}
+              state={this.state}
+            />
+          </div>
+
+          {!!sticky.sidebar && (
+            <div {...styles.sticky} style={{ right: right }}>
               <SidebarInner
                 title={title}
                 links={links}
                 packages={packages}
                 primaryQuery={primaryQuery}
                 t={t}
+                locale={locale}
                 crowdfunding={crowdfunding}
                 onChange={onChange}
                 state={this.state}
               />
             </div>
-
-            {!!sticky.sidebar && (
-              <div {...styles.sticky} style={{ right: right }}>
-                <SidebarInner
-                  title={title}
-                  links={links}
-                  packages={packages}
-                  primaryQuery={primaryQuery}
-                  t={t}
-                  crowdfunding={crowdfunding}
-                  onChange={onChange}
-                  state={this.state}
-                />
-              </div>
-            )}
-          </>
-        )}
+          )}
       </div>
     )
   }

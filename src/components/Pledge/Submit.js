@@ -9,19 +9,16 @@ import Link from 'next/link'
 import SignIn, { withSignIn } from '../Auth/SignIn'
 import { withSignOut } from '../Auth/SignOut'
 
-import { errorToString } from '../../lib/utils/errors'
-import withT from '../../lib/withT'
-import withMe from '../../lib/apollo/withMe'
-import { chfFormat } from '../../lib/utils/format'
-import track from '../../lib/matomo'
-import { getConversionPayload } from '../../lib/utils/track'
+// import track from '../../lib/matomo'
+import { withT } from 'src/components/Message'
+import withMe from 'src/components/Auth/withMe'
+
+import { chfFormat } from 'src/utils/formats'
 
 import { gotoMerci, encodeSignInResponseQuery } from './Merci'
 
 import { COUNTRIES, fields as getAddressFields } from '../Account/AddressForm'
 import { query as addressQuery } from '../Account/enhancers'
-
-import FieldSet from '../FieldSet'
 
 import {
   Interaction,
@@ -30,6 +27,8 @@ import {
   InlineSpinner,
   Label,
   A,
+  errorToString,
+  FieldSet,
 } from '@project-r/styleguide'
 
 import PaymentForm from '../Payment/Form'
@@ -50,7 +49,9 @@ import usePaymentRequest, {
 import { getPayerInformationFromEvent } from '../Payment/PaymentRequest/PaymentRequestEventHelper'
 import { css } from 'glamor'
 
-import { PLEDGE_PATH } from 'constants'
+import { PLEDGE_PATH } from 'src/constants'
+import { withRouter } from 'next/router'
+import { getSafeLocale } from '../../../constants'
 
 const { P } = Interaction
 
@@ -77,8 +78,7 @@ const simpleHash = (object, delimiter = '|') => {
     .join(delimiter)
 }
 
-const getRequiredConsents = ({ requiresStatutes }) =>
-  ['PRIVACY', 'TOS', requiresStatutes && 'STATUTE'].filter(Boolean)
+const getRequiredConsents = () => ['PRIVACY'].filter(Boolean)
 
 const getContactFields = (t) => [
   {
@@ -378,7 +378,7 @@ class Submit extends Component {
     return this.props
       .submit({
         ...variables,
-        payload: getConversionPayload(query),
+        payload: query,
         consents: getRequiredConsents(this.props),
       })
       .then(({ data }) => {
@@ -489,7 +489,7 @@ class Submit extends Component {
   }
 
   pay(data) {
-    const { t, me, customMe, packageName, contactState } = this.props
+    const { t, router, me, customMe, packageName, contactState } = this.props
 
     const email = customMe ? customMe.email : contactState.values.email
     this.setState(() => ({
@@ -504,6 +504,7 @@ class Submit extends Component {
         const baseQuery = {
           package: packageName,
           id: payPledge.pledgeId,
+          locale: getSafeLocale(router.query.locale),
         }
         if (customMe && customMe.isListed) {
           baseQuery.statement = customMe.id
@@ -1200,32 +1201,32 @@ export const withPay = (Component) => {
             }
             await Promise.all(
               [
-                pendingOrder &&
-                  new Promise((resolve) => {
-                    pendingOrder.options.forEach((option) => {
-                      track([
-                        'addEcommerceItem',
-                        option.templateId, // (required) SKU: Product unique identifier
-                        undefined, // (optional) Product name
-                        undefined, // (optional) Product category
-                        option.price / 100, // (recommended) Product price
-                        option.amount, // (optional, default to 1) Product quantity
-                      ])
-                    })
-                    track([
-                      'trackEcommerceOrder',
-                      payPledge.pledgeId, // (required) Unique Order ID
-                      pendingOrder.total / 100, // (required) Order Revenue grand total (includes tax, shipping, and subtracted discount)
-                      undefined, // (optional) Order sub total (excludes shipping)
-                      undefined, // (optional) Tax amount
-                      undefined, // (optional) Shipping amount
-                      !!pendingOrder.reason, // (optional) Discount offered (set to false for unspecified parameter)
-                    ])
-                    // give matomo half a second to track
-                    setTimeout(() => {
-                      resolve()
-                    }, 500)
-                  }),
+                // pendingOrder &&
+                //   new Promise((resolve) => {
+                //     pendingOrder.options.forEach((option) => {
+                //       track([
+                //         'addEcommerceItem',
+                //         option.templateId, // (required) SKU: Product unique identifier
+                //         undefined, // (optional) Product name
+                //         undefined, // (optional) Product category
+                //         option.price / 100, // (recommended) Product price
+                //         option.amount, // (optional, default to 1) Product quantity
+                //       ])
+                //     })
+                //     track([
+                //       'trackEcommerceOrder',
+                //       payPledge.pledgeId, // (required) Unique Order ID
+                //       pendingOrder.total / 100, // (required) Order Revenue grand total (includes tax, shipping, and subtracted discount)
+                //       undefined, // (optional) Order sub total (excludes shipping)
+                //       undefined, // (optional) Tax amount
+                //       undefined, // (optional) Shipping amount
+                //       !!pendingOrder.reason, // (optional) Discount offered (set to false for unspecified parameter)
+                //     ])
+                //     // give matomo half a second to track
+                //     setTimeout(() => {
+                //       resolve()
+                //     }, 500)
+                //   }),
                 payPledge.stripePaymentIntentId && syncPaymentIntent(payPledge),
               ].filter(Boolean)
             )
@@ -1254,7 +1255,8 @@ const SubmitWithMutations = compose(
   withSignOut,
   withPay,
   withMe,
-  withT
+  withT,
+  withRouter
 )(SubmitWithHooks)
 
 export default SubmitWithMutations

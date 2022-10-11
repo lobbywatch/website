@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
+import { intersperse } from '../../lib/utils/helpers'
+
 import { WHITE, BLACK, GREY_DARK, POTENCY_COLORS } from '../../theme'
 import GuestIcon from '../../assets/Guest'
 import ContextBox, { ContextBoxValue } from '../ContextBox'
 import { metaRule } from '../Styled'
 import Legend from './Legend'
 import Message, { withT } from '../Message'
-import { shallowEqual, intersperse } from '../../utils/helpers'
-import { chfFormat } from '../../utils/formats'
+import { shallowEqual } from '../../utils/helpers'
+import { chfFormat } from 'src/utils/formats'
 import { itemPath, shouldIgnoreClick } from '../../utils/routes'
 import { withRouter } from 'next/router'
 import layout, { START_Y } from './layout'

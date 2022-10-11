@@ -1,7 +1,6 @@
 import { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { css } from 'glamor'
-import AutosizeInput from 'react-textarea-autosize'
 import { nest } from 'd3-collection'
 import { sum, min } from 'd3-array'
 import { timeDay } from 'd3-time'
@@ -9,12 +8,11 @@ import compose from 'lodash/flowRight'
 import omit from 'lodash/omit'
 import { withRouter } from 'next/router'
 import { format } from 'url'
+import { timeFormat } from '@project-r/styleguide'
+
 import GoodieOptions from './PledgeOptions/GoodieOptions'
-
-import withT from '../../lib/withT'
-import { chfFormat, timeFormat } from '../../lib/utils/format'
-
-import FieldSet, { styles as fieldSetStyles } from '../FieldSet'
+import { withT } from 'src/components/Message'
+import { chfFormat } from 'src/utils/formats'
 
 import {
   A,
@@ -28,12 +26,13 @@ import {
   Editorial,
   RawHtml,
   shouldIgnoreClick,
+  FieldSet,
 } from '@project-r/styleguide'
 
 import ManageMembership from '../Account/Memberships/Manage'
 import Link from 'next/link'
 
-import { PLEDGE_PATH } from 'constants'
+import { PLEDGE_PATH } from 'src/constants'
 
 const dayFormat = timeFormat('%d. %B %Y')
 
@@ -326,6 +325,7 @@ class CustomizePackage extends Component {
       errors,
       dirty,
       onChange,
+      locale,
     } = this.props
 
     const { query } = router
@@ -533,10 +533,9 @@ class CustomizePackage extends Component {
           <Link
             href={{
               pathname: PLEDGE_PATH,
-              query:
-                pkg.group && pkg.group !== 'ME'
-                  ? { group: pkg.group }
-                  : undefined,
+              query: {
+                locale
+              }
             }}
             passHref
           >
@@ -969,13 +968,6 @@ class CustomizePackage extends Component {
                 ref={this.focusRefSetter}
                 error={dirty.reason && errors.reason}
                 value={values.reason}
-                renderInput={({ ref, ...inputProps }) => (
-                  <AutosizeInput
-                    {...inputProps}
-                    {...fieldSetStyles.autoSize}
-                    inputRef={ref}
-                  />
-                )}
                 onChange={(_, value, shouldValidate) => {
                   onChange(
                     FieldSet.utils.fieldsState({
@@ -1076,126 +1068,6 @@ class CustomizePackage extends Component {
                       </Interaction.Emphasis>
                     </div>
                   )}
-                </Fragment>
-              )}
-              {pkg.name === 'ABO_GIVE_MONTHS' && (
-                <Fragment>
-                  <Interaction.Emphasis>
-                    {t.first([
-                      `package/customize/price/payMore/${pkg.name}`,
-                      'package/customize/price/payMore',
-                    ])}
-                  </Interaction.Emphasis>
-                  <ul {...styles.ul}>
-                    <li>
-                      <Editorial.A
-                        href={format({
-                          pathname: PLEDGE_PATH,
-                          query: { package: 'ABO_GIVE' },
-                        })}
-                        onClick={(e) => {
-                          if (shouldIgnoreClick(e)) {
-                            return
-                          }
-                          e.preventDefault()
-
-                          const aboGive = this.props.packages.find(
-                            (p) => p.name === 'ABO_GIVE'
-                          )
-                          if (aboGive) {
-                            const numMembershipMonths = pkg.options.find(
-                              (o) =>
-                                o.reward &&
-                                o.reward.__typename === 'MembershipType'
-                            )
-                            const numMembershipYears = aboGive.options.find(
-                              (o) =>
-                                o.reward &&
-                                o.reward.__typename === 'MembershipType'
-                            )
-                            if (numMembershipMonths && numMembershipYears) {
-                              onChange(
-                                FieldSet.utils.fieldsState({
-                                  field: getOptionFieldKey(numMembershipYears),
-                                  value: Math.min(
-                                    Math.max(
-                                      getOptionValue(
-                                        numMembershipMonths,
-                                        values
-                                      ),
-                                      numMembershipYears.minAmount
-                                    ),
-                                    numMembershipYears.maxAmount
-                                  ),
-                                  error: undefined,
-                                  dirty: true,
-                                })
-                              )
-                            }
-
-                            aboGive.options
-                              .filter(
-                                (o) =>
-                                  o.reward && o.reward.__typename === 'Goodie'
-                              )
-                              .forEach((oYears) => {
-                                const oMonths = pkg.options.find(
-                                  (d) =>
-                                    d.reward &&
-                                    d.reward.__typename ===
-                                      oYears.reward.__typename &&
-                                    d.reward.name === oYears.reward.name
-                                )
-                                if (!oMonths) {
-                                  return
-                                }
-                                onChange(
-                                  FieldSet.utils.fieldsState({
-                                    field: getOptionFieldKey(oYears),
-                                    value: Math.min(
-                                      Math.max(
-                                        getOptionValue(oMonths, values),
-                                        oYears.minAmount
-                                      ),
-                                      oYears.maxAmount
-                                    ),
-                                    error: undefined,
-                                    dirty: true,
-                                  })
-                                )
-                              })
-                          }
-
-                          router
-                            .push(
-                              {
-                                pathname: PLEDGE_PATH,
-                                query: { package: 'ABO_GIVE' },
-                              },
-                              undefined,
-                              { shallow: router.pathname === PLEDGE_PATH }
-                            )
-                            .then(() => {
-                              this.resetPrice()
-                            })
-                        }}
-                      >
-                        {t.pluralize(
-                          'package/customize/ABO_GIVE_MONTHS/years',
-                          {
-                            count: getOptionValue(
-                              pkg.options.find(
-                                (option) =>
-                                  option.reward &&
-                                  option.reward.__typename === 'MembershipType'
-                              ),
-                              values
-                            ),
-                          }
-                        )}
-                      </Editorial.A>
-                    </li>
-                  </ul>
                 </Fragment>
               )}
               {payingMoreThanRegular && (

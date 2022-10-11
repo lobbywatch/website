@@ -1,7 +1,7 @@
 import { ascending } from 'd3-array'
 import { PUBLIC_BASE_URL, PF_PSPID } from '../../lib/constants'
 
-import { PLEDGE_PATH } from 'constants'
+import { PLEDGE_PATH } from 'src/constants'
 
 export const getParams = ({ /* alias, */ userId, orderId, amount, sha }) => {
   const params = [

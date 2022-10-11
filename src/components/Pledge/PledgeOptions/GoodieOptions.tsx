@@ -1,7 +1,6 @@
 import { css } from 'glamor'
-import { Interaction } from '@project-r/styleguide'
+import { Interaction, FieldSet } from '@project-r/styleguide'
 import Goodie from './Goodie'
-import FieldSet from '../../FieldSet'
 
 type GoodieRewardType = {
   __typename: 'Goodie'

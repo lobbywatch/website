@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { css, merge } from 'glamor'
 import Link from 'next/link'
+import { intersperse } from '../../lib/utils/helpers'
 
 import { LW_BLUE, GREY_DARK, mediaM } from '../../theme'
-import { intersperse } from '../../utils/helpers'
 import { Clear } from '../Styled'
 
 const legendContainer = css({

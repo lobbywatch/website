@@ -28,7 +28,8 @@ import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import { useT } from 'src/components/Message'
 
-import { PLEDGE_PATH, getSafeLocale, PUBLIC_BASE_URL } from '../../constants'
+import { getSafeLocale, PUBLIC_BASE_URL } from '../../constants'
+import { PLEDGE_PATH } from 'src/constants'
 
 const styles = {
   mediaDiversity: css({
@@ -63,7 +64,10 @@ const Page = () => {
   const mobilePledgeLink = (
     <div {...styles.mobilePledgeLink}>
       <Interaction.P>
-        <Link href={PLEDGE_PATH} passHref>
+        <Link href={{
+          pathname: PLEDGE_PATH,
+          query: { locale }
+        }} passHref>
           <A>Jetzt mitmachen!</A>
         </Link>
       </Interaction.P>
@@ -74,19 +78,19 @@ const Page = () => {
     {
       href: {
         pathname: PLEDGE_PATH,
-        query: { package: 'WORKSHOP' },
+        query: { package: 'WORKSHOP', locale },
       },
       text: 'Etwas für Ihre ganze Crew? Lobbywatch-Workshop buchen.',
     },
   ]
   const packages = [
     {
-      name: 'MEMBERSHIP',
+      name: 'YEAR',
       title: 'Für mindestens ein Jahr',
       price: 5000,
     },
     {
-      name: 'MEMBERSHIP4',
+      name: 'LEGISLATION',
       title: 'Für die ganze Legislatur',
       price: 20000,
     },
@@ -125,6 +129,7 @@ const Page = () => {
           packages,
           crowdfundingName: 'LOBBYWATCH',
           title: 'Werden Sie Mitglied:',
+          locale,
         }}
       >
         <Lead>Transparenz ist nicht gratis – Lobbywatch braucht Sie!</Lead>
@@ -354,7 +359,14 @@ const Page = () => {
           <strong>Willkommen an Bord!</strong>
         </P>
         <br />
-        <Link href={PLEDGE_PATH} key='pledge' passHref>
+        <Link
+          href={{
+            pathname: PLEDGE_PATH,
+            query: { locale },
+          }}
+          key='pledge'
+          passHref
+        >
           <Button primary style={{ minWidth: 300 }}>
             Jetzt mitmachen!
           </Button>

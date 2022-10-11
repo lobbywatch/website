@@ -2,17 +2,17 @@ import { Component } from 'react'
 import compose from 'lodash/flowRight'
 import { format } from 'url'
 
-import withT from '../../lib/withT'
-import withMe from '../../lib/apollo/withMe'
+import { withT } from 'src/components/Message'
+import withMe from 'src/components/Auth/withMe'
 
 import Poller from '../Auth/Poller'
 import { withSignIn } from '../Auth/SignIn'
-import { WithAccess } from '../Auth/withMembership'
+// import { WithAccess } from '../Auth/withMembership'
 import ErrorMessage from '../ErrorMessage'
 
 import ClaimPledge from './Claim'
 
-import { EMAIL_CONTACT, ONBOARDING_PACKAGES } from '../../lib/constants'
+import { EMAIL_CONTACT } from 'src/constants'
 
 import {
   A,
@@ -26,6 +26,7 @@ import {
 import RawHtmlTranslation from '../RawHtmlTranslation'
 import { withRouter } from 'next/router'
 import Link from 'next/link'
+import { ACCOUNT_PATH } from '../../constants'
 
 const { P, H1 } = Interaction
 
@@ -36,7 +37,7 @@ export const gotoMerci = (query) => {
   //   possibly because id-less address type
   // - good reset if sign in / out status changed during purchasing / claiming
   window.location = format({
-    pathname: '/konto',
+    pathname: ACCOUNT_PATH.replace('[locale]', query.locale),
     query,
   })
 }
@@ -83,29 +84,6 @@ class Merci extends Component {
     }
   }
 
-  componentDidMount() {
-    this.maybeRelocateToOnboarding()
-  }
-
-  componentDidUpdate() {
-    this.maybeRelocateToOnboarding()
-  }
-
-  maybeRelocateToOnboarding() {
-    const { me, query, router } = this.props
-
-    if (me && ONBOARDING_PACKAGES.includes(query.package) && !query.claim) {
-      router.replace(
-        {
-          pathname: '/einrichten',
-          query: { context: 'pledge', package: query.package },
-        },
-        undefined,
-        { shallow: router.pathname === '/einrichten' },
-      )
-    }
-  }
-
   render() {
     const { me, t, query, children } = this.props
     const { polling, email, signInResponse, signInError, signInLoading } =
@@ -133,8 +111,8 @@ class Merci extends Component {
             {!!query.id && (
               <Link
                 href={{
-                  pathname: '/konto',
-                  query: { claim: query.id, package: query.package },
+                  pathname: ACCOUNT_PATH,
+                  query: { claim: query.id, package: query.package, locale: query.locale },
                 }}
                 passHref
               >
@@ -216,8 +194,8 @@ class Merci extends Component {
           </div>
           <Link
             href={{
-              pathname: '/konto',
-              query: { claim: query.id },
+              pathname: ACCOUNT_PATH,
+              query: { claim: query.id, locale: query.locale },
             }}
             passHref
           >
@@ -229,10 +207,6 @@ class Merci extends Component {
           </Link>
         </>
       )
-    }
-
-    if (me && ONBOARDING_PACKAGES.includes(query.package)) {
-      return <Loader loading />
     }
 
     const buttonStyle = { marginBottom: 10, marginRight: 10 }
@@ -261,22 +235,6 @@ class Merci extends Component {
             <Meta.Lead>{lead}</Meta.Lead>
           </div>
         ))}
-        <WithAccess
-          render={() => (
-            <>
-              <Link href='/' passHref>
-                <Button primary style={{ ...buttonStyle, marginTop: 10 }}>
-                  {t('merci/action/read')}
-                </Button>
-              </Link>
-              <Link href='/dialog' passHref>
-                <Button primary style={{ ...buttonStyle, marginTop: 10 }}>
-                  {t('merci/action/dialog')}
-                </Button>
-              </Link>
-            </>
-          )}
-        />
         <div style={{ marginTop: 50 }}>{children}</div>
       </>
     )

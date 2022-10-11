@@ -1,6 +1,6 @@
 import loadScript from 'load-script'
 
-import { STRIPE_PUBLISHABLE_KEY } from '../../lib/constants'
+import { STRIPE_PUBLISHABLE_KEY } from '../../../constants'
 
 let promise
 const loadStripeScript = () => {

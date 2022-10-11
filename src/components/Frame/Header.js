@@ -58,7 +58,7 @@ const searchBoxStyle = css({
   maxWidth: SEARCH_MAX_WIDTH,
 })
 
-const Header = ({ locale, menuItems, localeLinks, transparent }) => {
+const Header = ({ locale, menuItems, localeLinks, transparent, focusMode }) => {
   const [expanded, setExpanded] = useState(false)
 
   return (
@@ -84,13 +84,14 @@ const Header = ({ locale, menuItems, localeLinks, transparent }) => {
           onClick={() => setExpanded(!expanded)}
         />
       </div>
-      {!transparent && <div {...searchContainerStyle}>
+      {!transparent && !focusMode && <div {...searchContainerStyle}>
         <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
           <div {...searchBoxStyle}>
             <SearchField />
           </div>
         </Center>
       </div>}
+      {focusMode && <div style={{ height: HEADER_HEIGHT + 20 }}></div>}
     </>
   )
 }

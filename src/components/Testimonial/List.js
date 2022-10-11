@@ -6,7 +6,7 @@ import { css, merge } from 'glamor'
 import { max } from 'd3-array'
 
 import Meta from '../Frame/Meta'
-import withT from '../../lib/withT'
+import { withT } from 'src/components/Message'
 import Loader from '../Loader'
 
 import Detail from './Detail'

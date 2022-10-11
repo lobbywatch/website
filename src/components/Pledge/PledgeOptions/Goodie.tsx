@@ -7,7 +7,7 @@ import {
   useColorContext,
 } from '@project-r/styleguide'
 import { PledgeOptionType } from './GoodieOptions'
-import { CDN_FRONTEND_BASE_URL } from '../../../lib/constants'
+import { CDN_FRONTEND_BASE_URL } from '../../../../constants'
 
 type PledgeOptionComponentType = {
   option: PledgeOptionType

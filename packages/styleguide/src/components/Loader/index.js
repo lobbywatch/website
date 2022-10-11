@@ -46,6 +46,12 @@ const LoaderPropTypes = {
   ErrorContainer: PropTypes.elementType,
 }
 
+export const errorToString = (error) => {
+  return error.graphQLErrors && error.graphQLErrors.length
+    ? error.graphQLErrors.map((e) => e.message).join(', ')
+    : error.toString()
+}
+
 const Loader = ({
   style,
   message,
@@ -80,9 +86,7 @@ const Loader = ({
     return (
       <ErrorContainer>
         <P {...colorScheme.set('color', 'error')}>
-          {error.graphQLErrors && error.graphQLErrors.length
-            ? error.graphQLErrors.map((e) => e.message).join(', ')
-            : error.toString()}
+          {errorToString(error)}
         </P>
       </ErrorContainer>
     )

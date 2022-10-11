@@ -19,12 +19,10 @@ import { LockIcon } from '@project-r/styleguide'
 
 import { AutoForm as AddressForm, AddressView } from '../Account/AddressForm'
 
-import { PF_FORM_ACTION, PAYPAL_FORM_ACTION } from '../../lib/constants'
+// import { PF_FORM_ACTION, PAYPAL_FORM_ACTION } from '../../lib/constants'
 
-import { inNativeAppBrowser } from '../../lib/withInNativeApp'
-
-import * as postfinance from './postfinance'
-import * as paypal from './paypal'
+// import * as postfinance from './postfinance'
+// import * as paypal from './paypal'
 
 import * as PSPIcons from './PSPIcons'
 
@@ -73,17 +71,14 @@ const PAYMENT_METHODS = [
     },
   },
   {
-    disabled: inNativeAppBrowser,
     key: WalletPaymentMethod.APPLE_PAY,
     Icon: ApplePayMark,
   },
   {
-    disabled: inNativeAppBrowser,
     key: WalletPaymentMethod.GOOGLE_PAY,
     Icon: GooglePayMark,
   },
   {
-    disabled: inNativeAppBrowser,
     key: 'POSTFINANCECARD',
     bgColor: '#FCCC12',
     Icon: PSPIcons.Postcard,
@@ -93,7 +88,6 @@ const PAYMENT_METHODS = [
     key: 'PAYMENTSLIP',
   },
   {
-    disabled: inNativeAppBrowser,
     key: 'PAYPAL',
     Icon: PSPIcons.PayPal,
   },
@@ -538,7 +532,7 @@ class PaymentForm extends Component {
             />
           </>
         )}
-        {paymentMethodForm === 'POSTFINANCECARD' && (
+        {/* {paymentMethodForm === 'POSTFINANCECARD' && (
           <>
             {children}
             <form
@@ -564,8 +558,8 @@ class PaymentForm extends Component {
                 ))}
             </form>
           </>
-        )}
-        {paymentMethodForm === 'PAYPAL' && (
+        )} */}
+        {/* {paymentMethodForm === 'PAYPAL' && (
           <>
             {children}
             <form
@@ -588,7 +582,7 @@ class PaymentForm extends Component {
                 ))}
             </form>
           </>
-        )}
+        )} */}
         {requireShippingAddress && !paymentMethod?.startsWith('STRIPE-WALLET') && (
           <div style={{ marginBottom: 40 }}>
             <Label style={{ marginBottom: 10 }}>

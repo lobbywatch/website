@@ -1,7 +1,7 @@
 import { PUBLIC_BASE_URL, PAYPAL_BUSINESS } from '../../lib/constants'
 import { format } from 'd3-format'
 
-import { PLEDGE_PATH } from 'constants'
+import { PLEDGE_PATH } from 'src/constants'
 
 const amountFormat = format('.2f')
 

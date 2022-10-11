@@ -7,8 +7,9 @@ import { A, StyledLink, Clear, h1Rule, metaRule, TextCenter } from './Styled'
 import { withT } from './Message'
 import { ContextBoxValue } from './ContextBox'
 
+import { intersperse } from '@project-r/styleguide'
+
 import { numberFormat } from '../utils/formats'
-import { intersperse } from '../utils/helpers'
 import { itemPath } from '../utils/routes'
 import { GREY_LIGHT } from '../theme'
 import Icons from '../assets/TypeIcons'

@@ -5,7 +5,7 @@ import { css } from 'glamor'
 
 import Head from 'next/head'
 
-import withT from '../../lib/withT'
+import { withT } from 'src/components/Message'
 
 import Loader from '../Loader'
 

@@ -3,20 +3,21 @@ import compose from 'lodash/flowRight'
 import { graphql } from '@apollo/client/react/hoc'
 import { gql } from '@apollo/client'
 
-import withT from '../../lib/withT'
-import withMe from '../../lib/apollo/withMe'
+import { withT } from 'src/components/Message'
+import withMe from 'src/components/Auth/withMe'
 import Loader from '../Loader'
-import { errorToString } from '../../lib/utils/errors'
 
 import { withPay } from './Submit'
 import PledgeForm from './Form'
 import { gotoMerci, encodeSignInResponseQuery } from './Merci'
 
-import { EMAIL_PAYMENT } from '../../lib/constants'
+import { EMAIL_PAYMENT } from 'src/constants'
 
 import RawHtmlTranslation from '../RawHtmlTranslation'
 
-import { A } from '@project-r/styleguide'
+import { A, errorToString } from '@project-r/styleguide'
+import { withRouter } from 'next/router'
+import { getSafeLocale } from '../../../constants'
 
 // ToDo: query autoPay
 const pledgeQuery = gql`
@@ -250,14 +251,13 @@ class PledgeReceivePayment extends Component {
         pspPayload,
       })
       .then(() => {
-        if (!pledge || (!pledge.user && !me)) {
-          gotoMerci({
-            id: pledgeId,
-          })
-          return
-        }
         const baseQuery = {
           id: pledgeId,
+          locale: getSafeLocale(router.query.locale),
+        }
+        if (!pledge || (!pledge.user && !me)) {
+          gotoMerci(baseQuery)
+          return
         }
         if (pledge.package) {
           baseQuery.package = pledge.package.name
@@ -361,7 +361,8 @@ const PledgeReceivePaymentById = compose(
     },
   }),
   withPay,
-  withMe
+  withMe,
+  withRouter
 )(PledgeReceivePayment)
 
 export default PledgeReceivePaymentById

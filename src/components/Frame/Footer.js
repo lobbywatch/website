@@ -94,12 +94,13 @@ const Footer = ({
   error,
   links,
   locale,
+  focusMode,
   pledgeAd = true,
   Container = Center,
 }) => (
   <footer style={{ marginTop: 20, zIndex: 1 }}>
     <JsonLd data={{ '@context': 'http://schema.org/', '@type': 'WPFooter' }} />
-    {pledgeAd && (
+    {pledgeAd && !focusMode && (
       <Container>
         {/* ToDo: add pledge ad */}
         <Clear {...columnContainerStyle}>

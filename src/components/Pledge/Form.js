@@ -5,21 +5,22 @@ import { graphql } from '@apollo/client/react/hoc'
 import { gql } from '@apollo/client'
 import { withRouter } from 'next/router'
 
-import withT from '../../lib/withT'
-import withMe from '../../lib/apollo/withMe'
+import { withT } from 'src/components/Message'
+import withMe from 'src/components/Auth/withMe'
 import {
   CDN_FRONTEND_BASE_URL,
   ASSETS_SERVER_BASE_URL,
   PUBLIC_BASE_URL,
-} from '../../lib/constants'
+  getSafeLocale,
+} from '../../../constants'
 
-import Meta from '../Frame/Meta'
+import MetaTags from 'src/components/MetaTags'
+
 import Loader from '../Loader'
-import FieldSet from '../FieldSet'
 import SignIn from '../Auth/SignIn'
 import withMembership from '../Auth/withMembership'
 
-import { Interaction, A, RawHtml } from '@project-r/styleguide'
+import { Interaction, A, RawHtml, FieldSet } from '@project-r/styleguide'
 
 import Accordion from './Accordion'
 import Submit from './Submit'
@@ -30,6 +31,7 @@ import CustomizePackage, {
 import Link from 'next/link'
 
 import ErrorMessage from '../ErrorMessage'
+import { ACCOUNT_PATH } from '../../constants'
 
 const { H1, P } = Interaction
 
@@ -219,9 +221,6 @@ class Pledge extends Component {
       packageGroup: pkg ? pkg.group : undefined,
       packageName: pkg ? pkg.name : undefined,
       forceAutoPay: pkg ? pkg.name === 'MONTHLY_ABO' : undefined,
-      requiresStatutes: pkg
-        ? pkg.name !== 'MONTHLY_ABO' && pkg.name !== 'DONATE'
-        : undefined,
       paymentMethods: pkg ? pkg.paymentMethods : undefined,
       total: values.price || undefined,
       options,
@@ -287,6 +286,7 @@ class Pledge extends Component {
       query,
       packages,
     } = this.props
+    const locale = getSafeLocale(query.locale)
 
     const queryGroup = query.group
     const queryPackage = query.package && query.package.toUpperCase()
@@ -307,7 +307,10 @@ class Pledge extends Component {
       }`,
       {
         accountLink: (
-          <Link key='account' href='/konto' passHref>
+          <Link key='account' href={{
+            pathname: ACCOUNT_PATH,
+            query: { locale }
+          }} passHref>
             <A>{t(`pledge/form/instruction/${queryPackage}/accountText`)}</A>
           </Link>
         ),
@@ -343,7 +346,7 @@ class Pledge extends Component {
 
     return (
       <Fragment>
-        {!!meta && <Meta data={meta} />}
+        {!!meta && <MetaTags {...meta} />}
         <Loader
           loading={loading}
           error={error}
@@ -440,12 +443,14 @@ class Pledge extends Component {
                       onChange={(fields) => {
                         this.setState(FieldSet.utils.mergeFields(fields))
                       }}
+                      locale={locale}
                     />
                   ) : (
                     <Accordion
                       crowdfundingName={crowdfundingName}
                       packages={packages}
                       group={queryGroup}
+                      locale={locale}
                       extended
                     />
                   )}

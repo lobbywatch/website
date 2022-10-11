@@ -13,8 +13,8 @@ import {
 } from '@stripe/stripe-js'
 import { loadStripe } from '../stripe'
 import { makePaymentRequestOptions } from './PaymentRequestOption.helper'
-import { trackEvent } from '../../../lib/matomo'
-import { useTranslation } from '../../../lib/withT'
+// import { trackEvent } from '../../../lib/matomo'
+import { useT } from 'src/components/Message'
 
 export enum WalletPaymentMethod {
   APPLE_PAY = 'STRIPE-WALLET-APPLE-PAY',
@@ -77,7 +77,7 @@ function usePaymentRequest({
   const [lastOptions, setLastOptions] =
     useState<LeanPaymentRequestOptions>(null)
 
-  const { t } = useTranslation()
+  const t = useT()
 
   const initializePaymentRequest = useCallback(
     async (wallet: WalletPaymentMethod): Promise<void> => {
@@ -119,20 +119,20 @@ function usePaymentRequest({
             wallet: t(`account/pledges/payment/method/${wallet}`),
           }),
         )
-        trackEvent([
-          'payment-request',
-          `${initializationStage} ${failureCause}`,
-          wallet,
-          options.total.amount / 100,
-        ])
+        // trackEvent([
+        //   'payment-request',
+        //   `${initializationStage} ${failureCause}`,
+        //   wallet,
+        //   options.total.amount / 100,
+        // ])
       } else {
         setPaymentRequest(newPaymentRequest)
-        trackEvent([
-          'payment-request',
-          `${initializationStage} successful`,
-          wallet,
-          options.total.amount / 100,
-        ])
+        // trackEvent([
+        //   'payment-request',
+        //   `${initializationStage} successful`,
+        //   wallet,
+        //   options.total.amount / 100,
+        // ])
       }
       setLoading(false)
     },
@@ -151,21 +151,21 @@ function usePaymentRequest({
       handlePayment(ev)
         .then(() => {
           ev.complete('success')
-          trackEvent([
-            'payment-request',
-            'payment succeeded',
-            usedWallet,
-            options.total.amount / 100,
-          ])
+          // trackEvent([
+          //   'payment-request',
+          //   'payment succeeded',
+          //   usedWallet,
+          //   options.total.amount / 100,
+          // ])
         })
         .catch(() => {
           ev.complete('fail')
-          trackEvent([
-            'payment-request',
-            'payment failed',
-            usedWallet,
-            options.total.amount / 100,
-          ])
+          // trackEvent([
+          //   'payment-request',
+          //   'payment failed',
+          //   usedWallet,
+          //   options.total.amount / 100,
+          // ])
         })
     })
 

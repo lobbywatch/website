@@ -12,13 +12,12 @@ import {
   fontStyles,
   Loader,
   mediaQueries,
-  Editorial,
   useColorContext,
   ChevronRightIcon,
 } from '@project-r/styleguide'
 import Link from 'next/link'
 
-import { PLEDGE_PATH } from 'constants'
+import { PLEDGE_PATH } from 'src/constants'
 
 const styles = {
   packageHeader: css({
@@ -103,11 +102,6 @@ const styles = {
   buffer: css({
     // catch negative margin from last package
     marginTop: -1,
-  }),
-  links: css({
-    lineHeight: '24px',
-    marginTop: 13,
-    fontSize: 16,
   }),
 }
 
@@ -210,7 +204,7 @@ class Accordion extends Component {
 
     const { hover } = this.state
 
-    const { t, packages, filter, group, crowdfundingName, renderIntro } =
+    const { t, locale, packages, filter, group, crowdfundingName, renderIntro } =
       this.props
 
     const groups = nest()
@@ -235,13 +229,6 @@ class Accordion extends Component {
         {renderIntro && renderIntro({ packages })}
         <div style={{ marginTop: 20 }}>
           {groups.map(({ key: group, values: pkgs }) => {
-            const links = [
-              group === 'ME' && {
-                pathname: PLEDGE_PATH,
-                query: { package: 'ABO', userPrice: 1 },
-                text: t('package/ABO/userPrice/teaser'),
-              },
-            ].filter(Boolean)
 
             const setHover = (hover) => this.setState({ hover })
 
@@ -269,37 +256,11 @@ class Accordion extends Component {
               }
               return {
                 pathname: PLEDGE_PATH,
-                query: { package: pkg.name },
+                query: { package: pkg.name, locale },
                 name: pkg.name,
                 price,
               }
             })
-
-            if (group === 'ME') {
-              const benefactorIndex = pkgItems.findIndex(
-                (item) => item.name === 'BENEFACTOR'
-              )
-              // TMP Marketing Trial for Students
-              if (benefactorIndex !== -1) {
-                pkgItems.splice(benefactorIndex + 1, 0, {
-                  pathname: PLEDGE_PATH,
-                  query: {
-                    package: 'ABO',
-                    userPrice: 1,
-                    price: 14000,
-                    reason: t('marketing/offers/students/reasonTemplate'),
-                  },
-                  name: 'students',
-                  title: t('marketing/offers/students'),
-                  price: 14000,
-                })
-              }
-              pkgItems.push({
-                pathname: '/abholen',
-                name: 'claim',
-                title: t('marketing/offers/claim'),
-              })
-            }
 
             return (
               <Fragment key={group}>
@@ -324,18 +285,6 @@ class Accordion extends Component {
                   </Link>
                 ))}
                 <PackageBuffer />
-                {!!links.length && (
-                  <div {...styles.links}>
-                    {links.map(({ pathname, query, text }, i) => (
-                      <Link key={i} href={{ pathname, query }} passHref>
-                        <Editorial.A>
-                          {text}
-                          <br />
-                        </Editorial.A>
-                      </Link>
-                    ))}
-                  </div>
-                )}
               </Fragment>
             )
           })}
@@ -347,6 +296,7 @@ class Accordion extends Component {
 
 Accordion.propTypes = {
   t: PropTypes.func.isRequired,
+  locale: PropTypes.string.isRequired
 }
 
 const AccordionWithQuery = graphql(query, {

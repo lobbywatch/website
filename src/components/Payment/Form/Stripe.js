@@ -15,10 +15,8 @@ import {
   colors,
   useColorContext,
   Interaction,
+  fontFaces,
 } from '@project-r/styleguide'
-
-import { useResolvedColorSchemeKey } from '../../ColorScheme/lib'
-import { SG_FONT_FACES } from '../../../lib/constants'
 
 import { loadStripe } from '../stripe'
 import StripeField from './StripeField'
@@ -49,9 +47,9 @@ const Form = forwardRef(
       setStripeLoadState,
       retryLoadStripe,
     },
-    ref,
+    ref
   ) => {
-    const colorSchemeKey = useResolvedColorSchemeKey()
+    const colorSchemeKey = 'light'
     const stripe = useStripe()
     const elements = useElements()
 
@@ -119,8 +117,9 @@ const Form = forwardRef(
         ))}
       </div>
     )
-  },
+  }
 )
+Form.displayName = 'Form'
 
 let globalStripeState
 const setupStripe = () => {
@@ -149,7 +148,7 @@ const PrivacyWrapper = forwardRef((props, ref) => {
   const [colorScheme] = useColorContext()
   const { t } = props
   const [unlockFieldKey, setUnlockFieldKey] = useState(
-    globalStripeState.started ? 'auto' : undefined,
+    globalStripeState.started ? 'auto' : undefined
   )
   const [stripeLoadState, setStripeLoadState] = useState()
 
@@ -170,9 +169,9 @@ const PrivacyWrapper = forwardRef((props, ref) => {
   }, [unlockFieldKey])
   const options = useMemo(() => {
     const fontFamily = fontStyles.sansSerifRegular.fontFamily.split(',')[0]
-    const def = SG_FONT_FACES?.split('@font-face').find((d) =>
-      d.includes(fontFamily),
-    )
+    const def = fontFaces()
+      .split('@font-face')
+      .find((d) => d.includes(fontFamily))
     return {
       fonts: def
         ? [
@@ -215,5 +214,6 @@ const PrivacyWrapper = forwardRef((props, ref) => {
     </Elements>
   )
 })
+PrivacyWrapper.displayName = 'PrivacyWrapper'
 
 export default PrivacyWrapper

@@ -1,16 +1,3 @@
-export const intersperse = (list, separator) => {
-  if (list.length === 0) {
-    return []
-  }
-
-  return list.slice(1).reduce(
-    (items, item) => {
-      return [...items, separator, item]
-    },
-    [list[0]]
-  )
-}
-
 export const NBSP = '\u00A0'
 
 export const preventWidow = (string) => {

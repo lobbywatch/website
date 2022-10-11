@@ -12,7 +12,6 @@
     "prepare": "husky install",
     "lint": "eslint --fix .",
     "test": "eslint",
-    "translations": "NODE_OPTIONS='-r dotenv/config' gsheets --key=1FhjogYL2SBxaJG3RfR01A7lWtb3XTE2dH8EtYdmdWXg --title=translations --pretty --out lib/translations.json",
     "klog": "find . -name '*.js' -not -path \"./node_modules*\" -not -path \"./.next*\" | xargs wc -l"
   },
   "author": "Thomas Preusse <t@preus.se> (https://t.preus.se/)",
@@ -30,7 +29,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.10",
     "@stripe/stripe-js": "^1.22.0",
-    "@types/applepayjs": "^3.0.3",
+    "@stripe/react-stripe-js": "^1.7.0",
     "accept-language": "^3.0.15",
     "body-scroll-lock": "^3.1.5",
     "clipboard-copy": "^4.0.1",
@@ -52,6 +51,7 @@
     "graphql": "^15.8.0",
     "gsheets": "^3.0.1",
     "isomorphic-unfetch": "^3.1.0",
+    "load-script": "^1.0.0",
     "lodash": "^4.17.21",
     "lru-cache": "^7.0.0",
     "next": "^12.1.1",
@@ -64,9 +64,11 @@
     "react-textarea-autosize": "^7.1.2",
     "scroll-into-view": "^1.15.0",
     "sharp": "^0.30.3",
-    "striptags": "^3.2.0"
+    "striptags": "^3.2.0",
+    "validator": "^13.7.0"
   },
   "devDependencies": {
+    "@types/applepayjs": "^3.0.3",
     "@types/node": "18.8.3",
     "@types/react": "^17.0.38",
     "dotenv": "^10.0.0",
