@@ -42,7 +42,7 @@ const styles = {
   }),
   play: css({
     position: 'absolute',
-    top: '50%',
+    top: '60%',
     left: '5%',
     right: '5%',
     marginTop: -18,
@@ -52,10 +52,10 @@ const styles = {
 
 const VIDEO = {
   // hls: 'https://player.vimeo.com/external/213080233.m3u8?s=40bdb9917fa47b39119a9fe34b9d0fb13a10a92e',
-  mp4: 'https://lobbywatch.s3.eu-central-1.amazonaws.com/videos/1333624570.mp4',
+  mp4: 'https://lobbywatch.s3.eu-central-1.amazonaws.com/videos/main_v221010.mov',
   // subtitles: '/static/subtitles/main.vtt',
-  thumbnail: 'https://lobbywatch.s3.eu-central-1.amazonaws.com/videos/1333624570.jpg',
-  endScroll: 0.9
+  thumbnail: 'https://lobbywatch.s3.eu-central-1.amazonaws.com/videos/main_v221010.jpg',
+  endScroll: 0.96
 }
 
 class VideoCover extends Component {
