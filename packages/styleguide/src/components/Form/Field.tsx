@@ -27,9 +27,12 @@ const styles = {
     position: 'relative',
     display: 'inline-block',
     ...fontStyles.sansSerifRegular,
-    fontSize: 22,
+    fontSize: 20,
     lineHeight: `${LINE_HEIGHT}px`,
     marginBottom: 15,
+  ['& ~ &']: {
+    marginTop: -10
+  },
     cursor: 'text',
   }),
   field: css({
@@ -41,44 +44,39 @@ const styles = {
     textDecoration: 'none',
     height: FIELD_HEIGHT,
     ...fontStyles.sansSerifRegular,
-    fontSize: 22,
+    fontSize: 20,
     boxSizing: 'border-box',
-    border: 'none',
-    borderBottomWidth: BORDER_WIDTH,
-    borderBottomStyle: 'solid',
-    borderRadius: 0,
+    borderWidth: BORDER_WIDTH,
+    borderStyle: 'solid',
+    borderRadius: 4,
     backgroundColor: 'transparent',
   }),
   labelText: css({
     position: 'absolute',
     left: X_PADDING,
     top: LINE_HEIGHT + Y_PADDING,
-    transition: 'top 200ms, font-size 200ms',
+    transition: 'top 200ms, left 200ms, font-size 200ms',
   }),
   labelTextFocused: css({
     top: 3,
+    left: 0,
     fontSize: 12,
     lineHeight: '13px',
-    [mUp]: {
-      top: 5,
-      fontSize: 14,
-      lineHeight: '15px',
-    },
   }),
   iconWrapper: css({
     position: 'absolute',
-    right: 3,
+    right: 3 + X_PADDING,
     top: LINE_HEIGHT + 5,
   }),
   arrow: css({
     position: 'absolute',
-    right: 0,
+    right: X_PADDING,
     cursor: 'pointer',
   }),
   secondaryActionCenter: css({
     position: 'absolute',
     top: '50%',
-    right: 0,
+    right: X_PADDING,
   }),
   noBrowserIcon: css({
     '::-ms-clear': {
@@ -202,7 +200,7 @@ const Field = React.forwardRef<
       return {
         labelText: css({
           color: colorScheme.getCSSColor(
-            error ? 'error' : isFocused ? 'primary' : 'disabled',
+            error ? 'error' : isFocused ? 'primary' : 'textSoft',
           ),
         }),
         field: css({
@@ -212,6 +210,7 @@ const Field = React.forwardRef<
           color: colorScheme.getCSSColor(
             error ? 'error' : disabled ? 'disabled' : 'text',
           ),
+          backgroundColor: colorScheme.getCSSColor('hover')
         }),
       }
     }, [colorScheme, isFocused, error, disabled])
@@ -267,7 +266,7 @@ const Field = React.forwardRef<
           <ArrowDown
             {...(isFocused
               ? colorScheme.set('fill', 'primary')
-              : colorScheme.set('fill', 'disabled'))}
+              : colorScheme.set('fill', 'textSoft'))}
             size={FIELD_HEIGHT / 2}
             onClick={(e) => {
               e.preventDefault()
@@ -283,7 +282,7 @@ const Field = React.forwardRef<
           <ArrowUp
             {...(isFocused
               ? colorScheme.set('fill', 'primary')
-              : colorScheme.set('fill', 'disabled'))}
+              : colorScheme.set('fill', 'textSoft'))}
             size={FIELD_HEIGHT / 2}
             onClick={(e) => {
               e.preventDefault()
@@ -312,7 +311,7 @@ const Field = React.forwardRef<
             <CloseIcon
               {...(isFocused
                 ? colorScheme.set('fill', 'text')
-                : colorScheme.set('fill', 'disabled'))}
+                : colorScheme.set('fill', 'textSoft'))}
               size={FIELD_HEIGHT / 2}
             />
           </button>
