@@ -2,6 +2,8 @@ import compose from 'lodash/flowRight'
 import { useRouter } from 'next/router'
 import { Center } from '@project-r/styleguide'
 
+import { withInitialProps } from 'lib/apolloClient'
+
 import Frame from 'src/components/Frame'
 import Merci from 'src/components/Pledge/Merci'
 import { withT } from 'src/components/Message'
@@ -39,4 +41,4 @@ const AccountPage = ({ t }) => {
   )
 }
 
-export default compose(withT, withMe)(AccountPage)
+export default withInitialProps(compose(withT, withMe)(AccountPage))

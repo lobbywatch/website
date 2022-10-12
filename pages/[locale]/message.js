@@ -1,8 +1,9 @@
 import { css } from 'glamor'
 import Head from 'next/head'
-
 import compose from 'lodash/flowRight'
 import { withRouter } from 'next/router'
+
+import { withInitialProps } from 'lib/apolloClient'
 
 import withMe from 'src/components/Auth/withMe'
 import { withT } from 'src/components/Message'
@@ -135,6 +136,6 @@ const Page = ({ router: { query: rawQuery }, t, me }) => {
   )
 }
 
-export default 
+export default withInitialProps(
   compose(withMe, withT, withRouter)(Page)
-
+)
