@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { css, merge } from 'glamor'
 import Link from 'next/link'
-import { intersperse } from '../../lib/utils/helpers'
+import { intersperse } from '@project-r/styleguide'
 
 import { LW_BLUE, GREY_DARK, mediaM } from '../../theme'
 import { Clear } from '../Styled'
@@ -72,7 +72,7 @@ const Legend = ({ locale, title, pagePath, items }) => (
             {label}
           </span>
         )),
-        ' '
+        () => ' '
       )}
     </span>
   </Clear>

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { intersperse } from '../../lib/utils/helpers'
+import { intersperse } from '@project-r/styleguide'
 
 import { WHITE, BLACK, GREY_DARK, POTENCY_COLORS } from '../../theme'
 import GuestIcon from '../../assets/Guest'
@@ -427,7 +427,7 @@ class Connections extends Component {
                     />
                   ),
                 ],
-                <br key='br' />
+                (_, i) => <br key={i} />
               )}
             </div>
           )}
