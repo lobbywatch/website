@@ -140,13 +140,13 @@ export const AccountEnforceMe = compose(
   const { query } = useRouter()
 
   return !me ? (
-    <Center>
+    <>
       <Interaction.H1 style={{ marginBottom: 22 }}>
         {t('account/signedOut/title')}
       </Interaction.H1>
       <Interaction.P>{t('account/signedOut/signIn')}</Interaction.P>
       <SignIn email={query.email} />
-    </Center>
+    </>
   ) : (
     children
   )
