@@ -126,6 +126,7 @@ const query = gql`
             ... on MembershipType {
               id
               name
+              minPeriods
             }
             ... on Goodie {
               id
@@ -234,7 +235,7 @@ class Accordion extends Component {
 
             let pkgItems = pkgs.map((pkg) => {
               let price = pkg.options.reduce(
-                (amount, option) => amount + option.price * option.minAmount,
+                (amount, option) => amount + option.price * option.minAmount * (option.reward?.minPeriods || 1),
                 0
               )
               if (!price && pkg.name !== 'PROLONG') {
