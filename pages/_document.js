@@ -58,11 +58,6 @@ export default class MyDocument extends Document {
             sizes='16x16'
           />
           <link rel='manifest' href='/static/manifest.json' />
-          <link
-            rel='mask-icon'
-            href='/static/safari-pinned-tab.svg'
-            color={LW_BLUE_LIGHT}
-          />
           <link rel='shortcut icon' href='/favicon.ico' />
           <meta
             name='msapplication-config'
