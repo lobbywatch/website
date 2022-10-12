@@ -86,7 +86,7 @@ const Actions = ({
         )}
       {membership.active && (
         <>
-          {!hasWaitingMemberships && false /* tmp disabled */ && (
+          {!hasWaitingMemberships && (
             <>
               {membership.renew && (
                 <>
@@ -128,7 +128,7 @@ const Actions = ({
                       </A>
                     </P>
                   )}
-                  <P>
+                  { false /* cancel not yet supported */ && <P>
                     <Link
                       href={{
                         pathname: '/abgang',
@@ -143,7 +143,7 @@ const Actions = ({
                         ])}
                       </A>
                     </Link>
-                  </P>
+                  </P>}
                 </>
               )}
             </>

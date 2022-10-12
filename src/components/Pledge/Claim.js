@@ -7,6 +7,7 @@ import ErrorMessage from '../ErrorMessage'
 import { gotoMerci } from './Merci'
 
 import { Loader, Interaction } from '@project-r/styleguide'
+import { withRouter } from 'next/router'
 
 const { P } = Interaction
 
@@ -19,7 +20,7 @@ class ClaimPledge extends Component {
     }
   }
   claim() {
-    const { me, id, pkg } = this.props
+    const { me, id, pkg, router } = this.props
     const { loading, error } = this.state
 
     if (loading || error || !me) {
@@ -34,6 +35,7 @@ class ClaimPledge extends Component {
         gotoMerci({
           id,
           package: pkg,
+          locale: getSafeLocale(router.query.locale)
         })
       })
       .catch((error) => {
@@ -86,7 +88,7 @@ const claimPledge = gql`
   }
 `
 
-export default graphql(claimPledge, {
+export default withRouter(graphql(claimPledge, {
   props: ({ mutate }) => ({
     claim: (pledgeId) =>
       mutate({
@@ -95,4 +97,4 @@ export default graphql(claimPledge, {
         },
       }),
   }),
-})(ClaimPledge)
+})(ClaimPledge))

@@ -27,6 +27,10 @@ const styles = {
       marginBottom: 24,
     }),
   }),
+  highlightBox: css({
+    padding: 5,
+    margin: -5
+  })
 }
 
 const { H3 } = Interaction
@@ -34,16 +38,22 @@ const { H3 } = Interaction
 const hourFormat = timeFormat('%H:%M')
 const dayFormat = timeFormat('%d. %B %Y')
 
+const HighlightBox = ({ children }) => {
+  const [colorScheme] = useColorContext()
+  return <div {...styles.highlightBox} {...colorScheme.set(
+    'backgroundColor',
+    'hover',
+  )}>
+    {children}
+  </div>
+}
+
 export const Item = withT(
   ({ t, highlighted, title, createdAt, children, compact }) => {
-    const [colorScheme] = useColorContext()
-    return (
+    
+    const content = (
       <div
         {...styles.container}
-        {...colorScheme.set(
-          'backgroundColor',
-          highlighted ? 'alert' : 'default',
-        )}
         style={{ marginBottom: compact ? 0 : undefined }}
       >
         <H3>{title}</H3>
@@ -61,6 +71,10 @@ export const Item = withT(
         {children}
       </div>
     )
+    if (highlighted) {
+      return <HighlightBox>{content}</HighlightBox>
+    }
+    return content
   },
 )
 

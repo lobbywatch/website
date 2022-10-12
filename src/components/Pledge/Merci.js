@@ -209,20 +209,26 @@ class Merci extends Component {
       )
     }
 
-    const buttonStyle = { marginBottom: 10, marginRight: 10 }
-    const noNameSuffix = me?.name ? '' : '/noName'
+
+    const postPledge = query.id || query.claim
+
+    const membershipPackages = ['YEAR', 'LEGISLATION', 'BENEFACTOR']
+    const messageSuffix = postPledge
+      ? membershipPackages.includes(query.package) ? '/welcome' : '/thanks'
+      : ''
 
     const leads = t
-      .first([`merci/lead/package/${query.package || 'UNKOWN'}`, 'merci/lead'])
+      .first([`merci/lead${messageSuffix}`, 'merci/lead'], undefined, '')
       .split('\n\n')
       .filter(Boolean)
+    const noNameSuffix = me?.name ? '' : '/noName'
 
     return (
       <>
         <H1>
           {t.first(
             [
-              `merci/title/package/${query.package || 'UNKOWN'}${noNameSuffix}`,
+              `merci/title${messageSuffix}${noNameSuffix}`,
               `merci/title${noNameSuffix}`,
             ],
             {
