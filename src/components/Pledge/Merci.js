@@ -209,8 +209,11 @@ class Merci extends Component {
       )
     }
 
-
     const postPledge = query.id || query.claim
+
+    if (!postPledge && !me) {
+      return children
+    }
 
     const membershipPackages = ['YEAR', 'LEGISLATION', 'BENEFACTOR']
     const messageSuffix = postPledge

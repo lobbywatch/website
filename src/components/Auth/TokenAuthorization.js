@@ -26,6 +26,7 @@ import Me from './Me'
 
 import withAuthorizeSession from './withAuthorizeSession'
 import { withRouter } from 'next/router'
+import { getSafeLocale } from '../../../constants'
 
 const styles = {
   actions: css({
@@ -133,7 +134,7 @@ class TokenAuthorization extends Component {
     )
   }
   autoAuthorize() {
-    if (!this.state.authorizing && shouldAutoAuthorize(this.props)) {
+    if (!this.state.authorizing && !this.state.authorizeError && shouldAutoAuthorize(this.props)) {
       this.authorize()
     }
   }
