@@ -30,6 +30,7 @@ import { useT } from 'src/components/Message'
 
 import { getSafeLocale, PUBLIC_BASE_URL } from '../../constants'
 import { PLEDGE_PATH } from 'src/constants'
+import { CROWDFUNDING_PLEDGE } from '../../src/constants'
 
 const styles = {
   mediaDiversity: css({
@@ -127,7 +128,7 @@ const Page = () => {
           t,
           links,
           packages,
-          crowdfundingName: 'LOBBYWATCH',
+          crowdfundingName: CROWDFUNDING_PLEDGE,
           title: 'Werden Sie Mitglied:',
           locale,
         }}

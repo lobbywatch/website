@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import { PackageItem, PackageBuffer } from '../Pledge/Accordion'
 
-import { RawStatus } from './Status' // withStatus
+import { RawStatus, withStatus } from './Status'
 
 import { css } from 'glamor'
 
@@ -184,25 +184,7 @@ class Sidebar extends Component {
       sticky,
       t,
       locale,
-      crowdfunding = {
-        // mock pending backend
-        id: '2fd24f48-979f-42c7-abd6-43bdc33dea4a',
-        name: 'LOBBYWATCH',
-        goals: [
-          {
-            people: 1000,
-            // "money": 5000000,
-            description:
-              'Dank Ihnen gibt es Lobbywatch auch in der nächsten Legislatur.',
-          },
-        ],
-        status: {
-          people: 151,
-          // money: 755000,
-        },
-        endDate: '2022-11-13T17:59:59.999Z',
-        hasEnded: false,
-      },
+      crowdfunding,
       primaryQuery,
       title,
       links,
@@ -265,5 +247,4 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar
-// export default withStatus(Sidebar)
+export default withStatus(Sidebar)

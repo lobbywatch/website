@@ -193,7 +193,7 @@ class Status extends Component {
                 ],
                 {
                   count: createHoverGoalCount(countFormat, goal[accessor]),
-                },
+                }
               )}
             </span>
           </P>
@@ -225,7 +225,7 @@ class Status extends Component {
               dangerouslySetInnerHTML={{
                 __html: t(
                   'crowdfunding/status/current/label',
-                  labelReplacements,
+                  labelReplacements
                 ),
               }}
             />
@@ -263,9 +263,9 @@ class Status extends Component {
                     {
                       count: createHoverGoalCount(
                         format,
-                        goal[goalAccessor || accessor],
+                        goal[goalAccessor || accessor]
                       ),
-                    },
+                    }
                   )}
                 </span>
               </P>
@@ -384,20 +384,19 @@ const query = gql`
   }
 `
 
-export const withStatus = (Component) =>
-  graphql(query, {
-    skip: (props) => true || props.crowdfunding || !props.crowdfundingName, // disabled pending backend
-    options: {
-      pollInterval: +STATUS_POLL_INTERVAL_MS,
-    },
-    props: ({ data }) => {
-      return {
-        crowdfunding: data.crowdfunding,
-        statusRefetch: data.refetch,
-        statusStartPolling: data.startPolling,
-        statusStopPolling: data.stopPolling,
-      }
-    },
-  })(Component)
+export const withStatus = graphql(query, {
+  skip: (props) => props.crowdfunding || !props.crowdfundingName,
+  options: {
+    pollInterval: +STATUS_POLL_INTERVAL_MS,
+  },
+  props: ({ data }) => {
+    return {
+      crowdfunding: data.crowdfunding,
+      statusRefetch: data.refetch,
+      statusStartPolling: data.startPolling,
+      statusStopPolling: data.stopPolling,
+    }
+  },
+})
 
 export default compose(withStatus, withT)(Status)
