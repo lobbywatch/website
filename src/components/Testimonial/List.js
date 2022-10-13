@@ -90,6 +90,7 @@ const styles = {
     overflow: 'hidden',
     position: 'relative',
     backgroundColor: '#ccc',
+    borderRadius: 4,
   }),
   aspectImg: css({
     position: 'absolute',
@@ -99,14 +100,16 @@ const styles = {
   }),
   aspectFade: css({
     position: 'absolute',
-    backgroundColor: 'rgba(0,0,0,0.15)',
+    background: [
+      'rgba(0,0,0,0.15)',
+      'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.80) 100%);'
+    ],
     left: 0,
     top: 0,
     right: 0,
     bottom: 0,
   }),
   previewImage: css({
-    // filter: 'grayscale(1)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'absolute',
