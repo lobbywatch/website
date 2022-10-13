@@ -129,7 +129,7 @@ const Item = ({ loading, error, t, statement }) => (
                   {inQuotes(statementString)}
                 </P>
               )}
-              {!!sequenceNumber && (
+              {!!sequenceNumber && false && (
                 <div {...styles.number}>
                   {t('memberships/sequenceNumber/label', {
                     sequenceNumber,

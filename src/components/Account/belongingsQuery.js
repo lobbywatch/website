@@ -47,13 +47,6 @@ export default gql`
           name
         }
       }
-      accessGrants {
-        endAt
-        campaign {
-          title
-          description
-        }
-      }
       pledges {
         id
         package {

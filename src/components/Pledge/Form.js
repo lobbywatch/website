@@ -327,7 +327,7 @@ class Pledge extends Component {
             image: `${ASSETS_SERVER_BASE_URL}/render?width=1200&height=628&updatedAt=${encodeURIComponent(
               statement.updatedAt,
             )}&url=${encodeURIComponent(
-              `${PUBLIC_BASE_URL}/community?share=${statement.id}&package=${queryPackage}`,
+              `${PUBLIC_BASE_URL}/${locale}/community?share=${statement.id}&package=${queryPackage}`,
             )}`,
           }
         : {

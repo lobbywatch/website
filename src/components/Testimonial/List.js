@@ -5,7 +5,7 @@ import { gql } from '@apollo/client'
 import { css, merge } from 'glamor'
 import { max } from 'd3-array'
 
-import Meta from '../Frame/Meta'
+import MetaTags from 'src/components/MetaTags'
 import { withT } from 'src/components/Message'
 import Loader from '../Loader'
 
@@ -15,7 +15,8 @@ import {
   PUBLIC_BASE_URL,
   CDN_FRONTEND_BASE_URL,
   ASSETS_SERVER_BASE_URL,
-} from '../../lib/constants'
+  getSafeLocale,
+} from '../../../constants'
 
 import {
   Interaction,
@@ -105,7 +106,7 @@ const styles = {
     bottom: 0,
   }),
   previewImage: css({
-    filter: 'grayscale(1)',
+    // filter: 'grayscale(1)',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     position: 'absolute',
@@ -146,7 +147,6 @@ const styles = {
   }),
   more: css({
     marginTop: 15,
-    padding: PADDING,
   }),
   options: css({
     marginBottom: 15,
@@ -331,6 +331,7 @@ export class List extends Component {
       showCredentials,
       share,
       serverContext,
+      locale,
     } = this.props
     const { columns, open } = this.state
 
@@ -374,6 +375,7 @@ export class List extends Component {
                     key={`detail${row - 1}`}
                     share={share}
                     t={t}
+                    locale={locale}
                     data={openItem}
                   />
                 )
@@ -397,7 +399,7 @@ export class List extends Component {
                 singleRow={singleRow}
                 minColumns={minColumns}
                 maxColumns={this.getMaxColumns()}
-                href={id && `/community?id=${id}`}
+                href={id && `/${locale}/community?id=${id}`}
                 onClick={(e) => {
                   if (shouldIgnoreClick(e)) {
                     return
@@ -427,6 +429,7 @@ export class List extends Component {
                     key={`detail${row}`}
                     share={share}
                     t={t}
+                    locale={locale}
                     data={openItem}
                   />
                 )
@@ -442,29 +445,30 @@ export class List extends Component {
                   'testimonial/meta/single/description',
                   focusItem
                 ),
-                url: `${PUBLIC_BASE_URL}/community?id=${focusItem.id}`,
+                url: `${PUBLIC_BASE_URL}/${locale}/community?id=${focusItem.id}`,
                 image: `${ASSETS_SERVER_BASE_URL}/render?viewport=1200x628&updatedAt=${encodeURIComponent(
                   focusItem.updatedAt
                 )}&url=${encodeURIComponent(
-                  `${PUBLIC_BASE_URL}/community?share=${focusItem.id}`
+                  `${PUBLIC_BASE_URL}/${locale}/community?share=${focusItem.id}`
                 )}`,
               }
             : {
                 pageTitle: t('testimonial/meta/pageTitle'),
                 title: t('testimonial/meta/title'),
                 description: t('testimonial/meta/description'),
-                url: `${PUBLIC_BASE_URL}/community`,
-                image: `${CDN_FRONTEND_BASE_URL}/static/social-media/community.jpg`,
+                url: `${PUBLIC_BASE_URL}/${locale}/community`,
+                // ToDo Social Image
+                // image: `${CDN_FRONTEND_BASE_URL}/static/social-media/community.jpg`,
               }
 
           return (
             <Fragment>
+              {!!isPage && <MetaTags {...metaData} />}
               {hasNotFoundFocus && <ErrorMessage error={t('statement/404')} />}
-              <div {...gridStyles} ref={this.ref}>
-                {!!isPage && <Meta data={metaData} />}
+              <div {...gridStyles} style={{ marginBottom: 20 }} ref={this.ref}>
                 {items}
-                <div style={{ marginBottom: 20 }} />
-                {statements.length >= AUTO_INFINITE &&
+              </div>
+              {statements.length >= AUTO_INFINITE &&
                   !this.state.endless &&
                   hasMore && (
                     <P {...styles.more}>
@@ -489,16 +493,15 @@ export class List extends Component {
                       </A>
                     </P>
                   )}
-                {!hasMore && hasEndText && (
+                {!hasMore && hasEndText && this.state.endless && (
                   <P {...styles.more}>
                     {t('testimonial/infinite/end', {
                       count: statements.length,
                     })}
                   </P>
                 )}
-              </div>
               {singleRowOpenItem && (
-                <Detail t={t} share={share} data={singleRowOpenItem} />
+                <Detail t={t} locale={locale} share={share} data={singleRowOpenItem} />
               )}
             </Fragment>
           )
@@ -594,6 +597,7 @@ class Container extends Component {
     const { query } = this.state
 
     const seed = this.state.seed || this.props.seed
+    const locale = getSafeLocale(router.query.locale)
 
     return (
       <div>
@@ -621,8 +625,8 @@ class Container extends Component {
                     clearedFocus: undefined,
                   },
                   () => {
-                    router.replace('/community', undefined, {
-                      shallow: router.pathname === '/community',
+                    router.replace(`/${locale}/community`, undefined, {
+                      shallow: router.pathname === '/[locale]/community',
                     })
                   }
                 )
@@ -646,14 +650,15 @@ class Container extends Component {
                 clearedFocus: id,
               },
               () => {
-                router.push('/community', undefined, {
-                  shallow: router.pathname === '/community',
+                router.push(`/${locale}/community`, undefined, {
+                  shallow: router.pathname === '/[locale]/community',
                 })
               }
             )
           }}
           search={query}
           seed={seed}
+          locale={locale}
           serverContext={serverContext}
         />
       </div>

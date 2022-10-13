@@ -9,6 +9,7 @@ import AddressForm, {
   isEmptyAddress,
 } from '../AddressForm'
 
+import FieldSet from '../../FieldSet'
 import {
   Loader,
   InlineSpinner,
@@ -17,7 +18,6 @@ import {
   Button,
   colors,
   errorToString,
-  FieldSet,
   intersperse,
   timeParse
 } from '@project-r/styleguide'

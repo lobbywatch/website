@@ -2,19 +2,17 @@ import { css } from 'glamor'
 
 import ActionBar from '../ActionBar'
 
-import { PUBLIC_BASE_URL, ASSETS_SERVER_BASE_URL } from '../../lib/constants'
+import { PUBLIC_BASE_URL, ASSETS_SERVER_BASE_URL } from '../../../constants'
 
 import {
   Interaction,
   fontStyles,
   P as SerifP,
-  A,
   VideoPlayer,
   mediaQueries,
   inQuotes,
   useColorContext,
 } from '@project-r/styleguide'
-import Link from 'next/link'
 
 const { H3, P } = Interaction
 
@@ -42,6 +40,7 @@ const styles = {
 const Detail = ({
   t,
   share,
+  locale,
   data: {
     id,
     slug,
@@ -57,10 +56,10 @@ const Detail = ({
   const [colorScheme] = useColorContext()
   const shareObject = {
     title: t('statement/share/title', { name }),
-    url: `${PUBLIC_BASE_URL}/community?id=${id}`,
+    url: `${PUBLIC_BASE_URL}/${locale}/community?id=${id}`,
     emailSubject: t('statement/share/title', { name }),
     emailAttachUrl: false,
-    emailBody: `${PUBLIC_BASE_URL}/community?id=${id}`,
+    emailBody: `${PUBLIC_BASE_URL}/${locale}/community?id=${id}`,
     overlayTitle: t('statement/share/overlayTitle', { name }),
   }
   return (
@@ -77,13 +76,8 @@ const Detail = ({
         }
       >
         <H3 {...styles.detailTitle} {...colorScheme.set('color', 'text')}>
-          {slug ? (
-            <Link href={`/~${slug}`} passHref>
-              <A style={{ color: 'inherit' }}>{name}</A>
-            </Link>
-          ) : (
-            <span>{name}</span>
-          )}{' '}
+          <span>{name}</span>
+          {' '}
           <span
             {...styles.detailRole}
             {...colorScheme.set('color', 'textSoft')}
@@ -111,7 +105,7 @@ const Detail = ({
         ) : (
           <br />
         )}
-        {!!sequenceNumber && (
+        {!!sequenceNumber && false && (
           <P {...styles.number} {...colorScheme.set('color', 'text')}>
             {t('memberships/sequenceNumber/label', {
               sequenceNumber,
@@ -124,7 +118,7 @@ const Detail = ({
             download={`${ASSETS_SERVER_BASE_URL}/render?width=1200&height=628&updatedAt=${encodeURIComponent(
               updatedAt
             )}&url=${encodeURIComponent(
-              `${PUBLIC_BASE_URL}/community?share=${id}`
+              `${PUBLIC_BASE_URL}/${locale}/community?share=${id}`
             )}`}
           />
         )}

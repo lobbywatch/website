@@ -32,7 +32,7 @@ class Image extends Component {
       return
     }
     const to = {
-      pathname: '/community',
+      pathname: '/de/community',
       query: {
         ...query,
         sequenceNumber: error
@@ -40,7 +40,7 @@ class Image extends Component {
           : statement && statement.sequenceNumber,
       },
     }
-    router.push(to, to, { shallow: router.pathname === '/community' })
+    router.push(to, to, { shallow: router.pathname === '/de/community' })
   }
   componentDidMount() {
     this.tick()
