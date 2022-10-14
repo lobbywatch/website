@@ -30,14 +30,14 @@ import { ACCOUNT_PATH } from '../../constants'
 
 const { P, H1 } = Interaction
 
-export const gotoMerci = (query) => {
+export const gotoMerci = ({ locale, ...query }) => {
   // workaround for apollo cache issues
   // - can't manage to clear all query caches
   // - couldn't clear myAddress query,
   //   possibly because id-less address type
   // - good reset if sign in / out status changed during purchasing / claiming
   window.location = format({
-    pathname: ACCOUNT_PATH.replace('[locale]', query.locale),
+    pathname: ACCOUNT_PATH.replace('[locale]', locale),
     query,
   })
 }
