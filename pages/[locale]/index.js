@@ -71,7 +71,7 @@ const Page = () => {
           pathname: PLEDGE_PATH,
           query: { locale }
         }} passHref>
-          <A>Jetzt mitmachen!</A>
+          <A>{t('cf/cta/now')}</A>
         </Link>
       </Interaction.P>
     </div>
@@ -87,35 +87,35 @@ const Page = () => {
         pathname: PLEDGE_PATH,
         query: { package: 'WORKSHOP', locale },
       },
-      text: 'Etwas für Ihre ganze Crew? Lobbywatch-Workshop buchen.',
+      text: t('cf/package/WORKSHOP'),
     },
   ]
   const packages = [
     {
       name: 'YEAR',
-      title: 'Für mindestens ein Jahr',
+      title: t('cf/package/YEAR'),
       price: 5000,
     },
     {
       name: 'LEGISLATION',
-      title: 'Für die ganze Legislatur',
+      title: t('cf/package/LEGISLATION'),
       price: 20000,
     },
     {
       name: 'BENEFACTOR',
-      title: 'Als Gönner',
+      title: t('cf/package/BENEFACTOR'),
       price: 40000,
     },
     {
       name: 'DONATE',
-      title: 'Spenden, sonst nichts',
+      title: t('cf/package/DONATE'),
     },
   ]
 
   const shareObject = {
     overlayTitle: t('actionbar/share'),
     url: PUBLIC_BASE_URL,
-    emailSubject: 'Lobbywatch erhalten',
+    emailSubject: t('cf/cta/shareEmailSubject'),
     emailAttachUrl: true,
   }
 
@@ -178,7 +178,7 @@ const Page = () => {
 
         <div style={{ margin: '15px 0 0' }}>
           <Label style={{ display: 'block', marginBottom: 5 }}>
-            Teilen Sie diese Seite mit Ihren Freunden:
+            {t('cf/cta/share')}
           </Label>
           <ActionBar share={shareObject} />
         </div>
@@ -363,13 +363,13 @@ const Page = () => {
           passHref
         >
           <Button primary style={{ minWidth: 300 }}>
-            Jetzt mitmachen!
+            {t('cf/cta/now')}
           </Button>
         </Link>
 
         <div style={{ margin: '15px 0 40px' }}>
           <Label style={{ display: 'block', marginBottom: 5 }}>
-            Jetzt andere auf Lobbywatch aufmerksam machen:
+            {t('cf/cta/shareNow')}
           </Label>
           <ActionBar share={shareObject} />
         </div>
