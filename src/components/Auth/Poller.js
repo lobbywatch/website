@@ -170,7 +170,7 @@ class Poller extends Component {
         <P {...styles.group}>
           <Label>{t('signIn/polling/phrase')}</Label>
           <br />
-          {phrase}
+          <strong>{phrase}</strong>
         </P>
         <P {...styles.hint}>
           {!showPhraseHint && (
