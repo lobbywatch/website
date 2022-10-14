@@ -337,13 +337,13 @@ const Page = () => {
           <TestimonialList
             ssr={false}
             focus={focusTestimonial}
-            first={20}
+            first={10}
             locale={locale}
           />
           </LazyLoad>
         </div>
         
-        <Link href={`${locale}/community`} passHref>
+        <Link href={`/${locale}/community`} passHref>
           <A>Alle ansehen</A>
         </Link> 
 
