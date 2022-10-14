@@ -3,7 +3,7 @@ import { css } from 'glamor'
 import { useRouter } from 'next/router'
 
 import SearchIcon from '../../assets/Search'
-import { WHITE, mediaM } from '../../theme'
+import { WHITE, mediaHeaderExpanded } from '../../theme'
 
 import { useT } from '../Message'
 import { inputStyle } from '../Styled'
@@ -17,7 +17,7 @@ const styles = {
   input: css(inputStyle, {
     backgroundColor: WHITE,
     paddingRight: 8 + 21 + 5,
-    [mediaM]: {
+    [mediaHeaderExpanded]: {
       height: 56,
       paddingRight: 16 + 21 + 5,
     },
@@ -27,7 +27,7 @@ const styles = {
     top: '50%',
     marginTop: -10,
     right: 8,
-    [mediaM]: {
+    [mediaHeaderExpanded]: {
       right: 16,
     },
   }),

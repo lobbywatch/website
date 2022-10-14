@@ -1,11 +1,11 @@
-import React, { Component, useState } from 'react'
+import React, { useState } from 'react'
 import { css } from 'glamor'
 import Link from 'next/link'
 
 import {
   LW_BLUE_LIGHT,
   LW_BLUE_DARK,
-  mediaM,
+  mediaHeaderExpanded,
   HEADER_HEIGHT,
   FRAME_PADDING,
 } from '../../theme'
@@ -47,7 +47,7 @@ const searchContainerStyle = css({
   paddingTop: HEADER_HEIGHT,
   backgroundColor: LW_BLUE_DARK,
   paddingBottom: 20,
-  [mediaM]: {
+  [mediaHeaderExpanded]: {
     paddingTop: HEADER_HEIGHT + 20,
     paddingBottom: 40,
   },
@@ -63,10 +63,17 @@ const Header = ({ locale, menuItems, localeLinks, transparent, focusMode }) => {
 
   return (
     <>
-      <div {...barStyle} style={transparent ? {
-        position: 'absolute',
-        backgroundColor: 'transparent'
-      } : undefined}>
+      <div
+        {...barStyle}
+        style={
+          transparent
+            ? {
+                position: 'absolute',
+                backgroundColor: 'transparent',
+              }
+            : undefined
+        }
+      >
         <Link href={`/${encodeURIComponent(locale)}`}>
           <a {...titleStyle}>
             <Logo size={32} />
@@ -84,13 +91,15 @@ const Header = ({ locale, menuItems, localeLinks, transparent, focusMode }) => {
           onClick={() => setExpanded(!expanded)}
         />
       </div>
-      {!transparent && !focusMode && <div {...searchContainerStyle}>
-        <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
-          <div {...searchBoxStyle}>
-            <SearchField />
-          </div>
-        </Center>
-      </div>}
+      {!transparent && !focusMode && (
+        <div {...searchContainerStyle}>
+          <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
+            <div {...searchBoxStyle}>
+              <SearchField />
+            </div>
+          </Center>
+        </div>
+      )}
       {focusMode && <div style={{ height: HEADER_HEIGHT + 20 }}></div>}
     </>
   )

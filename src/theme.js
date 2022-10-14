@@ -23,6 +23,13 @@ export const mediaSOnly = `@media only screen and (max-width: ${toEm(
 export const mediaM = `@media only screen and (min-width: ${toEm(
   breakpointM[0]
 )})`
+const HEADER_EXPANDED_MIN_WIDTH = 850
+export const mediaHeaderCollasped = `@media only screen and (max-width: ${toEm(
+  HEADER_EXPANDED_MIN_WIDTH - 1
+)})`
+export const mediaHeaderExpanded = `@media only screen and (min-width: ${toEm(
+  HEADER_EXPANDED_MIN_WIDTH
+)})`
 export const mediaL = `@media only screen and (min-width: ${toEm(
   breakpointL[0]
 )})`

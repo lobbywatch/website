@@ -1,10 +1,10 @@
 import React from 'react'
 import { css } from 'glamor'
-import { LW_BLUE_LIGHT, mediaM } from '../../theme'
+import { LW_BLUE_LIGHT, mediaHeaderExpanded } from '../../theme'
 import { plainButtonRule } from '../Styled'
 
 const toggleStyle = css(plainButtonRule, {
-  [mediaM]: {
+  [mediaHeaderExpanded]: {
     display: 'none',
   },
   width: 24,

@@ -65,6 +65,11 @@ const Frame = ({
 
   const menuItems = [
     {
+      label: 'Crowdfunding',
+      href: `/${currentLocale}`,
+      active: asPath.split('?')[0] === `/${currentLocale}`
+    },
+    {
       label: t('menu/parliamentarians'),
       href: `/${currentLocale}/${typeSegments.Parliamentarian}`,
     },
@@ -78,7 +83,7 @@ const Frame = ({
     },
   ].map((item) => ({
     ...item,
-    active: asPath.startsWith(item.href),
+    active: item.active ?? asPath.startsWith(item.href),
   }))
 
   const localizedRoutes = locales

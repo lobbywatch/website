@@ -6,14 +6,14 @@ import {
   LW_BLUE_LIGHT,
   LW_BLUE_DARK,
   WHITE,
-  mediaM,
-  mediaSOnly,
+  mediaHeaderExpanded,
+  mediaHeaderCollasped,
   HEADER_HEIGHT,
 } from '../../theme'
 
 const ITEM_MARGIN_LEFT = 15
 const menuStyle = css({
-  [mediaSOnly]: {
+  [mediaHeaderCollasped]: {
     display: 'flex',
     backgroundColor: LW_BLUE_DARK,
     boxSizing: 'border-box',
@@ -34,7 +34,7 @@ const menuStyle = css({
       transition: 'opacity 0.2s ease-in-out',
     },
   },
-  [mediaM]: {
+  [mediaHeaderExpanded]: {
     display: 'block',
     whiteSpace: 'none',
     position: 'absolute',
@@ -52,11 +52,11 @@ const listStyle = css({
 })
 
 const listItemStyle = css({
-  [mediaSOnly]: {
+  [mediaHeaderCollasped]: {
     lineHeight: '56px',
     paddingLeft: 30,
   },
-  [mediaM]: {
+  [mediaHeaderExpanded]: {
     float: 'left',
     marginLeft: ITEM_MARGIN_LEFT,
     position: 'relative',
@@ -72,11 +72,11 @@ const listItemStyle = css({
   },
 })
 const listItemSeparatorStyle = css({
-  [mediaSOnly]: {
+  [mediaHeaderCollasped]: {
     display: 'block',
     height: 56,
   },
-  [mediaM]: {
+  [mediaHeaderExpanded]: {
     display: 'inline-block',
     backgroundColor: WHITE,
     verticalAlign: 'middle',

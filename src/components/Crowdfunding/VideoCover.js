@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { css } from 'glamor'
 import { VideoPlayer, mediaQueries } from '@project-r/styleguide'
 
-import { HEADER_HEIGHT, HEADER_HEIGHT_MOBILE, ZINDEX_HEADER } from './constants'
+import { ZINDEX_HEADER } from './constants'
 import { scrollIt } from 'src/utils/scroll'
 import Header from '../Frame/Header'
 
@@ -16,9 +16,6 @@ const styles = {
     height: `${(1 / ASPECT_RATIO) * 100}vw`,
     backgroundColor: '#000',
     transition: 'height 200ms',
-    '& > div': {
-      height: '100%',
-    },
   }),
   cover: css({
     position: 'absolute',
@@ -27,6 +24,7 @@ const styles = {
     left: 0,
     top: 0,
     right: 0,
+    height: '100%',
   }),
   maxWidth: css({
     position: 'relative',
@@ -54,8 +52,9 @@ const VIDEO = {
   // hls: 'https://player.vimeo.com/external/213080233.m3u8?s=40bdb9917fa47b39119a9fe34b9d0fb13a10a92e',
   mp4: 'https://lobbywatch.s3.eu-central-1.amazonaws.com/videos/main_v221010.mov',
   // subtitles: '/static/subtitles/main.vtt',
-  thumbnail: 'https://lobbywatch.s3.eu-central-1.amazonaws.com/videos/main_v221010.jpg',
-  endScroll: 0.96
+  thumbnail:
+    'https://lobbywatch.s3.eu-central-1.amazonaws.com/videos/main_v221010.jpg',
+  endScroll: 0.96,
 }
 
 class VideoCover extends Component {
@@ -106,7 +105,7 @@ class VideoCover extends Component {
       playTop,
       locale,
       menuItems,
-      localeLinks
+      localeLinks,
     } = this.props
     const { playing, ended, videoHeight, windowHeight, mobile, cover } =
       this.state
@@ -124,9 +123,19 @@ class VideoCover extends Component {
           zIndex: !limitedHeight ? ZINDEX_HEADER + 1 : undefined,
         }}
       >
+        {!playing && (
+          <Header
+            locale={locale}
+            menuItems={menuItems}
+            localeLinks={localeLinks}
+            transparent
+          />
+        )}
         <div
           {...styles.cover}
-          style={{ opacity: cover || !playing ? 1 : 0 }}
+          style={{
+            opacity: cover || !playing ? 1 : 0,
+          }}
           onClick={() => {
             this.setState(() => {
               this.player.toggle()
@@ -137,13 +146,18 @@ class VideoCover extends Component {
             })
           }}
         >
-          <Header locale={locale} menuItems={menuItems} localeLinks={localeLinks} transparent />
-          {cover && <div {...styles.maxWidth}>
-            <img src={VIDEO.thumbnail} {...styles.poster} style={heightStyle} />
+          {cover && (
+            <div {...styles.maxWidth}>
+              <img
+                src={VIDEO.thumbnail}
+                {...styles.poster}
+                style={heightStyle}
+              />
               <div {...styles.play} style={{ top: playTop }}>
                 <VideoPlayer.PlayIcon />
               </div>
-          </div>}
+            </div>
+          )}
         </div>
         <VideoPlayer
           ref={this.ref}
@@ -203,18 +217,18 @@ class VideoCover extends Component {
                     top +
                       Math.min(
                         this.state.videoHeight,
-                        this.state.windowHeight * MAX_HEIGHT,
+                        this.state.windowHeight * MAX_HEIGHT
                       ) -
                       topFixed +
                       10,
-                    duration,
+                    duration
                   )
                   setTimeout(() => {
                     this.setState(() => ({
                       playing: false,
                     }))
                   }, duration / 2)
-                },
+                }
               )
             }
             if (progress > 0.999 && !cover) {
