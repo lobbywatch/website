@@ -1,8 +1,9 @@
+import { useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { css } from 'glamor'
 
-// import { ListWithQuery as TestimonialList } from '../components/Testimonial/List'
+import { ListWithQuery as TestimonialList } from 'src/components/Testimonial/List'
 
 import {
   Label,
@@ -11,10 +12,10 @@ import {
   P,
   A,
   H1,
-  H2,
   Interaction,
   Editorial,
   mediaQueries,
+  LazyLoad
 } from '@project-r/styleguide'
 
 import ActionBar from 'src/components/ActionBar'
@@ -28,9 +29,10 @@ import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import { useT } from 'src/components/Message'
 
-import { getSafeLocale, PUBLIC_BASE_URL } from '../../constants'
+import { getSafeLocale, PUBLIC_BASE_URL, STATEMENTS_FEATURED_IDS } from '../../constants'
 import { PLEDGE_PATH } from 'src/constants'
 import { CROWDFUNDING_PLEDGE } from '../../src/constants'
+import { shuffle } from 'd3-array'
 
 const styles = {
   mediaDiversity: css({
@@ -73,6 +75,10 @@ const Page = () => {
         </Link>
       </Interaction.P>
     </div>
+  )
+  const focusTestimonial = useMemo(
+    () => shuffle(STATEMENTS_FEATURED_IDS.split(','))[0],
+    []
   )
 
   const links = [
@@ -321,40 +327,28 @@ const Page = () => {
         </P>
         {mobilePledgeLink}
 
-        <H2>Das Team</H2>
+        <H1>Community</H1>
+        <P>
+          Lass uns gemeinsam eine möglichst breite Basis für mehr Transparenz in der Politik schaffen! Sehen Sie hier, wer schon an Bord ist:
+        </P>
+        
+        <div style={{ margin: '20px 0' }}>
+        <LazyLoad>
+          <TestimonialList
+            ssr={false}
+            focus={focusTestimonial}
+            first={20}
+            locale={locale}
+          />
+          </LazyLoad>
+        </div>
+        
+        <Link href={`${locale}/community`} passHref>
+          <A>Alle ansehen</A>
+        </Link> 
 
         <P>
-          <strong>Thomas Angeli</strong>
-          <br />
-          «Immer mehr Politiker:innen verstehen ihr Parlamentsmandat als
-          Businessmodell, um lukrative Posten zu erhalten. Da schauen wir von
-          Lobbywatch genauer hin.»
-        </P>
-
-        <P>
-          <strong>Elodie Müller</strong>
-          <br />
-          «Demokratie in der Schweiz zu gewährleisten heisst, zu garantieren,
-          dass die im Parlament verabschiedeten Gesetze wirklich der Mehrheit
-          dienen und nicht der Macht der Finanzinteressen.»
-        </P>
-        <P>
-          <strong>Otto Hostettler</strong>
-          <br />
-          «Die heutigen Transparenzregeln im Bundeshaus sind untauglich. Niemand
-          kontrolliert, ob Politikerinnen und Politiker ihre Tätigkeiten korrekt
-          deklarieren. Das muss sich ändern.»
-        </P>
-        <P>
-          <strong>Philippe Wenger</strong>
-          <br />
-          «Politik bedeutet Macht-Management. Nur mit einer transparenten
-          Politik haben wir eine Chance, diese Macht im Interesse aller
-          einzusetzen.»
-        </P>
-
-        <P>
-          So weit unser Versprechen. Jetzt ist es Zeit für Ihre Entscheidung.
+          Jetzt ist es Zeit für Ihre Entscheidung.
         </P>
         <P>
           <strong>Willkommen an Bord!</strong>
@@ -379,29 +373,6 @@ const Page = () => {
           </Label>
           <ActionBar share={shareObject} />
         </div>
-
-        {/* <H1>Community</H1>
-        <P>
-          Lobbywatch kann nicht ein Projekt von wenigen sein. Ein neues
-          Fundament bauen wir nur gemeinsam – oder
-          gar nicht. Sehen Sie hier, wer schon an Bord ist:
-        </P>
-        
-        <div style={{ margin: '20px 0' }}>
-          <TestimonialList
-            first={10}
-            onSelect={(id) => {
-              Router.push(`/community?id=${id}`).then(() => {
-                window.scrollTo(0, 0)
-              })
-              return false
-            }}
-          />
-        </div>
-        
-        <Link href='/community' passHref>
-          <A>Alle ansehen</A>
-        </Link> */}
 
         <br />
         <br />
