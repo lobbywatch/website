@@ -10,7 +10,7 @@ import {
   Loader,
   Interaction,
   Label,
-  fontFamilies,
+  fontStyles,
   colors,
   FieldSet,
 } from '@project-r/styleguide'
@@ -190,12 +190,11 @@ class TokenAuthorization extends Component {
               {showSessionInfo && (
                 <Fragment>
                   <P
-                    style={{
-                      fontFamily:
+                    style={
                         userAgent !== echo.userAgent
-                          ? fontFamilies.sansSerifMedium
-                          : undefined,
-                    }}
+                          ? fontStyles.sansSerifMedium
+                          : undefined
+                    }
                   >
                     {userAgent}
                   </P>
@@ -204,12 +203,10 @@ class TokenAuthorization extends Component {
                     <br />
                     {!!city && (
                       <span
-                        style={{
-                          fontFamily:
-                            city !== echo.city
-                              ? fontFamilies.sansSerifMedium
-                              : undefined,
-                        }}
+                        style={city !== echo.city
+                              ? fontStyles.sansSerifMedium
+                              : undefined
+                      }
                       >
                         {city}
                         {', '}
@@ -219,10 +216,10 @@ class TokenAuthorization extends Component {
                       style={
                         country !== echo.country
                           ? {
-                              fontFamily: fontFamilies.sansSerifMedium,
+                              ...fontStyles.sansSerifMedium,
                               color: colors.error,
                             }
-                          : {}
+                          : undefined
                       }
                     >
                       {country || t('tokenAuthorization/location/unknown')}
@@ -247,11 +244,10 @@ class TokenAuthorization extends Component {
                   <Label>{t('tokenAuthorization/phrase')}</Label>
                   <br />
                   <span
-                    style={{
-                      fontFamily: !isCurrent
-                        ? fontFamilies.sansSerifMedium
-                        : undefined,
-                    }}
+                    style={!isCurrent
+                        ? fontStyles.sansSerifMedium
+                        : undefined
+                    }
                   >
                     {phrase}
                   </span>

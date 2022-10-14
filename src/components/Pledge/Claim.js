@@ -8,6 +8,7 @@ import { gotoMerci } from './Merci'
 
 import { Loader, Interaction } from '@project-r/styleguide'
 import { withRouter } from 'next/router'
+import { getSafeLocale } from '../../../constants'
 
 const { P } = Interaction
 
