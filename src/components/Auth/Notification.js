@@ -12,6 +12,7 @@ import Me from './Me'
 import TokenAuthorization from './TokenAuthorization'
 import MacNewsletterSubscription from './MacNewsletterSubscription'
 import Link from 'next/link'
+import { getSafeLocale } from '../../../constants'
 
 const { H1, P } = Interaction
 
@@ -33,6 +34,7 @@ const knownTypes = [
 const AuthNotification = ({ query, goTo, onClose, t, me }) => {
   const { context, token, tokenType, noAutoAuthorize } = query
   let { type, email } = query
+  const locale = getSafeLocale(query.locale)
   if (email !== undefined) {
     try {
       if (base64u.match(email)) {
@@ -106,7 +108,7 @@ const AuthNotification = ({ query, goTo, onClose, t, me }) => {
     let closeElement = onClose ? (
       <div style={{ marginTop: 20 }}>
         <Button block primary onClick={onClose}>
-          {t(`notifications/closeButton${inNativeApp ? '/app' : ''}`)}
+          {t(`notifications/closeButton`)}
         </Button>
       </div>
     ) : afterTokenAuth && displayCloseNote ? (
@@ -114,7 +116,7 @@ const AuthNotification = ({ query, goTo, onClose, t, me }) => {
     ) : (
       !isUnkownType && (
         <div style={{ marginTop: 20 }}>
-          <Link href='/' passHref>
+          <Link href={`/${locale}`} passHref>
             <Button block primary>
               {t('notifications/closeButton')}
             </Button>
