@@ -978,10 +978,12 @@ class Submit extends Component {
                 !this.isStripeWalletPayment() && (
                   <div {...styles.topMargin}>
                     <Label>
+                      <Interaction.Emphasis>
                       {t.first([
                         `pledge/contact/title/${packageName}`,
                         'pledge/contact/title',
                       ])}
+                      </Interaction.Emphasis>
                     </Label>
                     <div style={{ marginTop: 10, marginBottom: 10 }}>
                       {requireContactData && <FieldSet {...contactState} />}

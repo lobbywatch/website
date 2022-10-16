@@ -173,7 +173,7 @@ const PaymentMethodLabel = ({
       {...colorScheme.set('borderColor', error ? 'error' : 'text')}
       {...colorScheme.set(
         'color',
-        error ? 'error' : '#000', // because backgroundColor is #fff even in dark mode
+        error ? 'error' : '#000' // because backgroundColor is #fff even in dark mode
       )}
       style={{
         backgroundColor,
@@ -278,7 +278,7 @@ class PaymentForm extends Component {
         `payment/stripe/${onlyStripe ? 'only' : 'prefered'}`,
       ].filter(Boolean),
       undefined,
-      '',
+      ''
     )
 
     const paymentMethodForm = !values.paymentSource && paymentMethod
@@ -291,7 +291,7 @@ class PaymentForm extends Component {
               context &&
                 `payment/title${!hasChoice ? '/single' : ''}/${context}`,
               `payment/title${!hasChoice ? '/single' : ''}`,
-            ].filter(Boolean),
+            ].filter(Boolean)
           )}
         </H3>
         <div {...styles.secureContainer}>
@@ -397,7 +397,7 @@ class PaymentForm extends Component {
                 {showMethods &&
                   PAYMENT_METHODS.filter(
                     (pm) =>
-                      !pm.disabled && visibleMethods.indexOf(pm.key) !== -1,
+                      !pm.disabled && visibleMethods.indexOf(pm.key) !== -1
                   ).map((pm) => (
                     <PaymentMethodLabel
                       key={pm.key}
@@ -450,7 +450,11 @@ class PaymentForm extends Component {
             <br />
             <br />
             <div style={{ marginBottom: 10 }}>
-              <Label>{t('pledge/address/payment/title')}</Label>
+              <Label>
+                <Interaction.Emphasis>
+                  {t('pledge/address/payment/title')}
+                </Interaction.Emphasis>
+              </Label>
             </div>
             {requireShippingAddress && (
               <div style={{ marginBottom: 10 }}>
@@ -521,7 +525,11 @@ class PaymentForm extends Component {
           <>
             {stripeNote && <Label>{stripeNote}</Label>}
             {children}
-            <Label>{t('account/pledges/payment/your-payment-data')}</Label>
+            <Label>
+              <Interaction.Emphasis>
+                {t('account/pledges/payment/your-payment-data')}
+              </Interaction.Emphasis>
+            </Label>
             <StripeForm
               t={t}
               onChange={onChange}
@@ -602,7 +610,7 @@ class PaymentForm extends Component {
                       {t(
                         `pledge/address/shipping/${
                           userAddress ? 'updateAccount' : 'setAccount'
-                        }`,
+                        }`
                       )}
                     </Checkbox>
                     <br style={{ clear: 'left' }} />
@@ -624,7 +632,7 @@ PaymentForm.propTypes = {
   loadSources: PropTypes.bool.isRequired,
   accessToken: PropTypes.string,
   allowedMethods: PropTypes.arrayOf(
-    PropTypes.oneOf(PAYMENT_METHODS.map((method) => method.key)),
+    PropTypes.oneOf(PAYMENT_METHODS.map((method) => method.key))
   ),
   payload: PropTypes.shape({
     id: PropTypes.string,
@@ -683,5 +691,5 @@ export default compose(
       paymentSource: data.me?.defaultPaymentSource,
       loadingPaymentSource: data.loading,
     }),
-  }),
+  })
 )(PaymentForm)
