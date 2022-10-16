@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 import { ascending } from 'd3-array'
-import { Checkbox, RawHtml, shouldIgnoreClick } from '@project-r/styleguide'
+import { Checkbox, RawHtml /* , shouldIgnoreClick */ } from '@project-r/styleguide'
 
 import { withT } from 'src/components/Message'
-import LegalOverlay, { SUPPORTED_HREFS } from './LegalOverlay'
+// import LegalOverlay, { SUPPORTED_HREFS } from './LegalOverlay'
 
 const stringifyCombo = (combo = []) =>
   combo
@@ -24,14 +24,14 @@ const Consents = withT(
     const [overlay, setOverlay] = useState()
     return (
       <>
-        {overlay && (
+        {/* {overlay && (
           <LegalOverlay
             {...overlay}
             onClose={() => {
               setOverlay()
             }}
           />
-        )}
+        )} */}
         <Checkbox
           error={error}
           disabled={disabled}
@@ -44,7 +44,7 @@ const Consents = withT(
             )
           }}
         >
-          <span
+          {/* <span
             onClick={(event) => {
               const href =
                 event.target.getAttribute && event.target.getAttribute('href')
@@ -60,22 +60,22 @@ const Consents = withT(
                 })
               }
             }}
-          >
+          > */}
             <RawHtml
               error={error}
               dangerouslySetInnerHTML={{
                 __html: t(`pledge/consents/label/${stringifyCombo(required)}`),
               }}
             />
-          </span>
+          {/* </span> */}
         </Checkbox>
       </>
     )
   },
 )
 
-const VALID_KEYS = ['PRIVACY', 'STATUTE', 'TOS']
-const VALID_COMBOS = ['PRIVACY_STATUTE_TOS', 'PRIVACY_TOS', 'PRIVACY']
+const VALID_KEYS = ['PRIVACY', 'STATUTE']
+const VALID_COMBOS = ['PRIVACY_STATUTE', 'PRIVACY']
 
 Consents.propTypes = {
   onChange: PropTypes.func.isRequired,

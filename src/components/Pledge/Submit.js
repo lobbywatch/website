@@ -78,7 +78,7 @@ const simpleHash = (object, delimiter = '|') => {
     .join(delimiter)
 }
 
-const getRequiredConsents = () => ['PRIVACY'].filter(Boolean)
+const getRequiredConsents = () => ['PRIVACY', 'STATUTE'].filter(Boolean)
 
 const getContactFields = (t) => [
   {
