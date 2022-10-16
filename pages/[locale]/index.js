@@ -337,7 +337,7 @@ const Page = () => {
           <TestimonialList
             ssr={false}
             focus={focusTestimonial}
-            first={10}
+            first={20}
             locale={locale}
           />
           </LazyLoad>
