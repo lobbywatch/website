@@ -5,6 +5,7 @@ import { VideoPlayer, mediaQueries } from '@project-r/styleguide'
 import { ZINDEX_HEADER } from './constants'
 import { scrollIt } from 'src/utils/scroll'
 import Header from '../Frame/Header'
+import { CDN_FRONTEND_BASE_URL } from '../../../constants'
 
 const MAX_HEIGHT = 0.7
 const MAX_HEIGHT_VH = MAX_HEIGHT * 100
@@ -49,11 +50,10 @@ const styles = {
 }
 
 const VIDEO = {
-  // hls: 'https://player.vimeo.com/external/213080233.m3u8?s=40bdb9917fa47b39119a9fe34b9d0fb13a10a92e',
-  mp4: 'https://lobbywatch.s3.eu-central-1.amazonaws.com/videos/main_v221010.mov',
+  hls: 'https://player.vimeo.com/external/760844557.m3u8?s=eec4c51a1b001a6c47cd64747f4a135abad225d2',
+  mp4: 'https://player.vimeo.com/progressive_redirect/playback/760844557/rendition/1080p/file.mp4?loc=external&signature=be548dce517a7951f7fbfd808a80a017d7d57386675d3cc83b7ee7dd98162231',
   // subtitles: '/static/subtitles/main.vtt',
-  thumbnail:
-    'https://lobbywatch.s3.eu-central-1.amazonaws.com/videos/main_v221010.jpg',
+  thumbnail: `${CDN_FRONTEND_BASE_URL}/static/crowdfunding_video_thumbnail.jpg`,
   endScroll: 0.96,
 }
 
