@@ -90,7 +90,7 @@ const EmailForm = (props) => {
             {loading ? (
               <InlineSpinner />
             ) : (
-              <Button block black={black} type='submit'>
+              <Button block black={black} type='submit' style={{ height: 40, marginTop: 20 }}>
                 {label || t('signIn/button')}
               </Button>
             )}

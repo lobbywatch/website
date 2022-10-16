@@ -19,6 +19,8 @@ import {
 import Poller from './Poller'
 import EmailForm, { checkEmail } from './EmailForm'
 import Link from 'next/link'
+import { withRouter } from 'next/router'
+import { getSafeLocale } from '../../../constants'
 
 class SignIn extends Component {
   constructor(props) {
@@ -103,7 +105,7 @@ class SignIn extends Component {
   }
 
   render() {
-    const { t, label, beforeForm } = this.props
+    const { t, label, beforeForm, router } = this.props
     const {
       phrase,
       tokenType,
@@ -163,6 +165,7 @@ class SignIn extends Component {
         </Fragment>
       )
     }
+    const locale = getSafeLocale(router.query.locale)
 
     return (
       <EmailForm
@@ -177,11 +180,11 @@ class SignIn extends Component {
         serverError={serverError}
         hints={
           <>
-            <Link href='/datenschutz' passHref>
+            <Link href='/de/seite/datenschutzerklaerung' passHref>
               <Editorial.A>{t('signIn/privacy')}</Editorial.A>
             </Link>
             {' – '}
-            <Link href='/faq' passHref>
+            <Link href={`/${locale}/faq`} passHref>
               <Editorial.A>{t('signIn/faq')}</Editorial.A>
             </Link>
           </>
@@ -227,4 +230,4 @@ export const withSignIn = graphql(signInMutation, {
   }),
 })
 
-export default compose(withApollo, withSignIn, withT)(SignIn)
+export default compose(withApollo, withSignIn, withT, withRouter)(SignIn)
