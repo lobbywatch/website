@@ -135,7 +135,7 @@ const Page = () => {
           links,
           packages,
           crowdfundingName: CROWDFUNDING_PLEDGE,
-          title: 'Werden Sie Mitglied:',
+          title: t('cf/cta/packages'),
           locale,
         }}
       >
