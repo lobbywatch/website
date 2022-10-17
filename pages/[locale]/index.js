@@ -15,7 +15,7 @@ import {
   Interaction,
   Editorial,
   mediaQueries,
-  LazyLoad
+  LazyLoad,
 } from '@project-r/styleguide'
 
 import ActionBar from 'src/components/ActionBar'
@@ -29,7 +29,11 @@ import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import { useT } from 'src/components/Message'
 
-import { getSafeLocale, PUBLIC_BASE_URL, STATEMENTS_FEATURED_IDS } from '../../constants'
+import {
+  getSafeLocale,
+  PUBLIC_BASE_URL,
+  STATEMENTS_FEATURED_IDS,
+} from '../../constants'
 import { PLEDGE_PATH } from 'src/constants'
 import { CROWDFUNDING_PLEDGE } from '../../src/constants'
 import { shuffle } from 'd3-array'
@@ -67,10 +71,13 @@ const Page = () => {
   const mobilePledgeLink = (
     <div {...styles.mobilePledgeLink}>
       <Interaction.P>
-        <Link href={{
-          pathname: PLEDGE_PATH,
-          query: { locale }
-        }} passHref>
+        <Link
+          href={{
+            pathname: PLEDGE_PATH,
+            query: { locale },
+          }}
+          passHref
+        >
           <A>{t('cf/cta/now')}</A>
         </Link>
       </Interaction.P>
@@ -327,29 +334,29 @@ const Page = () => {
         </P>
         {mobilePledgeLink}
 
-        <H1>Community</H1>
+        <H1>Team & Community</H1>
         <P>
-          Lass uns gemeinsam eine möglichst breite Basis für mehr Transparenz in der Politik schaffen! Sehen Sie hier, wer schon an Bord ist:
+          Lass Sie uns gemeinsam eine möglichst breite Basis für mehr
+          Transparenz in der Politik schaffen! Sehen Sie hier, wer schon an Bord
+          ist:
         </P>
-        
+
         <div style={{ margin: '20px 0' }}>
-        <LazyLoad>
-          <TestimonialList
-            ssr={false}
-            focus={focusTestimonial}
-            first={20}
-            locale={locale}
-          />
+          <LazyLoad>
+            <TestimonialList
+              ssr={false}
+              focus={focusTestimonial}
+              first={20}
+              locale={locale}
+            />
           </LazyLoad>
         </div>
-        
+
         <Link href={`/${locale}/community`} passHref>
           <A>Alle ansehen</A>
-        </Link> 
+        </Link>
 
-        <P>
-          Jetzt ist es Zeit für Ihre Entscheidung.
-        </P>
+        <P>Jetzt ist es Zeit für Ihre Entscheidung.</P>
         <P>
           <strong>Willkommen an Bord!</strong>
         </P>
