@@ -3,7 +3,6 @@ import { css } from 'glamor'
 
 import { graphql } from '@apollo/client/react/hoc'
 import { stratify } from 'd3-hierarchy'
-import { withRouter } from 'next/router'
 import Link from 'next/link'
 
 import { Center } from './index'
@@ -12,11 +11,13 @@ import Newsletter from './Newsletter'
 import { A, Hr, metaStyle, Strong, Clear } from '../Styled'
 import { GREY_SOFT, GREY_DARK, GREY_MID, mediaM } from '../../theme'
 import CreativeCommons from '../../assets/CreativeCommons'
-import Message from '../Message'
+import { useT } from '../Message'
 import Loader from '../Loader'
 import { locales } from '../../../constants'
 import { JsonLd } from '../JsonLd'
 import { metaQuery } from '../../../lib/baseQueries'
+import { useMe } from '../Auth/withMe'
+import SignOut from '../Auth/SignOut'
 
 const footerStyle = css({
   backgroundColor: GREY_SOFT,
@@ -97,76 +98,126 @@ const Footer = ({
   focusMode,
   pledgeAd = true,
   Container = Center,
-}) => (
-  <footer style={{ marginTop: 20, zIndex: 1 }}>
-    <JsonLd data={{ '@context': 'http://schema.org/', '@type': 'WPFooter' }} />
-    {pledgeAd && !focusMode && (
-      <Container>
-        {/* ToDo: add pledge ad */}
-        <Clear {...columnContainerStyle}>
-          <div {...columnStyle}>
-            <SocialMedia locale={locale} />
-          </div>
-          <div {...columnStyle}>
-            <Newsletter locale={locale} />
-          </div>
-        </Clear>
-      </Container>
-    )}
-    <div {...footerStyle}>
-      <Container>
-        <Loader
-          height={300}
-          loading={loading}
-          error={error}
-          render={() => (
-            <div>
-              <Clear style={{ margin: `0 -${footerColumnPadding}px` }}>
-                {groupLinks(links).map(({ data, children }) => (
-                  <div key={data.id} {...footerColumnStyle}>
-                    <Strong>{data.title}</Strong>
+}) => {
+  const { me, meLoading, hasAccess } = useMe()
+  const t = useT(locale)
+
+  return (
+    <footer style={{ marginTop: 20, zIndex: 1 }}>
+      <JsonLd
+        data={{ '@context': 'http://schema.org/', '@type': 'WPFooter' }}
+      />
+      {pledgeAd && !focusMode && (
+        <Container>
+          {/* ToDo: add pledge ad */}
+          <Clear {...columnContainerStyle}>
+            <div {...columnStyle}>
+              <SocialMedia locale={locale} />
+            </div>
+            <div {...columnStyle}>
+              <Newsletter locale={locale} />
+            </div>
+          </Clear>
+        </Container>
+      )}
+      <div {...footerStyle}>
+        <Container>
+          <Loader
+            height={300}
+            loading={loading}
+            error={error}
+            render={() => (
+              <div>
+                <Clear style={{ margin: `0 -${footerColumnPadding}px` }}>
+                  {groupLinks(links)
+                    .slice(0, 3) // limit to 3 via backend, 4th hard coded with login status
+                    .map(({ data, children }) => (
+                      <div key={data.id} {...footerColumnStyle}>
+                        <Strong>{data.title}</Strong>
+                        <ul {...footerListStyle}>
+                          {children.map(({ data: { id, title, href } }) => {
+                            let link
+                            const supportedPath = href.match(/^\/([^/]+)/)
+                            link =
+                              supportedPath &&
+                              locales.includes(supportedPath[1]) ? (
+                                <Link href={href} prefetch={false} passHref>
+                                  <A>{title}</A>
+                                </Link>
+                              ) : (
+                                <A
+                                  href={href}
+                                  target={
+                                    !href.startsWith('mailto:')
+                                      ? '_blank'
+                                      : undefined
+                                  }
+                                >
+                                  {title}
+                                </A>
+                              )
+                            return <li key={id}>{link}</li>
+                          })}
+                        </ul>
+                      </div>
+                    ))}
+                  <div {...footerColumnStyle}>
+                    <Strong>Crowdfunding</Strong>
                     <ul {...footerListStyle}>
-                      {children.map(({ data: { id, title, href } }) => {
-                        let link
-                        const supportedPath = href.match(/^\/([^/]+)/)
-                        link =
-                          supportedPath &&
-                          locales.includes(supportedPath[1]) ? (
-                            <Link href={href} prefetch={false} passHref>
-                              <A>{title}</A>
-                            </Link>
-                          ) : (
-                            <A
-                              href={href}
-                              target={
-                                !href.startsWith('mailto:')
-                                  ? '_blank'
-                                  : undefined
-                              }
-                            >
-                              {title}
-                            </A>
-                          )
-                        return <li key={id}>{link}</li>
-                      })}
+                      <li>
+                        <Link href={`/${locale}`} prefetch={false} passHref>
+                          <A>{t('footer/home')}</A>
+                        </Link>
+                      </li>
+                      {!hasAccess && <li>
+                        <Link href={`/${locale}/patronage?package=YEAR`} prefetch={false} passHref>
+                          <A>{t('footer/member')}</A>
+                        </Link>
+                      </li>}
+                      <li>
+                        <Link href={`/${locale}/patronage?package=DONATE`} prefetch={false} passHref>
+                          <A>{t('footer/donate')}</A>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href={`/${locale}/community`} prefetch={false} passHref>
+                          <A>Community</A>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href={`/${locale}/faq`} prefetch={false} passHref>
+                          <A>FAQ</A>
+                        </Link>
+                      </li>
+                      <li>
+                        <Link href={`/${locale}/merci`} prefetch={false} passHref>
+                          <A>
+                            {t('pages/account/title')}
+                            {me && `: ${me.name}`}
+                          </A>
+                        </Link>
+                      </li>
+                      {me && <li>
+                        <SignOut />
+                      </li>}
                     </ul>
                   </div>
-                ))}
-              </Clear>
-              <Hr />
-              <div {...ccContainerStyle}>
-                <CreativeCommons className={ccLogoStyle} />
-                <p {...ccTextStyle}>
-                  <Message id='footer/cc' locale={locale} raw />
-                </p>
+                </Clear>
+                <Hr />
+                <div {...ccContainerStyle}>
+                  <CreativeCommons className={ccLogoStyle} />
+                  <p {...ccTextStyle} dangerouslySetInnerHTML={{
+                    __html: t('footer/cc')
+                  }} />
+                </div>
               </div>
-            </div>
-          )}
-        />
-      </Container>
-    </div>
-  </footer>
-)
+            )}
+          />
+        </Container>
+      </div>
+    </footer>
+  )
+}
 
 const FooterWithQuery = graphql(metaQuery, {
   options: ({ locale }) => {
@@ -186,4 +237,4 @@ const FooterWithQuery = graphql(metaQuery, {
   },
 })(Footer)
 
-export default withRouter(FooterWithQuery)
+export default FooterWithQuery
