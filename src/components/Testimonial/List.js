@@ -101,7 +101,7 @@ const styles = {
     position: 'absolute',
     background: [
       'rgba(0,0,0,0.15)',
-      'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.80) 100%);'
+      'linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 60%, rgba(0,0,0,0.80) 100%)'
     ],
     left: 0,
     top: 0,
