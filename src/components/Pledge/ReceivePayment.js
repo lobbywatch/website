@@ -242,7 +242,7 @@ class PledgeReceivePayment extends Component {
     }
   }
   pay({ method, pspPayload }) {
-    const { me, pledge, pledgeId } = this.props
+    const { me, pledge, pledgeId, router } = this.props
 
     this.props
       .pay({
