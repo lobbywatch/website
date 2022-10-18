@@ -441,6 +441,8 @@ class Submit extends Component {
       return this.payWithWallet(pledgeId, stripePaymentMethod)
     } else if (selectedPaymentMethod === 'PAYPAL') {
       this.payWithPayPal(pledgeId)
+    } else if (selectedPaymentMethod === 'SAFERPAY') {
+      this.payWithSaferpay(pledgeId)
     }
   }
 
@@ -485,6 +487,30 @@ class Submit extends Component {
       address: syncAddresses
         ? shippingAddressState.values
         : addressState.values,
+    })
+  }
+
+  payWithSaferpay(pledgeId) {
+    const { t } = this.props
+
+    this.setState(
+      {
+        loading: t('pledge/submit/loading/saferpay'),
+        pledgeId: pledgeId,
+      }
+    )
+
+    this.props.pay({
+      pledgeId,
+      method: 'SAFERPAY',
+    }).then(({ data: { payPledge } }) => {
+      window.location = payPledge.saferpayRedirectUrl
+    })
+    .catch((error) => {
+      this.setState({
+        loading: false,
+        paymentError: errorToString(error),
+      })
     })
   }
 
@@ -1148,6 +1174,7 @@ const payPledge = gql`
       stripeClientSecret
       stripePaymentIntentId
       companyId
+      saferpayRedirectUrl
     }
   }
 `

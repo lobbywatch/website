@@ -79,6 +79,9 @@ const PAYMENT_METHODS = [
     Icon: GooglePayMark,
   },
   {
+    key: 'SAFERPAY',
+  },
+  {
     key: 'POSTFINANCECARD',
     bgColor: '#FCCC12',
     Icon: PSPIcons.Postcard,
@@ -443,6 +446,7 @@ class PaymentForm extends Component {
             )
           }}
         />
+        {paymentMethodForm === 'SAFERPAY' && children}
         {paymentMethodForm === 'PAYMENTSLIP' && (
           <div>
             {children}

@@ -60,6 +60,25 @@ class PledgeReceivePayment extends Component {
     const { query, t } = props
 
     const state = (this.state = {})
+    if (query.saferpay) {
+      if (query.saferpay === 'success') {
+        state.processing = true
+        state.action = {
+          method: 'pay',
+          argument: {
+            method: 'SAFERPAY',
+            pspPayload: query,
+          },
+        }
+      } else {
+        state.receiveError = (
+          <RawHtmlTranslation
+            error
+            translationKey='pledge/recievePayment/saferpay/fail'
+          />
+        )
+      }
+    }
     if (query.orderID) {
       if (query.STATUS === '9' || query.STATUS === '91') {
         state.processing = true
