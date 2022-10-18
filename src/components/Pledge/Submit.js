@@ -306,6 +306,7 @@ class Submit extends Component {
       shippingAddressState,
       requireShippingAddress,
       contactState,
+      router,
     } = this.props
     const errorMessages = this.getErrorMessages()
 
@@ -380,6 +381,7 @@ class Submit extends Component {
         ...variables,
         payload: query,
         consents: getRequiredConsents(this.props),
+        locale: getSafeLocale(router.query.locale),
       })
       .then(({ data }) => {
         if (data.submitPledge.emailVerify) {
@@ -1097,6 +1099,7 @@ const submitPledge = gql`
     $payload: JSON
     $address: AddressInput
     $shippingAddress: AddressInput
+    $locale: Locale
   ) {
     submitPledge(
       pledge: {
@@ -1110,6 +1113,7 @@ const submitPledge = gql`
         payload: $payload
       }
       consents: $consents
+      locale: $locale
     ) {
       pledgeId
       userId

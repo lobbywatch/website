@@ -206,6 +206,7 @@ const signInMutation = gql`
     $consents: [String!]
     $tokenType: SignInTokenType
     $accessToken: ID
+    $locale: Locale
   ) {
     signIn(
       email: $email
@@ -213,6 +214,7 @@ const signInMutation = gql`
       consents: $consents
       tokenType: $tokenType
       accessToken: $accessToken
+      locale: $locale
     ) {
       phrase
       tokenType
@@ -221,13 +223,24 @@ const signInMutation = gql`
   }
 `
 
-export const withSignIn = graphql(signInMutation, {
-  props: ({ mutate }) => ({
-    signIn: (email, context = 'signIn', consents, tokenType, accessToken) =>
-      mutate({
-        variables: { email, context, consents, tokenType, accessToken },
-      }),
-  }),
-})
+export const withSignIn = compose(
+  withRouter,
+  graphql(signInMutation, {
+    props: ({ mutate, ownProps: { router } }) => ({
+      signIn: (email, context = 'signIn', consents, tokenType, accessToken) => {
+        return mutate({
+          variables: {
+            email,
+            context,
+            consents,
+            tokenType,
+            accessToken,
+            locale: getSafeLocale(router.query.locale),
+          },
+        })
+      },
+    }),
+  })
+)
 
-export default compose(withApollo, withSignIn, withT, withRouter)(SignIn)
+export default compose(withApollo, withSignIn, withT)(SignIn)
