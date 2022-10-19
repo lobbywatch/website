@@ -6,6 +6,7 @@ import { ZINDEX_HEADER } from './constants'
 import { scrollIt } from 'src/utils/scroll'
 import Header from '../Frame/Header'
 import { CDN_FRONTEND_BASE_URL } from '../../../constants'
+import { HEADER_HEIGHT } from '../../theme'
 
 const MAX_HEIGHT = 0.7
 const MAX_HEIGHT_VH = MAX_HEIGHT * 100
@@ -13,6 +14,7 @@ const ASPECT_RATIO = 2 / 1
 
 const styles = {
   wrapper: css({
+    boxSizing: 'content-box',
     position: 'relative',
     height: `${(1 / ASPECT_RATIO) * 100}vw`,
     backgroundColor: '#000',
@@ -41,7 +43,7 @@ const styles = {
   }),
   play: css({
     position: 'absolute',
-    top: '60%',
+    top: '70%',
     left: '5%',
     right: '5%',
     marginTop: -18,
@@ -54,7 +56,7 @@ const VIDEO = {
   mp4: 'https://player.vimeo.com/progressive_redirect/playback/760844557/rendition/1080p/file.mp4?loc=external&signature=be548dce517a7951f7fbfd808a80a017d7d57386675d3cc83b7ee7dd98162231',
   // subtitles: '/static/subtitles/main.vtt',
   thumbnail: `${CDN_FRONTEND_BASE_URL}/static/crowdfunding_video_thumbnail.jpg`,
-  endScroll: 0.96,
+  endScroll: 0.99,
 }
 
 class VideoCover extends Component {
@@ -69,9 +71,10 @@ class VideoCover extends Component {
       this.setState(() => {
         const windowWidth = window.innerWidth
         const windowHeight = window.innerHeight
-        let videoHeight = windowWidth * (1 / ASPECT_RATIO)
+        const mobile = windowWidth < mediaQueries.mBreakPoint
+        const videoHeight = windowWidth * (1 / ASPECT_RATIO)
         return {
-          mobile: windowWidth < mediaQueries.mBreakPoint,
+          mobile,
           windowHeight,
           videoHeight,
         }
@@ -107,19 +110,33 @@ class VideoCover extends Component {
       menuItems,
       localeLinks,
     } = this.props
-    const { playing, ended, videoHeight, windowHeight, mobile, cover } =
+    const { playing, ended, videoHeight, windowHeight, cover, mobile } =
       this.state
 
     const limitedHeight = !!limited || !playing || !videoHeight
     const heightStyle = {
       height: playing && !ended && !limitedHeight ? windowHeight : videoHeight,
       maxHeight: limitedHeight ? `${MAX_HEIGHT_VH}vh` : undefined,
+      paddingTop: mobile && !playing ? HEADER_HEIGHT / 2 : 0,
+      paddingBottom: mobile && !playing ? HEADER_HEIGHT / 2 : 0,
+    }
+    if (heightStyle.maxHeight) {
+      heightStyle.height = Math.min(
+        windowHeight * MAX_HEIGHT -
+          heightStyle.paddingTop -
+          heightStyle.paddingBottom,
+        heightStyle.height
+      )
     }
     return (
       <div
         {...styles.wrapper}
         style={{
-          ...heightStyle,
+          maxHeight: heightStyle.maxHeight,
+          height:
+            heightStyle.height +
+            heightStyle.paddingTop +
+            heightStyle.paddingBottom,
           zIndex: !limitedHeight ? ZINDEX_HEADER + 1 : undefined,
         }}
       >
@@ -203,7 +220,7 @@ class VideoCover extends Component {
               this.setState(
                 () => ({ ended: true }),
                 () => {
-                  const topFixed = 0 // mobile ? HEADER_HEIGHT_MOBILE : HEADER_HEIGHT
+                  const topFixed = 0
                   const duration = 800
 
                   let top = 0

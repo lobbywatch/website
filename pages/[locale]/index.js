@@ -369,7 +369,7 @@ const Page = () => {
           key='pledge'
           passHref
         >
-          <Button primary style={{ minWidth: 300 }}>
+          <Button primary style={{ minWidth: 280 }}>
             {t('cf/cta/now')}
           </Button>
         </Link>
