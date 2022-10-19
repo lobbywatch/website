@@ -23,7 +23,6 @@ import StripeField from './StripeField'
 
 const styles = {
   container: css({
-    margin: '10px 0',
     lineHeight: 0,
   }),
 }

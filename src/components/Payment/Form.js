@@ -523,7 +523,7 @@ class PaymentForm extends Component {
         )}
         {paymentMethodForm === 'STRIPE' && (
           <>
-            {stripeNote && <Label>{stripeNote}</Label>}
+            {stripeNote && <div style={{ marginBottom: 15 }}><Label>{stripeNote}</Label></div>}
             {children}
             <Label>
               <Interaction.Emphasis>
