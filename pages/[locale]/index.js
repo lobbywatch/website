@@ -337,7 +337,7 @@ const Page = () => {
         <H1>Team & Community</H1>
         <P>
           Lass Sie uns gemeinsam eine möglichst breite Basis für mehr
-          Transparenz in der Politik schaffen! Sehen Sie hier, wer schon an Bord
+          Transparenz in der Politik schaffen! Sehen Sie hier, wer schon dabei
           ist:
         </P>
 
@@ -356,9 +356,9 @@ const Page = () => {
           <A>Alle ansehen</A>
         </Link>
 
-        <P>Jetzt ist es Zeit für Ihre Entscheidung.</P>
+        <P>Unterstützen Sie jetzt mehr Transparenz in der Politik.</P>
         <P>
-          <strong>Willkommen an Bord!</strong>
+          <strong>Herzlich Willkommen!</strong>
         </P>
         <br />
         <Link
