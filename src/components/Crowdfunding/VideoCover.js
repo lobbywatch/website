@@ -120,7 +120,7 @@ class VideoCover extends Component {
       paddingTop: mobile && !playing ? HEADER_HEIGHT / 2 : 0,
       paddingBottom: mobile && !playing ? HEADER_HEIGHT / 2 : 0,
     }
-    if (heightStyle.maxHeight) {
+    if (heightStyle.maxHeight && heightStyle.height) {
       heightStyle.height = Math.min(
         windowHeight * MAX_HEIGHT -
           heightStyle.paddingTop -
@@ -134,9 +134,10 @@ class VideoCover extends Component {
         style={{
           maxHeight: heightStyle.maxHeight,
           height:
+            heightStyle.height &&
             heightStyle.height +
-            heightStyle.paddingTop +
-            heightStyle.paddingBottom,
+              heightStyle.paddingTop +
+              heightStyle.paddingBottom,
           zIndex: !limitedHeight ? ZINDEX_HEADER + 1 : undefined,
         }}
       >
