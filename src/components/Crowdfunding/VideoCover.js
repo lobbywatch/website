@@ -54,7 +54,10 @@ const styles = {
 const VIDEO = {
   hls: 'https://player.vimeo.com/external/760844557.m3u8?s=eec4c51a1b001a6c47cd64747f4a135abad225d2',
   mp4: 'https://player.vimeo.com/progressive_redirect/playback/760844557/rendition/1080p/file.mp4?loc=external&signature=be548dce517a7951f7fbfd808a80a017d7d57386675d3cc83b7ee7dd98162231',
-  // subtitles: '/static/subtitles/main.vtt',
+  subtitles: [
+    { label: 'Deutsch', locale: 'de', src: '/static/subtitles/crowdfunding_german.vtt' },
+    { label: 'Français', locale: 'fr', src: '/static/subtitles/crowdfunding_french.vtt' }
+  ],
   thumbnail: `${CDN_FRONTEND_BASE_URL}/static/crowdfunding_video_thumbnail.jpg`,
   endScroll: 0.99,
 }
@@ -179,6 +182,8 @@ class VideoCover extends Component {
         </div>
         <VideoPlayer
           ref={this.ref}
+          subtitles
+          locale={locale}
           src={VIDEO}
           showPlay={!cover && playing !== undefined}
           autoPlay={backgroundAutoPlay}

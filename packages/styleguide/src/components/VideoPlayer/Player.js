@@ -477,6 +477,7 @@ class VideoPlayer extends Component {
       cinemagraph,
       hideTime,
       attributes = {},
+      locale,
     } = this.props
     const { playing, progress, muted, subtitles, loading, fullscreen, isFull } =
       this.state
@@ -520,15 +521,16 @@ class VideoPlayer extends Component {
         >
           <source src={src.hls} type='application/x-mpegURL' />
           <source src={src.mp4} type='video/mp4' />
-          {!!src.subtitles && (
+          {src.subtitles.map(subtitle => (
             <track
-              label='Deutsch'
+              key={subtitle.locale}
+              label={subtitle.label}
               kind='subtitles'
-              srcLang='de'
-              src={src.subtitles}
-              default
+              srcLang={subtitle.locale}
+              src={subtitle.src}
+              default={subtitle.locale === locale}
             />
-          )}
+          ))}
         </video>
         <div
           {...styles.controls}
@@ -634,7 +636,7 @@ VideoPlayer.propTypes = {
     thumbnail: PropTypes.string.isRequired,
     subtitles: (props, propName, componentName) => {
       const value = props[propName]
-      if (value && value.match(/^https?:/)) {
+      if (value?.find(subtitle => subtitle.src.match(/^https?:/))) {
         return new Error(
           `Invalid prop \`${propName}\` supplied to
 \`${componentName}\`. Subtitles should be loaded from a relative or absolute path.
