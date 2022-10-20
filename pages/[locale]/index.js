@@ -301,34 +301,34 @@ const Page = () => {
           <>
             <H1>Lobbywatch, c’est quoi ?</H1>
             <P>
-              Lobbywatch ist die zentrale journalistische Auskunftsplattform für
-              Interessenbindungen von eidgenössischen Politiker:innen. Auf
-              unserer Website können interessierte Bürger:innen und
-              Medienschaffende deshalb jederzeit und gratis nachsehen, welche
-              Parlamentarier:innen in Bern welche Tätigkeiten ausüben und wessen
-              Interessen sie vertreten. Mit Datenanalysen und Blogbeiträgen
-              greifen wir zudem aktuelle Themen aus der eidgenössischen Politik
-              auf.
+              Lobbywatch est la plateforme centrale d'information journalistique
+              sur les liens d'intérêts des politiciens et politiciennes
+              fédéraux. Les citoyens et les journalistes intéressés peuvent donc
+              consulter gratuitement et à tout moment notre site Internet pour
+              savoir quels parlementaires exercent quelles activités à Berne, et
+              quels intérêts ils représentent. Grâce à des analyses de données
+              et des articles, nous abordons aussi les thèmes actuels de la
+              politique fédérale.
             </P>
             <P>
-              In unserer Datenbank führen wir mittlerweile über 40 000 (???)
-              Datensätze zu Ratsmitgliedern und ihren Verbindungen zu Verbänden,
-              Organisationen und Unternehmen. Zudem dokumentieren wir, welche
-              Parlamentarier:innen durch die ihnen zur Verfügung stehenden
-              Zutrittsausweise welchen Lobbyist:innen den Zutritt zum Bundeshaus
-              ermöglichen und für wen diese tätig sind.
+              Notre base de données contient plus de 40 000 données sur les
+              parlementaires et leurs liens d’intérêt avec des associations, des
+              organisations et des entreprises. De plus, nous documentons à
+              quels lobbyistes les parlementaires donnent accès au Palais
+              fédéral grâce aux cartes d'accès dont ils disposent, et pour qui
+              ces lobbyistes travaillent.
             </P>
             <P>
-              Diese Informationen werden von jungen Medienschaffenden im Auftrag
-              von Lobbywatch recherchiert und dank eigens für uns entwickelten
-              Applikationen ständig aktuell gehalten.
+              Ces informations sont examinées par de jeunes journalistes pour le
+              compte de Lobbywatch et sont constamment mises à jour grâce à des
+              applications spécialement développées pour nous.
             </P>
             <P>
-              Mit Ausnahme der Rechercheur:innen und der Geschäftsstelle
-              arbeiten bei Lobbywatch alle ehrenamtlich. Unser Verein ist als
-              gemeinnützig anerkannt und steuerbefreit. Spenden und
-              Mitgliederbeiträge können deshalb von den Steuern abgezogen
-              werden.
+              A l'exception des chercheurs et chercheuses, ainsi que du
+              secrétariat, tous les membres de Lobbywatch travaillent
+              bénévolement. Notre association est reconnue d'utilité publique et
+              exonérée d'impôts. Les dons et les cotisations des membres peuvent
+              donc être déduits des impôts.
             </P>
           </>
         ) : (
@@ -541,12 +541,24 @@ const Page = () => {
         )}
         {mobilePledgeLink}
 
-        <H1>Team & Community</H1>
-        <P>
-          Lass Sie uns gemeinsam eine möglichst breite Basis für mehr
-          Transparenz in der Politik schaffen! Sehen Sie hier, wer schon dabei
-          ist:
-        </P>
+        {isFrench ? (
+          <>
+            <H1>L’équipe et la communauté</H1>
+            <P>
+              Créons ensemble une base aussi large que possible pour plus de
+              transparence en politique! Voyez ici qui est déjà impliqué:
+            </P>
+          </>
+        ) : (
+          <>
+            <H1>Team & Community</H1>
+            <P>
+              Lass Sie uns gemeinsam eine möglichst breite Basis für mehr
+              Transparenz in der Politik schaffen! Sehen Sie hier, wer schon
+              dabei ist:
+            </P>
+          </>
+        )}
 
         <div style={{ margin: '20px 0' }}>
           <LazyLoad>
@@ -559,14 +571,29 @@ const Page = () => {
           </LazyLoad>
         </div>
 
-        <Link href={`/${locale}/community`} passHref>
-          <A>Alle ansehen</A>
-        </Link>
+        {isFrench ? (
+          <>
+            <Link href={`/${locale}/community`} passHref>
+              <A>Voir tout le monde</A>
+            </Link>
 
-        <P>Unterstützen Sie jetzt mehr Transparenz in der Politik.</P>
-        <P>
-          <strong>Herzlich Willkommen!</strong>
-        </P>
+            <P>Soutenez-nous pour plus de transparence en politique.</P>
+            <P>
+              <strong>Bienvenue!</strong>
+            </P>
+          </>
+        ) : (
+          <>
+            <Link href={`/${locale}/community`} passHref>
+              <A>Alle ansehen</A>
+            </Link>
+
+            <P>Unterstützen Sie jetzt mehr Transparenz in der Politik.</P>
+            <P>
+              <strong>Herzlich Willkommen!</strong>
+            </P>
+          </>
+        )}
         <br />
         <Link
           href={{
