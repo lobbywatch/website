@@ -181,7 +181,7 @@ const Footer = ({
                       </li>
                       <li>
                         <Link href={`/${locale}/community`} prefetch={false} passHref>
-                          <A>Community</A>
+                          <A>{t('footer/community')}</A>
                         </Link>
                       </li>
                       <li>

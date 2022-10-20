@@ -311,7 +311,7 @@ const Page = () => {
               politique fédérale.
             </P>
             <P>
-              Notre base de données contient plus de 40 000 données sur les
+              Notre base de données contient plus de 48’000 données sur les
               parlementaires et leurs liens d’intérêt avec des associations, des
               organisations et des entreprises. De plus, nous documentons à
               quels lobbyistes les parlementaires donnent accès au Palais
@@ -345,7 +345,7 @@ const Page = () => {
               auf.
             </P>
             <P>
-              In unserer Datenbank führen wir mittlerweile über 40 000 (???)
+              In unserer Datenbank führen wir mittlerweile gut 48’000
               Datensätze zu Ratsmitgliedern und ihren Verbindungen zu Verbänden,
               Organisationen und Unternehmen. Zudem dokumentieren wir, welche
               Parlamentarier:innen durch die ihnen zur Verfügung stehenden
