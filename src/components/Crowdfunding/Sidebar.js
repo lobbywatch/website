@@ -91,7 +91,7 @@ const SidebarInner = (props) => {
             passHref
           >
             <Button block primary>
-              Mitmachen
+              {t('cf/cta/short')}
             </Button>
           </Link>
         </div>
