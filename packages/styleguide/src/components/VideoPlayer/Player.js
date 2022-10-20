@@ -521,7 +521,7 @@ class VideoPlayer extends Component {
         >
           <source src={src.hls} type='application/x-mpegURL' />
           <source src={src.mp4} type='video/mp4' />
-          {src.subtitles.map(subtitle => (
+          {src.subtitles.filter(subtitle => subtitle.locale === locale).map(subtitle => (
             <track
               key={subtitle.locale}
               label={subtitle.label}
