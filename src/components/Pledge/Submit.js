@@ -919,6 +919,7 @@ class Submit extends Component {
         <div {...styles.topMargin}>
           <PaymentForm
             key={me && me.id}
+            locale={getSafeLocale(this.props.router.query.locale)}
             ref={this.paymentRef}
             t={t}
             loadSources={!!me || !!query.token}

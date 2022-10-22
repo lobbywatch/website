@@ -19,10 +19,10 @@ import { LockIcon } from '@project-r/styleguide'
 
 import { AutoForm as AddressForm, AddressView } from '../Account/AddressForm'
 
-// import { PF_FORM_ACTION, PAYPAL_FORM_ACTION } from '../../lib/constants'
+import { PAYPAL_FORM_ACTION /* PF_FORM_ACTION, */ } from '../../../constants'
 
 // import * as postfinance from './postfinance'
-// import * as paypal from './paypal'
+import * as paypal from './paypal'
 
 import * as PSPIcons from './PSPIcons'
 
@@ -32,6 +32,7 @@ import StripeForm from './Form/Stripe'
 import ApplePayMark from './Form/ApplePayMark'
 import GooglePayMark from './Form/GooglePayMark'
 import { WalletPaymentMethod } from './PaymentRequest/usePaymentRequest'
+import { withRouter } from 'next/router'
 
 const pad2 = format('02')
 
@@ -265,6 +266,7 @@ class PaymentForm extends Component {
       packageGroup,
       syncAddresses,
       setSyncAddresses,
+      locale
     } = this.props
     const { paymentMethod } = values
     const visibleMethods = allowedMethods || PAYMENT_METHODS.map((pm) => pm.key)
@@ -567,7 +569,7 @@ class PaymentForm extends Component {
             </form>
           </>
         )} */}
-        {/* {paymentMethodForm === 'PAYPAL' && (
+        {paymentMethodForm === 'PAYPAL' && (
           <>
             {children}
             <form
@@ -579,6 +581,7 @@ class PaymentForm extends Component {
                 .getParams({
                   itemName: payload.id,
                   amount: payload.total,
+                  locale
                 })
                 .map((param) => (
                   <input
@@ -590,7 +593,7 @@ class PaymentForm extends Component {
                 ))}
             </form>
           </>
-        )} */}
+        )}
         {requireShippingAddress && !paymentMethod?.startsWith('STRIPE-WALLET') && (
           <div style={{ marginBottom: 40 }}>
             <Label style={{ marginBottom: 10 }}>
