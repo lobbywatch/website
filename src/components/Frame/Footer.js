@@ -196,7 +196,7 @@ const Footer = ({
                         <Link href={`/${locale}/merci`} prefetch={false} passHref>
                           <A>
                             {t('pages/account/title')}
-                            {me && `: ${me.name}`}
+                            {me?.name && `: ${me.name}`}
                           </A>
                         </Link>
                       </li>

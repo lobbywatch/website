@@ -15,6 +15,7 @@ import NameAddress from 'src/components/Account/UserInfo/NameAddress'
 import UpdateEmail, { UserEmail } from 'src/components/Account/UserInfo/Email'
 import withMe from 'src/components/Auth/withMe'
 import Testimonial from 'src/components/Account/Testimonial'
+import SignOut from 'src/components/Auth/SignOut'
 
 const AccountPage = ({ t, hasActiveMembership }) => {
   const router = useRouter()
@@ -37,6 +38,7 @@ const AccountPage = ({ t, hasActiveMembership }) => {
               </div>
               <NameAddress />
             </AccountSection>
+            <SignOut />
           </AccountEnforceMe>
         </Merci>
       </Center>
