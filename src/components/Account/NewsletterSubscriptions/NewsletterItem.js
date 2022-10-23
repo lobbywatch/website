@@ -15,8 +15,8 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'flex-start',
-    marginBottom: 24,
-    paddingBottom: 24,
+    marginBottom: 5,
+    paddingBottom: 5,
     gap: GAP_SIZE,
     [mediaQueries.mUp]: {
       flexDirection: 'row',
@@ -36,9 +36,6 @@ const styles = {
   description: css({
     ...fontStyles.sansSerifRegular16,
     margin: '4px 0 8px 0',
-  }),
-  frequency: css({
-    ...fontStyles.sansSerifMedium14,
   }),
   spinnerWrapper: css({
     width: 24,
@@ -79,7 +76,7 @@ const NewsletterItem = ({
         {t(
           `account/newsletterSubscriptions/onlyName/${
             subscribed ? 'subscribed' : 'subscribe'
-          }`,
+          }`
         )}
         <span {...styles.spinnerWrapper}>
           {mutating && <InlineSpinner size={24} />}
@@ -94,15 +91,9 @@ const NewsletterItem = ({
   return (
     <div {...styles.row} {...colorScheme.set('borderColor', 'divider')}>
       <div style={{ flex: 1 }}>
-        <Interaction.H3>
-          {t(`account/newsletterSubscriptions/${name}/label`)}
-        </Interaction.H3>
         <p {...styles.description}>
-          {t(`account/newsletterSubscriptions/${name}/description`)}
+          {t(`account/newsletterSubscriptions/${name}/label`)}
         </p>
-        <span {...styles.frequency} {...colorScheme.set('color', 'textSoft')}>
-          {t(`account/newsletterSubscriptions/${name}/frequency`)}
-        </span>
       </div>
       <div {...styles.checkbox}>{checkboxElement}</div>
     </div>

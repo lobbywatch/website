@@ -12,7 +12,6 @@ import { P } from '../Elements'
 import { withMembership } from '../../Auth/checkRoles'
 import NewsletterItem from './NewsletterItem'
 
-
 const newsletterFragment = `
   fragment NewsletterInfo on NewsletterSubscription {
     id
@@ -62,7 +61,7 @@ export const NEWSLETTER_SETTINGS = gql`
   ${newsletterFragment}
 `
 
-const NewsletterSubscriptions = ({ t, isMember, free, onlyName }) => (
+const NewsletterSubscriptions = ({ t, onlyName }) => (
   <Query query={NEWSLETTER_SETTINGS} variables={{ onlyName }}>
     {({ loading, error, data }) => {
       if (loading || error) {
@@ -79,7 +78,7 @@ const NewsletterSubscriptions = ({ t, isMember, free, onlyName }) => (
 
       const { status } = data.me.newsletterSettings
       const subscriptions = data.me.newsletterSettings.subscriptions.filter(
-        onlyName ? (subscription) => subscription.name === onlyName : Boolean,
+        onlyName ? (subscription) => subscription.name === onlyName : Boolean
       )
 
       return (
@@ -100,7 +99,7 @@ const NewsletterSubscriptions = ({ t, isMember, free, onlyName }) => (
                     {status === 'pending' && !mutationData && (
                       <P>
                         {t(
-                          'account/newsletterSubscriptions/resubscribeEmailPending',
+                          'account/newsletterSubscriptions/resubscribeEmailPending'
                         )}
                       </P>
                     )}
@@ -122,7 +121,7 @@ const NewsletterSubscriptions = ({ t, isMember, free, onlyName }) => (
                             {status !== 'pending'
                               ? t('account/newsletterSubscriptions/resubscribe')
                               : t(
-                                  'account/newsletterSubscriptions/resendResubscribeEmail',
+                                  'account/newsletterSubscriptions/resendResubscribeEmail'
                                 )}
                           </Button>
                         )}
@@ -131,11 +130,6 @@ const NewsletterSubscriptions = ({ t, isMember, free, onlyName }) => (
                   </>
                 )}
               </Mutation>
-            </FrameBox>
-          )}
-          {!isMember && !free && (
-            <FrameBox style={{ margin: '10px 0', padding: 15 }}>
-              <P>{t('account/newsletterSubscriptions/noMembership')}</P>
             </FrameBox>
           )}
           {subscriptions.map(({ name, subscribed }) => (

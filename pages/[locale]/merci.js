@@ -16,6 +16,7 @@ import UpdateEmail, { UserEmail } from 'src/components/Account/UserInfo/Email'
 import withMe from 'src/components/Auth/withMe'
 import Testimonial from 'src/components/Account/Testimonial'
 import SignOut from 'src/components/Auth/SignOut'
+import NewsletterSubscriptions from 'src/components/Account/NewsletterSubscriptions'
 
 const AccountPage = ({ t, hasActiveMembership }) => {
   const router = useRouter()
@@ -30,6 +31,9 @@ const AccountPage = ({ t, hasActiveMembership }) => {
             {hasActiveMembership && <Testimonial />}
             <AccountSection title={t('account/pledges/title')}>
               <PledgeList highlightId={query.id} />
+            </AccountSection>
+            <AccountSection title={t('account/newsletter/title')}>
+                <NewsletterSubscriptions />
             </AccountSection>
             <AccountSection title={t('Account/Update/title')}>
               <div style={{ marginBottom: 24 }}>
