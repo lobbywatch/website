@@ -13,6 +13,7 @@ import TokenAuthorization from './TokenAuthorization'
 import MacNewsletterSubscription from './MacNewsletterSubscription'
 import Link from 'next/link'
 import { getSafeLocale } from '../../../constants'
+import { ACCOUNT_PATH } from '../../constants'
 
 const { H1, P } = Interaction
 
@@ -114,9 +115,12 @@ const AuthNotification = ({ query, goTo, onClose, t, me }) => {
     ) : afterTokenAuth && displayCloseNote ? (
       <P>{t('notifications/closeNote')}</P>
     ) : (
-      !isUnkownType && (
+      !isUnkownType && me && (
         <div style={{ marginTop: 20 }}>
-          <Link href={`/${locale}`} passHref>
+          <Link href={{
+            pathname: ACCOUNT_PATH,
+            query: {locale}
+          }} passHref>
             <Button block primary>
               {t('notifications/closeButton')}
             </Button>

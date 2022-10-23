@@ -62,18 +62,9 @@ const fixAmpsInQuery = (rawQuery) => {
 const Page = ({ router: { query: rawQuery }, t, me }) => {
   const [colorScheme] = useColorContext()
   const query = fixAmpsInQuery(rawQuery)
-  const { context, type } = query
-  const locale = getSafeLocale(query.locale)
+  const { type } = query
 
-  const links = [
-    me &&
-      context === 'pledge' &&
-      type !== 'token-authorization' && {
-        pathname: ACCOUNT_PATH,
-        query: { locale },
-        label: t('notifications/links/merci'),
-      },
-  ].filter(Boolean)
+  const links = [].filter(Boolean)
 
   const logoTarget = [
     'token-authorization',
