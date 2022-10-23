@@ -258,7 +258,7 @@ class VideoCover extends Component {
               this.setState(() => ({ cover: true }))
             }
           }}
-          style={heightStyle.height ? heightStyle : { height: '100%' }}
+          style={heightStyle.height ? heightStyle : { height: '100%', maxHeight: heightStyle.maxHeight }}
         />
       </div>
     )

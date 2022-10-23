@@ -362,7 +362,7 @@ RawStatus.propTypes = {
   hasEnd: PropTypes.bool,
 }
 
-const query = gql`
+export const cfStatusQuery = gql`
   query crowdfundingStatus($crowdfundingName: String!) {
     crowdfunding(name: $crowdfundingName) {
       id
@@ -384,7 +384,7 @@ const query = gql`
   }
 `
 
-export const withStatus = graphql(query, {
+export const withStatus = graphql(cfStatusQuery, {
   skip: (props) => props.crowdfunding || !props.crowdfundingName,
   options: {
     pollInterval: +STATUS_POLL_INTERVAL_MS,

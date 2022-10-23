@@ -42,6 +42,7 @@ import {
 import { PLEDGE_PATH } from 'src/constants'
 import { CROWDFUNDING_PLEDGE } from '../../src/constants'
 import { shuffle } from 'd3-array'
+import { cfStatusQuery } from '../../src/components/Crowdfunding/Status'
 
 const styles = {
   mediaDiversity: css({
@@ -269,8 +270,8 @@ const Page = () => {
                 <List>
                   {blog.data.articles.list.map(
                     ({ path, published, title, lead }) => (
-                      <List.Item key={path}>
-                        <Link href={path}>
+                      <List.Item key={path.join('/')}>
+                        <Link href={`/${locale}/${path.join('/')}`}>
                           <a {...plainLinkRule}>
                             <Highlight>
                               {published.split(' ')[0]}: {title}
@@ -684,6 +685,18 @@ const Page = () => {
 
 export const getStaticProps = createGetStaticProps({
   pageQuery: blogQuery,
+  getCustomStaticProps: async (
+    _,
+    __,
+    apolloClient
+  ) => {
+    await apolloClient.query({
+      query: cfStatusQuery,
+      variables: {
+        crowdfundingName: CROWDFUNDING_PLEDGE
+      }
+    })
+  }
 })
 export async function getStaticPaths() {
   return {
