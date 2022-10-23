@@ -1,6 +1,8 @@
 import { Component } from 'react'
 import compose from 'lodash/flowRight'
 import { css } from 'glamor'
+import { graphql } from '@apollo/client/react/hoc'
+import { gql } from '@apollo/client'
 
 import { withT } from 'src/components/Message'
 import AddressForm, {
@@ -19,12 +21,45 @@ import {
   colors,
   errorToString,
   intersperse,
-  timeParse
+  timeParse,
 } from '@project-r/styleguide'
 
-import { withMyDetails, withMyDetailsMutation } from '../enhancers'
 import { Hint, EditButton } from '../Elements'
 import withMe from 'src/components/Auth/withMe'
+import belongingsQuery from '../belongingsQuery'
+
+const mutation = gql`
+  mutation updateMe(
+    $birthday: Date
+    $firstName: String
+    $lastName: String
+    $phoneNumber: String
+    $address: AddressInput
+  ) {
+    updateMe(
+      birthday: $birthday
+      firstName: $firstName
+      lastName: $lastName
+      phoneNumber: $phoneNumber
+      address: $address
+    ) {
+      id
+      birthday
+      name
+      firstName
+      lastName
+      phoneNumber
+      address {
+        name
+        line1
+        line2
+        postalCode
+        city
+        country
+      }
+    }
+  }
+`
 
 const { P, Emphasis } = Interaction
 
@@ -98,10 +133,7 @@ const getValues = (me) => {
   }
 }
 
-const UserNameAddress = compose(
-  withT,
-  withMyDetails,
-)(({ t, detailsData }) => {
+const UserNameAddress = withT(({ t, detailsData }) => {
   const { loading, error, me } = detailsData
   return (
     <Loader
@@ -135,7 +167,7 @@ const UserNameAddress = compose(
                   ].filter(Boolean),
                   (_, i) => (
                     <br key={i} />
-                  ),
+                  )
                 )}
               </P>
             </>
@@ -181,21 +213,22 @@ class UpdateMe extends Component {
       this.checked = true
       const {
         t,
-        hasActiveMembership,
         detailsData: { me },
       } = this.props
 
       const errors = FieldSet.utils.getErrors(
-        fields(t).concat(
-          hasActiveMembership || me.address ? addressFields(t) : [],
-        ),
-        getValues(me),
+        fields(t).concat(me.address ? addressFields(t) : []),
+        getValues(me)
       )
 
       const errorMessages = Object.keys(errors)
         .map((key) => errors[key])
         .filter(Boolean)
-      errorMessages.length && this.startEditing()
+
+      console.log(me, this.props.detailsData)
+      if (errorMessages.length || (!me.address && me.pledges?.length)) {
+        this.startEditing()
+      }
     }
   }
   componentDidMount() {
@@ -205,7 +238,7 @@ class UpdateMe extends Component {
     this.autoEdit()
   }
   render() {
-    const { t, detailsData, style, hasActiveMembership } = this.props
+    const { t, detailsData, style } = this.props
     const { values, dirty, updating, isEditing, errors } = this.state
     const { loading, error, me } = detailsData
 
@@ -216,11 +249,7 @@ class UpdateMe extends Component {
         render={() => {
           const meFields = fields(t)
           let errorFilter = () => true
-          if (
-            !hasActiveMembership &&
-            !me.address &&
-            isEmptyAddress(values, me)
-          ) {
+          if (!me.address && isEmptyAddress(values, me)) {
             errorFilter = (key) => meFields.find((field) => field.name === key)
           }
 
@@ -233,7 +262,7 @@ class UpdateMe extends Component {
             <div style={style}>
               {!isEditing ? (
                 <div>
-                  <UserNameAddress />
+                  <UserNameAddress detailsData={detailsData} />
                   <EditButton onClick={() => this.startEditing()}>
                     {t('Account/Update/edit')}
                   </EditButton>
@@ -309,8 +338,8 @@ class UpdateMe extends Component {
                                   {
                                     showErrors: true,
                                     dirty: {},
-                                  },
-                                ),
+                                  }
+                                )
                               )
                               return
                             }
@@ -375,7 +404,16 @@ class UpdateMe extends Component {
 
 export default compose(
   withMe,
-  withMyDetails,
-  withMyDetailsMutation,
-  withT,
+  graphql(belongingsQuery, {
+    name: 'detailsData',
+  }),
+  graphql(mutation, {
+    props: ({ mutate }) => ({
+      updateDetails: (variables) =>
+        mutate({
+          variables,
+        }),
+    }),
+  }),
+  withT
 )(UpdateMe)

@@ -10,8 +10,16 @@ import FrameBox from '../../Frame/Box'
 import { P } from '../Elements'
 
 import { withMembership } from '../../Auth/checkRoles'
-import { newsletterFragment } from '../enhancers'
 import NewsletterItem from './NewsletterItem'
+
+
+const newsletterFragment = `
+  fragment NewsletterInfo on NewsletterSubscription {
+    id
+    name
+    subscribed
+  }
+`
 
 export const RESUBSCRIBE_EMAIL = gql`
   mutation resubscribeEmail($userId: ID!) {

@@ -17,7 +17,6 @@ import {
 
 import { withT } from 'src/components/Message'
 import withMe from 'src/components/Auth/withMe'
-import { query } from '../enhancers'
 import { EditButton, HintArea } from '../Elements'
 
 const { P } = Interaction
@@ -146,6 +145,7 @@ const mutation = gql`
   mutation updateEmail($userId: ID!, $email: String!) {
     updateEmail(userId: $userId, email: $email) {
       id
+      email
     }
   }
 `
@@ -155,12 +155,7 @@ export default compose(
     props: ({ mutate }) => ({
       updateEmail: (variables) => {
         return mutate({
-          variables,
-          refetchQueries: [
-            {
-              query,
-            },
-          ],
+          variables
         })
       },
     }),

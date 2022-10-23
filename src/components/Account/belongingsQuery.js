@@ -4,6 +4,20 @@ export default gql`
   query myBelongings {
     me {
       id
+      name
+      firstName
+      lastName
+      email
+      birthday
+      phoneNumber
+      address {
+        name
+        line1
+        line2
+        postalCode
+        city
+        country
+      }
       memberships {
         id
         accessGranted
