@@ -1,4 +1,7 @@
 const { GRAPHQL_URL, localeSegment } = require('./constants')
+const {
+  ASSETS_SERVER_SOURCE_BASE_URL
+} = process.env
 
 module.exports = {
   eslint: {
@@ -20,7 +23,11 @@ module.exports = {
         source: '/graphql',
         destination: GRAPHQL_URL,
       },
-    ]
+      ASSETS_SERVER_SOURCE_BASE_URL && {
+        source: '/assets/:path*',
+        destination: `${ASSETS_SERVER_SOURCE_BASE_URL}/:path*`,
+      },
+    ].filter(Boolean)
   },
   async redirects() {
     return [
