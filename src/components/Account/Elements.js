@@ -106,7 +106,7 @@ export const P = ({ children, ...props }) => (
   </p>
 )
 
-export const Hint = ({ children, t, tKey }) => {
+export const Hint = ({ children }) => {
   const [colorScheme] = useColorContext()
   return (
     <Label
@@ -116,7 +116,7 @@ export const Hint = ({ children, t, tKey }) => {
         display: 'block',
       }}
     >
-      <span {...colorScheme.set('color', 'textSoft')}>{children || t(tKey)}</span>
+      <span {...colorScheme.set('color', 'textSoft')}>{children}</span>
     </Label>
   )
 }

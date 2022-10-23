@@ -18,7 +18,7 @@ export const fields = (t) => [
       (!value?.length && t('Account/AddressForm/name/error/empty')) ||
       (value?.length > 70 &&
         t('Account/AddressForm/name/error/tooLong', { maxLength: 70 })),
-    explanation: <Hint t={t} tKey={'Account/AddressForm/name/explanation'} />,
+    explanation: <Hint>{t('Account/AddressForm/name/explanation')}</Hint>,
   },
   {
     label: t('Account/AddressForm/line1/label'),

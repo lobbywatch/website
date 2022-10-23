@@ -282,7 +282,7 @@ class UpdateMe extends Component {
                       }}
                       fields={meFields}
                     />
-                    <Hint t={t} tKey={'Account/Update/birthday/hint/plain'} />
+                    <Hint>{t('Account/Update/birthday/hint/plain')}</Hint>
                   </div>
                   <Label>
                     <Emphasis>{t('Account/Update/address/label')}</Emphasis>
