@@ -34,6 +34,7 @@ import MetaTags from 'src/components/MetaTags'
 import { useT } from 'src/components/Message'
 
 import {
+  locales,
   getSafeLocale,
   PUBLIC_BASE_URL,
   STATEMENTS_FEATURED_IDS,
