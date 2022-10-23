@@ -1,7 +1,7 @@
 import { Component, Fragment } from 'react'
 import compose from 'lodash/flowRight'
 import { graphql } from '@apollo/client/react/hoc'
-import { A, timeFormat } from '@project-r/styleguide'
+import { A, timeFormat, Interaction, Button } from '@project-r/styleguide'
 
 import { withT } from 'src/components/Message'
 import withMe from 'src/components/Auth/withMe'
@@ -9,8 +9,11 @@ import { chfFormat } from 'src/utils/formats'
 // import track from '../../lib/matomo'
 import List, { Item } from '../List'
 import { Item as AccountItem } from './Elements'
-import GiveMemberships from './Memberships/Give'
 import query from './belongingsQuery'
+import Link from 'next/link'
+import { withRouter } from 'next/router'
+import { getSafeLocale } from '../../../constants'
+import { PLEDGE_PATH } from '../../constants'
 
 const dayFormat = timeFormat('%d. %B %Y')
 
@@ -41,10 +44,22 @@ class PledgeList extends Component {
   //   })
   // }
   render() {
-    const { pledges, t, highlightId, me } = this.props
+    const { pledges, t, highlightId, me, router } = this.props
+    const locale = getSafeLocale(router.query.locale)
 
     return (
       <Fragment>
+        {!pledges.length && <>
+          <Interaction.P>
+            {t('merci/empty/text')}
+          </Interaction.P>
+          <Link href={{
+            pathname: PLEDGE_PATH,
+            query: { locale },
+          }} passHref>
+            <Button primary>{t('merci/empty/button')}</Button>
+          </Link>
+        </>}
         {pledges.map((pledge) => {
           const options = pledge.options.filter(
             (option) => option.amount && option.minAmount !== option.maxAmount,
@@ -161,10 +176,6 @@ class PledgeList extends Component {
                   </Fragment>
                 ))}
               </List>
-              <GiveMemberships
-                memberships={pledge.memberships}
-                pkg={pledge.package}
-              />
             </AccountItem>
           )
         })}
@@ -176,6 +187,7 @@ class PledgeList extends Component {
 export default compose(
   withT,
   withMe,
+  withRouter,
   graphql(query, {
     props: ({ data }) => {
       return {

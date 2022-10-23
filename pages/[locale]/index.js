@@ -28,7 +28,7 @@ import {
 
 import ActionBar from 'src/components/ActionBar'
 import VideoCover from 'src/components/Crowdfunding/VideoCover'
-import List, { Highlight } from 'src/components/Crowdfunding/List'
+import List, { Highlight } from 'src/components/List'
 import ContainerWithSidebar, {
   FooterContainer,
 } from 'src/components/Crowdfunding/ContainerWithSidebar'

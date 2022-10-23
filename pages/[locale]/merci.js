@@ -9,14 +9,14 @@ import { withT } from 'src/components/Message'
 import MetaTags from 'src/components/MetaTags'
 
 import AccountSection from 'src/components/Account/AccountSection'
-import Memberships from 'src/components/Account/Memberships'
+import PledgeList from 'src/components/Account/PledgeList'
 import { AccountEnforceMe } from 'src/components/Account/Elements'
 import NameAddress from 'src/components/Account/UserInfo/NameAddress'
 import UpdateEmail, { UserEmail } from 'src/components/Account/UserInfo/Email'
 import withMe from 'src/components/Auth/withMe'
 import Testimonial from 'src/components/Account/Testimonial'
 
-const AccountPage = ({ t }) => {
+const AccountPage = ({ t, hasActiveMembership }) => {
   const router = useRouter()
   const { query } = router
 
@@ -26,8 +26,10 @@ const AccountPage = ({ t }) => {
       <Center>
         <Merci query={query}>
           <AccountEnforceMe>
-            <Testimonial />
-            <Memberships />
+            {hasActiveMembership && <Testimonial />}
+            <AccountSection title={t('account/pledges/title')}>
+              <PledgeList highlightId={query.id} />
+            </AccountSection>
             <AccountSection title={t('Account/Update/title')}>
               <div style={{ marginBottom: 24 }}>
                 <UserEmail />
