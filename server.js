@@ -19,14 +19,6 @@ app.prepare().then(() => {
         request.hostname !== '127.0.0.1' &&
         `${request.protocol}://${request.get('Host')}` !== NEXT_PUBLIC_BASE_URL
       ) {
-        console.log('redirect to', NEXT_PUBLIC_BASE_URL)
-        console.log(request.hostname, request.protocol, request.get('Host'))
-        console.log({
-          ip: request.ip,
-          ips: request.ips,
-          remoteAddress: request.connection?.remoteAddress,
-          xForwardedFor: request.headers['x-forwarded-for']
-        })
         return res.redirect(NEXT_PUBLIC_BASE_URL + request.url)
       }
       return next()
