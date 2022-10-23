@@ -225,7 +225,6 @@ class UpdateMe extends Component {
         .map((key) => errors[key])
         .filter(Boolean)
 
-      console.log(me, this.props.detailsData)
       if (errorMessages.length || (!me.address && me.pledges?.length)) {
         this.startEditing()
       }
