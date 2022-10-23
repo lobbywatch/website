@@ -17,19 +17,16 @@ import {
   Button,
   A,
   InlineSpinner,
-  RawHtml,
+  RawHtml
 } from '@project-r/styleguide'
 import FieldSet from '../FieldSet'
 import { withRouter } from 'next/router'
 import { getSafeLocale } from '../../../constants'
+import { Hint } from './Elements'
 
 const { H2, P } = Interaction
 
 const fields = (t) => [
-  {
-    label: t('testimonial/role/label'),
-    name: 'role',
-  },
   {
     label: t('testimonial/quote/label'),
     name: 'quote',
@@ -37,6 +34,11 @@ const fields = (t) => [
     validator: (value) =>
       (!value.trim() && t('testimonial/quote/error')) ||
       (value.trim().length >= 140 && t('testimonial/quote/tooLong')),
+  },
+  {
+    label: t('testimonial/role/label'),
+    name: 'role',
+    explanation: <Hint>{t('testimonial/role/note', undefined, '')}</Hint>
   },
 ]
 
@@ -147,7 +149,9 @@ class Testimonial extends Component {
       const values = {
         ...state.values,
         quote: meWithTestimonial?.statement || '',
-        role: meWithTestimonial?.credentials?.find(c => c.isListed)?.description || '',
+        role:
+          meWithTestimonial?.credentials?.find((c) => c.isListed)
+            ?.description || '',
       }
       const errors = FieldSet.utils.getErrors(fields(props.t), values)
 
@@ -161,7 +165,7 @@ class Testimonial extends Component {
     })
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (nextProps.testimonial !== this.props.testimonial) {
+    if (nextProps.meWithTestimonial !== this.props.meWithTestimonial) {
       this.updateFields(nextProps)
     }
   }
@@ -170,13 +174,10 @@ class Testimonial extends Component {
   }
   render() {
     const { t, loading, error, meWithTestimonial, router } = this.props
-    const { values, dirty, errors, submitting, serverError, image } =
-      this.state
+    const { values, dirty, errors, submitting, serverError, image } = this.state
     const locale = getSafeLocale(router.query.locale)
 
-    const imageSrc = image
-      ? image.url
-      : meWithTestimonial?.portrait || ''
+    const imageSrc = image ? image.url : meWithTestimonial?.portrait || ''
     const imageMissing = !imageSrc && t('testimonial/pickImage/empty')
     const imageError = this.state.imageError || (dirty.image && imageMissing)
 
@@ -228,7 +229,6 @@ class Testimonial extends Component {
                 this.submit()
               }}
             >
-              <br />
               <input
                 type='file'
                 accept='image/*'
@@ -239,56 +239,58 @@ class Testimonial extends Component {
                 style={{ display: 'none' }}
               />
               {!imageSrc && (
-                <Button onClick={pickImage}>
-                  {t('testimonial/pickImage')}
-                </Button>
+                <>
+                <br />
+                  <Button onClick={pickImage}>
+                    {t('testimonial/pickImage')}
+                  </Button>
+                  <br />
+                </>
+              )}
+              {!!imageError && (
+                <>
+                  <ErrorMessage error={imageError} />
+                  <br />
+                </>
               )}
               {!!imageSrc && (
-                <A href='#' onClick={pickImage}>
-                  {t('testimonial/pickImage/update')}
-                </A>
-              )}
-              <br />
-              {!!imageError && <ErrorMessage error={imageError} />}
-              <br />
-              {!!imageSrc && (
-                <div>
-                  <div style={{ width: 150, float: 'left' }}>
-                    <Item
-                      style={{
-                        width: '100%',
-                        marginLeft: -5,
-                        cursor: 'default',
-                      }}
-                      name={meWithTestimonial.name}
-                      previewImage={imageSrc}
-                      isActive={showDetail}
-                    />
-                  </div>
-                  <div style={{ width: 'calc(100% - 150px)', float: 'left' }}>
-                    <FieldSet
-                      values={values}
-                      errors={errors}
-                      dirty={dirty}
-                      fields={fields(t)}
-                      onChange={(fields) => {
-                        this.setState((state) => {
-                          const next = FieldSet.utils.mergeFields(fields)(state)
-                          if (
-                            next.values.quote &&
-                            next.values.quote.trim().length
-                          ) {
-                            next.dirty = {
-                              ...next.dirty,
-                              quote: true,
-                            }
+                <>
+                  <FieldSet
+                    values={values}
+                    errors={errors}
+                    dirty={dirty}
+                    fields={fields(t)}
+                    onChange={(fields) => {
+                      this.setState((state) => {
+                        const next = FieldSet.utils.mergeFields(fields)(state)
+                        if (
+                          next.values.quote &&
+                          next.values.quote.trim().length
+                        ) {
+                          next.dirty = {
+                            ...next.dirty,
+                            quote: true,
                           }
-                          return next
-                        })
-                      }}
-                    />
-                  </div>
-                  <br style={{ clear: 'both' }} />
+                        }
+                        return next
+                      })
+                    }}
+                  />
+                  {!!imageSrc && <div style={{ marginBottom: 5 }}>
+                    <A href='#' onClick={pickImage}>
+                      {t('testimonial/pickImage/update')}
+                    </A>
+                  </div>}
+                  <Item
+                    style={{
+                      width: 150,
+                      marginLeft: -5,
+                      cursor: 'default',
+                    }}
+                    name={meWithTestimonial.name}
+                    previewImage={imageSrc}
+                    isActive={showDetail}
+                  />
                   {showDetail && (
                     <Detail
                       t={t}
@@ -298,14 +300,16 @@ class Testimonial extends Component {
                         id: meWithTestimonial.id,
                         name: meWithTestimonial.name,
                         statement: values.quote,
-                        credentials: [{
-                          isListed: true,
-                          description: values.role
-                        }],
+                        credentials: [
+                          {
+                            isListed: true,
+                            description: values.role,
+                          },
+                        ],
                       }}
                     />
                   )}
-                </div>
+                </>
               )}
               <br style={{ clear: 'both' }} />
               {meWithTestimonial.isAdminUnlisted && (
@@ -317,7 +321,7 @@ class Testimonial extends Component {
                   <InlineSpinner />
                 ) : (
                   <div style={{ opacity: errorMessages.length ? 0.5 : 1 }}>
-                    <Button type='submit'>
+                    <Button type='submit' primary={showDetail && !meWithTestimonial.isListed}>
                       {meWithTestimonial.isListed
                         ? t('testimonial/submit/update')
                         : t('testimonial/submit')}
@@ -326,7 +330,10 @@ class Testimonial extends Component {
                 ))}
               {meWithTestimonial.isListed && (
                 <div style={{ marginTop: 20 }}>
-                  <Link href={`/${locale}/community?id=${meWithTestimonial.id}`} passHref>
+                  <Link
+                    href={`/${locale}/community?id=${meWithTestimonial.id}`}
+                    passHref
+                  >
                     <A>{t('testimonial/viewLive')}</A>
                   </Link>
                   {' – '}
