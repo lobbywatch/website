@@ -2,8 +2,10 @@ import { useMemo } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { css } from 'glamor'
+import { gql, useQuery } from '@apollo/client'
 
 import { ListWithQuery as TestimonialList } from 'src/components/Testimonial/List'
+import { createGetStaticProps } from 'lib/createGetStaticProps'
 
 import {
   Label,
@@ -16,11 +18,13 @@ import {
   Editorial,
   mediaQueries,
   LazyLoad,
+  Loader,
+  plainLinkRule,
 } from '@project-r/styleguide'
 
 import ActionBar from 'src/components/ActionBar'
 import VideoCover from 'src/components/Crowdfunding/VideoCover'
-// import List, { Highlight } from 'src/components/Crowdfunding/List'
+import List, { Highlight } from 'src/components/Crowdfunding/List'
 import ContainerWithSidebar, {
   FooterContainer,
 } from 'src/components/Crowdfunding/ContainerWithSidebar'
@@ -49,10 +53,10 @@ const styles = {
       margin: 5,
     },
   }),
-  stretchLead: css({
+  infoBox: css({
     margin: '20px 0 0',
   }),
-  stretchP: css({
+  infoBoxP: css({
     fontSize: 17,
     lineHeight: '25px',
   }),
@@ -64,9 +68,29 @@ const styles = {
   }),
 }
 
+const blogQuery = gql`
+  query cfBlog($locale: Locale!) {
+    articles(locale: $locale, limit: 2) {
+      list {
+        published
+        image
+        lead
+        title
+        author
+        path
+      }
+    }
+  }
+`
+
 const Page = () => {
   const router = useRouter()
   const locale = getSafeLocale(router.query.locale)
+  const blog = useQuery(blogQuery, {
+    variables: {
+      locale: locale,
+    },
+  })
   const t = useT(locale)
   const mobilePledgeLink = (
     <div {...styles.mobilePledgeLink}>
@@ -229,14 +253,48 @@ const Page = () => {
           <ActionBar share={shareObject} />
         </div>
 
+        <Loader
+          loading={blog.loading}
+          error={blog.error}
+          render={() => {
+            return (
+              <div {...styles.infoBox}>
+                <Interaction.P
+                  {...styles.infoBoxP}
+                  style={{ marginBottom: 10 }}
+                >
+                  <strong>{t('cf/blog/title')}</strong>
+                </Interaction.P>
+                <List>
+                  {blog.data.articles.list.map(
+                    ({ path, published, title, lead }) => (
+                      <List.Item key={path}>
+                        <Link href={path}>
+                          <a {...plainLinkRule}>
+                            <Highlight>
+                              {published.split(' ')[0]}: {title}
+                            </Highlight>
+                            <br />
+                            {lead}
+                          </a>
+                        </Link>
+                      </List.Item>
+                    )
+                  )}
+                </List>
+              </div>
+            )
+          }}
+        />
+
         {/* {isFrench ? (
-          <div {...styles.stretchLead}>
-            <Interaction.P {...styles.stretchP} style={{ marginBottom: 10 }}>
+          <div {...styles.infoBox}>
+            <Interaction.P {...styles.infoBoxP} style={{ marginBottom: 10 }}>
               Pour que Lobbywatch puisse poursuivre son activité, nous
               cherchions 1000 membres. Nous avons atteint cet objectif avec vous
               le premier jour du crowdfunding. Un grand merci à vous !
             </Interaction.P>
-            <Interaction.P {...styles.stretchP} style={{ marginBottom: 10 }}>
+            <Interaction.P {...styles.infoBoxP} style={{ marginBottom: 10 }}>
               Lobbywatch veut grandir - c'est pourquoi nous continuons à
               collecter des fonds !
             </Interaction.P>
@@ -264,13 +322,13 @@ const Page = () => {
             </List>
           </div>
         ) : (
-          <div {...styles.stretchLead}>
-            <Interaction.P {...styles.stretchP} style={{ marginBottom: 10 }}>
+          <div {...styles.infoBox}>
+            <Interaction.P {...styles.infoBoxP} style={{ marginBottom: 10 }}>
               Damit wir Lobbywatch weiter betreiben können, haben wir 1000
               Mitglieder gesucht. Dieses Ziel haben wir zusammen mit Ihnen am
               ersten Tag des Crowdfundings erreicht. Herzlichen Dank!
             </Interaction.P>
-            <Interaction.P {...styles.stretchP} style={{ marginBottom: 10 }}>
+            <Interaction.P {...styles.infoBoxP} style={{ marginBottom: 10 }}>
               Lobbywatch will wachsen – deshalb sammeln wir weiter!
             </Interaction.P>
             <List>
@@ -345,8 +403,8 @@ const Page = () => {
               auf.
             </P>
             <P>
-              In unserer Datenbank führen wir mittlerweile gut 48’000
-              Datensätze zu Ratsmitgliedern und ihren Verbindungen zu Verbänden,
+              In unserer Datenbank führen wir mittlerweile gut 48’000 Datensätze
+              zu Ratsmitgliedern und ihren Verbindungen zu Verbänden,
               Organisationen und Unternehmen. Zudem dokumentieren wir, welche
               Parlamentarier:innen durch die ihnen zur Verfügung stehenden
               Zutrittsausweise welchen Lobbyist:innen den Zutritt zum Bundeshaus
@@ -621,6 +679,16 @@ const Page = () => {
       </ContainerWithSidebar>
     </Frame>
   )
+}
+
+export const getStaticProps = createGetStaticProps({
+  pageQuery: blogQuery,
+})
+export async function getStaticPaths() {
+  return {
+    paths: locales.map((locale) => ({ params: { locale } })),
+    fallback: false,
+  }
 }
 
 export default Page
