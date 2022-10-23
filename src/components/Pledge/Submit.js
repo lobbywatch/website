@@ -18,7 +18,6 @@ import { chfFormat } from 'src/utils/formats'
 import { gotoMerci, encodeSignInResponseQuery } from './Merci'
 
 import { COUNTRIES, fields as getAddressFields } from '../Account/AddressForm'
-import { query as addressQuery } from '../Account/enhancers'
 
 import {
   Interaction,
@@ -982,10 +981,10 @@ class Submit extends Component {
                   <div {...styles.topMargin}>
                     <Label>
                       <Interaction.Emphasis>
-                      {t.first([
-                        `pledge/contact/title/${packageName}`,
-                        'pledge/contact/title',
-                      ])}
+                        {t.first([
+                          `pledge/contact/title/${packageName}`,
+                          'pledge/contact/title',
+                        ])}
                       </Interaction.Emphasis>
                     </Label>
                     <div style={{ marginTop: 10, marginBottom: 10 }}>
@@ -1190,7 +1189,6 @@ export const withPay = (Component) => {
         pay: (variables) =>
           mutate({
             variables,
-            refetchQueries: [{ query: addressQuery }],
           }).then(async (response) => {
             const {
               data: { payPledge },
