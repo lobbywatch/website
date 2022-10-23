@@ -395,7 +395,7 @@ const Page = ({ testimonialVariables }) => {
           </>
         ) : (
           <>
-            <H1>Was ist Lobbywatch</H1>
+            <H1>Was ist Lobbywatch?</H1>
             <P>
               Lobbywatch ist die zentrale journalistische Auskunftsplattform für
               Interessenbindungen von eidgenössischen Politiker:innen. Auf
@@ -657,7 +657,7 @@ const Page = ({ testimonialVariables }) => {
           <>
             <P>Unterstützen Sie jetzt mehr Transparenz in der Politik.</P>
             <P>
-              <strong>Herzlich Willkommen!</strong>
+              <strong>Herzlich willkommen!</strong>
             </P>
           </>
         )}
