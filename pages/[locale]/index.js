@@ -4,7 +4,11 @@ import { useRouter } from 'next/router'
 import { css } from 'glamor'
 import { gql, useQuery } from '@apollo/client'
 
-import { ListWithQuery as TestimonialList } from 'src/components/Testimonial/List'
+import {
+  ListWithQuery as TestimonialList,
+  generateSeed,
+  query as testimonialQuery,
+} from 'src/components/Testimonial/List'
 import { createGetStaticProps } from 'lib/createGetStaticProps'
 
 import {
@@ -38,6 +42,8 @@ import {
   getSafeLocale,
   PUBLIC_BASE_URL,
   STATEMENTS_FEATURED_IDS,
+  STATEMENTS_FEATURED_HERO_DE,
+  STATEMENTS_FEATURED_HERO_FR,
 } from '../../constants'
 import { PLEDGE_PATH } from 'src/constants'
 import { CROWDFUNDING_PLEDGE } from '../../src/constants'
@@ -85,7 +91,7 @@ const blogQuery = gql`
   }
 `
 
-const Page = () => {
+const Page = ({ testimonialVariables }) => {
   const router = useRouter()
   const locale = getSafeLocale(router.query.locale)
   const blog = useQuery(blogQuery, {
@@ -108,10 +114,6 @@ const Page = () => {
         </Link>
       </Interaction.P>
     </div>
-  )
-  const focusTestimonial = useMemo(
-    () => shuffle(STATEMENTS_FEATURED_IDS.split(','))[0],
-    []
   )
 
   const links = [
@@ -620,23 +622,32 @@ const Page = () => {
           </>
         )}
 
-        <div style={{ margin: '20px 0' }}>
-          <LazyLoad>
-            <TestimonialList
-              ssr={false}
-              focus={focusTestimonial}
-              first={20}
-              locale={locale}
-            />
-          </LazyLoad>
-        </div>
+        {!!testimonialVariables && (
+          <>
+            <div style={{ margin: '20px 0' }}>
+              <LazyLoad>
+                <TestimonialList
+                  ssr={false}
+                  locale={locale}
+                  {...testimonialVariables}
+                />
+              </LazyLoad>
+            </div>
+
+            {isFrench ? (
+              <Link href={`/${locale}/community`} passHref>
+                <A>Voir tout le monde</A>
+              </Link>
+            ) : (
+              <Link href={`/${locale}/community`} passHref>
+                <A>Alle ansehen</A>
+              </Link>
+            )}
+          </>
+        )}
 
         {isFrench ? (
           <>
-            <Link href={`/${locale}/community`} passHref>
-              <A>Voir tout le monde</A>
-            </Link>
-
             <P>Soutenez-nous pour plus de transparence en politique.</P>
             <P>
               <strong>Bienvenue!</strong>
@@ -644,10 +655,6 @@ const Page = () => {
           </>
         ) : (
           <>
-            <Link href={`/${locale}/community`} passHref>
-              <A>Alle ansehen</A>
-            </Link>
-
             <P>Unterstützen Sie jetzt mehr Transparenz in der Politik.</P>
             <P>
               <strong>Herzlich Willkommen!</strong>
@@ -685,18 +692,41 @@ const Page = () => {
 
 export const getStaticProps = createGetStaticProps({
   pageQuery: blogQuery,
-  getCustomStaticProps: async (
-    _,
-    __,
-    apolloClient
-  ) => {
+  getCustomStaticProps: async (_, { params: { locale } }, apolloClient) => {
     await apolloClient.query({
       query: cfStatusQuery,
       variables: {
-        crowdfundingName: CROWDFUNDING_PLEDGE
-      }
+        crowdfundingName: CROWDFUNDING_PLEDGE,
+      },
     })
-  }
+
+    const testimonialFocus =
+      (locale === 'fr'
+        ? shuffle(STATEMENTS_FEATURED_HERO_FR.split(','))[0]
+        : shuffle(STATEMENTS_FEATURED_HERO_DE.split(','))[0]) || null
+    const testimonialVariables = {
+      first: 20,
+      seed: generateSeed(),
+      focus: testimonialFocus,
+      featuredIds: shuffle(
+        STATEMENTS_FEATURED_IDS.split(',')
+          .filter(Boolean)
+          .filter((id) => id !== testimonialFocus)
+          .slice(0, 9)
+      ),
+    }
+
+    await apolloClient.query({
+      query: testimonialQuery,
+      variables: testimonialVariables,
+    })
+
+    return {
+      props: {
+        testimonialVariables,
+      },
+    }
+  },
 })
 export async function getStaticPaths() {
   return {

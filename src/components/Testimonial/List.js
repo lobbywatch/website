@@ -304,8 +304,15 @@ export class List extends Component {
     window.addEventListener('resize', this.measure)
     this.measure()
   }
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
     this.measure()
+    if (prevProps.focus !== this.props.focus) {
+      this.setState({
+        open: {
+          0: this.props.focus,
+        },
+      })
+    }
   }
   componentWillUnmount() {
     this.props.isPage && window.removeEventListener('scroll', this.onScroll)
@@ -526,9 +533,9 @@ export const testimonialFields = `
   sequenceNumber
 `
 
-const query = gql`
-query statements($seed: Float, $search: String, $focus: String, $after: String, $first: Int!, $membershipAfter: DateTime) {
-  statements(seed: $seed, search: $search, focus: $focus, after: $after, first: $first, membershipAfter: $membershipAfter) {
+export const query = gql`
+query statements($seed: Float, $search: String, $focus: String, $featuredIds: [ID!], $after: String, $first: Int!, $membershipAfter: DateTime) {
+  statements(seed: $seed, search: $search, focus: $focus, featuredIds: $featuredIds, after: $after, first: $first, membershipAfter: $membershipAfter) {
     totalCount
     nodes {
       ${testimonialFields}

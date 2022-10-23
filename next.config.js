@@ -50,4 +50,7 @@ module.exports = {
   },
   poweredByHeader: false,
   useFileSystemPublicRoutes: true,
+  experimental: {
+    largePageDataBytes: 512 * 1000, // 512KB
+  },
 }
