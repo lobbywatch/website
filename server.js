@@ -22,10 +22,10 @@ app.prepare().then(() => {
         console.log('redirect to', NEXT_PUBLIC_BASE_URL)
         console.log(request.hostname, request.protocol, request.get('Host'))
         console.log({
-          ip: req.ip,
-          ips: req.ips,
-          remoteAddress: req.connection?.remoteAddress,
-          xForwardedFor: req.headers['x-forwarded-for']
+          ip: request.ip,
+          ips: request.ips,
+          remoteAddress: request.connection?.remoteAddress,
+          xForwardedFor: request.headers['x-forwarded-for']
         })
         return res.redirect(NEXT_PUBLIC_BASE_URL + request.url)
       }
