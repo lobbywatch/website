@@ -1,15 +1,11 @@
 const ENV =
   typeof window !== 'undefined' ? window.__NEXT_DATA__.env : process.env
 
-const NEXT_PUBLIC_BASE_URL = ENV.NEXT_PUBLIC_BASE_URL
-const NEXT_PUBLIC_VERCEL_URL = ENV.NEXT_PUBLIC_VERCEL_URL
-
 const locales = ['de', 'fr']
 exports.locales = locales
 exports.localeSegment = `:locale(${locales.join('|')})`
 exports.getSafeLocale = (locale) => (locales.includes(locale) ? locale : 'de')
 
-exports.NEXT_PUBLIC_BASE_URL = NEXT_PUBLIC_BASE_URL
 exports.DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
 exports.DRUPAL_DATA_BASE_URL = 'https://cms.lobbywatch.ch'
 exports.DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
@@ -17,8 +13,10 @@ exports.DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
 const SERVER_PORT = (typeof process !== 'undefined' && ENV.PORT) || 3000
 exports.SERVER_PORT = SERVER_PORT
 
+const NEXT_PUBLIC_VERCEL_URL = ENV.NEXT_PUBLIC_VERCEL_URL
 const PUBLIC_BASE_URL =
-  NEXT_PUBLIC_BASE_URL ||
+  ENV.PUBLIC_BASE_URL ||
+  ENV.NEXT_PUBLIC_BASE_URL ||
   (NEXT_PUBLIC_VERCEL_URL ? `https://${NEXT_PUBLIC_VERCEL_URL}` : undefined)
 exports.PUBLIC_BASE_URL = PUBLIC_BASE_URL
 exports.CDN_FRONTEND_BASE_URL = PUBLIC_BASE_URL
@@ -37,8 +35,7 @@ exports.MAILCHIMP_ID_FOR_LOCALE = {
 
 exports.DEBUG_INFORMATION = !!ENV.DEBUG_INFORMATION
 
-exports.STATUS_POLL_INTERVAL_MS =
-  +ENV.STATUS_POLL_INTERVAL_MS || 0
+exports.STATUS_POLL_INTERVAL_MS = +ENV.STATUS_POLL_INTERVAL_MS || 0
 
 exports.STRIPE_PUBLISHABLE_KEY = ENV.STRIPE_PUBLISHABLE_KEY
 exports.PAYPAL_BUSINESS = ENV.PAYPAL_BUSINESS
