@@ -7,8 +7,8 @@ import Link from 'next/link'
 
 import { Center } from './index'
 import SocialMedia from './SocialMedia'
-import Newsletter from './Newsletter'
-import { A, Hr, metaStyle, Strong, Clear } from '../Styled'
+// import Newsletter from './Newsletter'
+import { H3, A, Hr, metaStyle, Strong, Clear } from '../Styled'
 import { GREY_SOFT, GREY_DARK, GREY_MID, mediaM } from '../../theme'
 import CreativeCommons from '../../assets/CreativeCommons'
 import { useT } from '../Message'
@@ -18,6 +18,7 @@ import { JsonLd } from '../JsonLd'
 import { metaQuery } from '../../../lib/baseQueries'
 import { useMe } from '../Auth/withMe'
 import SignOut from '../Auth/SignOut'
+import { Button } from '@project-r/styleguide'
 
 const footerStyle = css({
   backgroundColor: GREY_SOFT,
@@ -99,7 +100,7 @@ const Footer = ({
   pledgeAd = true,
   Container = Center,
 }) => {
-  const { me, meLoading, hasAccess } = useMe()
+  const { me, hasAccess } = useMe()
   const t = useT(locale)
 
   return (
@@ -109,13 +110,15 @@ const Footer = ({
       />
       {pledgeAd && !focusMode && (
         <Container>
-          {/* ToDo: add pledge ad */}
           <Clear {...columnContainerStyle}>
             <div {...columnStyle}>
               <SocialMedia locale={locale} />
             </div>
             <div {...columnStyle}>
-              <Newsletter locale={locale} />
+              <H3>Crowdfunding</H3>
+          <Link href={`/${locale}`} passHref>
+            <Button style={{height: 40}} primary>{t('cf/cta/now')}</Button>
+          </Link>
             </div>
           </Clear>
         </Container>
