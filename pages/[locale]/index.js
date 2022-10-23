@@ -712,8 +712,7 @@ export const getStaticProps = createGetStaticProps({
         STATEMENTS_FEATURED_IDS.split(',')
           .filter(Boolean)
           .filter((id) => id !== testimonialFocus)
-          .slice(0, 9)
-      ),
+      ).slice(0, 9),
     }
 
     await apolloClient.query({
