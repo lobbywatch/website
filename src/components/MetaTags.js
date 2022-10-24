@@ -594,7 +594,7 @@ const MetaTags = ({ locale, fromT, data, page, ...rest }) => {
     properties.url = `${PUBLIC_BASE_URL || ''}/${locale}/` + page.path.join('/')
     properties.shorturl = `${PUBLIC_BASE_URL || ''}/${locale}/node/${page.nid}`
   }
-  properties.pageTitle = pageTitle(properties.title)
+  properties.pageTitle = properties.pageTitle || pageTitle(properties.title)
   properties.jsonLds = generateJsonLds(
     locale,
     t,

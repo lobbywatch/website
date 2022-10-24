@@ -18,7 +18,6 @@ const Page = () => {
   return (
     <Frame>
       <MetaTags
-        pageTitle={t('faq/pageTitle')}
         title={t('faq/pageTitle')}
         description={t('faq/metaDescription')}
         url={`${PUBLIC_BASE_URL}/${locale}/faq`}
