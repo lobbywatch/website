@@ -86,7 +86,7 @@ const Cover = ({ locale, localeLinks, menuItems }) => {
         <ol {...styles.list} {...styles.menuList}>
           {menuItems.map(({ label, href }, index) => (
             <li {...styles.item} {...styles.menuItem} key={index}>
-              <StyledLink href={href}>{label}</StyledLink>
+              <StyledLink href={href} prefetch={false}>{label}</StyledLink>
             </li>
           ))}
         </ol>
@@ -94,7 +94,7 @@ const Cover = ({ locale, localeLinks, menuItems }) => {
       <ul {...styles.list} {...styles.localeList}>
         {localeLinks.map(({ label, href }, index) => (
           <li {...styles.item} {...styles.localeItem} key={index}>
-            <StyledLink href={href}>{label}</StyledLink>
+            <StyledLink href={href} prefetch={false}>{label}</StyledLink>
           </li>
         ))}
       </ul>

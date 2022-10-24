@@ -98,6 +98,7 @@ const Menu = ({ items, expanded, id }) => {
             <StyledLink
               key='link'
               href={href}
+              prefetch={false}
               className={active ? 'active' : ''}
             >
               {label}

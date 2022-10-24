@@ -74,7 +74,7 @@ const Header = ({ locale, menuItems, localeLinks, transparent, focusMode }) => {
             : undefined
         }
       >
-        <Link href={`/${encodeURIComponent(locale)}`}>
+        <Link href={`/${encodeURIComponent(locale)}`} prefetch={false}>
           <a {...titleStyle}>
             <Logo size={32} />
             <span {...titleTextStyle}>Lobbywatch</span>

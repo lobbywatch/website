@@ -116,7 +116,7 @@ const Footer = ({
             </div>
             <div {...columnStyle}>
               <H3>Crowdfunding</H3>
-          <Link href={`/${locale}`} passHref>
+          <Link href={`/${locale}`} prefetch={false} passHref>
             <Button style={{height: 40}} primary>{t('cf/cta/now')}</Button>
           </Link>
             </div>
