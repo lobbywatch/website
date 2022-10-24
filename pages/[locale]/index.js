@@ -44,6 +44,7 @@ import {
   STATEMENTS_FEATURED_IDS,
   STATEMENTS_FEATURED_HERO_DE,
   STATEMENTS_FEATURED_HERO_FR,
+  CDN_FRONTEND_BASE_URL,
 } from '../../constants'
 import { PLEDGE_PATH } from 'src/constants'
 import { CROWDFUNDING_PLEDGE } from '../../src/constants'
@@ -165,7 +166,13 @@ const Page = ({ testimonialVariables }) => {
         Container: FooterContainer,
       }}
     >
-      <MetaTags locale={locale} title='Crowdfunding' />
+      <MetaTags
+        locale={locale}
+        pageTitle='Crowdfunding – Lobbywatch.ch'
+        title={t('cf/social/title')}
+        description={t('cf/social/description')}
+        image={`${CDN_FRONTEND_BASE_URL}/static/social/crowdfunding.png`}
+      />
 
       <ContainerWithSidebar
         sidebarProps={{

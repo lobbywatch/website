@@ -466,8 +466,7 @@ export class List extends Component {
                 title: t('testimonial/meta/title'),
                 description: t('testimonial/meta/description'),
                 url: `${PUBLIC_BASE_URL}/${locale}/community`,
-                // ToDo Social Image
-                // image: `${CDN_FRONTEND_BASE_URL}/static/social-media/community.jpg`,
+                image: `${CDN_FRONTEND_BASE_URL}/static/social/community.jpg`,
               }
 
           return (

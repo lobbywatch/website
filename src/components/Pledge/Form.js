@@ -341,7 +341,7 @@ class Pledge extends Component {
               queryGroup && `pledge/meta/group/${queryGroup}/description`,
               'pledge/meta/description',
             ]),
-            image: `${CDN_FRONTEND_BASE_URL}/static/social-media/logo.png`,
+            image: `${CDN_FRONTEND_BASE_URL}/static/social/logo.png`,
           })
 
     return (
