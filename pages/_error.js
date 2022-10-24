@@ -8,7 +8,7 @@ import { H1, P, A } from 'src/components/Styled'
 
 import { getSafeLocale } from '../constants'
 
-function Error({ statusCode, errorMessage }) {
+function Error({ statusCode }) {
   const {
     query: { locale: queryLocale },
   } = useRouter()
@@ -27,19 +27,11 @@ function Error({ statusCode, errorMessage }) {
         <P>
           Nous demandons des excuses. Essayez à nouveau de recharger la page.
         </P>
-        {(!!errorMessage || !!statusCode) && (
-          <>
-            <H1>Status Code {statusCode || 'Unkown'}</H1>
-            <P>{errorMessage}</P>
-            <P>
-              If the issue persists please open an issue on{' '}
-              <A href='https://github.com/lobbywatch/website/issues/new'>
-                GitHub
-              </A>
-              .
-            </P>
-          </>
-        )}
+        <H1>Status Code {statusCode || 'Unkown'}</H1>
+        <P>
+          If the issue persists please open an issue on{' '}
+          <A href='https://github.com/lobbywatch/website/issues/new'>GitHub</A>.
+        </P>
       </Center>
     </Frame>
   )
@@ -53,7 +45,6 @@ Error.getInitialProps = ({ res, err }) => {
   }
   return {
     statusCode,
-    errorMessage: err?.toString(),
   }
 }
 
