@@ -456,11 +456,11 @@ export class List extends Component {
                   focusItem
                 ),
                 url: `${PUBLIC_BASE_URL}/${locale}/community?id=${focusItem.id}`,
-                // image: `${ASSETS_SERVER_BASE_URL}/render?viewport=1200x628&updatedAt=${encodeURIComponent(
-                //   focusItem.updatedAt
-                // )}&url=${encodeURIComponent(
-                //   `${PUBLIC_BASE_URL}/${locale}/community?share=${focusItem.id}`
-                // )}`,
+                image: `${ASSETS_SERVER_BASE_URL}/render?viewport=1200x628&updatedAt=${encodeURIComponent(
+                  focusItem.updatedAt
+                )}&url=${encodeURIComponent(
+                  `${PUBLIC_BASE_URL}/${locale}/community?share=${focusItem.id}`
+                )}`,
               }
             : {
                 pageTitle: t('testimonial/meta/pageTitle'),
