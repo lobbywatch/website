@@ -142,10 +142,10 @@ class Status extends Component {
       return null
     }
 
-    const goalsByPeople = []
+    const goalsByMemberships = []
       .concat(goals)
-      .sort((a, b) => ascending(a.people, b.people))
-    const goal = goalsByPeople[goalsByPeople.length - 1]
+      .sort((a, b) => ascending(a.memberships, b.memberships))
+    const goal = goalsByMemberships[goalsByMemberships.length - 1]
 
     const createHoverGoalCount = (format, value) => (
       <a
@@ -198,7 +198,7 @@ class Status extends Component {
             </span>
           </P>
           <Bar
-            goals={goalsByPeople}
+            goals={goalsByMemberships}
             showLast={this.state.showGoal}
             status={status}
             accessor={accessor}
@@ -270,7 +270,7 @@ class Status extends Component {
                 </span>
               </P>
               <Bar
-                goals={goalsByPeople}
+                goals={goalsByMemberships}
                 showLast={this.state.showGoal && i === 0}
                 status={status}
                 accessor={accessor}
@@ -368,14 +368,10 @@ export const cfStatusQuery = gql`
       id
       name
       goals {
-        people
-        money
         memberships
         description
       }
       status {
-        people
-        money
         memberships
       }
       endDate
