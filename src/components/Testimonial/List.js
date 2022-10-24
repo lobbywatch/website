@@ -15,6 +15,7 @@ import {
   PUBLIC_BASE_URL,
   ASSETS_SERVER_BASE_URL,
   getSafeLocale,
+  CDN_FRONTEND_BASE_URL,
 } from '../../../constants'
 
 import {
