@@ -201,7 +201,7 @@ class Sidebar extends Component {
     return (
       <div>
         <RawStatus
-          people
+          memberships
           t={t}
           crowdfundingName={crowdfunding.name}
           crowdfunding={crowdfunding}
