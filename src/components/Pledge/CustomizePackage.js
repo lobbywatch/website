@@ -251,10 +251,8 @@ class CustomizePackage extends Component {
   }
   componentDidMount() {
     if (this.focusRef && this.focusRef.focus) {
-      this.focusRef.focus()
-      if (this.focusRef.value) {
-        this.focusRef.selectionStart = this.focusRef.selectionEnd =
-          this.focusRef.value.length
+      if (!this.focusRef.value) {
+        this.focusRef.focus()
       }
     }
 
@@ -534,8 +532,8 @@ class CustomizePackage extends Component {
             href={{
               pathname: PLEDGE_PATH,
               query: {
-                locale
-              }
+                locale,
+              },
             }}
             passHref
           >
