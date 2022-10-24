@@ -8,7 +8,9 @@ import { withT } from 'src/components/Message'
 
 import Loader from '../Loader'
 
-import { Logo, BrandMark, fontStyles, inQuotes } from '@project-r/styleguide'
+import { fontStyles, inQuotes } from '@project-r/styleguide'
+import { LW_BLUE_DARK, LW_BLUE_LIGHT, WHITE } from '../../theme'
+import Logo from 'src/assets/Logo'
 
 const WIDTH = 1200
 const HEIGHT = 628
@@ -25,6 +27,16 @@ const styles = {
     left: 628 + 50,
     right: 210,
     bottom: 50,
+    fontSize: 24,
+    lineHeight: '34px',
+    textDecoration: 'none',
+    color: LW_BLUE_LIGHT,
+  }),
+  logoText: css({
+    verticalAlign: 'top',
+    display: 'inline-block',
+    marginTop: -1,
+    marginLeft: 10,
   }),
   image: css({
     position: 'absolute',
@@ -38,8 +50,9 @@ const styles = {
     top: 50,
     left: 628 + 50,
     right: 50,
-    bottom: 50 + 120,
+    bottom: 50 + 70,
     wordWrap: 'break-word',
+    overflow: 'hidden',
   }),
   quote: css({
     fontSize: 27,
@@ -70,10 +83,22 @@ const fontSizeBoost = (length) => {
     return 17
   }
   if (length < 80) {
-    return 8
+    return 9
   }
   if (length < 100) {
+    return 8
+  }
+  if (length < 150) {
     return 4
+  }
+  if (length < 160) {
+    return 3
+  }
+  if (length < 180) {
+    return 2
+  }
+  if (length < 190) {
+    return 1
   }
   if (length > 400) {
     return -2
@@ -83,47 +108,33 @@ const fontSizeBoost = (length) => {
 
 const Item = ({
   loading,
-  pkg,
   error,
   t,
-  statement: { cards, statement, portrait, sequenceNumber } = {},
+  statement: { statement, portrait, sequenceNumber } = {},
 }) => {
   return (
     <Loader
       loading={loading}
       error={error}
       render={() => {
-        const headline = t(
-          `testimonial/detail/share/package/${pkg}`,
-          undefined,
-          ''
-        )
-        const invert = pkg === 'PROLONG'
-
         return (
           <div
             {...styles.container}
-            style={
-              invert
-                ? {
-                    backgroundColor: '#000',
-                    color: '#fff',
-                  }
-                : undefined
-            }
+            style={{
+              backgroundColor: LW_BLUE_DARK,
+              color: WHITE,
+            }}
           >
             <Head>
               <meta name='robots' content='noindex' />
             </Head>
             <img {...styles.image} alt='' src={portrait} />
             <div {...styles.text}>
-              {headline && <div {...styles.headline}>{headline}</div>}
               {statement && (
                 <p
                   {...styles.quote}
                   style={{
-                    fontSize:
-                      24 + fontSizeBoost(statement.length + headline.length),
+                    fontSize: 26 + fontSizeBoost(statement.length),
                   }}
                 >
                   {inQuotes(statement)}
@@ -138,7 +149,8 @@ const Item = ({
               )}
             </div>
             <div {...styles.logo}>
-              <Logo fill={invert ? '#fff' : '#000'} />
+              <Logo size={32} />
+              <span {...styles.logoText}>Lobbywatch</span>
             </div>
           </div>
         )
