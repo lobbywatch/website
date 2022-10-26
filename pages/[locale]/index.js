@@ -186,72 +186,109 @@ const Page = ({ testimonialVariables }) => {
       >
         {isFrench ? (
           <>
-            <Lead>
-              La transparence n’est pas gratuite – Lobbywatch a besoin de vous!
-            </Lead>
+            <Lead>Lobbywatch a besoin de vous!</Lead>
             <P>
-              Les élections auront lieu dans un an - et les lobbys sont depuis
-              longtemps dans les starting-blocks. Lobbywatch a beaucoup de
-              travail à faire. Nous devons nous y préparer !
+              L’état de la transparence au Palais fédéral? En un mot: médiocre.
+              Chaque membre du Conseil national et du Conseil des Etats peut
+              avoir un nombre illimité de mandats dans des conseils
+              d'administration, des comités d'associations et des conseils
+              consultatifs. Il n’y a aucune obligation de déclarer les revenus
+              issus des activités de lobbying - un ou une parlementaire siégeant
+              dans la Commission de la santé peut siéger dans le conseil
+              d’administration d’une assurance-maladie sans devoir légalement
+              déclarer ce qu’il ou elle gagne avec ce mandat. Et le Parlement
+              lui-même ne semble pas très pressé de renforcer la transparence
+              des flux d’argent: au cours des dernières années, il a rejeté plus
+              d'une douzaine d'interventions demandant plus de transparence sur
+              les activités des parlementaires.
             </P>
             <P>
-              Jusqu'à aujourd'hui, l'équipe de Lobbywatch fournit d'innombrables
-              heures de travail gratuit, afin d'être la seule plateforme en
-              Suisse à documenter systématiquement et à tenir à jour les liens
-              d’intérêt des parlementaires. Mais les recherches,
-              l'infrastructure et notre secrétariat coûtent cher. Jusqu'à
-              présent, nous avons pu nous maintenir à flot grâce à l'aide
-              d'environ 200 membres, de quelques donateur-rices et de
-              fondations.
+              Les lobbys financièrement puissants ont une influence démesurée
+              pour faire se faire entendre au Parlement - à l’écart du public.
+              Et c’est précisément pour ça que Lobbywatch est nécessaire. Depuis
+              2014, nous documentons et publions sur notre site web les liens
+              d’intérêt des politiciens et politiciennes à Berne. Notre base de
+              données est disponible gratuitement toutes celles et ceux qui ont
+              à coeur de savoir quels sont les liens d’intérêt de leurs élu-s.
             </P>
             <P>
-              Mais si nous ne faisons rien maintenant, nous ne pourrons plus
-              poursuivre notre engagement pour la société civile dans un an au
-              plus tard. Nous manquerons alors d'argent.
+              Dans un an exactement, les Suisses et Suissesses éliront un
+              nouveau Parlement. Pour Lobbywatch, cela va signifier énormément
+              de travail afin que nous puissions mettre à jour notre base de
+              données. Si nous voulons continuer notre travail de recherche,
+              nous avons aujourd’hui besoin d’aide.
+            </P>
+            <P>
+              Les décisions prises aujourd'hui au Parlement vont influencer la
+              vie des générations futures, que ce soit dans le domaine de l'AVS,
+              de la politique climatique, de l'agriculture ou de la santé. Nous
+              ne pouvons pas laisser de telles décisions aux mains des
+              lobbyistes et des entreprises et organisations les plus
+              puissantes. La transparence n’est pas une affaire de gauche ou de
+              droite, mais un pilier central de notre système démocratique: des
+              lois équitables ne peuvent voir le jour que si le processus
+              législatif est lui-même juste et équitable.
             </P>
             <P>
               {/* Remove if 1000 is reached */}
-              Nous avons besoin d’au moins 1000 membres. Ce n'est qu'ainsi que
-              nous pourrons maintenir nos recherches et le bureau dans les
-              années à venir et réaliser l'extension nécessaire.
-            </P>
-            <P>
-              Devenez membre de Lobbywatch et contribuez à mettre au jour les
-              mandats douteux et les conflits d'intérêts et à garantir l'égalité
-              des chances dans la Berne fédérale.
+              Nous en sommes convaincues: une démocratie a besoin de
+              transparence. Avec votre cotisation annuelle de 50 francs, vous
+              nous aiderez à continuer à garder à l’oeil les lobbys en Suisse.
+              Pour cela, nous avons besoin de 1'000 membres d’ici trois
+              semaines. Avec votre aide, nous y arriverons!
             </P>
           </>
         ) : (
           <>
-            <Lead>Transparenz ist nicht gratis – Lobbywatch braucht Sie!</Lead>
+            <Lead>
+              Lobbywatch braucht euch!
+            </Lead>
             <P>
-              In einem Jahr sind Wahlen – und die Lobbys stehen längst in den
-              Startlöchern. Auf Lobbywatch wartet sehr viel Arbeit. Darauf
-              müssen wir uns vorbereiten!
+              Wie es um die Transparenz im Bundeshaus steht? Gelinde gesagt:
+              nicht gut. Jeder Parlamentarier und jede Parlamentarierin darf
+              eine unbegrenzte Anzahl Mandate in Verwaltungsräten,
+              Verbandsgremien und Beiräten haben. Es besteht keine Meldepflicht
+              für Einkünfte aus Lobbytätigkeit – ein Parlamentarier, der in der
+              Gesundheits{'\u00AD'}kommission sitzt, kann im Verwaltungsrat
+              einer Krankenkasse sitzen, ohne dass er offenlegen muss, was er
+              mit diesem Mandat verdient. Denn das Parlament selber hält nicht
+              viel von der Offenlegung von Geldflüssen: In den letzten Jahren
+              hat es mehr als ein Dutzend Vorstösse abgelehnt, die mehr
+              Transparenz über die Tätigkeiten von Parlamentarier:innen
+              forderten.
             </P>
             <P>
-              Bis heute leistet das Lobbywatch-Team unzählige Stunden
-              Gratisarbeit, um als einzige Plattform in der Schweiz den
-              Lobbyismus systematisch zu dokumentieren. Doch die Recherchen, die
-              Infrastruktur und unsere Geschäftsstelle kosten. Bisher konnten
-              wir dank der Hilfe von rund 200 Mitgliedern, einigen Gönner:innen
-              und einzelnen Stiftungen über Wasser halten.
+              Finanzstarke Lobbys haben wesentlich mehr Möglichkeiten, sich
+              dabei im Parlament Gehör zu verschaffen – abseits der
+              Öffentlichkeit. Und genau darum braucht es Lobbywatch. Seit 2014
+              dokumentieren wir auf unserer Website die Interessenbindungen von
+              Politikerinnen und Politikern in Bern. Unsere Datenbank ist für
+              alle kostenlos nutzbar, die wissen wollen, welche Interessen die
+              von ihnen gewählten National- und Ständerät:innen vertreten.
             </P>
             <P>
-              Aber wenn wir jetzt nichts unternehmen, können wir unser
-              Engagement für die Zivilgesellschaft spätestens in einem Jahr
-              nicht mehr weiterführen. Dann geht uns das Geld aus.
+              In genau einem Jahr werden die Schweizerinnen und Schweizer ein
+              neues Parlament wählen. Für Lobbywatch wird das enorm viel Arbeit
+              bedeuten, damit wir unsere Datenbank auf dem neuesten Stand halten
+              können. Damit wir unsere Arbeit fortsetzen können, sind wir auf
+              Hilfe angewiesen.
+            </P>
+            <P>
+              Die Entscheidungen, die heute im Parlament getroffen werden,
+              werden das Leben zukünftiger Generationen beinflussen. Wir dürfen
+              solche Entscheidungen nicht den Lobbyist:innen und den mächtigsten
+              Unternehmen und Verbänden überlassen. Transparenz ist keine Frage
+              von links oder rechts, sondern ein zentraler Pfeiler unseres
+              demokratischen Systems: Faire Gesetze können nur entstehen, wenn
+              der Gesetzgebungsprozess selbst fair und gerecht ist.
             </P>
             <P>
               {/* Remove if 1000 is reached */}
-              Wir brauchen 1000 Mitglieder. Mindestens. Nur so können wir unsere
-              Recherchen und die Geschäftsstelle in den nächsten Jahren
-              aufrechterhalten und den nötigen Ausbau realisieren.
-            </P>
-            <P>
-              Werden Sie Mitglied bei Lobbywatch und helfen Sie mit, fragwürdige
-              Mandate und Interessenkonflikte aufzudecken und in Bundesbern für
-              gleich lange Spiesse zu sorgen.
+              Wir sind davon überzeugt: eine Demokratie braucht Transparenz. Mit
+              Ihrem Jahresbeitrag von 50 Franken helfen Sie uns, weiterhin den
+              Lobbys in der Schweiz auf die Finger zu schauen. Dazu brauchen wir
+              1000 Mitglieder innerhalb von drei Wochen. Mit Ihrer Hilfe
+              erreichen wir dieses Ziel!
             </P>
           </>
         )}
@@ -370,30 +407,38 @@ const Page = ({ testimonialVariables }) => {
           <>
             <H1>Lobbywatch, c’est quoi ?</H1>
             <P>
-              Lobbywatch est la plateforme centrale d'information journalistique
-              sur les liens d'intérêts des politiciens et politiciennes
-              fédéraux. Les citoyens et les journalistes intéressés peuvent donc
-              consulter gratuitement et à tout moment notre site Internet pour
-              savoir quels parlementaires exercent quelles activités à Berne, et
-              quels intérêts ils représentent. Grâce à des analyses de données
-              et des articles, nous abordons aussi les thèmes actuels de la
-              politique fédérale.
+              Lobbywatch est la seule source en Suisse permettant aux
+              citoyen-nes et aux journalistes de savoir quels sont les intérêts
+              que les politiciens et politiciennes représentent à Berne. Depuis
+              2014, nous investiguons, documentons et analysons les liens
+              d'intérêts des membres du Conseil national et du Conseil des Etats
+              et les publions sur notre site Internet. Nous documentons aussi à
+              quels lobbyistes les parlementaires donnent accès au Palais
+              fédéral, via les cartes d'accès dont ils disposent, et pour qui
+              ces lobbyistes travaillent.
             </P>
             <P>
               Notre base de données contient plus de 48’000 données sur les
               parlementaires et leurs liens d’intérêt avec des associations, des
-              organisations et des entreprises. De plus, nous documentons à
-              quels lobbyistes les parlementaires donnent accès au Palais
-              fédéral grâce aux cartes d'accès dont ils disposent, et pour qui
-              ces lobbyistes travaillent.
+              organisations et des entreprises. Ces informations sont examinées
+              par de jeunes journalistes pour le compte de Lobbywatch et sont
+              constamment mises à jour grâce à des applications spécialement
+              développées pour nous. Nous abordons également des thèmes actuels
+              de la politique fédérale par le biais d'analyses de données et
+              d'articles de blog.
             </P>
             <P>
-              Ces informations sont examinées par de jeunes journalistes pour le
-              compte de Lobbywatch et sont constamment mises à jour grâce à des
-              applications spécialement développées pour nous.
+              Lobbywatch a rendu la politique fédérale plus transparente: grâce
+              à notre engagement et à notre ténacité, près d'un tiers des
+              parlementaires déclarent aujourd'hui combien ils gagnent avec
+              leurs mandats. Chaque nouveau mandat et chaque nouvel emploi des
+              conseillers et conseillères nationaux et aux États peuvent être
+              consultés en quelques jours sur notre site Internet et sont
+              automatiquement signalés sur Twitter (nous sommes très fiers de
+              notre Lobbybot).
             </P>
             <P>
-              A l'exception des chercheurs et chercheuses, ainsi que du
+              A l'exception de nos chercheurs et chercheuses, ainsi que du
               secrétariat, tous les membres de Lobbywatch travaillent
               bénévolement. Notre association est reconnue d'utilité publique et
               exonérée d'impôts. Les dons et les cotisations des membres peuvent
@@ -404,27 +449,33 @@ const Page = ({ testimonialVariables }) => {
           <>
             <H1>Was ist Lobbywatch?</H1>
             <P>
-              Lobbywatch ist die zentrale journalistische Auskunftsplattform für
-              Interessenbindungen von eidgenössischen Politiker:innen. Auf
-              unserer Website können interessierte Bürger:innen und
-              Medienschaffende deshalb jederzeit und gratis nachsehen, welche
-              Parlamentarier:innen in Bern welche Tätigkeiten ausüben und wessen
-              Interessen sie vertreten. Mit Datenanalysen und Blogbeiträgen
-              greifen wir zudem aktuelle Themen aus der eidgenössischen Politik
-              auf.
+              Lobbywatch ist die einzige Quelle in der Schweiz, die es
+              Bürger:innen und Medienschaffenden ermöglicht, herauszufinden,
+              welche Interessen die Politiker:innen in Bern vertreten. Seit 2014
+              recherchieren, dokumentieren und analysieren wir die
+              Interessenbindungen der Mitglieder des National- und Ständerats
+              und veröffentlichen diese auf unserer Website. Zudem dokumentieren
+              wir, welche Parlamentarier:innen durch die ihnen zur Verfügung
+              stehenden Zutrittsausweise welchen Lobbyist:innen den Zutritt zum
+              Bundeshaus ermöglichen und für wen diese tätig sind.
             </P>
             <P>
               In unserer Datenbank führen wir mittlerweile gut 48’000 Datensätze
               zu Ratsmitgliedern und ihren Verbindungen zu Verbänden,
-              Organisationen und Unternehmen. Zudem dokumentieren wir, welche
-              Parlamentarier:innen durch die ihnen zur Verfügung stehenden
-              Zutrittsausweise welchen Lobbyist:innen den Zutritt zum Bundeshaus
-              ermöglichen und für wen diese tätig sind.
+              Organisationen und Unternehmen. Diese Informationen werden von
+              jungen Medienschaffenden im Auftrag von Lobbywatch recherchiert
+              und dank eigens für uns entwickelten Applikationen ständig aktuell
+              gehalten. Mit Datenanalysen und Blogbeiträgen greifen wir zudem
+              aktuelle Themen aus der eidgenössischen Politik auf.
             </P>
             <P>
-              Diese Informationen werden von jungen Medienschaffenden im Auftrag
-              von Lobbywatch recherchiert und dank eigens für uns entwickelten
-              Applikationen ständig aktuell gehalten.
+              Lobbywatch hat die eidgenössische Politik transparenter gemacht:
+              Dank unseres Engagements und unserer Hartnäckigkeit deklarieren
+              mittlerweile rund ein Drittel der Parlamentarier, wie viel sie mit
+              ihren Mandaten verdienen. Jedes neue Mandat und jeder neuer Job
+              von Nationalrätinnen und Ständeräten ist innert Tagen auf unserer
+              Website abrufbar und wird auf Twitter automatisch gemeldet (wir
+              sind sehr Stolz auf unseren Lobbybot).
             </P>
             <P>
               Mit Ausnahme der Rechercheur:innen und der Geschäftsstelle
@@ -440,56 +491,57 @@ const Page = ({ testimonialVariables }) => {
           <>
             <H1>L’importance de la transparence</H1>
             <P>
-              Vous demandez-vous parfois pourquoi la commission de la santé
-              prend toujours des décisions en faveur des caisses-maladie et de
-              l'industrie pharmaceutique ? Ou que la commission économique place
-              régulièrement les intérêts des banques et des assurances au-dessus
-              de ceux des consommateurs ?
+              Vous demandez-vous parfois pourquoi la Commission de la santé
+              prend toujours des décisions qui bénéficient les caisses-maladie
+              et l'industrie pharmaceutique? Ou pourquoi la Commission de
+              l’économie place régulièrement les intérêts des banques et des
+              assurances au-dessus de ceux des consommateur-rices?
             </P>
             <P>
-              Nous ne le pensons pas. Car ces branches - comme beaucoup d'autres
-              - fournissent depuis des années aux conseillers nationaux et aux
-              conseillers aux États des postes rémunérés dans les conseils
-              d'administration, les conseils consultatifs et autres comités.
-              C'est certes légal, mais cela crée une inégalité des chances en
-              politique : celui qui a plus de moyens financiers peut s'acheter
-              plus d'influence. Les décisions prises sous ces auspices restent
-              valables pendant des décennies et déterminent ainsi la vie des
+              Pour nous, rien de surprenant. Car ces secteurs - comme beaucoup
+              d'autres - fournissent depuis des années aux parlementaires du
+              Conseil national et du Conseil des États des postes rémunérés dans
+              des conseils d'administration, des conseils consultatifs et autres
+              comités d’organisation. C'est certes légal, mais cela crée une
+              inégalité des chances en politique: les organisations qui ont le
+              plus de moyens financiers peuvent s'acheter plus d'influence. Les
+              décisions prises sous ces conditions restent ensuite figées comme
+              lois pendant des décennies et déterminent ainsi la vie des
               générations futures.
+            </P>
+            <P>
+              Et que ce soit clair: il est essentiel que tous les groupes
+              d’intérêt - les organisations, les entreprises, les mouvements de
+              la société civile - puissent donner leur avis sur les lois qui les
+              concernent et proposer des solutions. Mais le problème, c’est que
+              les organisations financièrement puissantes ont une influence
+              démesurée pour faire se faire entendre au Parlement.
             </P>
             <P>
               Cette influence passe pratiquement inaperçue aux yeux du public,
               car le Parlement refuse obstinément depuis des années d'assurer
-              une plus grande transparence. Les électeurs n'ont toujours pas le
-              droit légal de savoir quelles organisations et entreprises
-              influencent la politique fédérale et quelles sommes les
-              parlementaires reçoivent lorsqu'ils défendent leurs intérêts.
+              une plus grande transparence. Les électeurs et électrices n'ont
+              toujours pas le droit légal de savoir quelles organisations et
+              entreprises influencent la politique fédérale et quelles sommes
+              les parlementaires reçoivent lorsqu'ils représentent leurs
+              intérêts.
             </P>
             <P>
-              Lobbywatch est la seule plateforme en Suisse qui assure la
-              transparence. Depuis notre création en 2014, nous documentons les
-              liens d'intérêts des membres du Conseil national et du Conseil des
-              Etats et montrons quels sont les lobbyistes qui se déplacent au
-              Palais fédéral. Car nous pensons que :{' '}
-              <strong>
-                Des lois équitables ne peuvent être élaborées que si le
-                processus législatif se déroule de manière juste et
-                transparente.
-              </strong>
-            </P>
-            <P>
-              Le succès nous donne raison : grâce à notre initiative, plus d'un
-              tiers des parlementaires déclarent volontairement leurs revenus -
-              et la tendance est à la hausse.
+              En Suisse, chaque domaine de la vie est réglementé. Il y a des
+              lois, des contrôles et des sanctions - mais lorsqu'il s'agit des
+              parlementaires eux-mêmes, qui promulguent ces lois, il n'y a
+              quasiment aucune réglementation. Et c’est pour ça que Lobbywatch,
+              la seule plateforme en Suisse qui assure plus de transparence dans
+              la politique fédérale, est nécessaire.
             </P>
           </>
         ) : (
           <>
             <H1>Warum Transparenz wichtig ist</H1>
             <P>
-              Wundern Sie sich manchmal, warum in der Gesundheitskommission
-              immer wieder Entscheide zugunsten der Krankenkassen und der
-              Pharmaindustrie gefällt werden? Oder dass die
+              Wundern Sie sich manchmal, warum in der Gesundheits{'\u00AD'}
+              kommission immer wieder Entscheide zugunsten der Krankenkassen und
+              der Pharmaindustrie gefällt werden? Oder dass die
               Wirtschaftskommission die Interessen von Banken und Versicherungen
               regelmässig über diejenigen von Konsument:innen stellt?
             </P>
@@ -504,6 +556,13 @@ const Page = ({ testimonialVariables }) => {
               Generationen.
             </P>
             <P>
+              Um es klar zu sagen: Es ist wichtig, dass alle Interessengruppen –
+              Verbände, Unternehmen, Bewegungen der Zivilgesellschaft – sich zu
+              neuen Gesetzen äussern und Vorschläge machen können. Das Problem
+              dabei ist jedoch, dass finanzstarke Organisationen wesentlich mehr
+              Möglichkeiten haben, sich dabei im Parlament Gehör zu verschaffen.
+            </P>
+            <P>
               Diese Einflussnahme geschieht praktisch unbemerkt von der
               Öffentlichkeit, denn das Parlament weigert sich seit Jahren
               beharrlich, für mehr Transparenz zu sorgen. Wählerinnen und Wähler
@@ -513,20 +572,13 @@ const Page = ({ testimonialVariables }) => {
               sich für deren Interessen einsetzen.
             </P>
             <P>
-              Lobbywatch ist die einzige Plattform in der Schweiz, die für
-              Transparenz sorgt. Seit unserer Gründung 2014 dokumentieren wir
-              die Interessenbindungen der Mitglieder von National- und Ständerat
-              und zeigen auf, welche Lobbyist:innen im Bundeshaus unterwegs
-              sind. Denn wir finden:{' '}
-              <strong>
-                Faire Gesetze können nur entstehen, wenn der
-                Gesetzgebungsprozess fair und transparent abläuft.
-              </strong>
-            </P>
-            <P>
-              Der Erfolg gibt uns recht: Dank unserer Initiative deklariert
-              mittlerweile mehr als ein Drittel der Parlamentarier:innen
-              freiwillig ihre Einkünfte – Tendenz steigend.
+              In der Schweiz ist jeder Lebensbereich reglementiert. Es gibt
+              Gesetze, Kontrollen und Sanktionen – nur wenn es um die
+              Parlamentarierinnen und Parlamentarier selber geht, die diese
+              Gesetze erlassen, gibt es so gut wie keine Vorschriften. Und
+              deshalb ist Lobbywatch notwendig, denn wir sind die einzige
+              Plattform in der Schweiz, die für mehr Transparenz in der
+              Bundespolitik sorgt.
             </P>
           </>
         )}
@@ -548,10 +600,9 @@ const Page = ({ testimonialVariables }) => {
                 commentaires.
               </Editorial.LI>
               <Editorial.LI>
-                Vous recevez également un rapport annuel sur l’état de nos
-                activités et vous pouvez participer à nos assemblées générales
-                afin d’être partie prenante des décisions sur nos objectifs à
-                long terme.
+                Vous participez aux décisions - pas au Palais fédéral, mais lors
+                de notre assemblée générale: sur nos finances et sur les thèmes
+                auxquels nous devons nous consacrer.
               </Editorial.LI>
               <Editorial.LI>
                 Être membre, c’est aussi pouvoir faire connaissance avec
@@ -573,7 +624,7 @@ const Page = ({ testimonialVariables }) => {
           </>
         ) : (
           <>
-            <H1>Seien Sie dabei</H1>
+            <H1>Seien Sie dabei!</H1>
             <P>
               Mitglied bei Lobbywatch zu werden bedeutet, sich für mehr
               Transparenz in der Politik einzusetzen – aber auch von Vorteilen
