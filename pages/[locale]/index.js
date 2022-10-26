@@ -241,7 +241,7 @@ const Page = ({ testimonialVariables }) => {
         ) : (
           <>
             <Lead>
-              Lobbywatch braucht euch!
+              Lobbywatch braucht Sie!
             </Lead>
             <P>
               Wie es um die Transparenz im Bundeshaus steht? Gelinde gesagt:
