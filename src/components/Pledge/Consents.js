@@ -74,8 +74,8 @@ const Consents = withT(
   },
 )
 
-const VALID_KEYS = ['PRIVACY', 'STATUTE']
-const VALID_COMBOS = ['PRIVACY_STATUTE', 'PRIVACY']
+const VALID_KEYS = ['PRIVACY', 'STATUTE', 'TOS']
+const VALID_COMBOS = ['PRIVACY_STATUTE_TOS', 'PRIVACY_STATUTE', 'PRIVACY']
 
 Consents.propTypes = {
   onChange: PropTypes.func.isRequired,
