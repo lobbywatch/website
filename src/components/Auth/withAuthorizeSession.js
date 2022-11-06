@@ -30,10 +30,12 @@ export default compose(
     props: ({ mutate, ownProps: { router } }) => ({
       authorizeSession: (variables) =>
         mutate({
-          variables,
+          variables: {
+            ...variables,
+            locale: getSafeLocale(router.query.locale),
+          },
           refetchQueries: [{ query: meQuery }],
           awaitRefetchQueries: true,
-          locale: getSafeLocale(router.query.locale),
         }),
     }),
   })
