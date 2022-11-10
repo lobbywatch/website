@@ -234,15 +234,13 @@ const Page = ({ testimonialVariables }) => {
               Nous en sommes convaincues: une démocratie a besoin de
               transparence. Avec votre cotisation annuelle de 50 francs, vous
               nous aiderez à continuer à garder à l’oeil les lobbys en Suisse.
-              Pour cela, nous avons besoin de 1'000 membres d’ici trois
-              semaines. Avec votre aide, nous y arriverons!
+              Pour cela, nous avons besoin de 1'000 membres ou d'au moins 50'000
+              francs d'ici au 1er décembre. Avec votre aide, nous y arriverons!
             </P>
           </>
         ) : (
           <>
-            <Lead>
-              Lobbywatch braucht Sie!
-            </Lead>
+            <Lead>Lobbywatch braucht Sie!</Lead>
             <P>
               Wie es um die Transparenz im Bundeshaus steht? Gelinde gesagt:
               nicht gut. Jeder Parlamentarier und jede Parlamentarierin darf
@@ -287,8 +285,8 @@ const Page = ({ testimonialVariables }) => {
               Wir sind davon überzeugt: eine Demokratie braucht Transparenz. Mit
               Ihrem Jahresbeitrag von 50 Franken helfen Sie uns, weiterhin den
               Lobbys in der Schweiz auf die Finger zu schauen. Dazu brauchen wir
-              1000 Mitglieder innerhalb von drei Wochen. Mit Ihrer Hilfe
-              erreichen wir dieses Ziel!
+              1000 Mitglieder oder mindestens 50'000 Franken bis zum 1.
+              Dezember. Mit Ihrer Hilfe erreichen wir dieses Ziel!
             </P>
           </>
         )}
