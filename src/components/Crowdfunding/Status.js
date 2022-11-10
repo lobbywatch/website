@@ -370,12 +370,18 @@ export const cfStatusQuery = gql`
       goals {
         memberships
         description
+        money
       }
       status {
         memberships
       }
       endDate
       hasEnded
+    }
+    revenueStats {
+      sum(min: "2022-01-01", max: "2022-12-01") {
+        total
+      }
     }
   }
 `
@@ -387,7 +393,13 @@ export const withStatus = graphql(cfStatusQuery, {
   },
   props: ({ data }) => {
     return {
-      crowdfunding: data.crowdfunding,
+      crowdfunding: data.crowdfunding && {
+        ...data.crowdfunding,
+        status: {
+          ...data.crowdfunding.status,
+          money: data.revenueStats.sum.total
+        }
+      },
       statusRefetch: data.refetch,
       statusStartPolling: data.startPolling,
       statusStopPolling: data.stopPolling,
