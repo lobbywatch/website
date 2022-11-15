@@ -108,18 +108,22 @@ const Footer = ({
       <JsonLd
         data={{ '@context': 'http://schema.org/', '@type': 'WPFooter' }}
       />
-      {pledgeAd && !focusMode && (
+      {!focusMode && (
         <Container>
           <Clear {...columnContainerStyle}>
             <div {...columnStyle}>
               <SocialMedia locale={locale} />
             </div>
-            <div {...columnStyle}>
-              <H3>Crowdfunding</H3>
-          <Link href={`/${locale}`} prefetch={false} passHref>
-            <Button style={{height: 40}} primary>{t('cf/cta/now')}</Button>
-          </Link>
-            </div>
+            {pledgeAd && (
+              <div {...columnStyle}>
+                <H3>Crowdfunding</H3>
+                <Link href={`/${locale}`} prefetch={false} passHref>
+                  <Button style={{ height: 40 }} primary>
+                    {t('cf/cta/now')}
+                  </Button>
+                </Link>
+              </div>
+            )}
           </Clear>
         </Container>
       )}
@@ -172,18 +176,32 @@ const Footer = ({
                           <A>{t('footer/home')}</A>
                         </Link>
                       </li>
-                      {!hasAccess && <li>
-                        <Link href={`/${locale}/patronage?package=YEAR`} prefetch={false} passHref>
-                          <A>{t('footer/member')}</A>
-                        </Link>
-                      </li>}
+                      {!hasAccess && (
+                        <li>
+                          <Link
+                            href={`/${locale}/patronage?package=YEAR`}
+                            prefetch={false}
+                            passHref
+                          >
+                            <A>{t('footer/member')}</A>
+                          </Link>
+                        </li>
+                      )}
                       <li>
-                        <Link href={`/${locale}/patronage?package=DONATE`} prefetch={false} passHref>
+                        <Link
+                          href={`/${locale}/patronage?package=DONATE`}
+                          prefetch={false}
+                          passHref
+                        >
                           <A>{t('footer/donate')}</A>
                         </Link>
                       </li>
                       <li>
-                        <Link href={`/${locale}/community`} prefetch={false} passHref>
+                        <Link
+                          href={`/${locale}/community`}
+                          prefetch={false}
+                          passHref
+                        >
                           <A>{t('footer/community')}</A>
                         </Link>
                       </li>
@@ -193,25 +211,34 @@ const Footer = ({
                         </Link>
                       </li>
                       <li>
-                        <Link href={`/${locale}/merci`} prefetch={false} passHref>
+                        <Link
+                          href={`/${locale}/merci`}
+                          prefetch={false}
+                          passHref
+                        >
                           <A>
                             {t('pages/account/title')}
                             {me?.name && `: ${me.name}`}
                           </A>
                         </Link>
                       </li>
-                      {me && <li>
-                        <SignOut />
-                      </li>}
+                      {me && (
+                        <li>
+                          <SignOut />
+                        </li>
+                      )}
                     </ul>
                   </div>
                 </Clear>
                 <Hr />
                 <div {...ccContainerStyle}>
                   <CreativeCommons className={ccLogoStyle} />
-                  <p {...ccTextStyle} dangerouslySetInnerHTML={{
-                    __html: t('footer/cc')
-                  }} />
+                  <p
+                    {...ccTextStyle}
+                    dangerouslySetInnerHTML={{
+                      __html: t('footer/cc'),
+                    }}
+                  />
                 </div>
               </div>
             )}

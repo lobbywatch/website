@@ -2,6 +2,7 @@ import React from 'react'
 import { DRUPAL_BASE_URL } from '../../../constants'
 import FacebookIcon from '../../assets/Facebook'
 import TwitterIcon from '../../assets/Twitter'
+import MastodonIcon from '../../assets/Mastodon'
 import RSSIcon from '../../assets/RSS'
 import InstagramIcon from '../../assets/Instagram'
 
@@ -38,18 +39,25 @@ const SocialMedia = ({ locale }) => (
       </a>
       <a
         target='_blank'
+        href='https://tooting.ch/@Lobbywatch'
+        rel='me noreferrer'
+      >
+        <MastodonIcon />
+      </a>
+      <a
+        target='_blank'
         href='https://www.instagram.com/Lobbywatch_CH/'
         rel='noreferrer'
       >
         <InstagramIcon />
       </a>
-      <a
+      {/* <a
         target='_blank'
         href={`${DRUPAL_BASE_URL}/${locale}/rss.xml`}
         rel='noreferrer'
       >
         <RSSIcon />
-      </a>
+      </a> */}
     </div>
   </div>
 )

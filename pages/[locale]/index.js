@@ -741,9 +741,6 @@ const Page = ({ testimonialVariables }) => {
           <ActionBar share={shareObject} />
         </div>
 
-        <br />
-        <br />
-        <br />
       </ContainerWithSidebar>
     </Frame>
   )
