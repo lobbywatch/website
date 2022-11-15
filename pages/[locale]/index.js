@@ -328,6 +328,9 @@ const Page = ({ testimonialVariables }) => {
                     )
                   )}
                 </List>
+                <Link href={`/${locale}/artikel/archiv`} passHref>
+                  <A>{t('index/blog/link')}</A>
+                </Link>
               </div>
             )
           }}
