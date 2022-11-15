@@ -7,7 +7,6 @@ import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import RawHtml from 'src/components/RawHtml'
-import Cover, { NARROW_WIDTH } from 'src/components/Cover'
 import { H1, Meta } from 'src/components/Styled'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
@@ -76,10 +75,24 @@ const Page = () => {
                 image={page.image}
                 page={page}
               />
-              {!!page.image && <Cover src={page.image} title={page.title} />}
-              <Center style={{ paddingTop: 0, maxWidth: NARROW_WIDTH }}>
-                {!page.image && <H1>{page.title}</H1>}
-                <Meta style={{ marginBottom: 7 }}>
+              <Center style={{ paddingTop: 0, maxWidth: 640 }}>
+                {!!page.image && (
+                  <img
+                    style={{
+                      maxWidth: '100%',
+                      maxHeight: 400,
+                      objectFit: 'contain',
+                      marginTop: 15,
+                    }}
+                    src={page.image}
+                    alt=''
+                  />
+                )}
+                <H1 style={{
+                  marginTop: page.image ? 15 : undefined,
+                  marginBottom: page.published || page.author ? 5 : undefined
+                }}>{page.title}</H1>
+                <Meta style={{ marginTop: 0, marginBottom: 7 }}>
                   {[page.published, page.author].filter(Boolean).join(' – ')}
                 </Meta>
                 <RawHtml dangerouslySetInnerHTML={{ __html: page.content }} />
