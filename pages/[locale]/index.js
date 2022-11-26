@@ -182,6 +182,9 @@ const Page = ({ testimonialVariables }) => {
           crowdfundingName: CROWDFUNDING_PLEDGE,
           title: t('cf/cta/packages'),
           locale,
+          statusProps: {
+            endDate: '2022-11-30 23:00:00+00',
+          },
         }}
       >
         {isFrench ? (
@@ -230,12 +233,9 @@ const Page = ({ testimonialVariables }) => {
               législatif est lui-même juste et équitable.
             </P>
             <P>
-              {/* Remove if 1000 is reached */}
               Nous en sommes convaincues: une démocratie a besoin de
               transparence. Avec votre cotisation annuelle de 50 francs, vous
               nous aiderez à continuer à garder à l’oeil les lobbys en Suisse.
-              Pour cela, nous avons besoin de 1'000 membres ou d'au moins 50'000
-              francs d'ici au 1er décembre. Avec votre aide, nous y arriverons!
             </P>
           </>
         ) : (
@@ -281,15 +281,40 @@ const Page = ({ testimonialVariables }) => {
               der Gesetzgebungsprozess selbst fair und gerecht ist.
             </P>
             <P>
-              {/* Remove if 1000 is reached */}
               Wir sind davon überzeugt: eine Demokratie braucht Transparenz. Mit
               Ihrem Jahresbeitrag von 50 Franken helfen Sie uns, weiterhin den
-              Lobbys in der Schweiz auf die Finger zu schauen. Dazu brauchen wir
-              1000 Mitglieder oder mindestens 50'000 Franken bis zum 1.
-              Dezember. Mit Ihrer Hilfe erreichen wir dieses Ziel!
+              Lobbys in der Schweiz auf die Finger zu schauen.
             </P>
           </>
         )}
+
+        {isFrench ? (
+          <>
+            <P>
+              Pour que Lobbywatch puisse poursuivre son activité, nous
+              cherchions 1000 membres ou d'au moins 50'000 francs. Nous avons
+              atteint l'objectif d'argent avec vous. Un grand merci à vous !
+            </P>
+            <P>
+              Lobbywatch veut grandir - c'est pourquoi nous continuons à
+              collecter des fonds !
+            </P>
+          </>
+        ) : (
+          <>
+            <P>
+              Damit wir Lobbywatch weiter betreiben können, haben wir 1000
+              Mitglieder oder mindestens CHF 50’000 gesucht. Das Geldziel haben
+              wir zusammen mit Ihnen erreicht. Herzlichen Dank!
+            </P>
+            <P>
+              Schaffen wir es, die Schwelle von <strong>60'000 Franken</strong>{' '}
+              auch noch zu knacken? Dies gäbe uns ein kleines Polster, um den
+              Betrieb auch nach dem Wahljahr 2023 sicherzustellen.
+            </P>
+          </>
+        )}
+
         {mobilePledgeLink}
 
         <div style={{ margin: '15px 0 0' }}>
@@ -335,72 +360,6 @@ const Page = ({ testimonialVariables }) => {
             )
           }}
         />
-
-        {/* {isFrench ? (
-          <div {...styles.infoBox}>
-            <Interaction.P {...styles.infoBoxP} style={{ marginBottom: 10 }}>
-              Pour que Lobbywatch puisse poursuivre son activité, nous
-              cherchions 1000 membres. Nous avons atteint cet objectif avec vous
-              le premier jour du crowdfunding. Un grand merci à vous !
-            </Interaction.P>
-            <Interaction.P {...styles.infoBoxP} style={{ marginBottom: 10 }}>
-              Lobbywatch veut grandir - c'est pourquoi nous continuons à
-              collecter des fonds !
-            </Interaction.P>
-            <List>
-              <List.Item>
-                <Highlight>1500 membres :</Highlight> nous créons un poste de
-                rédacteur rémunéréprofessionnalisons notre rédaction et vous
-                livrons au moins une fois par mois un briefing sur le monde du
-                lobbying : nouveaux mandats, recherches importantes et conseils
-                de la rédaction.
-              </List.Item>
-              <List.Item>
-                <Highlight>2000 membres :</Highlight> nous intégrons les données
-                de vote du Parlement sur notre site web. Vous pouvez voir
-                directement chez nous qui a voté comment et avec quel mandat.
-              </List.Item>
-              <List.Item>
-                <Highlight>3000 membres :</Highlight> nous rendons compte des
-                sessions et classons les votes sous l'angle de la transparence
-                et du lobbying. (Alternative : nous développons la rédaction et
-                rendons compte de toutes les sessions et classons
-                systématiquement le comportement de vote sous l'angle de la
-                transparence et du lobbying).
-              </List.Item>
-            </List>
-          </div>
-        ) : (
-          <div {...styles.infoBox}>
-            <Interaction.P {...styles.infoBoxP} style={{ marginBottom: 10 }}>
-              Damit wir Lobbywatch weiter betreiben können, haben wir 1000
-              Mitglieder gesucht. Dieses Ziel haben wir zusammen mit Ihnen am
-              ersten Tag des Crowdfundings erreicht. Herzlichen Dank!
-            </Interaction.P>
-            <Interaction.P {...styles.infoBoxP} style={{ marginBottom: 10 }}>
-              Lobbywatch will wachsen – deshalb sammeln wir weiter!
-            </Interaction.P>
-            <List>
-              <List.Item>
-                <Highlight>1500 Mitglieder:</Highlight> Wir schaffen eine
-                bezahlte Redaktionsstelle und liefern Ihnen mindestens monatlich
-                ein Briefing aus der Lobbying-Welt: Neue Mandate, wichtige
-                Recherchen und Tips aus der Redaktion.
-              </List.Item>
-              <List.Item>
-                <Highlight>2000 Mitglieder:</Highlight> Wir integrieren die
-                Abstimmungsdaten des Parlaments in unsere Website. Sie können
-                direkt bei uns sehen, wer mit welchem Mandat wie abgestimmt hat.
-              </List.Item>
-              <List.Item>
-                <Highlight>3000 Mitglieder:</Highlight> Wir bauen die Redaktion
-                weiter aus und berichten aus den Sessionen und ordnen das
-                Abstimmungsverhalten systematisch aus dem Blickwinkel
-                Transparenz und Lobbyismus ein.
-              </List.Item>
-            </List>
-          </div>
-        )} */}
 
         <br />
 
@@ -740,7 +699,6 @@ const Page = ({ testimonialVariables }) => {
           </Label>
           <ActionBar share={shareObject} />
         </div>
-
       </ContainerWithSidebar>
     </Frame>
   )

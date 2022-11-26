@@ -204,6 +204,7 @@ class Status extends Component {
             accessor={accessor}
             format={countFormat}
             color={barColor}
+            t={t}
           />
         </div>
       )
@@ -276,6 +277,7 @@ class Status extends Component {
                 accessor={accessor}
                 format={format}
                 color={barColor}
+                t={t}
               />
             </Fragment>
           ))}

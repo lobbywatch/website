@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { css, merge } from 'glamor'
 
-import { fontStyles, RawHtml, useColorContext } from '@project-r/styleguide'
+import { fontStyles, useColorContext } from '@project-r/styleguide'
 
 const HEIGHT = 8
 
@@ -12,7 +12,6 @@ const styles = {
     marginBottom: 20,
     position: 'relative',
     borderRadius: 4,
-    overflow: 'hidden',
   }),
   barInner: css({
     height: '100%',
@@ -67,9 +66,9 @@ const styles = {
     height: 0,
     borderStyle: 'solid',
     borderWidth: '0 4px 8px 4px',
-    borderColorTop: 'transparent',
-    borderColorRight: 'transparent',
-    borderColorLeft: 'transparent',
+    borderTopColor: 'transparent',
+    borderRightColor: 'transparent',
+    borderLeftColor: 'transparent',
   }),
   noInteraction: css({
     pointerEvents: 'none',
@@ -84,7 +83,7 @@ const widthForGoal = (goal, status, accessor) => {
   )
 }
 
-const GoalBar = ({ status, goals, accessor, format, showLast }) => {
+const GoalBar = ({ status, goals, accessor, format, showLast, t }) => {
   const [colorScheme] = useColorContext()
 
   const goal = goals[goals.length - 1]
@@ -93,6 +92,14 @@ const GoalBar = ({ status, goals, accessor, format, showLast }) => {
     .reverse()
 
   const [hover, setHover] = useState(showLast ? uniqueGoals[0] : undefined)
+  const hoverDescription =
+    hover &&
+    (hover.description ||
+      t(
+        `crowdfunding/status/goal/${accessor}/${hover[accessor]}/description`,
+        undefined,
+        ''
+      ))
 
   if (!goal) return null
 
@@ -150,7 +157,7 @@ const GoalBar = ({ status, goals, accessor, format, showLast }) => {
                 >
                   {format(uniqueGoal[accessor])}
                 </div>
-                {!!hover.description && (
+                {!!hoverDescription && (
                   <div
                     {...styles.arrow}
                     {...colorScheme.set('borderBottomColor', 'primaryHover')}
@@ -160,17 +167,13 @@ const GoalBar = ({ status, goals, accessor, format, showLast }) => {
             )}
           </div>
         ))}
-      {!!hover && !!hover.description && (
+      {!!hoverDescription && (
         <div
           {...styles.box}
           {...colorScheme.set('backgroundColor', 'primaryHover')}
+          style={{ color: 'white' }}
         >
-          <RawHtml
-            dangerouslySetInnerHTML={{
-              __html:
-                '<span style="color: white;">' + hover.description + '</span>',
-            }}
-          />
+          {hoverDescription}
         </div>
       )}
     </div>
