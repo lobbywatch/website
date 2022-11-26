@@ -183,7 +183,7 @@ const Page = ({ testimonialVariables }) => {
           title: t('cf/cta/packages'),
           locale,
           statusProps: {
-            endDate: '2022-11-30 23:00:00+00',
+            endDate: '2022-11-30T23:00:00.000Z',
           },
         }}
       >
