@@ -293,11 +293,11 @@ const Page = ({ testimonialVariables }) => {
             <P>
               Pour que Lobbywatch puisse poursuivre son activité, nous
               cherchions 1000 membres ou d'au moins 50'000 francs. Nous avons
-              atteint l'objectif d'argent avec vous. Un grand merci à vous !
+              atteint l'objectif d'argent avec vous.{' '}
+              <strong>Un grand merci à vous !</strong>
             </P>
             <P>
-              Lobbywatch veut grandir - c'est pourquoi nous continuons à
-              collecter des fonds !
+              Bien sûr, vous pouvez toujours devenir membre ou faire un don.
             </P>
           </>
         ) : (
@@ -305,12 +305,11 @@ const Page = ({ testimonialVariables }) => {
             <P>
               Damit wir Lobbywatch weiter betreiben können, haben wir 1000
               Mitglieder oder mindestens CHF 50’000 gesucht. Das Geldziel haben
-              wir zusammen mit Ihnen erreicht. Herzlichen Dank!
+              wir zusammen mit Ihnen erreicht. <strong>Herzlichen Dank!</strong>
             </P>
             <P>
-              Schaffen wir es, die Schwelle von <strong>60'000 Franken</strong>{' '}
-              auch noch zu knacken? Dies gäbe uns ein kleines Polster, um den
-              Betrieb auch nach dem Wahljahr 2023 sicherzustellen.
+              Selbstverständlich können Sie weiterhin Mitglied werden oder
+              spenden.
             </P>
           </>
         )}
