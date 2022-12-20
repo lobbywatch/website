@@ -65,11 +65,6 @@ const Frame = ({
 
   const menuItems = [
     {
-      label: 'Crowdfunding',
-      href: `/${currentLocale}`,
-      active: asPath.split('?')[0] === `/${currentLocale}`
-    },
-    {
       label: t('menu/parliamentarians'),
       href: `/${currentLocale}/${typeSegments.Parliamentarian}`,
     },

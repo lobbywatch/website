@@ -19,6 +19,7 @@ import { metaQuery } from '../../../lib/baseQueries'
 import { useMe } from '../Auth/withMe'
 import SignOut from '../Auth/SignOut'
 import { Button } from '@project-r/styleguide'
+import { PLEDGE_PATH } from '../../constants'
 
 const footerStyle = css({
   backgroundColor: GREY_SOFT,
@@ -116,10 +117,13 @@ const Footer = ({
             </div>
             {pledgeAd && (
               <div {...columnStyle}>
-                <H3>Crowdfunding</H3>
-                <Link href={`/${locale}`} prefetch={false} passHref>
+                <H3>{t('index/cta/support')}</H3>
+                <Link href={{
+            pathname: PLEDGE_PATH,
+            query: { locale, package: 'YEAR' },
+          }} prefetch={false} passHref>
                   <Button style={{ height: 40 }} primary>
-                    {t('cf/cta/now')}
+                    {t('index/cta/join')}
                   </Button>
                 </Link>
               </div>
@@ -169,7 +173,7 @@ const Footer = ({
                       </div>
                     ))}
                   <div {...footerColumnStyle}>
-                    <Strong>Crowdfunding</Strong>
+                    <Strong>{locale === 'fr' ? 'Participer' : 'Mitmachen'}</Strong>
                     <ul {...footerListStyle}>
                       <li>
                         <Link href={`/${locale}`} prefetch={false} passHref>

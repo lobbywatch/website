@@ -370,20 +370,15 @@ export const cfStatusQuery = gql`
       id
       name
       goals {
-        memberships
+        people
         description
-        money
       }
       status {
         memberships
       }
-      endDate
-      hasEnded
     }
-    revenueStats {
-      sum(min: "2022-01-01", max: "2022-12-01") {
-        total
-      }
+    memberStats {
+      count
     }
   }
 `
@@ -399,7 +394,7 @@ export const withStatus = graphql(cfStatusQuery, {
         ...data.crowdfunding,
         status: {
           ...data.crowdfunding.status,
-          money: data.revenueStats.sum.total
+          people: data.memberStats.count
         }
       },
       statusRefetch: data.refetch,

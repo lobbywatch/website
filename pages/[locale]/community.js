@@ -65,9 +65,6 @@ class CommunityPage extends Component {
           }} passHref>
             <Button primary style={{ marginRight: 10 }}>{t('footer/member')}</Button>
           </Link>
-          <Link href={`/${locale}`} passHref>
-            <Button naked>Crowdfunding</Button>
-          </Link>
           </div>}
         </Center>
       </Frame>

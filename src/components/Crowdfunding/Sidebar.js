@@ -39,11 +39,6 @@ const styles = {
       display: 'none',
     },
   }),
-  links: css({
-    lineHeight: '24px',
-    marginTop: 13,
-    fontSize: 16,
-  }),
   packages: css({
     fontSize: 19,
     lineHeight: '28px',
@@ -52,7 +47,7 @@ const styles = {
 }
 
 const SidebarInner = (props) => {
-  const { t, locale, crowdfunding, title, links, packages, primaryQuery } =
+  const { t, locale, crowdfunding, title, packages } =
     props
 
   const [hover, setHover] = useState()
@@ -81,31 +76,6 @@ const SidebarInner = (props) => {
         )
       })}
       <PackageBuffer />
-      <div style={{ margin: '20px 0' }}>
-        <div {...styles.button}>
-          <Link
-            href={{
-              pathname: PLEDGE_PATH,
-              query: { ...primaryQuery, locale },
-            }}
-            passHref
-          >
-            <Button block primary>
-              {t('cf/cta/short')}
-            </Button>
-          </Link>
-        </div>
-      </div>
-      <div {...styles.links}>
-        {links.map((link, i) => (
-          <Link key={i} href={link.href} passHref>
-            <A>
-              {link.text}
-              <br />
-            </A>
-          </Link>
-        ))}
-      </div>
     </div>
   )
 }
@@ -185,9 +155,7 @@ class Sidebar extends Component {
       t,
       locale,
       crowdfunding,
-      primaryQuery,
       title,
-      links,
       packages,
       statusProps,
     } = this.props
@@ -201,8 +169,7 @@ class Sidebar extends Component {
     return (
       <div>
         <RawStatus
-          memberships
-          money
+          people
           t={t}
           crowdfundingName={crowdfunding.name}
           crowdfunding={crowdfunding}
@@ -217,9 +184,7 @@ class Sidebar extends Component {
           >
             <SidebarInner
               title={title}
-              links={links}
               packages={packages}
-              primaryQuery={primaryQuery}
               t={t}
               locale={locale}
               crowdfunding={crowdfunding}
@@ -232,9 +197,7 @@ class Sidebar extends Component {
             <div {...styles.sticky} style={{ right: right }}>
               <SidebarInner
                 title={title}
-                links={links}
                 packages={packages}
-                primaryQuery={primaryQuery}
                 t={t}
                 locale={locale}
                 crowdfunding={crowdfunding}
