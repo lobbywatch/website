@@ -66,7 +66,7 @@ const Card = ({
     <div {...containerStyle}>
       <Link href={fullPath}>
         <a {...headStyle}>
-          <Image
+          {image && <Image
             src={image}
             priority={priority}
             sizes='370px'
@@ -74,7 +74,7 @@ const Card = ({
             objectFit='cover'
             quality={90}
             alt=''
-          />
+          />}
           <span {...shadeStyle} />
           <h2 {...titleStyle}>{title}</h2>
         </a>
