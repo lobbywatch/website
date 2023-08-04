@@ -8,6 +8,7 @@ import Merci from 'src/components/Pledge/Merci'
 import { withT } from 'src/components/Message'
 import MetaTags from 'src/components/MetaTags'
 
+import Memberships from 'src/components/Account/Memberships'
 import AccountSection from 'src/components/Account/AccountSection'
 import PledgeList from 'src/components/Account/PledgeList'
 import { AccountEnforceMe } from 'src/components/Account/Elements'
@@ -29,6 +30,7 @@ const AccountPage = ({ t, hasActiveMembership }) => {
         <Merci query={query}>
           <AccountEnforceMe>
             {hasActiveMembership && <Testimonial />}
+            <Memberships />
             <AccountSection title={t('account/pledges/title')}>
               <PledgeList highlightId={query.id} />
             </AccountSection>

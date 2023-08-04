@@ -57,7 +57,7 @@ export const Item = withT(
         style={{ marginBottom: compact ? 0 : undefined }}
       >
         <H3>{title}</H3>
-        {!compact && (
+        {!compact && createdAt && (
           <>
             <Label>
               {t('account/item/label', {

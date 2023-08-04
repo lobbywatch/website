@@ -11,6 +11,7 @@ import { Item as AccountItem, P } from '../Elements'
 
 import { InlineSpinner, colors, A, timeFormat, errorToString } from '@project-r/styleguide'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const dayFormat = timeFormat('%d. %B %Y')
 
@@ -22,6 +23,7 @@ const Actions = ({
   reactivate,
   setAutoPay,
 }) => {
+  const router = useRouter()
   const [{ updating, remoteError }, setState] = useState({})
 
   if (updating) {
@@ -128,10 +130,10 @@ const Actions = ({
                       </A>
                     </P>
                   )}
-                  { false /* cancel not yet supported */ && <P>
+                  <P>
                     <Link
                       href={{
-                        pathname: '/abgang',
+                        pathname: `/${router.query.locale}/annuler`,
                         query: { membershipId: membership.id },
                       }}
                       passHref
@@ -143,7 +145,7 @@ const Actions = ({
                         ])}
                       </A>
                     </Link>
-                  </P>}
+                  </P>
                 </>
               )}
             </>
@@ -229,7 +231,6 @@ const Manage = ({
     <AccountItem
       compact={compact}
       highlighted={highlighted}
-      createdAt={createdAt}
       title={
         title ||
         t(`memberships/title/${membership.type.name}`, {
