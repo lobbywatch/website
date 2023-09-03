@@ -35,14 +35,14 @@ export const styles = {
   }),
 }
 
-const cancellationCategories = gql`
-  query cancellationCategories {
-    cancellationCategories {
-      type
-      label
-    }
-  }
-`
+// const cancellationCategories = gql`
+//   query cancellationCategories {
+//     cancellationCategories {
+//       type
+//       label
+//     }
+//   }
+// `
 
 const cancelMembership = gql`
   mutation cancelMembership($id: ID!, $details: CancellationInput!) {
@@ -60,21 +60,17 @@ const CancelMembership = ({
   error,
   membership,
   cancel,
-  cancellationCategories,
+  // cancellationCategories,
   t,
 }) => {
   const router = useRouter()
-  const [cancellationType, setCancellationType] = useState('')
+  const cancellationType = 'OTHER'
+  // const [cancellationType, setCancellationType] = useState('')
 
-  const needsReason = ['OTHER', 'EDITORIAL'].includes(cancellationType)
   const [reason, setReason] = useState({
     value: '',
   })
   const reasonRef = useRef()
-  const reasonError =
-    needsReason &&
-    !reason.value.trim() &&
-    t('memberships/cancel/description/empty')
 
   const [remoteState, setRemoteState] = useState({
     processing: false,
@@ -85,10 +81,10 @@ const CancelMembership = ({
   useEffect(() => {
     if (redirectMemberships && redirectMemberships.length) {
       if (redirectMemberships.length > 1) {
-        router.push('/konto')
+        router.push(`/${router.query.locale}/merci`)
       } else {
         router.replace({
-          pathname: '/abgang',
+          pathname: `/${router.query.locale}/annuler`,
           query: {
             membershipId: redirectMemberships[0].id,
           },
@@ -96,13 +92,6 @@ const CancelMembership = ({
       }
     }
   }, [redirectMemberships])
-
-  useEffect(() => {
-    setReason((reason) => ({ ...reason, dirty: false }))
-    if (needsReason) {
-      reasonRef.current.focus()
-    }
-  }, [needsReason])
 
   return (
     <Loader
@@ -124,11 +113,7 @@ const CancelMembership = ({
                 {t('memberships/cancel/confirmation')}
               </Interaction.P>
               <Interaction.P style={{ margin: '20px 0' }}>
-                <Link href='/cockpit' passHref>
-                  <A>{t('memberships/cancel/confirmation/cockpit')}</A>
-                </Link>
-                <br />
-                <Link href='/konto' passHref>
+                <Link href={`/${router.query.locale}/merci`} passHref>
                   <A>{t('memberships/cancel/accountLink')}</A>
                 </Link>
               </Interaction.P>
@@ -164,7 +149,7 @@ const CancelMembership = ({
             <Interaction.P style={{ marginBottom: 5 }}>
               {t('memberships/cancel/info')}
             </Interaction.P>
-            {cancellationCategories.map(({ type, label }) => (
+            {/* {cancellationCategories.map(({ type, label }) => (
               <div key={type}>
                 <Radio
                   value={cancellationType}
@@ -174,18 +159,16 @@ const CancelMembership = ({
                   {label}
                 </Radio>
               </div>
-            ))}
+            ))} */}
             <div
               style={{
-                display: needsReason ? 'block' : 'none',
-                marginTop: 20,
+                // marginTop: 20,
               }}
             >
               <Field
                 ref={reasonRef}
                 label={t('memberships/cancel/description')}
                 value={reason.value}
-                error={reason.dirty && reasonError}
                 renderInput={({ ref, ...inputProps }) => (
                   <AutosizeInput
                     {...styles.autoSize}
@@ -203,11 +186,6 @@ const CancelMembership = ({
               primary={!remoteState.processing}
               disabled={remoteState.processing || !cancellationType}
               onClick={() => {
-                if (reasonError) {
-                  setReason({ ...reason, dirty: true })
-                  reasonRef.current.focus()
-                  return
-                }
                 setRemoteState({
                   processing: true,
                 })
@@ -215,7 +193,7 @@ const CancelMembership = ({
                   id: membership.id,
                   details: {
                     type: cancellationType,
-                    reason: needsReason ? reason.value : '',
+                    reason: reason.value || '',
                   },
                 })
                   .then(() => {
@@ -238,7 +216,7 @@ const CancelMembership = ({
             </Button>
             <br />
             <br />
-            <Link href='/konto' passHref>
+            <Link href={`/${router.query.locale}/merci`} passHref>
               <A>{t('memberships/cancel/accountLink')}</A>
             </Link>
           </Fragment>
@@ -254,13 +232,13 @@ export default compose(
       cancel: (variables) => mutate({ variables }),
     }),
   }),
-  graphql(cancellationCategories, {
-    props: ({ data, ownProps: { error, loading } }) => ({
-      cancellationCategories: data.cancellationCategories,
-      loading: loading || data.loading,
-      error: error || data.error,
-    }),
-  }),
+  // graphql(cancellationCategories, {
+  //   props: ({ data, ownProps: { error, loading } }) => ({
+  //     cancellationCategories: data.cancellationCategories,
+  //     loading: loading || data.loading,
+  //     error: error || data.error,
+  //   }),
+  // }),
   graphql(myBelongings, {
     props: ({
       data,

@@ -71,13 +71,15 @@ export default compose(
           data.me.memberships &&
           data.me.memberships.filter(
             (m) =>
-              m.pledge.package.group !== 'GIVE' ||
-              (me.id === m.user.id && !m.voucherCode && !m.accessGranted),
+              // currently we only support self service managing yearly memberships
+              m.type.name === 'YEAR' &&
+              (m.pledge.package.group !== 'GIVE' ||
+                (me.id === m.user.id && !m.voucherCode && !m.accessGranted))
           )) ||
         []
 
       const activeMembership = memberships.find(
-        (membership) => membership.active,
+        (membership) => membership.active
       )
 
       return {
@@ -86,10 +88,10 @@ export default compose(
         activeMembership,
         memberships,
         hasWaitingMemberships: memberships.some(
-          (m) => !m.active && !m.periods.length,
+          (m) => !m.active && !m.periods.length
         ),
       }
     },
   }),
-  withT,
+  withT
 )(MembershipsList)
