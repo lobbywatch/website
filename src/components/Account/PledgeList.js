@@ -6,7 +6,6 @@ import { A, timeFormat, Interaction, Button } from '@project-r/styleguide'
 import { withT } from 'src/components/Message'
 import withMe from 'src/components/Auth/withMe'
 import { chfFormat } from 'src/utils/formats'
-// import track from '../../lib/matomo'
 import List, { Item } from '../List'
 import { Item as AccountItem } from './Elements'
 import query from './belongingsQuery'
@@ -14,35 +13,36 @@ import Link from 'next/link'
 import { withRouter } from 'next/router'
 import { getSafeLocale } from '../../../constants'
 import { PLEDGE_PATH } from '../../constants'
+import track from '../../../lib/matomo'
 
 const dayFormat = timeFormat('%d. %B %Y')
 
 class PledgeList extends Component {
-  // componentDidMount() {
-  //   const { pledges } = this.props
-  //   pledges.forEach((pledge) => {
-  //     pledge.options.forEach((option) => {
-  //       track([
-  //         'addEcommerceItem',
-  //         option.templateId, // (required) SKU: Product unique identifier
-  //         option.reward ? option.reward.name : 'DONATE',
-  //         // (optional) Product name
-  //         undefined, // (optional) Product category
-  //         option.price / 100, // (recommended) Product price
-  //         option.amount, // (optional, default to 1) Product quantity
-  //       ])
-  //     })
-  //     track([
-  //       'trackEcommerceOrder',
-  //       pledge.id, // (required) Unique Order ID
-  //       pledge.total / 100, // (required) Order Revenue grand total (includes tax, shipping, and subtracted discount)
-  //       undefined, // (optional) Order sub total (excludes shipping)
-  //       undefined, // (optional) Tax amount
-  //       undefined, // (optional) Shipping amount
-  //       pledge.donation < 0, // (optional) Discount offered (set to false for unspecified parameter)
-  //     ])
-  //   })
-  // }
+  componentDidMount() {
+    const { pledges } = this.props
+    pledges.forEach((pledge) => {
+      pledge.options.forEach((option) => {
+        track([
+          'addEcommerceItem',
+          option.templateId, // (required) SKU: Product unique identifier
+          option.reward ? option.reward.name : 'DONATE',
+          // (optional) Product name
+          undefined, // (optional) Product category
+          option.price / 100, // (recommended) Product price
+          option.amount, // (optional, default to 1) Product quantity
+        ])
+      })
+      track([
+        'trackEcommerceOrder',
+        pledge.id, // (required) Unique Order ID
+        pledge.total / 100, // (required) Order Revenue grand total (includes tax, shipping, and subtracted discount)
+        undefined, // (optional) Order sub total (excludes shipping)
+        undefined, // (optional) Tax amount
+        undefined, // (optional) Shipping amount
+        pledge.donation < 0, // (optional) Discount offered (set to false for unspecified parameter)
+      ])
+    })
+  }
   render() {
     const { pledges, t, highlightId, me, router } = this.props
     const locale = getSafeLocale(router.query.locale)

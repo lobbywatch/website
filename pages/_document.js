@@ -2,8 +2,8 @@ import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { renderStaticOptimized } from 'glamor/server'
 import { fontFaces } from '@project-r/styleguide'
 
-import { LW_BLUE_LIGHT, WHITE } from '../src/theme'
-import { GA_TRACKING_ID, PUBLIC_BASE_URL, getSafeLocale } from '../constants'
+import { WHITE } from '../src/theme'
+import { getSafeLocale } from '../constants'
 
 import 'glamor/reset'
 
@@ -27,12 +27,17 @@ export default class MyDocument extends Document {
     }
   }
   render() {
-    const { css, locale } = this.props
+    const {
+      css,
+      locale,
+      env: { MATOMO_URL_BASE, MATOMO_SITE_ID, PUBLIC_BASE_URL },
+    } = this.props
     const motivationComment = `/*
 🤔 You look like a curious person.
 💁 That's good, we need people like you!
 👉 Join us, ${PUBLIC_BASE_URL || ''}/de/seite/mitarbeiten
 */`
+    const matomo = !!MATOMO_URL_BASE && !!MATOMO_SITE_ID
     return (
       <Html lang={locale} dir='ltr'>
         <Head>
@@ -66,22 +71,38 @@ export default class MyDocument extends Document {
           <meta name='theme-color' content={WHITE} />
         </Head>
         <body>
+          <script
+            dangerouslySetInnerHTML={{ __html: `var _paq = _paq || [];` }}
+          />
           <Main />
           <NextScript />
-          {!!GA_TRACKING_ID && (
+          {matomo && (
             <script
               dangerouslySetInnerHTML={{
                 __html: `
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', '${GA_TRACKING_ID}', 'auto');
-ga('set', 'anonymizeIp', true);
-          `,
+            _paq.push(['enableLinkTracking']);
+            ${
+              PUBLIC_BASE_URL.indexOf('https') === 0
+                ? "_paq.push(['setSecureCookie', true]);"
+                : ''
+            }
+            (function() {
+              _paq.push(['setTrackerUrl', '${MATOMO_URL_BASE}/matomo.php']);
+              _paq.push(['setSiteId', '${MATOMO_SITE_ID}']);
+              var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+              g.type='text/javascript'; g.async=true; g.defer=true; g.src='${MATOMO_URL_BASE}/matomo.js'; s.parentNode.insertBefore(g,s);
+            })();`,
               }}
             />
+          )}
+          {matomo && (
+            <noscript>
+              <img
+                src={`${MATOMO_URL_BASE}/matomo.php?idsite=${MATOMO_SITE_ID}&rec=1`}
+                style={{ border: 0, position: 'fixed', left: -1 }}
+                alt=''
+              />
+            </noscript>
           )}
         </body>
       </Html>

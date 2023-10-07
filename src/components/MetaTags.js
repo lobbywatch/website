@@ -5,23 +5,12 @@ import { useT } from './Message'
 import { set, nest } from 'd3-collection'
 import { descending } from 'd3-array'
 import { A, H2, Meta } from './Styled'
-import track from '../../lib/ga'
 import { DRUPAL_BASE_URL, PUBLIC_BASE_URL } from '../../constants'
 import { itemPath } from '../utils/routes'
 import { recursivelyRemoveNullsInPlace } from '../utils/helpers'
 import { convertDateToIso } from '../utils/formats'
 
 class Raw extends Component {
-  componentDidMount() {
-    const { pageTitle } = this.props
-
-    track('set', {
-      location: window.location.href,
-      title: pageTitle,
-    })
-    track('send', 'pageview')
-  }
-
   render() {
     const {
       title,

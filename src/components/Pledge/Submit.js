@@ -9,7 +9,6 @@ import Link from 'next/link'
 import SignIn, { withSignIn } from '../Auth/SignIn'
 import { withSignOut } from '../Auth/SignOut'
 
-// import track from '../../lib/matomo'
 import { withT } from 'src/components/Message'
 import withMe from 'src/components/Auth/withMe'
 
@@ -51,6 +50,7 @@ import { css } from 'glamor'
 import { PLEDGE_PATH } from 'src/constants'
 import { withRouter } from 'next/router'
 import { getSafeLocale } from '../../../constants'
+import track from '../../../lib/matomo'
 
 const { P } = Interaction
 
@@ -1206,32 +1206,32 @@ export const withPay = (Component) => {
             }
             await Promise.all(
               [
-                // pendingOrder &&
-                //   new Promise((resolve) => {
-                //     pendingOrder.options.forEach((option) => {
-                //       track([
-                //         'addEcommerceItem',
-                //         option.templateId, // (required) SKU: Product unique identifier
-                //         undefined, // (optional) Product name
-                //         undefined, // (optional) Product category
-                //         option.price / 100, // (recommended) Product price
-                //         option.amount, // (optional, default to 1) Product quantity
-                //       ])
-                //     })
-                //     track([
-                //       'trackEcommerceOrder',
-                //       payPledge.pledgeId, // (required) Unique Order ID
-                //       pendingOrder.total / 100, // (required) Order Revenue grand total (includes tax, shipping, and subtracted discount)
-                //       undefined, // (optional) Order sub total (excludes shipping)
-                //       undefined, // (optional) Tax amount
-                //       undefined, // (optional) Shipping amount
-                //       !!pendingOrder.reason, // (optional) Discount offered (set to false for unspecified parameter)
-                //     ])
-                //     // give matomo half a second to track
-                //     setTimeout(() => {
-                //       resolve()
-                //     }, 500)
-                //   }),
+                pendingOrder &&
+                  new Promise((resolve) => {
+                    pendingOrder.options.forEach((option) => {
+                      track([
+                        'addEcommerceItem',
+                        option.templateId, // (required) SKU: Product unique identifier
+                        undefined, // (optional) Product name
+                        undefined, // (optional) Product category
+                        option.price / 100, // (recommended) Product price
+                        option.amount, // (optional, default to 1) Product quantity
+                      ])
+                    })
+                    track([
+                      'trackEcommerceOrder',
+                      payPledge.pledgeId, // (required) Unique Order ID
+                      pendingOrder.total / 100, // (required) Order Revenue grand total (includes tax, shipping, and subtracted discount)
+                      undefined, // (optional) Order sub total (excludes shipping)
+                      undefined, // (optional) Tax amount
+                      undefined, // (optional) Shipping amount
+                      !!pendingOrder.reason, // (optional) Discount offered (set to false for unspecified parameter)
+                    ])
+                    // give matomo half a second to track
+                    setTimeout(() => {
+                      resolve()
+                    }, 500)
+                  }),
                 payPledge.stripePaymentIntentId && syncPaymentIntent(payPledge),
               ].filter(Boolean)
             )
