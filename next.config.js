@@ -46,6 +46,11 @@ module.exports = {
         destination: GRAPHQL_URL.replace('/graphql', '/graphiql'),
         permanent: false,
       },
+      {
+        source: '/angebote',
+        destination: '/de/patronage',
+        permanent: false,
+      },
     ]
   },
   poweredByHeader: false,
