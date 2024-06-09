@@ -127,7 +127,7 @@ const StripeField = ({
                   }}
                   options={{
                     // https://docs.stripe.com/payments/link/card-element-link
-                    disableLink: true,
+                    disableLink: fieldKey === 'cardNumber' ? true : undefined,
                     classes: {
                       base: `StripeElement StripeElement-${fieldKey}`,
                     },
