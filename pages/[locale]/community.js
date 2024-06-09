@@ -59,16 +59,19 @@ class CommunityPage extends Component {
         <Center>
           <List seed={seed} id={query.id} isPage serverContext={serverContext} />
           {!hasActiveMembership && <div style={{marginTop: 40 }}>
-            <Link href={{
-            pathname: PLEDGE_PATH,
-            query: { locale, package: 'YEAR' },
-          }} passHref>
+            <Link
+              href={{
+              pathname: PLEDGE_PATH,
+              query: { locale, package: 'YEAR' },
+            }}
+              passHref
+              legacyBehavior>
             <Button primary style={{ marginRight: 10 }}>{t('footer/member')}</Button>
           </Link>
           </div>}
         </Center>
       </Frame>
-    )
+    );
   }
 }
 

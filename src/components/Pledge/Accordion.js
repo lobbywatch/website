@@ -225,73 +225,71 @@ class Accordion extends Component {
       )
     }
 
-    return (
-      <>
-        {renderIntro && renderIntro({ packages })}
-        <div style={{ marginTop: 20 }}>
-          {groups.map(({ key: group, values: pkgs }) => {
+    return <>
+      {renderIntro && renderIntro({ packages })}
+      <div style={{ marginTop: 20 }}>
+        {groups.map(({ key: group, values: pkgs }) => {
 
-            const setHover = (hover) => this.setState({ hover })
+          const setHover = (hover) => this.setState({ hover })
 
-            let pkgItems = pkgs.map((pkg) => {
-              let price = pkg.options.reduce(
-                (amount, option) => amount + option.price * option.minAmount * (option.reward?.minPeriods || 1),
-                0
-              )
-              if (!price && pkg.name !== 'PROLONG') {
-                price =
-                  min(
-                    pkg.options
-                      .filter(
-                        (o) =>
-                          o.reward && o.reward.__typename === 'MembershipType'
-                      )
-                      .map(
-                        (option) =>
-                          option.price *
-                          (option.minAmount ||
-                            option.defaultAmount ||
-                            Math.min(1, option.maxAmount))
-                      )
-                  ) || 0
-              }
-              return {
-                pathname: PLEDGE_PATH,
-                query: { package: pkg.name, locale },
-                name: pkg.name,
-                price,
-              }
-            })
-
-            return (
-              <Fragment key={group}>
-                {groups.length > 1 && (
-                  <div
-                    {...css(styles.groupTitle, compact && styles.packageTitle)}
-                  >
-                    {t(`package/group/${group}`)}
-                  </div>
-                )}
-                {pkgItems.map(({ name, title, price, pathname, query }) => (
-                  <Link key={name} href={{ pathname, query }} passHref>
-                    <PackageItem
-                      t={t}
-                      hover={hover}
-                      setHover={setHover}
-                      name={name}
-                      title={title}
-                      crowdfundingName={crowdfundingName}
-                      price={price}
-                    />
-                  </Link>
-                ))}
-                <PackageBuffer />
-              </Fragment>
+          let pkgItems = pkgs.map((pkg) => {
+            let price = pkg.options.reduce(
+              (amount, option) => amount + option.price * option.minAmount * (option.reward?.minPeriods || 1),
+              0
             )
-          })}
-        </div>
-      </>
-    )
+            if (!price && pkg.name !== 'PROLONG') {
+              price =
+                min(
+                  pkg.options
+                    .filter(
+                      (o) =>
+                        o.reward && o.reward.__typename === 'MembershipType'
+                    )
+                    .map(
+                      (option) =>
+                        option.price *
+                        (option.minAmount ||
+                          option.defaultAmount ||
+                          Math.min(1, option.maxAmount))
+                    )
+                ) || 0
+            }
+            return {
+              pathname: PLEDGE_PATH,
+              query: { package: pkg.name, locale },
+              name: pkg.name,
+              price,
+            }
+          })
+
+          return (
+            <Fragment key={group}>
+              {groups.length > 1 && (
+                <div
+                  {...css(styles.groupTitle, compact && styles.packageTitle)}
+                >
+                  {t(`package/group/${group}`)}
+                </div>
+              )}
+              {pkgItems.map(({ name, title, price, pathname, query }) => (
+                <Link key={name} href={{ pathname, query }} passHref legacyBehavior>
+                  <PackageItem
+                    t={t}
+                    hover={hover}
+                    setHover={setHover}
+                    name={name}
+                    title={title}
+                    crowdfundingName={crowdfundingName}
+                    price={price}
+                  />
+                </Link>
+              ))}
+              <PackageBuffer />
+            </Fragment>
+          );
+        })}
+      </div>
+    </>;
   }
 }
 

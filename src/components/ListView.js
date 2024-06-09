@@ -53,29 +53,29 @@ const ListView = ({ locale, items, title, subtitle, maxWidth }) => {
     const { __typename, id, portrait } = item
     const Icon = Icons[__typename]
     return (
-      <Link key={id} href={itemPath(item, locale)} prefetch={false}>
-        <a {...aStyle}>
-          {!!portrait && (
-            <span {...symbolStyle} {...portraitStyle}>
-              <Image
-                width={SYMBOL_SIZE}
-                height={SYMBOL_SIZE}
-                src={portrait}
-                alt=''
-              />
-            </span>
-          )}
-          {!portrait && !!Icon && (
-            <Icon className={symbolStyle} size={SYMBOL_SIZE} />
-          )}
-          <span>
-            {title(item)}
-            <br />
-            <span {...metaStyle}>{subtitle(item) || ' '}</span>
+      (<Link key={id} href={itemPath(item, locale)} prefetch={false} {...aStyle}>
+
+        {!!portrait && (
+          <span {...symbolStyle} {...portraitStyle}>
+            <Image
+              width={SYMBOL_SIZE}
+              height={SYMBOL_SIZE}
+              src={portrait}
+              alt=''
+            />
           </span>
-        </a>
-      </Link>
-    )
+        )}
+        {!portrait && !!Icon && (
+          <Icon className={symbolStyle} size={SYMBOL_SIZE} />
+        )}
+        <span>
+          {title(item)}
+          <br />
+          <span {...metaStyle}>{subtitle(item) || ' '}</span>
+        </span>
+
+      </Link>)
+    );
   })
 
   if (maxWidth) {

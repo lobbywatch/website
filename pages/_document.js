@@ -9,7 +9,7 @@ import 'glamor/reset'
 
 export default class MyDocument extends Document {
   static async getInitialProps({ renderPage, query: { locale } }) {
-    const page = renderPage()
+    const page = await renderPage()
     const styles = renderStaticOptimized(() => page.html)
 
     return {

@@ -64,7 +64,7 @@ const readFile = (file) => {
     })
 
     fileReader.readAsDataURL(file)
-  })
+  });
 }
 
 class Testimonial extends Component {
@@ -333,7 +333,7 @@ class Testimonial extends Component {
                   <Link
                     href={`/${locale}/community?id=${meWithTestimonial.id}`}
                     passHref
-                  >
+                    legacyBehavior>
                     <A>{t('testimonial/viewLive')}</A>
                   </Link>
                   {' – '}
@@ -355,7 +355,7 @@ class Testimonial extends Component {
           </div>
         )}
       />
-    )
+    );
   }
 }
 

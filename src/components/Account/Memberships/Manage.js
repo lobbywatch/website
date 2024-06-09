@@ -30,136 +30,134 @@ const Actions = ({
     return <InlineSpinner />
   }
 
-  return (
-    <>
-      {/* {!hasWaitingMemberships && membership.canProlong && (
+  return <>
+    {/* {!hasWaitingMemberships && membership.canProlong && (
+      <P>
+        <TokenPackageLink
+          params={{
+            package: 'PROLONG',
+          }}
+          passHref
+        >
+          <A>
+            {t.first([
+              `memberships/${membership.type.name}/manage/prolong/link`,
+              'memberships/manage/prolong/link',
+            ])}
+          </A>
+        </TokenPackageLink>
+      </P>
+    )} */}
+    {!hasWaitingMemberships &&
+      !membership.renew &&
+      !!membership.periods.length &&
+      (membership.active ||
+        (membership.type.name === 'MONTHLY_ABO' && !activeMembership)) && (
         <P>
-          <TokenPackageLink
-            params={{
-              package: 'PROLONG',
+          <A
+            href='#reactivate'
+            onClick={(e) => {
+              e.preventDefault()
+              setState({
+                updating: true,
+              })
+              reactivate({
+                id: membership.id,
+              })
+                .then(() => {
+                  setState({
+                    updating: false,
+                    remoteError: undefined,
+                  })
+                })
+                .catch((error) => {
+                  setState({
+                    updating: false,
+                    remoteError: errorToString(error),
+                  })
+                })
             }}
-            passHref
           >
-            <A>
-              {t.first([
-                `memberships/${membership.type.name}/manage/prolong/link`,
-                'memberships/manage/prolong/link',
-              ])}
-            </A>
-          </TokenPackageLink>
+            {t.first([
+              `memberships/${membership.type.name}/manage/reactivate`,
+              'memberships/manage/reactivate',
+            ])}
+          </A>
         </P>
-      )} */}
-      {!hasWaitingMemberships &&
-        !membership.renew &&
-        !!membership.periods.length &&
-        (membership.active ||
-          (membership.type.name === 'MONTHLY_ABO' && !activeMembership)) && (
-          <P>
-            <A
-              href='#reactivate'
-              onClick={(e) => {
-                e.preventDefault()
-                setState({
-                  updating: true,
-                })
-                reactivate({
-                  id: membership.id,
-                })
-                  .then(() => {
-                    setState({
-                      updating: false,
-                      remoteError: undefined,
-                    })
-                  })
-                  .catch((error) => {
-                    setState({
-                      updating: false,
-                      remoteError: errorToString(error),
-                    })
-                  })
-              }}
-            >
-              {t.first([
-                `memberships/${membership.type.name}/manage/reactivate`,
-                'memberships/manage/reactivate',
-              ])}
-            </A>
-          </P>
-        )}
-      {membership.active && (
-        <>
-          {!hasWaitingMemberships && (
-            <>
-              {membership.renew && (
-                <>
-                  {membership.autoPayIsMutable && (
-                    <P>
-                      <A
-                        href='#autoPay'
-                        onClick={(e) => {
-                          e.preventDefault()
-                          setState({
-                            updating: true,
-                          })
-                          setAutoPay({
-                            id: membership.id,
-                            autoPay: !membership.autoPay,
-                          })
-                            .then(() => {
-                              setState({
-                                updating: false,
-                                remoteError: undefined,
-                              })
-                            })
-                            .catch((error) => {
-                              setState({
-                                updating: false,
-                                remoteError: errorToString(error),
-                              })
-                            })
-                        }}
-                      >
-                        {t.first([
-                          `memberships/${membership.type.name}/manage/autoPay/${
-                            membership.autoPay ? 'disable' : 'enable'
-                          }`,
-                          `memberships/manage/autoPay/${
-                            membership.autoPay ? 'disable' : 'enable'
-                          }`,
-                        ])}
-                      </A>
-                    </P>
-                  )}
+      )}
+    {membership.active && (
+      <>
+        {!hasWaitingMemberships && (
+          <>
+            {membership.renew && (
+              <>
+                {membership.autoPayIsMutable && (
                   <P>
-                    <Link
-                      href={{
-                        pathname: `/${router.query.locale}/annuler`,
-                        query: { membershipId: membership.id },
+                    <A
+                      href='#autoPay'
+                      onClick={(e) => {
+                        e.preventDefault()
+                        setState({
+                          updating: true,
+                        })
+                        setAutoPay({
+                          id: membership.id,
+                          autoPay: !membership.autoPay,
+                        })
+                          .then(() => {
+                            setState({
+                              updating: false,
+                              remoteError: undefined,
+                            })
+                          })
+                          .catch((error) => {
+                            setState({
+                              updating: false,
+                              remoteError: errorToString(error),
+                            })
+                          })
                       }}
-                      passHref
                     >
-                      <A>
-                        {t.first([
-                          `memberships/${membership.type.name}/manage/cancel/link`,
-                          'memberships/manage/cancel/link',
-                        ])}
-                      </A>
-                    </Link>
+                      {t.first([
+                        `memberships/${membership.type.name}/manage/autoPay/${
+                          membership.autoPay ? 'disable' : 'enable'
+                        }`,
+                        `memberships/manage/autoPay/${
+                          membership.autoPay ? 'disable' : 'enable'
+                        }`,
+                      ])}
+                    </A>
                   </P>
-                </>
-              )}
-            </>
-          )}
-          {hasWaitingMemberships && !membership.canProlong && (
-            <P>{t('memberships/manage/prolong/awaiting')}</P>
-          )}
-        </>
-      )}
-      {!!remoteError && (
-        <P style={{ color: colors.error, marginTop: 10 }}>{remoteError}</P>
-      )}
-    </>
-  )
+                )}
+                <P>
+                  <Link
+                    href={{
+                      pathname: `/${router.query.locale}/annuler`,
+                      query: { membershipId: membership.id },
+                    }}
+                    passHref
+                    legacyBehavior>
+                    <A>
+                      {t.first([
+                        `memberships/${membership.type.name}/manage/cancel/link`,
+                        'memberships/manage/cancel/link',
+                      ])}
+                    </A>
+                  </Link>
+                </P>
+              </>
+            )}
+          </>
+        )}
+        {hasWaitingMemberships && !membership.canProlong && (
+          <P>{t('memberships/manage/prolong/awaiting')}</P>
+        )}
+      </>
+    )}
+    {!!remoteError && (
+      <P style={{ color: colors.error, marginTop: 10 }}>{remoteError}</P>
+    )}
+  </>;
 }
 
 const cancelMembership = gql`

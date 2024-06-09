@@ -64,7 +64,7 @@ const SidebarInner = (props) => {
               query: { ...pack.params, package: pack.name, locale },
             }}
             passHref
-          >
+            legacyBehavior>
             <PackageItem
               t={t}
               crowdfundingName={crowdfunding.name}
@@ -73,11 +73,11 @@ const SidebarInner = (props) => {
               setHover={setHover}
             />
           </Link>
-        )
+        );
       })}
       <PackageBuffer />
     </div>
-  )
+  );
 }
 
 class Sidebar extends Component {

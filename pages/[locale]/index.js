@@ -118,7 +118,7 @@ const Page = ({ testimonialVariables }) => {
             query: { locale },
           }}
           passHref
-        >
+          legacyBehavior>
           <A>{t('index/cta/join')}</A>
         </Link>
       </Interaction.P>
@@ -204,24 +204,24 @@ const Page = ({ testimonialVariables }) => {
                   {data.articles.list.map(
                     ({ path, published, title, lead }) => (
                       <List.Item key={path.join('/')}>
-                        <Link href={`/${locale}/${path.join('/')}`}>
-                          <a {...plainLinkRule}>
-                            <Highlight>
-                              {published.split(' ')[0]}: {title}
-                            </Highlight>
-                            <br />
-                            {lead}
-                          </a>
+                        <Link href={`/${locale}/${path.join('/')}`} {...plainLinkRule}>
+
+                          <Highlight>
+                            {published.split(' ')[0]}: {title}
+                          </Highlight>
+                          <br />
+                          {lead}
+
                         </Link>
                       </List.Item>
                     )
                   )}
                 </List>
-                <Link href={`/${locale}/artikel/archiv`} passHref>
+                <Link href={`/${locale}/artikel/archiv`} passHref legacyBehavior>
                   <A>{t('index/blog/link')}</A>
                 </Link>
               </div>
-            )
+            );
           }}
         />
 
@@ -342,11 +342,11 @@ const Page = ({ testimonialVariables }) => {
             </div>
 
             {isFrench ? (
-              <Link href={`/${locale}/community`} passHref>
+              <Link href={`/${locale}/community`} passHref legacyBehavior>
                 <A>Voir tout le monde</A>
               </Link>
             ) : (
-              <Link href={`/${locale}/community`} passHref>
+              <Link href={`/${locale}/community`} passHref legacyBehavior>
                 <A>Alle ansehen</A>
               </Link>
             )}
@@ -365,7 +365,7 @@ const Page = ({ testimonialVariables }) => {
           }}
           key='pledge'
           passHref
-        >
+          legacyBehavior>
           <Button primary style={{ minWidth: 280 }}>
             {t('index/cta/join')}
           </Button>
@@ -379,7 +379,7 @@ const Page = ({ testimonialVariables }) => {
         </div>
       </ContainerWithSidebar>
     </Frame>
-  )
+  );
 }
 
 export const getStaticProps = createGetStaticProps({

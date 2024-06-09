@@ -117,10 +117,13 @@ const AuthNotification = ({ query, goTo, onClose, t, me }) => {
     ) : (
       !isUnkownType && me && (
         <div style={{ marginTop: 20 }}>
-          <Link href={{
-            pathname: ACCOUNT_PATH,
-            query: {locale}
-          }} passHref>
+          <Link
+            href={{
+              pathname: ACCOUNT_PATH,
+              query: {locale}
+            }}
+            passHref
+            legacyBehavior>
             <Button block primary>
               {t('notifications/closeButton')}
             </Button>

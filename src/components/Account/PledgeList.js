@@ -53,10 +53,13 @@ class PledgeList extends Component {
           <Interaction.P>
             {t('merci/empty/text')}
           </Interaction.P>
-          <Link href={{
-            pathname: PLEDGE_PATH,
-            query: { locale },
-          }} passHref>
+          <Link
+            href={{
+              pathname: PLEDGE_PATH,
+              query: { locale },
+            }}
+            passHref
+            legacyBehavior>
             <Button primary>{t('merci/empty/button')}</Button>
           </Link>
         </>}
@@ -180,7 +183,7 @@ class PledgeList extends Component {
           )
         })}
       </Fragment>
-    )
+    );
   }
 }
 

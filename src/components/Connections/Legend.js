@@ -51,8 +51,8 @@ const legendBubble = css({
 const Legend = ({ locale, title, pagePath, items }) => (
   <Clear {...legendContainer}>
     {!!pagePath && (
-      <Link href={`/${locale}/${pagePath.join('/')}`}>
-        <a {...legendLink}>{title}</a>
+      <Link href={`/${locale}/${pagePath.join('/')}`} {...legendLink}>
+        {title}
       </Link>
     )}
     {!pagePath && <span {...legendLabel}>{title}</span>}

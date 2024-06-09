@@ -113,7 +113,7 @@ const Page = ({ router: { query: rawQuery }, t, me }) => {
                     }}
                     params={link.params}
                     passHref
-                  >
+                    legacyBehavior>
                     <A>{link.label}</A>
                   </Link>
                 )),
@@ -124,7 +124,7 @@ const Page = ({ router: { query: rawQuery }, t, me }) => {
         </div>
       </NarrowContainer>
     </div>
-  )
+  );
 }
 
 export default withInitialProps(

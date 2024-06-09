@@ -64,20 +64,20 @@ const Card = ({
   const fullPath = `/${locale}/${path.join('/')}`
   return (
     <div {...containerStyle}>
-      <Link href={fullPath}>
-        <a {...headStyle}>
-          {image && <Image
-            src={image}
-            priority={priority}
-            sizes='370px'
-            layout='fill'
-            objectFit='cover'
-            quality={90}
-            alt=''
-          />}
-          <span {...shadeStyle} />
-          <h2 {...titleStyle}>{title}</h2>
-        </a>
+      <Link href={fullPath} {...headStyle}>
+
+        {image && <Image
+          src={image}
+          priority={priority}
+          sizes='370px'
+          layout='fill'
+          objectFit='cover'
+          quality={90}
+          alt=''
+        />}
+        <span {...shadeStyle} />
+        <h2 {...titleStyle}>{title}</h2>
+
       </Link>
       <div {...bodyStyle}>
         <span {...metaRule}>
@@ -91,7 +91,7 @@ const Card = ({
         </TextCenter>
       </div>
     </div>
-  )
+  );
 }
 
 Card.propTypes = {

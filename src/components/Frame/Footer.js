@@ -118,10 +118,14 @@ const Footer = ({
             {pledgeAd && (
               <div {...columnStyle}>
                 <H3>{t('index/cta/support')}</H3>
-                <Link href={{
-            pathname: PLEDGE_PATH,
-            query: { locale, package: 'YEAR' },
-          }} prefetch={false} passHref>
+                <Link
+                  href={{
+              pathname: PLEDGE_PATH,
+              query: { locale, package: 'YEAR' },
+            }}
+                  prefetch={false}
+                  passHref
+                  legacyBehavior>
                   <Button style={{ height: 40 }} primary>
                     {t('index/cta/join')}
                   </Button>
@@ -152,7 +156,7 @@ const Footer = ({
                             link =
                               supportedPath &&
                               locales.includes(supportedPath[1]) ? (
-                                <Link href={href} prefetch={false} passHref>
+                                <Link href={href} prefetch={false} passHref legacyBehavior>
                                   <A>{title}</A>
                                 </Link>
                               ) : (
@@ -176,7 +180,7 @@ const Footer = ({
                     <Strong>{locale === 'fr' ? 'Participer' : 'Mitmachen'}</Strong>
                     <ul {...footerListStyle}>
                       <li>
-                        <Link href={`/${locale}`} prefetch={false} passHref>
+                        <Link href={`/${locale}`} prefetch={false} passHref legacyBehavior>
                           <A>{t('footer/home')}</A>
                         </Link>
                       </li>
@@ -186,7 +190,7 @@ const Footer = ({
                             href={`/${locale}/patronage?package=YEAR`}
                             prefetch={false}
                             passHref
-                          >
+                            legacyBehavior>
                             <A>{t('footer/member')}</A>
                           </Link>
                         </li>
@@ -196,30 +200,22 @@ const Footer = ({
                           href={`/${locale}/patronage?package=DONATE`}
                           prefetch={false}
                           passHref
-                        >
+                          legacyBehavior>
                           <A>{t('footer/donate')}</A>
                         </Link>
                       </li>
                       <li>
-                        <Link
-                          href={`/${locale}/community`}
-                          prefetch={false}
-                          passHref
-                        >
+                        <Link href={`/${locale}/community`} prefetch={false} passHref legacyBehavior>
                           <A>{t('footer/community')}</A>
                         </Link>
                       </li>
                       <li>
-                        <Link href={`/${locale}/faq`} prefetch={false} passHref>
+                        <Link href={`/${locale}/faq`} prefetch={false} passHref legacyBehavior>
                           <A>FAQ</A>
                         </Link>
                       </li>
                       <li>
-                        <Link
-                          href={`/${locale}/merci`}
-                          prefetch={false}
-                          passHref
-                        >
+                        <Link href={`/${locale}/merci`} prefetch={false} passHref legacyBehavior>
                           <A>
                             {t('pages/account/title')}
                             {me?.name && `: ${me.name}`}
@@ -250,7 +246,7 @@ const Footer = ({
         </Container>
       </div>
     </footer>
-  )
+  );
 }
 
 const FooterWithQuery = graphql(metaQuery, {

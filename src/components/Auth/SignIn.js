@@ -180,17 +180,17 @@ class SignIn extends Component {
         serverError={serverError}
         hints={
           <>
-            <Link href='/de/seite/datenschutzerklaerung' passHref>
+            <Link href='/de/seite/datenschutzerklaerung' passHref legacyBehavior>
               <Editorial.A>{t('signIn/privacy')}</Editorial.A>
             </Link>
             {' – '}
-            <Link href={`/${locale}/faq`} passHref>
+            <Link href={`/${locale}/faq`} passHref legacyBehavior>
               <Editorial.A>{t('signIn/faq')}</Editorial.A>
             </Link>
           </>
         }
       />
-    )
+    );
   }
 }
 

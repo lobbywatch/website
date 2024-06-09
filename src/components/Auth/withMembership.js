@@ -38,7 +38,7 @@ export const UnauthorizedMessage = ({
                   query: { locale },
                 }}
                 passHref
-              >
+                legacyBehavior>
                 <A>{t('withMembership/unauthorized/buyText')}</A>
               </Link>
             ),
@@ -50,7 +50,7 @@ export const UnauthorizedMessage = ({
                   query: { locale },
                 }}
                 passHref
-              >
+                legacyBehavior>
                 <A>{t('withMembership/unauthorized/accountText')}</A>
               </Link>
             ),
@@ -60,7 +60,7 @@ export const UnauthorizedMessage = ({
         <br />
         <Me />
       </Fragment>
-    )
+    );
   }
   return (
     <Fragment>
@@ -79,12 +79,12 @@ export const UnauthorizedMessage = ({
                       query: { locale },
                     }}
                     passHref
-                  >
+                    legacyBehavior>
                     <A>{t('withMembership/signIn/note/buyText')}</A>
                   </Link>
                 ),
                 moreLink: (
-                  <Link key='index' href='/' passHref>
+                  <Link key='index' href='/' passHref legacyBehavior>
                     <A>{t('withMembership/signIn/note/moreText')}</A>
                   </Link>
                 ),
@@ -93,7 +93,7 @@ export const UnauthorizedMessage = ({
         }
       />
     </Fragment>
-  )
+  );
 }
 
 const UnauthorizedPage = ({ meta, unauthorizedTexts }) => (

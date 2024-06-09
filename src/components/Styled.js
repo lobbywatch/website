@@ -36,11 +36,9 @@ export const linkStyle = {
   },
 }
 const linkRule = css(linkStyle)
-export const StyledLink = ({ children, className, ...props }) => (
-  <NextLink {...props}>
-    <a className={className} {...linkRule}>
-      {children}
-    </a>
+export const StyledLink = ({ children, ...props }) => (
+  <NextLink {...props} {...linkRule}>
+    {children}
   </NextLink>
 )
 
@@ -65,11 +63,9 @@ export const buttonLinkStyle = {
   },
 }
 export const buttonLinkRule = css(buttonLinkStyle)
-export const ButtonLink = ({ children, className, ...props }) => (
-  <NextLink {...props}>
-    <a className={className} {...buttonLinkRule}>
-      {children}
-    </a>
+export const ButtonLink = ({ children, ...props }) => (
+  <NextLink {...props} {...buttonLinkRule}>
+    {children}
   </NextLink>
 )
 

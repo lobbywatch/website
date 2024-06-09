@@ -536,7 +536,7 @@ class CustomizePackage extends Component {
               },
             }}
             passHref
-          >
+            legacyBehavior>
             <A>{t('package/customize/changePackage')}</A>
           </Link>
         </div>
@@ -1173,7 +1173,7 @@ class CustomizePackage extends Component {
           )}
         </div>
       </div>
-    )
+    );
   }
 }
 

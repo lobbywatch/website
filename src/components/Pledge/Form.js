@@ -307,10 +307,14 @@ class Pledge extends Component {
       }`,
       {
         accountLink: (
-          <Link key='account' href={{
-            pathname: ACCOUNT_PATH,
-            query: { locale }
-          }} passHref>
+          <Link
+            key='account'
+            href={{
+              pathname: ACCOUNT_PATH,
+              query: { locale }
+            }}
+            passHref
+            legacyBehavior>
             <A>{t(`pledge/form/instruction/${queryPackage}/accountText`)}</A>
           </Link>
         ),
