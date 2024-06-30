@@ -82,7 +82,7 @@ export default class MyDocument extends Document {
                 __html: `
             _paq.push(['enableLinkTracking']);
             ${
-              PUBLIC_BASE_URL.indexOf('https') === 0
+              PUBLIC_BASE_URL?.indexOf('https') === 0
                 ? "_paq.push(['setSecureCookie', true]);"
                 : ''
             }
