@@ -38,6 +38,11 @@ module.exports = {
             type: 'host',
             value: new URL(PUBLIC_BASE_URL).hostname,
           },
+          {
+            type: 'header',
+            key: 'X-Forwarded-Host',
+            value: new URL(PUBLIC_BASE_URL).hostname,
+          },
         ],
         permanent: true,
         destination: `${PUBLIC_BASE_URL}/:path*`,
