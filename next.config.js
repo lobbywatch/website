@@ -1,4 +1,4 @@
-const { GRAPHQL_URL, localeSegment } = require('./constants')
+const { GRAPHQL_URL, localeSegment, PUBLIC_BASE_URL } = require('./constants')
 const {
   ASSETS_SERVER_SOURCE_BASE_URL
 } = process.env
@@ -31,6 +31,17 @@ module.exports = {
   },
   async redirects() {
     return [
+      PUBLIC_BASE_URL && {
+        source: '/:path*',
+        missing: [
+          {
+            type: 'host',
+            value: new URL(PUBLIC_BASE_URL).hostname,
+          },
+        ],
+        permanent: true,
+        destination: `${PUBLIC_BASE_URL}/:path*`,
+      },
       {
         source: `/${localeSegment}/search/daten`,
         destination: '/:locale/search',
@@ -51,7 +62,7 @@ module.exports = {
         destination: '/de/patronage',
         permanent: false,
       },
-    ]
+    ].filter(Boolean)
   },
   poweredByHeader: false,
   useFileSystemPublicRoutes: true,
