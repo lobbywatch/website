@@ -13,7 +13,8 @@ import { css } from 'glamor'
 const flexIconsStyle = css({
   display: 'flex',
   justifyContent: 'space-between',
-  width: '100%',
+  flexWrap: 'wrap',
+  minWidth: 170,
   maxWidth: 180,
 })
 
