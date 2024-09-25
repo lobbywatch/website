@@ -7,7 +7,7 @@ import Link from 'next/link'
 
 import { Center } from './index'
 import SocialMedia from './SocialMedia'
-// import Newsletter from './Newsletter'
+import Newsletter from './Newsletter'
 import { H3, A, Hr, metaStyle, Strong, Clear } from '../Styled'
 import { GREY_SOFT, GREY_DARK, GREY_MID, mediaM } from '../../theme'
 import CreativeCommons from '../../assets/CreativeCommons'
@@ -77,15 +77,10 @@ const ccTextStyle = css({
 
 const columnPadding = 10
 const columnContainerStyle = css({
+  display: 'flex',
+  flexWrap: 'wrap',
   margin: `0 ${-columnPadding}px`,
-})
-const columnStyle = css({
-  padding: `0 ${columnPadding}px`,
-  margin: '25px 0',
-  [mediaM]: {
-    float: 'left',
-    width: '50%',
-  },
+  gap: 20
 })
 
 const groupLinks = (links) => {
@@ -111,28 +106,28 @@ const Footer = ({
       />
       {!focusMode && (
         <Container>
-          <Clear {...columnContainerStyle}>
-            <div {...columnStyle}>
-              <SocialMedia locale={locale} />
-            </div>
+          <div {...columnContainerStyle}>
+            <SocialMedia locale={locale} />
             {pledgeAd && (
-              <div {...columnStyle}>
+              <div>
                 <H3>{t('index/cta/support')}</H3>
                 <Link
                   href={{
-              pathname: PLEDGE_PATH,
-              query: { locale, package: 'YEAR' },
-            }}
+                    pathname: PLEDGE_PATH,
+                    query: { locale, package: 'YEAR' },
+                  }}
                   prefetch={false}
                   passHref
-                  legacyBehavior>
+                  legacyBehavior
+                >
                   <Button style={{ height: 40 }} primary>
                     {t('index/cta/join')}
                   </Button>
                 </Link>
               </div>
             )}
-          </Clear>
+            <Newsletter locale={locale} />
+          </div>
         </Container>
       )}
       <div {...footerStyle}>
