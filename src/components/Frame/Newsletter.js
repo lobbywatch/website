@@ -8,7 +8,8 @@ import { css } from 'glamor'
 import {
   MAILCHIMP_BASE_URL,
   MAILCHIMP_U,
-  MAILCHIMP_ID_FOR_LOCALE,
+  MAILCHIMP_ID,
+  MAILCHIMPS_GROUP_FOR_LOCALE
 } from '../../../constants'
 
 const flexIconsStyle = css({
@@ -36,46 +37,6 @@ class Newsletter extends Component {
     }
   }
 
-  onSubmit(event) {
-    event.preventDefault()
-
-    const { t, locale } = this.props
-    const { email } = this.state
-    const query = {
-      EMAIL: email,
-      u: MAILCHIMP_U,
-      id: MAILCHIMP_ID_FOR_LOCALE[locale],
-      hl: 'de',
-    }
-    this.setState({ message: t('newsletter/processing') })
-    jsonp(
-      `${MAILCHIMP_BASE_URL}/subscribe/post-json?${qs.encode(query)}`,
-      { param: 'c', timeout: 20000 },
-      (error, data) => {
-        if (error) {
-          this.setState({ message: t('newsletter/error/timeout') })
-          return
-        }
-
-        if (data.result !== 'success') {
-          let message = data.msg
-            ? data.msg.replace(/^\d+ - /, '')
-            : t('newsletter/error/generic')
-          if (
-            message.includes('is already subscribed') ||
-            message.includes('est déjà abonné') ||
-            message.includes('schon im Verteiler')
-          ) {
-            message = t('newsletter/error/already-subscribed')
-          }
-          this.setState({ message })
-        } else {
-          this.setState({ message: t('newsletter/succes'), email: '' })
-        }
-      }
-    )
-  }
-
   render() {
     const { message, email } = this.state
     const { t, locale, title = true } = this.props
@@ -86,7 +47,6 @@ class Newsletter extends Component {
         <form
           {...flexIconsStyle}
           target='_blank'
-          onSubmit={(e) => this.onSubmit(e)}
           action={`${MAILCHIMP_BASE_URL}/subscribe/post`}
           method='POST'
         >
@@ -94,7 +54,12 @@ class Newsletter extends Component {
           <input
             type='hidden'
             name='id'
-            value={MAILCHIMP_ID_FOR_LOCALE[locale]}
+            value={MAILCHIMP_ID}
+          />
+          <input
+            type='hidden'
+            name={MAILCHIMPS_GROUP_FOR_LOCALE[locale]}
+            value='1'
           />
           <Input
             type='email'

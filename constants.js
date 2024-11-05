@@ -31,9 +31,10 @@ exports.MATOMO_SITE_ID = ENV.MATOMO_SITE_ID
 
 exports.MAILCHIMP_BASE_URL = 'https://lobbywatch.us8.list-manage.com'
 exports.MAILCHIMP_U = 'd27da194665399ad4c9acc6fd'
-exports.MAILCHIMP_ID_FOR_LOCALE = {
-  de: '82c011426c',
-  fr: 'b5a3964333',
+exports.MAILCHIMP_ID = '82c011426c'
+exports.MAILCHIMPS_GROUP_FOR_LOCALE = {
+  de: 'group[346712][4]',
+  fr: 'group[346712][8]'
 }
 
 exports.DEBUG_INFORMATION = !!ENV.DEBUG_INFORMATION
