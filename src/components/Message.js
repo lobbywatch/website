@@ -1,17 +1,22 @@
 import PropTypes from 'prop-types'
 import React from 'react'
+import { useRouter } from 'next/router'
+
 import { createFormatter } from '@project-r/styleguide'
-import { locales } from '../../constants'
+import { getSafeLocale, locales } from '../../constants'
 import RawHtml from './RawHtml'
-import translations from '../assets/translations.json'
+
+import translationsJson from '../assets/translations.json'
 
 export const useT = (locale) => {
-  return createFormatter(
-    translations.data.reduce((acc, r) => {
-      acc.push({ key: r.key, value: r[locale] })
-      return acc
-    }, []),
-  )
+  const { query } = useRouter()
+  const translations = translationsJson.data.reduce((acc, translation) => {
+    const value = translation[locale ?? getSafeLocale(query.locale)]
+    const key = translation.key;
+    acc.push({ key, value })
+    return acc
+  }, [])
+  return createFormatter(translations)
 }
 
 export const withT = (
