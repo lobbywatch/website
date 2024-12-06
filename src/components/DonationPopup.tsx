@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { Button } from '@project-r/styleguide'
 import Link from 'next/link'
 import { PLEDGE_PATH } from '../constants'
+import Image from 'next/image'
 
 const styles = {
   popup: css({
@@ -21,6 +22,7 @@ const styles = {
     justifyContent: 'space-between',
     gap: 10,
   }),
+  logo: css({ display: 'flex', justifyContent: 'space-around' }),
 }
 
 export const DonationPopup: FunctionComponent = () => {
@@ -35,6 +37,14 @@ export const DonationPopup: FunctionComponent = () => {
   return (
     <>
       <dialog ref={dialog} {...styles.popup}>
+        <figure {...styles.logo}>
+          <Image
+            src='/static/10_jahre_lw.png'
+            alt={t('logo/10-years/alt-text')}
+            width={330}
+            height={106}
+          />
+        </figure>
         <p>{t('pledge/popup/text')}</p>
         <div {...styles.buttonRow}>
           <Button onClick={() => dialog.current.close()}>

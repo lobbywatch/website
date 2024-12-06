@@ -3175,6 +3175,11 @@
       "key": "memberships/cancel/button",
       "de": "Kündigung abschicken",
       "fr": "Envoyer la résiliation"
+    },
+    {
+      "key": "logo/10-years/alt-text",
+      "de": "Variante des Lobbywatch-Logos zum 10-jährigen Jubiläum. Die Zahl 0 in 10 ist dabei das Lobbywatch-Auge.",
+      "fr": "Variante du logo pour le 10e anniversaire de Lobbywatch. Le chiffre 0 est remplacé par l’œil de Lobbywatch."
     }
   ]
 }
