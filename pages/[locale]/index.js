@@ -49,7 +49,6 @@ import { cfStatusQuery } from '../../src/components/Crowdfunding/Status'
 
 import { PurposeList, PurposeItem } from 'src/components/Purpose'
 import { H3, P as StyledP } from 'src/components/Styled'
-import { DonationPopup } from '../../src/components/DonationPopup'
 
 const { P } = Editorial
 
@@ -185,7 +184,6 @@ const Page = ({ testimonialVariables }) => {
           },
         }}
       >
-        <DonationPopup />
         <PurposeList>
           {['research', 'independence', 'nonprofit'].map((key) => (
             <PurposeItem key={key}>
