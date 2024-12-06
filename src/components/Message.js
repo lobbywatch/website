@@ -1,22 +1,17 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import { useRouter } from 'next/router'
-
-import { useQuery } from '@apollo/client'
 import { createFormatter } from '@project-r/styleguide'
-
-import { translationsQuery } from '../../lib/baseQueries'
-import { getSafeLocale, locales } from '../../constants'
+import { locales } from '../../constants'
 import RawHtml from './RawHtml'
+import translations from '../assets/translations.json'
 
 export const useT = (locale) => {
-  const { query } = useRouter()
-  const { data } = useQuery(translationsQuery, {
-    variables: {
-      locale: locale || getSafeLocale(query.locale),
-    },
-  })
-  return createFormatter(data?.translations)
+  return createFormatter(
+    translations.data.reduce((acc, r) => {
+      acc.push({ key: r.key, value: r[locale] })
+      return acc
+    }, []),
+  )
 }
 
 export const withT = (
