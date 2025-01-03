@@ -1,24 +1,23 @@
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { css } from 'glamor'
-import { gql, useQuery } from '@apollo/client'
 
 import {
-  ListWithQuery as TestimonialList,
   generateSeed,
+  ListWithQuery as TestimonialList,
   query as testimonialQuery,
 } from 'src/components/Testimonial/List'
 import { createGetStaticProps } from 'lib/createGetStaticProps'
 
 import {
-  Label,
-  Button,
   A,
-  Interaction,
+  Button,
   Editorial,
-  mediaQueries,
+  Interaction,
+  Label,
   LazyLoad,
   Loader,
+  mediaQueries,
   plainLinkRule,
 } from '@project-r/styleguide'
 
@@ -34,22 +33,23 @@ import MetaTags from 'src/components/MetaTags'
 import { useT } from 'src/components/Message'
 
 import {
-  locales,
+  CDN_FRONTEND_BASE_URL,
   getSafeLocale,
+  locales,
   PUBLIC_BASE_URL,
-  STATEMENTS_FEATURED_IDS,
   STATEMENTS_FEATURED_HERO_DE,
   STATEMENTS_FEATURED_HERO_FR,
-  CDN_FRONTEND_BASE_URL,
+  STATEMENTS_FEATURED_IDS,
 } from '../../constants'
 import { PLEDGE_PATH } from 'src/constants'
 import { CROWDFUNDING_PLEDGE } from '../../src/constants'
 import { shuffle } from 'd3-array'
 import { cfStatusQuery } from '../../src/components/Crowdfunding/Status'
 
-import { PurposeList, PurposeItem } from 'src/components/Purpose'
+import { PurposeItem, PurposeList } from 'src/components/Purpose'
 import { H3, P as StyledP } from 'src/components/Styled'
 import { DonationPopup } from '../../src/components/DonationPopup'
+import { useArticles } from '../../lib/api/queries/useArticles'
 
 const { P } = Editorial
 
@@ -85,28 +85,12 @@ const styles = {
   }),
 }
 
-const indexQuery = gql`
-  query index($locale: Locale!) {
-    articles(locale: $locale, limit: 2) {
-      list {
-        published
-        image
-        lead
-        title
-        author
-        path
-      }
-    }
-  }
-`
-
 const Page = ({ testimonialVariables }) => {
   const router = useRouter()
   const locale = getSafeLocale(router.query.locale)
-  const { loading, error, data } = useQuery(indexQuery, {
-    variables: {
-      locale: locale,
-    },
+  const { isLoading, error, data } = useArticles({
+    locale,
+    limit: 2,
   })
 
   const t = useT(locale)
@@ -119,7 +103,8 @@ const Page = ({ testimonialVariables }) => {
             query: { locale },
           }}
           passHref
-          legacyBehavior>
+          legacyBehavior
+        >
           <A>{t('index/cta/join')}</A>
         </Link>
       </Interaction.P>
@@ -181,7 +166,7 @@ const Page = ({ testimonialVariables }) => {
           title: t('index/cta/packages'),
           locale,
           statusProps: {
-            hasEnd: false
+            hasEnd: false,
           },
         }}
       >
@@ -196,7 +181,7 @@ const Page = ({ testimonialVariables }) => {
         </PurposeList>
 
         <Loader
-          loading={loading}
+          loading={isLoading}
           error={error}
           render={() => {
             return (
@@ -206,24 +191,29 @@ const Page = ({ testimonialVariables }) => {
                   {data.articles.list.map(
                     ({ path, published, title, lead }) => (
                       <List.Item key={path.join('/')}>
-                        <Link href={`/${locale}/${path.join('/')}`} {...plainLinkRule}>
-
+                        <Link
+                          href={`/${locale}/${path.join('/')}`}
+                          {...plainLinkRule}
+                        >
                           <Highlight>
                             {published.split(' ')[0]}: {title}
                           </Highlight>
                           <br />
                           {lead}
-
                         </Link>
                       </List.Item>
-                    )
+                    ),
                   )}
                 </List>
-                <Link href={`/${locale}/artikel/archiv`} passHref legacyBehavior>
+                <Link
+                  href={`/${locale}/artikel/archiv`}
+                  passHref
+                  legacyBehavior
+                >
                   <A>{t('index/blog/link')}</A>
                 </Link>
               </div>
-            );
+            )
           }}
         />
 
@@ -367,7 +357,8 @@ const Page = ({ testimonialVariables }) => {
           }}
           key='pledge'
           passHref
-          legacyBehavior>
+          legacyBehavior
+        >
           <Button primary style={{ minWidth: 280 }}>
             {t('index/cta/join')}
           </Button>
@@ -381,11 +372,10 @@ const Page = ({ testimonialVariables }) => {
         </div>
       </ContainerWithSidebar>
     </Frame>
-  );
+  )
 }
 
 export const getStaticProps = createGetStaticProps({
-  pageQuery: indexQuery,
   getCustomStaticProps: async (_, { params: { locale } }, apolloClient) => {
     await apolloClient.query({
       query: cfStatusQuery,
@@ -405,7 +395,7 @@ export const getStaticProps = createGetStaticProps({
       featuredIds: shuffle(
         STATEMENTS_FEATURED_IDS.split(',')
           .filter(Boolean)
-          .filter((id) => id !== testimonialFocus)
+          .filter((id) => id !== testimonialFocus),
       ).slice(0, 9),
     }
 

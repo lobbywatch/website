@@ -1,6 +1,4 @@
 import React from 'react'
-
-import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import { H1, TextCenter } from 'src/components/Styled'
@@ -13,36 +11,19 @@ import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-
-const lobbyGroupsQuery = gql`
-  query lobbyGroups($locale: Locale!) {
-    lobbyGroups(locale: $locale) {
-      __typename
-      id
-      name
-      branch {
-        id
-        name
-      }
-    }
-  }
-`
+import { useLobbyGroups } from 'lib/api/queries/useLobbyGroups'
 
 const LobbyGroups = () => {
   const {
     query: { locale },
     isFallback,
   } = useRouter()
-  const { loading, error, data } = useQuery(lobbyGroupsQuery, {
-    variables: {
-      locale,
-    },
-  })
+  const { data, error, isLoading } = useLobbyGroups({ locale })
 
   return (
     <Frame>
       <Loader
-        loading={loading || isFallback}
+        loading={isLoading || isFallback}
         error={error}
         render={() => (
           <Center>
@@ -73,9 +54,7 @@ const LobbyGroups = () => {
   )
 }
 
-export const getStaticProps = createGetStaticProps({
-  pageQuery: lobbyGroupsQuery,
-})
+export const getStaticProps = createGetStaticProps({})
 export async function getStaticPaths() {
   return {
     paths: [],

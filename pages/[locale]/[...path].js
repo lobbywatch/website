@@ -1,6 +1,4 @@
 import React from 'react'
-
-import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import Loader from 'src/components/Loader'
@@ -10,30 +8,7 @@ import RawHtml from 'src/components/RawHtml'
 import { H1, Meta } from 'src/components/Styled'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-
-const pageQuery = gql`
-  query page($locale: Locale!, $path: [String!]!) {
-    page(locale: $locale, path: $path) {
-      __typename
-      nid
-      path
-      translations {
-        locale
-        path
-      }
-      statusCode
-      title
-      content
-      type
-      lead
-      image
-      published
-      updated
-      author
-      authorUid
-    }
-  }
-`
+import { usePage } from 'lib/api/queries/usePage'
 
 const Page = () => {
   const {
@@ -41,14 +16,12 @@ const Page = () => {
     isFallback,
   } = useRouter()
   const {
-    loading,
+    isLoading,
     error,
-    data: { page } = {},
-  } = useQuery(pageQuery, {
-    variables: {
-      locale,
-      path,
-    },
+    data: { page },
+  } = usePage({
+    locale,
+    path,
   })
 
   return (
@@ -63,7 +36,7 @@ const Page = () => {
       }}
     >
       <Loader
-        loading={loading || isFallback}
+        loading={isLoading || isFallback}
         error={error}
         render={() => {
           return (
@@ -88,10 +61,14 @@ const Page = () => {
                     alt=''
                   />
                 )}
-                <H1 style={{
-                  marginTop: page.image ? 15 : undefined,
-                  marginBottom: page.published || page.author ? 5 : undefined
-                }}>{page.title}</H1>
+                <H1
+                  style={{
+                    marginTop: page.image ? 15 : undefined,
+                    marginBottom: page.published || page.author ? 5 : undefined,
+                  }}
+                >
+                  {page.title}
+                </H1>
                 <Meta style={{ marginTop: 0, marginBottom: 7 }}>
                   {[page.published, page.author].filter(Boolean).join(' – ')}
                 </Meta>
@@ -106,7 +83,6 @@ const Page = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  pageQuery: pageQuery,
   getVariables: ({ params: { path } }) => ({
     path,
   }),

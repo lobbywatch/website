@@ -1,6 +1,4 @@
 import React from 'react'
-
-import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import Loader from 'src/components/Loader'
@@ -9,61 +7,10 @@ import MetaTags, { GooglePreview } from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
-import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
+import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-
-const branchQuery = gql`
-  query getBranch($locale: Locale!, $id: ID!) {
-    getBranch(locale: $locale, id: $id) {
-      __typename
-      id
-      updated
-      published
-      name
-      description
-      wikipedia_url
-      wikidata_url
-      commissions {
-        name
-        abbr
-      }
-      connections {
-        group
-        function
-        description
-        to {
-          __typename
-          ... on LobbyGroup {
-            id
-            name
-          }
-          ... on Parliamentarian {
-            id
-            name
-          }
-        }
-        vias {
-          __typename
-          to {
-            ... on LobbyGroup {
-              id
-              name
-            }
-            ... on Organisation {
-              id
-              name
-            }
-            ... on Guest {
-              id
-              name
-            }
-          }
-        }
-      }
-    }
-  }
-`
+import { useBranche } from 'lib/api/queries/useBranche'
 
 const CONNECTION_WEIGHTS = {
   LobbyGroup: 1000,
@@ -75,34 +22,32 @@ const Branch = () => {
     query: { locale, id },
     isFallback,
   } = useRouter()
-  const { loading, error, data } = useQuery(branchQuery, {
-    variables: {
-      locale,
-      id,
-    },
+  const { isLoading, error, data } = useBranche({
+    locale,
+    id,
   })
 
   return (
     <Frame>
       <Loader
-        loading={loading || isFallback}
+        loading={isLoading || isFallback}
         error={error}
         render={() => {
-          const { getBranch: branch } = data
-          const { __typename, name } = branch
+          const { branche } = data
+          const { __typename, name } = branche
           const rawId = id.replace(`${__typename}-`, '')
           const path = `/${locale}/daten/branch/${rawId}/${name}`
           return (
             <div>
-              <MetaTags locale={locale} data={branch} />
+              <MetaTags locale={locale} data={branche} />
               <Center>
-                <DetailHead locale={locale} data={branch} />
+                <DetailHead locale={locale} data={branche} />
               </Center>
               <Connections
                 origin={__typename}
                 locale={locale}
                 directness={1}
-                data={branch.connections}
+                data={branche.connections}
                 groupByDestination
                 connectionWeight={(connection) =>
                   CONNECTION_WEIGHTS[connection.to.__typename]
@@ -120,7 +65,7 @@ const Branch = () => {
                       Live
                     </A>
                   </Meta>
-                  <GooglePreview data={branch} path={path} />
+                  <GooglePreview data={branche} path={path} />
                 </Center>
               )}
             </div>
@@ -132,7 +77,6 @@ const Branch = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  pageQuery: branchQuery,
   getVariables: ({ params: { id } }) => ({
     id,
   }),

@@ -1,6 +1,4 @@
 import React from 'react'
-
-import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import { H1, TextCenter } from 'src/components/Styled'
@@ -13,35 +11,19 @@ import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-
-const branchsQuery = gql`
-  query branchs($locale: Locale!) {
-    branchs(locale: $locale) {
-      __typename
-      id
-      name
-      commissions {
-        name
-      }
-    }
-  }
-`
+import { useBranchen } from 'lib/api/queries/useBranchen'
 
 const Branchs = () => {
   const {
     query: { locale },
     isFallback,
   } = useRouter()
-  const { loading, error, data } = useQuery(branchsQuery, {
-    variables: {
-      locale,
-    },
-  })
+  const { data, error, isLoading } = useBranchen({ locale })
 
   return (
     <Frame>
       <Loader
-        loading={loading || isFallback}
+        loading={isLoading || isFallback}
         error={error}
         render={() => (
           <Center>
@@ -50,7 +32,7 @@ const Branchs = () => {
               fromT={(t) => ({
                 title: t('menu/branchs'),
                 description: t('branchs/meta/description', {
-                  count: data.branchs.length,
+                  count: data.branchen.length,
                 }),
               })}
             />
@@ -59,7 +41,7 @@ const Branchs = () => {
                 <Message id='menu/branchs' locale={locale} />
               </H1>
             </TextCenter>
-            <ListView locale={locale} items={data.branchs} />
+            <ListView locale={locale} items={data.branchen} />
             <BlockRegion
               locale={locale}
               region='rooster_branchs'
@@ -73,7 +55,7 @@ const Branchs = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  pageQuery: branchsQuery,
+  // pageQuery: branchsQuery,
 })
 export async function getStaticPaths() {
   return {

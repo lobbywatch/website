@@ -1,6 +1,4 @@
 import React from 'react'
-
-import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import { nest } from 'd3-collection'
@@ -16,42 +14,19 @@ import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-
-const parliamentariansQuery = gql`
-  query parliamentarians($locale: Locale!) {
-    parliamentarians(locale: $locale) {
-      __typename
-      id
-      name
-      firstName
-      lastName
-      portrait
-      councilTitle
-      canton
-      partyMembership {
-        party {
-          abbr
-        }
-      }
-    }
-  }
-`
+import { useParliamentarians } from '../../../../lib/api/queries/useParliamentarians'
 
 const Parliamentarians = () => {
   const {
     query: { locale },
     isFallback,
   } = useRouter()
-  const { loading, error, data } = useQuery(parliamentariansQuery, {
-    variables: {
-      locale,
-    },
-  })
+  const { isLoading, error, data } = useParliamentarians({ locale })
 
   return (
     <Frame>
       <Loader
-        loading={loading || isFallback}
+        loading={isLoading || isFallback}
         error={error}
         render={() => (
           <Center>
@@ -103,7 +78,7 @@ const Parliamentarians = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  pageQuery: parliamentariansQuery,
+  // pageQuery: parliamentariansQuery,
 })
 export async function getStaticPaths() {
   return {

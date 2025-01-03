@@ -36,12 +36,13 @@ type FirstElementsFunction = (
   missingValue?: string,
 ) => ReactNode
 
-type CreateFormatter = (translations: Translations) => Formatter
+type CreateFormatter = (translations: Translations, locale: 'de'|'fr') => Formatter
 
 export type Formatter = FormatterFunction & {
   elements: ElementsFunction
   first: FirstFunction & { elements?: FirstElementsFunction }
   pluralize: PluralizeFunction & { elements?: ElementsFunction }
+  locale: 'de'|'fr'
 }
 
 export const replaceKeys = (message, replacements) => {
@@ -65,7 +66,7 @@ export const createPlaceholderFormatter = (placeholder = '') => {
   return formatter
 }
 
-export const createFormatter: CreateFormatter = (translations) => {
+export const createFormatter: CreateFormatter = (translations, locale) => {
   if (!translations) {
     return createPlaceholderFormatter()
   }
@@ -82,6 +83,8 @@ export const createFormatter: CreateFormatter = (translations) => {
     }
     return message
   }
+
+  formatter.locale = locale
 
   const firstKey = (keys) =>
     keys.find((k) => index[k] !== undefined) || keys[keys.length - 1]

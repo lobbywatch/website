@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import Loader from 'src/components/Loader'
@@ -12,67 +11,7 @@ import { A, Meta } from 'src/components/Styled'
 import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-
-const orgQuery = gql`
-  query getOrganisation($locale: Locale!, $id: ID!) {
-    getOrganisation(locale: $locale, id: $id) {
-      __typename
-      id
-      updated
-      published
-      name
-      legalForm
-      location
-      postalCode
-      countryIso2
-      description
-      uid
-      website
-      wikipedia_url
-      wikidata_url
-      twitter_name
-      twitter_url
-      lobbyGroups {
-        id
-        name
-      }
-      connections {
-        group
-        potency
-        function
-        description
-        compensations {
-          year
-          money
-          description
-        }
-        to {
-          __typename
-          ... on Parliamentarian {
-            id
-            name
-            wikidata_url
-            parlament_biografie_url
-          }
-          ... on Organisation {
-            id
-            name
-          }
-        }
-        vias {
-          __typename
-          function
-          to {
-            ... on Guest {
-              id
-              name
-            }
-          }
-        }
-      }
-    }
-  }
-`
+import { useOrganisation } from 'lib/api/queries/useOrganisation'
 
 const CONNECTION_WEIGHTS = {
   Parliamentarian: 1000,
@@ -84,20 +23,15 @@ const Org = () => {
     query: { locale, id },
     isFallback,
   } = useRouter()
-  const { loading, error, data } = useQuery(orgQuery, {
-    variables: {
-      locale,
-      id,
-    },
-  })
+  const { isLoading, error, data } = useOrganisation({ locale, id })
 
   return (
     <Frame>
       <Loader
-        loading={loading || isFallback}
+        loading={isLoading || isFallback}
         error={error}
         render={() => {
-          const { getOrganisation: organisation } = data
+          const { organisation } = data
           const { __typename, name } = organisation
           const rawId = id.replace(`${__typename}-`, '')
           const path = `/${locale}/daten/organisation/${rawId}/${name}`
@@ -140,7 +74,6 @@ const Org = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  pageQuery: orgQuery,
   getVariables: ({ params: { id } }) => ({
     id,
   }),

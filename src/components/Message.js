@@ -10,13 +10,14 @@ import translationsJson from '../assets/translations.json'
 
 export const useT = (locale) => {
   const { query } = useRouter()
+  const _locale = locale ?? getSafeLocale(query.locale);
   const translations = translationsJson.data.reduce((acc, translation) => {
-    const value = translation[locale ?? getSafeLocale(query.locale)]
+    const value = translation[_locale]
     const key = translation.key;
     acc.push({ key, value })
     return acc
   }, [])
-  return createFormatter(translations)
+  return createFormatter(translations, locale)
 }
 
 export const withT = (

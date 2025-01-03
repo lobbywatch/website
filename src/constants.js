@@ -7,3 +7,4 @@ export const CROWDFUNDING_PLEDGE = 'LEGISLATION52'
 
 export const PLEDGE_PATH = '/[locale]/patronage'
 export const ACCOUNT_PATH = '/[locale]/merci'
+export const DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
