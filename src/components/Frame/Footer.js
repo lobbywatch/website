@@ -1,25 +1,23 @@
 import React from 'react'
 import { css } from 'glamor'
-
-import { graphql } from '@apollo/client/react/hoc'
 import { stratify } from 'd3-hierarchy'
 import Link from 'next/link'
 
 import { Center } from './index'
 import SocialMedia from './SocialMedia'
 import Newsletter from './Newsletter'
-import { H3, A, Hr, metaStyle, Strong, Clear } from '../Styled'
-import { GREY_SOFT, GREY_DARK, GREY_MID, mediaM } from '../../theme'
+import { A, Clear, H3, Hr, metaStyle, Strong } from '../Styled'
+import { GREY_DARK, GREY_MID, GREY_SOFT, mediaM } from '../../theme'
 import CreativeCommons from '../../assets/CreativeCommons'
 import { useT } from '../Message'
 import Loader from '../Loader'
 import { locales } from '../../../constants'
 import { JsonLd } from '../JsonLd'
-import { metaQuery } from '../../../lib/baseQueries'
 import { useMe } from '../Auth/withMe'
 import SignOut from '../Auth/SignOut'
 import { Button } from '@project-r/styleguide'
 import { PLEDGE_PATH } from '../../constants'
+import { useMeta } from '../../../lib/api/queries/useMeta'
 
 const footerStyle = css({
   backgroundColor: GREY_SOFT,
@@ -84,13 +82,10 @@ const columnContainerStyle = css({
 })
 
 const groupLinks = (links) => {
-  return stratify()([{ id: 'MenuLink-Root' }, ...links]).children || []
+  return stratify()([{ id: '0', title:'MenuLink-Root' }, ...links]).children || []
 }
 
 const Footer = ({
-  loading,
-  error,
-  links,
   locale,
   focusMode,
   pledgeAd = true,
@@ -98,6 +93,14 @@ const Footer = ({
 }) => {
   const { me, hasAccess } = useMe()
   const t = useT(locale)
+
+  const {
+    data: {
+      meta: { links },
+    },
+    error,
+    isLoading,
+  } = useMeta({ locale })
 
   return (
     <footer style={{ marginTop: 20, zIndex: 1 }}>
@@ -134,7 +137,7 @@ const Footer = ({
         <Container>
           <Loader
             height={300}
-            loading={loading}
+            loading={isLoading}
             error={error}
             render={() => (
               <div>
@@ -244,22 +247,4 @@ const Footer = ({
   );
 }
 
-const FooterWithQuery = graphql(metaQuery, {
-  options: ({ locale }) => {
-    return {
-      variables: {
-        locale,
-      },
-    }
-  },
-  props: ({ data }) => {
-    return {
-      loading: data.loading,
-      error: data.error,
-      links: data.meta ? data.meta.links : [],
-      blocks: data.meta ? data.meta.blocks : [],
-    }
-  },
-})(Footer)
-
-export default FooterWithQuery
+export default Footer

@@ -1,6 +1,4 @@
 import React from 'react'
-
-import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import Loader from 'src/components/Loader'
@@ -9,117 +7,24 @@ import MetaTags, { GooglePreview } from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
-import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
+import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-
-const parliamentarianQuery = gql`
-  query getParliamentarian($locale: Locale!, $id: ID!) {
-    getParliamentarian(locale: $locale, id: $id) {
-      __typename
-      id
-      updated
-      published
-      name
-      dateOfBirth
-      gender
-      age
-      portrait
-      council
-      councilTitle
-      active
-      canton
-      represents
-      councilJoinDate
-      councilTenure
-      age
-      occupation
-      civilStatus
-      children
-      parliamentId
-      website
-      wikipedia_url
-      wikidata_url
-      twitter_name
-      twitter_url
-      facebook_url
-      linkedin_url
-      parlament_biografie_url
-      commissions {
-        name
-        abbr
-      }
-      partyMembership {
-        party {
-          abbr
-        }
-      }
-      guests {
-        __typename
-        id
-        name
-        wikipedia_url
-        wikidata_url
-        twitter_name
-        twitter_url
-        facebook_url
-        linkedin_url
-      }
-      connections {
-        group
-        potency
-        function
-        description
-        compensations {
-          year
-          money
-          description
-        }
-        from {
-          __typename
-        }
-        to {
-          __typename
-          ... on Organisation {
-            id
-            name
-            uid
-            wikidata_url
-          }
-        }
-        vias {
-          __typename
-          to {
-            ... on Guest {
-              id
-              name
-            }
-          }
-        }
-      }
-    }
-  }
-`
+import { useParliamentarian } from '../../../../../lib/api/queries/useParliamentarian'
 
 const Parliamentarian = () => {
   const {
     query: { locale, id },
     isFallback,
   } = useRouter()
-  const { loading, error, data } = useQuery(parliamentarianQuery, {
-    variables: {
-      locale,
-      id,
-    },
-  })
-
+  const { isLoading, error, data } = useParliamentarian({ locale, id })
   return (
     <Frame>
       <Loader
-        loading={loading || isFallback}
+        loading={isLoading || isFallback}
         error={error}
         render={() => {
-          const { getParliamentarian: parliamentarian } = data
+          const { parliamentarian } = data
           const { __typename, name, updated, published } = parliamentarian
           const rawId = id.replace(`${__typename}-`, '')
           const path = `/${locale}/daten/parlamentarier/${rawId}/${name}`
@@ -170,7 +75,7 @@ const Parliamentarian = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  pageQuery: parliamentarianQuery,
+  // pageQuery: parliamentarianQuery,
   getVariables: ({ params: { id } }) => ({
     id,
   }),

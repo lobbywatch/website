@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import Loader from 'src/components/Loader'
@@ -10,17 +9,8 @@ import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
 import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
-import { lobbyGroupDetailFragment } from 'lib/fragments'
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-
-const lobbyGroupQuery = gql`
-  query getLobbyGroup($locale: Locale!, $id: ID!) {
-    getLobbyGroup(locale: $locale, id: $id) {
-      ...LobbyGroupDetailFragment
-    }
-  }
-  ${lobbyGroupDetailFragment}
-`
+import { useLobbyGroup } from 'lib/api/queries/useLobbyGroup'
 
 const CONNECTION_WEIGHTS = {
   Parliamentarian: 0.1,
@@ -32,20 +22,15 @@ const LobbyGroup = () => {
     query: { locale, id },
     isFallback,
   } = useRouter()
-  const { loading, error, data } = useQuery(lobbyGroupQuery, {
-    variables: {
-      locale,
-      id,
-    },
-  })
+  const { data, isLoading, error } = useLobbyGroup({ locale, id })
 
   return (
     <Frame>
       <Loader
-        loading={loading || isFallback}
+        loading={isLoading || isFallback}
         error={error}
         render={() => {
-          const { getLobbyGroup: lobbyGroup } = data
+          const { lobbyGroup } = data
           const { __typename, name } = lobbyGroup
           const rawId = id.replace(`${__typename}-`, '')
           const path = `/${locale}/daten/lobbygruppe/${rawId}/${name}`
@@ -89,7 +74,6 @@ const LobbyGroup = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  pageQuery: lobbyGroupQuery,
   getVariables: ({ params: { id } }) => ({
     id,
   }),

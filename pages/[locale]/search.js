@@ -1,8 +1,5 @@
 import React from 'react'
 
-import { gql } from '@apollo/client'
-import { graphql } from '@apollo/client/react/hoc'
-
 import { withRouter } from 'next/router'
 
 import { P } from 'src/components/Styled'
@@ -16,111 +13,54 @@ import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 
 import { withInitialProps } from 'lib/apolloClient'
+import { useSearch } from '../../lib/api/queries/useSearch'
 
-const searchQuery = gql`
-  query search($locale: Locale!, $term: String!) {
-    search(locale: $locale, term: $term) {
-      __typename
-      ... on Parliamentarian {
-        id
-        name
-        firstName
-        lastName
-        portrait
-        councilTitle
-        canton
-        partyMembership {
-          party {
-            abbr
-          }
-        }
-      }
-      ... on Guest {
-        id
-        name
-        firstName
-        lastName
-        function
-      }
-      ... on Organisation {
-        id
-        name
-        legalForm
-        location
-        lobbyGroups {
-          id
-          name
-        }
-      }
-      ... on LobbyGroup {
-        id
-        name
-        branch {
-          id
-          name
-        }
-      }
-      ... on Branch {
-        id
-        name
-        commissions {
-          id
-          name
-        }
-      }
-    }
-  }
-`
-
-const Search = ({ loading, error, term, results, locale }) => (
-  <Loader
-    loading={loading}
-    error={error}
-    render={() => (
-      <Center>
-        <MetaTags
-          locale={locale}
-          fromT={(t) => ({
-            title: t('search/meta/title'),
-            description: t.pluralize('search/meta/description', {
-              count: results.length,
-              term,
-            }),
-          })}
-        />
-        <ListView locale={locale} items={results} maxWidth={SEARCH_MAX_WIDTH} />
-        {results.length === 30 && (
-          <P
-            style={{
-              maxWidth: SEARCH_MAX_WIDTH,
-              margin: '20px auto 0',
-            }}
-          >
-            <Message locale={locale} id='search/more' />
-          </P>
-        )}
-        {results.length === 0 && term.length > 0 && (
-          <BlockRegion locale={locale} region='rooster_noresults' />
-        )}
-        {results.length === 0 && term.length === 0 && (
-          <P>
-            <Message locale={locale} id='search/hint' />
-          </P>
-        )}
-      </Center>
-    )}
-  />
-)
-
-const SearchWithQuery = graphql(searchQuery, {
-  props: ({ data }) => {
-    return {
-      loading: data.loading,
-      error: data.error,
-      results: data.search,
-    }
-  },
-})(Search)
+const Search = ({ term, locale }) => {
+  const { data: results, error, isLoading } = useSearch({ locale, term })
+  return (
+    <Loader
+      loading={isLoading}
+      error={error}
+      render={() => (
+        <Center>
+          <MetaTags
+            locale={locale}
+            fromT={(t) => ({
+              title: t('search/meta/title'),
+              description: t.pluralize('search/meta/description', {
+                count: results.length,
+                term,
+              }),
+            })}
+          />
+          <ListView
+            locale={locale}
+            items={results}
+            maxWidth={SEARCH_MAX_WIDTH}
+          />
+          {results.length === 30 && (
+            <P
+              style={{
+                maxWidth: SEARCH_MAX_WIDTH,
+                margin: '20px auto 0',
+              }}
+            >
+              <Message locale={locale} id='search/more' />
+            </P>
+          )}
+          {results.length === 0 && term.length > 0 && (
+            <BlockRegion locale={locale} region='rooster_noresults' />
+          )}
+          {results.length === 0 && term.length === 0 && (
+            <P>
+              <Message locale={locale} id='search/hint' />
+            </P>
+          )}
+        </Center>
+      )}
+    />
+  )
+}
 
 const Page = ({
   router: {
@@ -128,7 +68,7 @@ const Page = ({
   },
 }) => (
   <Frame>
-    <SearchWithQuery locale={locale} term={term || ''} />
+    <Search locale={locale} term={term ?? ''} />
   </Frame>
 )
 

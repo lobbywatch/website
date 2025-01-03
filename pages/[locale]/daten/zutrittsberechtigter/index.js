@@ -1,6 +1,4 @@
 import React from 'react'
-
-import { gql, useQuery } from '@apollo/client'
 import { useRouter } from 'next/router'
 
 import { H1, TextCenter } from 'src/components/Styled'
@@ -13,35 +11,19 @@ import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-
-const guestsQuery = gql`
-  query guests($locale: Locale!) {
-    guests(locale: $locale) {
-      __typename
-      id
-      name
-      firstName
-      lastName
-      function
-    }
-  }
-`
+import { useGuests } from 'lib/api/queries/useGuests'
 
 const Guests = () => {
   const {
     query: { locale },
     isFallback,
   } = useRouter()
-  const { loading, error, data } = useQuery(guestsQuery, {
-    variables: {
-      locale,
-    },
-  })
+  const { isLoading, error, data } = useGuests({ locale })
 
   return (
     <Frame>
       <Loader
-        loading={loading || isFallback}
+        loading={isLoading || isFallback}
         error={error}
         render={() => (
           <Center>
@@ -73,7 +55,7 @@ const Guests = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  pageQuery: guestsQuery,
+  // pageQuery: guestsQuery,
 })
 export async function getStaticPaths() {
   return {
