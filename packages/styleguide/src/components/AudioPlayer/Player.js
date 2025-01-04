@@ -65,7 +65,7 @@ const styles = {
     '::-webkit-media-controls-panel': {
       display: 'none !important',
     },
-    '::--webkit-media-controls-play-button': {
+    '::state(webkit-media-controls-play-button)': {
       display: 'none !important',
     },
     '::-webkit-media-controls-start-playback-button': {
