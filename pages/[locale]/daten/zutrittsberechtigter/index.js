@@ -11,20 +11,18 @@ import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-import { useGuests } from 'lib/api/queries/useGuests'
+import { getAllGuests } from 'lib/api/queries/guests'
 
-const Guests = () => {
+const Guests = ({ data }) => {
   const {
     query: { locale },
     isFallback,
   } = useRouter()
-  const { isLoading, error, data } = useGuests({ locale })
 
   return (
     <Frame>
       <Loader
-        loading={isLoading || isFallback}
-        error={error}
+        loading={isFallback}
         render={() => (
           <Center>
             <MetaTags
@@ -55,8 +53,9 @@ const Guests = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  // pageQuery: guestsQuery,
+  dataFetcher: getAllGuests,
 })
+
 export async function getStaticPaths() {
   return {
     paths: [],

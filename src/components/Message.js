@@ -8,21 +8,34 @@ import RawHtml from './RawHtml'
 
 import translationsJson from '../assets/translations.json'
 
+const translations = {}
+
+const getTranslations = (locale) => {
+  const _locale = locale ?? getSafeLocale(locale)
+
+  if (!(locale in translations)) {
+    translations[locale] = translationsJson.data.reduce((acc, translation) => {
+      const value = translation[_locale]
+      const key = translation.key
+      acc.push({ key, value })
+      return acc
+    }, [])
+  }
+
+  return translations[locale]
+}
+
+export const translator = (locale) => {
+  return createFormatter(getTranslations(locale), locale)
+}
+
 export const useT = (locale) => {
   const { query } = useRouter()
-  const _locale = locale ?? getSafeLocale(query.locale);
-  const translations = translationsJson.data.reduce((acc, translation) => {
-    const value = translation[_locale]
-    const key = translation.key;
-    acc.push({ key, value })
-    return acc
-  }, [])
+  const translations = getTranslations(getSafeLocale(query.locale))
   return createFormatter(translations, locale)
 }
 
-export const withT = (
-  Component
-) => {
+export const withT = (Component) => {
   const WithT = (props) => {
     const t = useT(props.locale)
     return <Component {...props} t={t} />

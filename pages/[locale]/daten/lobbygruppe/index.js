@@ -11,20 +11,18 @@ import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-import { useLobbyGroups } from 'lib/api/queries/useLobbyGroups'
+import { getAllLobbyGroups } from 'lib/api/queries/lobbyGroups'
 
-const LobbyGroups = () => {
+const LobbyGroups = ({ data }) => {
   const {
     query: { locale },
     isFallback,
   } = useRouter()
-  const { data, error, isLoading } = useLobbyGroups({ locale })
 
   return (
     <Frame>
       <Loader
-        loading={isLoading || isFallback}
-        error={error}
+        loading={isFallback}
         render={() => (
           <Center>
             <MetaTags
@@ -54,7 +52,10 @@ const LobbyGroups = () => {
   )
 }
 
-export const getStaticProps = createGetStaticProps({})
+export const getStaticProps = createGetStaticProps({
+  dataFetcher: getAllLobbyGroups,
+})
+
 export async function getStaticPaths() {
   return {
     paths: [],

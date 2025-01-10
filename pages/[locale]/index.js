@@ -49,7 +49,7 @@ import { cfStatusQuery } from '../../src/components/Crowdfunding/Status'
 import { PurposeItem, PurposeList } from 'src/components/Purpose'
 import { H3, P as StyledP } from 'src/components/Styled'
 import { DonationPopup } from '../../src/components/DonationPopup'
-import { useArticles } from '../../lib/api/queries/useArticles'
+import { useArticles } from '../../lib/api/queries/articles'
 
 const { P } = Editorial
 
