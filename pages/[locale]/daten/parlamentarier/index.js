@@ -14,20 +14,18 @@ import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-import { useParliamentarians } from '../../../../lib/api/queries/useParliamentarians'
+import { getAllParliamentarians } from 'lib/api/queries/parliamentarians'
 
-const Parliamentarians = () => {
+const Parliamentarians = ({ data }) => {
   const {
     query: { locale },
     isFallback,
   } = useRouter()
-  const { isLoading, error, data } = useParliamentarians({ locale })
 
   return (
     <Frame>
       <Loader
-        loading={isLoading || isFallback}
-        error={error}
+        loading={isFallback}
         render={() => (
           <Center>
             <MetaTags
@@ -78,8 +76,9 @@ const Parliamentarians = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  // pageQuery: parliamentariansQuery,
+  dataFetcher: getAllParliamentarians,
 })
+
 export async function getStaticPaths() {
   return {
     paths: [],

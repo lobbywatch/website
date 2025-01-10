@@ -8,21 +8,13 @@ import RawHtml from 'src/components/RawHtml'
 import { H1, Meta } from 'src/components/Styled'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-import { usePage } from 'lib/api/queries/usePage'
+import { getArticle } from '../../lib/api/queries/articles'
 
-const Page = () => {
+const Page = ({ data: { page } }) => {
   const {
-    query: { locale, path },
+    query: { locale },
     isFallback,
   } = useRouter()
-  const {
-    isLoading,
-    error,
-    data: { page },
-  } = usePage({
-    locale,
-    path,
-  })
 
   return (
     <Frame
@@ -36,8 +28,7 @@ const Page = () => {
       }}
     >
       <Loader
-        loading={isLoading || isFallback}
-        error={error}
+        loading={isFallback}
         render={() => {
           return (
             <>
@@ -83,23 +74,22 @@ const Page = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  getVariables: ({ params: { path } }) => ({
-    path,
-  }),
-  getCustomStaticProps: ({ data: { page } }, { params }) => {
-    if (page.statusCode === 404) {
+  dataFetcher: getArticle,
+  getCustomStaticProps: ({ data, error }, { params }) => {
+    if (error?.status === 404) {
       return {
         notFound: true,
       }
     }
-    if (page.path.join('/') !== params.path.join('/')) {
+    if (data.page.path.join('/') !== params.path.join('/')) {
       return {
         redirect: {
-          destination: `/${params.locale}/${page.path.join('/')}`,
+          destination: `/${params.locale}/${data.page.path.join('/')}`,
           permanent: true,
         },
       }
     }
+    return { props: { data } }
   },
 })
 export async function getStaticPaths() {

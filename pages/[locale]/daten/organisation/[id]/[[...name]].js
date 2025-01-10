@@ -8,28 +8,25 @@ import MetaTags, { GooglePreview } from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
-import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
+import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-import { useOrganisation } from 'lib/api/queries/useOrganisation'
+import { getOrganisation } from 'lib/api/queries/organisations'
 
 const CONNECTION_WEIGHTS = {
   Parliamentarian: 1000,
   Organisation: 0.1,
 }
 
-const Org = () => {
+const Org = ({ data }) => {
   const {
     query: { locale, id },
     isFallback,
   } = useRouter()
-  const { isLoading, error, data } = useOrganisation({ locale, id })
-
   return (
     <Frame>
       <Loader
-        loading={isLoading || isFallback}
-        error={error}
+        loading={isFallback}
         render={() => {
           const { organisation } = data
           const { __typename, name } = organisation
@@ -74,13 +71,17 @@ const Org = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  getVariables: ({ params: { id } }) => ({
-    id,
-  }),
+  dataFetcher: getOrganisation,
   getCustomStaticProps: ({ data }) => {
-    if (!data.getOrganisation) {
+    if (!data.organisation) {
       return {
         notFound: true,
+      }
+    } else {
+      return {
+        props: {
+          data,
+        },
       }
     }
   },

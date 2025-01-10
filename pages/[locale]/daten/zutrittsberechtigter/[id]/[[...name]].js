@@ -10,20 +10,18 @@ import { A, Meta } from 'src/components/Styled'
 import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-import { useGuest } from 'lib/api/queries/useGuest'
+import { getGuest } from 'lib/api/queries/guests'
 
-const Guest = () => {
+const Guest = ({ data }) => {
   const {
     query: { locale, id },
     isFallback,
   } = useRouter()
-  const { isLoading, error, data } = useGuest({ locale, id })
 
   return (
     <Frame>
       <Loader
-        loading={isLoading || isFallback}
-        error={error}
+        loading={isFallback}
         render={() => {
           const { guest } = data
           const { __typename, updated, published, name } = guest
@@ -68,19 +66,14 @@ const Guest = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  // pageQuery: guestQuery,
-  getVariables: ({ params: { id } }) => ({
-    id,
-  }),
-  getCustomStaticProps: async (
-    { data },
-    { params: { locale, name } },
-    apolloClient,
-  ) => {
-    if (!data.getGuest) {
+  dataFetcher: getGuest,
+  getCustomStaticProps: async ({ data }) => {
+    if (!data.guest) {
       return {
         notFound: true,
       }
+    } else {
+      return { props: { data } }
     }
   },
 })

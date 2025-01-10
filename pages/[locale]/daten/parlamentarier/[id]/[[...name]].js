@@ -10,19 +10,17 @@ import { A, Meta } from 'src/components/Styled'
 import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-import { useParliamentarian } from '../../../../../lib/api/queries/useParliamentarian'
+import { getParliamentarian } from 'lib/api/queries/parliamentarians'
 
-const Parliamentarian = () => {
+const Parliamentarian = ({ data }) => {
   const {
     query: { locale, id },
     isFallback,
   } = useRouter()
-  const { isLoading, error, data } = useParliamentarian({ locale, id })
   return (
     <Frame>
       <Loader
-        loading={isLoading || isFallback}
-        error={error}
+        loading={isFallback}
         render={() => {
           const { parliamentarian } = data
           const { __typename, name, updated, published } = parliamentarian
@@ -75,18 +73,22 @@ const Parliamentarian = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  // pageQuery: parliamentarianQuery,
-  getVariables: ({ params: { id } }) => ({
-    id,
-  }),
+  dataFetcher: getParliamentarian,
   getCustomStaticProps: ({ data }) => {
-    if (!data.getParliamentarian) {
+    if (!data.parliamentarian) {
       return {
         notFound: true,
+      }
+    } else {
+      return {
+        props: {
+          data,
+        },
       }
     }
   },
 })
+
 export async function getStaticPaths() {
   return {
     paths: [],

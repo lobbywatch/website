@@ -8,27 +8,25 @@ import MetaTags, { GooglePreview } from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
-import { DRUPAL_BASE_URL, DEBUG_INFORMATION } from 'constants'
+import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-import { useLobbyGroup } from 'lib/api/queries/useLobbyGroup'
+import { getLobbyGroup } from 'lib/api/queries/lobbyGroups'
 
 const CONNECTION_WEIGHTS = {
   Parliamentarian: 0.1,
   Organisation: 1000,
 }
 
-const LobbyGroup = () => {
+const LobbyGroup = ({ data }) => {
   const {
     query: { locale, id },
     isFallback,
   } = useRouter()
-  const { data, isLoading, error } = useLobbyGroup({ locale, id })
 
   return (
     <Frame>
       <Loader
-        loading={isLoading || isFallback}
-        error={error}
+        loading={isFallback}
         render={() => {
           const { lobbyGroup } = data
           const { __typename, name } = lobbyGroup
@@ -74,14 +72,18 @@ const LobbyGroup = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  getVariables: ({ params: { id } }) => ({
+  dataFetcher: getLobbyGroup,
+  getVariables: ({ params: { id, locale } }) => ({
     id,
+    locale,
   }),
   getCustomStaticProps: ({ data }) => {
-    if (!data.getLobbyGroup) {
+    if (!data.lobbyGroup) {
       return {
         notFound: true,
       }
+    } else {
+      return { props: { data } }
     }
   },
 })

@@ -11,20 +11,17 @@ import ListView from 'src/components/ListView'
 import BlockRegion from 'src/components/BlockRegion'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-import { useBranchen } from 'lib/api/queries/useBranchen'
+import { getAllBranchen } from 'lib/api/queries/branchen'
 
-const Branchs = () => {
+const Branchs = ({ data }) => {
   const {
     query: { locale },
     isFallback,
   } = useRouter()
-  const { data, error, isLoading } = useBranchen({ locale })
-
   return (
     <Frame>
       <Loader
-        loading={isLoading || isFallback}
-        error={error}
+        loading={isFallback}
         render={() => (
           <Center>
             <MetaTags
@@ -55,8 +52,9 @@ const Branchs = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  // pageQuery: branchsQuery,
+  dataFetcher: getAllBranchen,
 })
+
 export async function getStaticPaths() {
   return {
     paths: [],

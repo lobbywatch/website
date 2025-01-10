@@ -17,7 +17,7 @@ import { useMe } from '../Auth/withMe'
 import SignOut from '../Auth/SignOut'
 import { Button } from '@project-r/styleguide'
 import { PLEDGE_PATH } from '../../constants'
-import { useMeta } from '../../../lib/api/queries/useMeta'
+import { useMeta } from 'lib/api/queries/meta'
 
 const footerStyle = css({
   backgroundColor: GREY_SOFT,

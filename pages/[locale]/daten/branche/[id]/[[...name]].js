@@ -10,28 +10,23 @@ import { A, Meta } from 'src/components/Styled'
 import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
-import { useBranche } from 'lib/api/queries/useBranche'
+import { getBranche } from 'lib/api/queries/branchen'
 
 const CONNECTION_WEIGHTS = {
   LobbyGroup: 1000,
   Organisation: 0,
 }
 
-const Branch = () => {
+const Branch = ({ data }) => {
   const {
     query: { locale, id },
     isFallback,
   } = useRouter()
-  const { isLoading, error, data } = useBranche({
-    locale,
-    id,
-  })
 
   return (
     <Frame>
       <Loader
-        loading={isLoading || isFallback}
-        error={error}
+        loading={isFallback}
         render={() => {
           const { branche } = data
           const { __typename, name } = branche
@@ -77,14 +72,14 @@ const Branch = () => {
 }
 
 export const getStaticProps = createGetStaticProps({
-  getVariables: ({ params: { id } }) => ({
-    id,
-  }),
+  dataFetcher: getBranche,
   getCustomStaticProps: ({ data }) => {
-    if (!data.getBranch) {
+    if (!data.branche) {
       return {
         notFound: true,
       }
+    } else {
+      return { props: { data } }
     }
   },
 })
