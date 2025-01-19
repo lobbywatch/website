@@ -647,6 +647,9 @@ class Submit extends Component {
           })
         }
 
+        // Workaround for React 18 Automatic Batching—wait for state changes above to be applied
+        await new Promise((resolve) => setTimeout(resolve, 50))
+
         return this.submitPledge(ev.paymentMethod)
       },
       // Cancel Handler
