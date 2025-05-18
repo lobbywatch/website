@@ -7,7 +7,7 @@ exports.localeSegment = `:locale(${locales.join('|')})`
 exports.getSafeLocale = (locale) => (locales.includes(locale) ? locale : 'de')
 
 exports.DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
-exports.DRUPAL_DATA_BASE_URL = 'https://cms.lobbywatch.ch'
+exports.DRUPAL_DATA_BASE_URL = 'https://data.lobbywatch.ch'
 exports.DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
 
 const SERVER_PORT = (typeof process !== 'undefined' && ENV.PORT) || 3000
