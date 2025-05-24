@@ -1,6 +1,33 @@
-FROM node:20-alpine3.21@sha256:be56e91681a8ec1bba91e3006039bd228dc797fd984794a3efedab325b36e679
+FROM node:20-alpine3.21@sha256:be56e91681a8ec1bba91e3006039bd228dc797fd984794a3efedab325b36e679 AS build
 
 ENV NODE_ENV=production
+
+ARG GRAPHQL_URL
+ENV GRAPHQL_URL=${GRAPHQL_URL}
+
+ARG PAYPAL_FORM_ACTION
+ENV PAYPAL_FORM_ACTION=${PAYPAL_FORM_ACTION}
+
+ARG PAYPAL_BUSINESS
+ENV PAYPAL_BUSINESS=${PAYPAL_BUSINESS}
+
+ARG STRIPE_PUBLISHABLE_KEY
+ENV STRIPE_PUBLISHABLE_KEY=${STRIPE_PUBLISHABLE_KEY}
+
+ARG STATUS_POLL_INTERVAL_MS
+ENV STATUS_POLL_INTERVAL_MS=${STATUS_POLL_INTERVAL_MS}
+
+ARG MATOMO_URL_BASE
+ENV MATOMO_URL_BASE=${MATOMO_URL_BASE}
+
+ARG MATOMO_SITE_ID
+ENV MATOMO_SITE_ID=${MATOMO_SITE_ID}
+
+ARG ASSETS_SERVER_BASE_URL
+ENV ASSETS_SERVER_BASE_URL=${ASSETS_SERVER_BASE_URL}
+
+ARG PUBLIC_BASE_URL
+ENV PUBLIC_BASE_URL=${PUBLIC_BASE_URL}
 
 WORKDIR /workspace/lobbywatch-website
 
@@ -10,8 +37,10 @@ COPY . .
 
 RUN npm ci && npm run build
 
-# prevent Failed to update prerender cache for /de/content/links Error: EACCES: permission denied, mkdir '/workspace/lobbywatch-website/.next/server/pages/de'
-RUN chown node:node .next/server/pages
+# prevent "EACCES: permission denied" at runtime
+RUN chown -R node:node .next/server/pages
+RUN mkdir -p .next/cache/images
+RUN chown -R node:node .next/cache
 
 USER node
 
