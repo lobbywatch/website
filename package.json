@@ -65,6 +65,7 @@
     "scroll-into-view": "^1.15.0",
     "sharp": "^0.33.4",
     "striptags": "^3.2.0",
+    "swr": "2.3.3",
     "validator": "^13.7.0"
   },
   "devDependencies": {
@@ -78,7 +79,6 @@
     "lint-staged": "^15.2.5",
     "nodemon": "^3.1.3",
     "prettier": "^3.3.1",
-    "swr": "^2.2.5",
     "typescript": "^5.4.5"
   },
   "cacheDirectories": [
