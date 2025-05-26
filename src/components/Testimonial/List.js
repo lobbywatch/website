@@ -400,10 +400,14 @@ export class List extends Component {
               credentials[0].description
             const label = [name, credential].filter(Boolean).join(', ')
 
+            // unclear why this is needed after moving from render.com to deplo.io -- env vars are the same.
+            // why does the rewrite in next.config.js not work?
+            const rewrittenPortrait = portrait.replace('https://lobbywatch.ch/assets', 'https://assets.lobbywatch.ch')
+
             items.push(
               <Item
                 key={id}
-                image={portrait}
+                image={rewrittenPortrait}
                 name={label}
                 isActive={isActive}
                 singleRow={singleRow}
