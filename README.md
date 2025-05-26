@@ -24,7 +24,21 @@ NEXT_PUBLIC_PUBLIC_BASE_URL='http://lobbywatch.local' NEXT_PUBLIC_DEBUG_INFORMAT
 
 ## Deploy
 
-The `main` branch is automatically deployed to production by Vercel.
+The `main` branch is automatically deployed to production on [deplo.io](https://deplo.io).
+
+Deployments can be manipulated with [nctl](https://docs.nine.ch/docs/nctl/) or via [cockpit.nine.ch](https://cockpit.nine.ch/).
+
+### Testing
+
+```shell
+nctl update app lobbywatch-website-testing --replicas=1 --git-revision=feat/whatever
+```
+
+when testing is finished make sure to stop the testing stage by running
+
+```shell
+nctl update app lobbywatch-website-testing --pause
+```
 
 ## Translations
 
