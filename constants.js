@@ -34,7 +34,7 @@ exports.MAILCHIMP_U = 'd27da194665399ad4c9acc6fd'
 exports.MAILCHIMP_ID = '82c011426c'
 exports.MAILCHIMPS_GROUP_FOR_LOCALE = {
   de: 'group[346712][4]',
-  fr: 'group[346712][8]'
+  fr: 'group[346712][8]',
 }
 
 exports.DEBUG_INFORMATION = !!ENV.DEBUG_INFORMATION

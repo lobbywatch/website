@@ -72,7 +72,7 @@ const Legend = ({ locale, title, pagePath, items }) => (
             {label}
           </span>
         )),
-        () => ' '
+        () => ' ',
       )}
     </span>
   </Clear>
@@ -86,7 +86,7 @@ Legend.propTypes = {
     PropTypes.shape({
       label: PropTypes.string.isRequired,
       color: PropTypes.string.isRequired,
-    })
+    }),
   ),
 }
 

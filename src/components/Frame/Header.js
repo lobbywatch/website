@@ -61,46 +61,50 @@ const searchBoxStyle = css({
 const Header = ({ locale, menuItems, localeLinks, transparent, focusMode }) => {
   const [expanded, setExpanded] = useState(false)
 
-  return <>
-    <div
-      {...barStyle}
-      style={
-        transparent
-          ? {
-              position: 'absolute',
-              backgroundColor: 'transparent',
-            }
-          : undefined
-      }
-    >
-      <Link href={`/${encodeURIComponent(locale)}`} prefetch={false} {...titleStyle}>
-
-        <Logo size={32} />
-        <span {...titleTextStyle}>Lobbywatch</span>
-
-      </Link>
-      <Menu
-        expanded={expanded}
-        id='primary-menu'
-        items={menuItems.concat(localeLinks)}
-      />
-      <Toggle
-        expanded={expanded}
-        id='primary-menu'
-        onClick={() => setExpanded(!expanded)}
-      />
-    </div>
-    {!transparent && !focusMode && (
-      <div {...searchContainerStyle}>
-        <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
-          <div {...searchBoxStyle}>
-            <SearchField />
-          </div>
-        </Center>
+  return (
+    <>
+      <div
+        {...barStyle}
+        style={
+          transparent
+            ? {
+                position: 'absolute',
+                backgroundColor: 'transparent',
+              }
+            : undefined
+        }
+      >
+        <Link
+          href={`/${encodeURIComponent(locale)}`}
+          prefetch={false}
+          {...titleStyle}
+        >
+          <Logo size={32} />
+          <span {...titleTextStyle}>Lobbywatch</span>
+        </Link>
+        <Menu
+          expanded={expanded}
+          id='primary-menu'
+          items={menuItems.concat(localeLinks)}
+        />
+        <Toggle
+          expanded={expanded}
+          id='primary-menu'
+          onClick={() => setExpanded(!expanded)}
+        />
       </div>
-    )}
-    {focusMode && <div style={{ height: HEADER_HEIGHT + 20 }}></div>}
-  </>;
+      {!transparent && !focusMode && (
+        <div {...searchContainerStyle}>
+          <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
+            <div {...searchBoxStyle}>
+              <SearchField />
+            </div>
+          </Center>
+        </div>
+      )}
+      {focusMode && <div style={{ height: HEADER_HEIGHT + 20 }}></div>}
+    </>
+  )
 }
 
 export default Header

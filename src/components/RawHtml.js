@@ -21,7 +21,7 @@ globalWithMediaQueries('.RawHtml h1', h1Style)
 globalWithMediaQueries('.RawHtml h2', h2Style)
 globalWithMediaQueries(
   '.RawHtml h3, .RawHtml h4, .RawHtml h5, .RawHtml h6',
-  h3Style
+  h3Style,
 )
 globalWithMediaQueries('.RawHtml p', pStyle)
 globalWithMediaQueries('.RawHtml small', smallStyle)
@@ -67,7 +67,7 @@ globalWithMediaQueries(
     margin: '0 auto',
     display: 'block',
     backgroundSize: '100%',
-  }
+  },
 )
 globalWithMediaQueries('.RawHtml a.button.donate-member:before', {
   backgroundImage: 'url(/static/donate/member.png)',

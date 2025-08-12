@@ -158,7 +158,7 @@ DetailHead.defaultProps = {
                   </StyledLink>
                 </span>,
               ].filter(Boolean),
-              () => ', '
+              () => ', ',
             )}
             <br />
             {d.occupation}
@@ -181,7 +181,7 @@ DetailHead.defaultProps = {
             d.legalForm,
             d.location,
           ].filter(Boolean),
-          () => ', '
+          () => ', ',
         )
     }
   },

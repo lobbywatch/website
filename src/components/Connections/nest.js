@@ -52,8 +52,8 @@ const nestConnections = ({
         .sort((a, b) =>
           descending(
             sum(a.values.map(connectionWeight)),
-            sum(b.values.map(connectionWeight))
-          )
+            sum(b.values.map(connectionWeight)),
+          ),
         )
 
       const more = viaLevel.values.find((group) => group.key === moreKey) || {
@@ -65,10 +65,10 @@ const nestConnections = ({
       const visibleGroups = groups.slice(0, maxGroups)
       if (moreGroups.length > 0) {
         more.values = more.values.concat(
-          moreGroups.reduce((rest, { values }) => rest.concat(values), [])
+          moreGroups.reduce((rest, { values }) => rest.concat(values), []),
         )
         more.values.sort((a, b) =>
-          descending(connectionWeight(a), connectionWeight(b))
+          descending(connectionWeight(a), connectionWeight(b)),
         )
       }
       if (more.values.length > 0) {
@@ -94,10 +94,10 @@ const nestConnections = ({
                 type: 'Connection',
                 label: connection.to.name,
                 connection,
-              }))
+              })),
             )
         },
-        []
+        [],
       )
 
       return viaLevel.key
@@ -109,7 +109,7 @@ const nestConnections = ({
       parentId: 'Root',
       type: 'Guest',
       label: via.name,
-    }))
+    })),
   )
   nodeData.unshift({
     id: 'Root',

@@ -15,7 +15,7 @@ export const useSearchContextState = () => {
     const to = setTimeout(() => {
       if (value.trim()) {
         const path = `/${encodeURIComponent(
-          currentLocale
+          currentLocale,
         )}/search?term=${encodeURIComponent(value)}`
         if (router.pathname === '/[locale]/search' && router.query.term) {
           router.replace(path)
@@ -31,7 +31,7 @@ export const useSearchContextState = () => {
           beforeSearch || {
             pathname: '/[locale]/search',
             query: { locale: currentLocale },
-          }
+          },
         )
       }
     }, 100)

@@ -7,7 +7,7 @@ const getCssText = (selector, close, styles) => {
   const actualSelector = mediaCss.slice(0, expectedSelector.length)
   if (actualSelector !== expectedSelector) {
     throw new Error(
-      `Expected glamor selector «${expectedSelector}» got «${actualSelector}»\nCSS:\n${mediaCss}`
+      `Expected glamor selector «${expectedSelector}» got «${actualSelector}»\nCSS:\n${mediaCss}`,
     )
   }
   return selector + mediaCss.replace(expectedSelector, '') + close

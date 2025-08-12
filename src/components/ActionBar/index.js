@@ -1,49 +1,41 @@
 import { useState } from 'react'
 import { css } from 'glamor'
-import {
-  DownloadIcon,
-  ShareIcon,
-  IconButton,
-} from '@project-r/styleguide'
+import { DownloadIcon, ShareIcon, IconButton } from '@project-r/styleguide'
 
 import ShareOverlay from './ShareOverlay'
 
-const ActionBar = ({
-  share,
-  download,
-  isCentered,
-}) => {
+const ActionBar = ({ share, download, isCentered }) => {
   const [shareOverlayVisible, setShareOverlayVisible] = useState(false)
 
-    return (
-      <div {...styles.topRow} {...(isCentered && { ...styles.centered })}>
-        {download && (
-          <IconButton href={download} Icon={DownloadIcon} target='_blank' />
-        )}
-        {share && (
-          <IconButton
-            label={share.label || ''}
-            Icon={ShareIcon}
-            href={share.url}
-            onClick={(e) => {
-              e.preventDefault()
-              setShareOverlayVisible(!shareOverlayVisible)
-            }}
-          />
-        )}
-        {shareOverlayVisible && (
-          <ShareOverlay
-            onClose={() => setShareOverlayVisible(false)}
-            url={share.url}
-            title={share.overlayTitle}
-            tweet={share.tweet || ''}
-            emailSubject={share.emailSubject || ''}
-            emailBody={share.emailBody || ''}
-            emailAttachUrl={share.emailAttachUrl}
-          />
-        )}
-      </div>
-    )
+  return (
+    <div {...styles.topRow} {...(isCentered && { ...styles.centered })}>
+      {download && (
+        <IconButton href={download} Icon={DownloadIcon} target='_blank' />
+      )}
+      {share && (
+        <IconButton
+          label={share.label || ''}
+          Icon={ShareIcon}
+          href={share.url}
+          onClick={(e) => {
+            e.preventDefault()
+            setShareOverlayVisible(!shareOverlayVisible)
+          }}
+        />
+      )}
+      {shareOverlayVisible && (
+        <ShareOverlay
+          onClose={() => setShareOverlayVisible(false)}
+          url={share.url}
+          title={share.overlayTitle}
+          tweet={share.tweet || ''}
+          emailSubject={share.emailSubject || ''}
+          emailBody={share.emailBody || ''}
+          emailAttachUrl={share.emailAttachUrl}
+        />
+      )}
+    </div>
+  )
 }
 
 const styles = {

@@ -40,23 +40,19 @@ const iconStyle = css({
 const Nav = ({ locale, prev, prevMessageId, next, nextMessageId }) => (
   <Clear {...containerStyle}>
     {!!prev && (
-      (<Link {...prev}>
-
+      <Link {...prev}>
         <Arrow className={iconStyle} color={GREY_DARK} direction='left' />
         <span {...leftTextStyle}>
           {' '}
           <Message locale={locale} id={prevMessageId} />
         </span>
-
-      </Link>)
+      </Link>
     )}
     {!!next && (
-      (<Link {...next}>
-
+      <Link {...next}>
         <Message locale={locale} id={nextMessageId} />{' '}
         <Arrow className={iconStyle} color={GREY_DARK} />
-
-      </Link>)
+      </Link>
     )}
   </Clear>
 )

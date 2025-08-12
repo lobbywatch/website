@@ -53,8 +53,7 @@ const ListView = ({ locale, items, title, subtitle, maxWidth }) => {
     const { __typename, id, portrait } = item
     const Icon = Icons[__typename]
     return (
-      (<Link key={id} href={itemPath(item, locale)} prefetch={false} {...aStyle}>
-
+      <Link key={id} href={itemPath(item, locale)} prefetch={false} {...aStyle}>
         {!!portrait && (
           <span {...symbolStyle} {...portraitStyle}>
             <Image
@@ -73,9 +72,8 @@ const ListView = ({ locale, items, title, subtitle, maxWidth }) => {
           <br />
           <span {...metaStyle}>{subtitle(item) || ' '}</span>
         </span>
-
-      </Link>)
-    );
+      </Link>
+    )
   })
 
   if (maxWidth) {
@@ -141,7 +139,7 @@ ListView.propTypes = {
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       portrait: PropTypes.string,
-    })
+    }),
   ).isRequired,
   title: PropTypes.func.isRequired,
   subtitle: PropTypes.func.isRequired,
