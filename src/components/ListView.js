@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 
 import { metaRule } from './Styled'
@@ -48,7 +47,54 @@ const metaStyle = css(metaRule, {
   },
 })
 
-const ListView = ({ locale, items, title, subtitle, maxWidth }) => {
+const defaultTitle = (item) => {
+  switch (item.__typename) {
+    case 'Parliamentarian':
+    case 'Guest':
+      return `${item.lastName}, ${item.firstName}`
+    default:
+      return item.name
+  }
+}
+
+const defaultSubtitle = (item) => {
+  switch (item.__typename) {
+    case 'Parliamentarian':
+      return [
+        item.councilTitle,
+        item.partyMembership && item.partyMembership.party.abbr,
+        item.canton,
+      ]
+        .filter(Boolean)
+        .join(', ')
+    case 'Guest':
+      return item.function
+    case 'LobbyGroup':
+      return item.branch.name
+    case 'Branch':
+      return item.commissions
+        .map((commission) => commission.name)
+        .filter(Boolean)
+        .join(', ')
+    case 'Organisation':
+      return [
+        ...item.lobbyGroups.map((lobbyGroup) => lobbyGroup.name),
+        item.legalForm,
+        item.location,
+      ]
+        .filter(Boolean)
+        .join(', ')
+  }
+}
+
+const ListView = (props) => {
+  const {
+    locale,
+    items,
+    maxWidth,
+    title = defaultTitle,
+    subtitle = defaultSubtitle,
+  } = props
   const elements = items.map((item) => {
     const { __typename, id, portrait } = item
     const Icon = Icons[__typename]
@@ -88,61 +134,6 @@ const ListView = ({ locale, items, title, subtitle, maxWidth }) => {
       ))}
     </Grid>
   )
-}
-
-ListView.defaultProps = {
-  title: (item) => {
-    switch (item.__typename) {
-      case 'Parliamentarian':
-      case 'Guest':
-        return `${item.lastName}, ${item.firstName}`
-      default:
-        return item.name
-    }
-  },
-  subtitle: (item) => {
-    switch (item.__typename) {
-      case 'Parliamentarian':
-        return [
-          item.councilTitle,
-          item.partyMembership && item.partyMembership.party.abbr,
-          item.canton,
-        ]
-          .filter(Boolean)
-          .join(', ')
-      case 'Guest':
-        return item.function
-      case 'LobbyGroup':
-        return item.branch.name
-      case 'Branch':
-        return item.commissions
-          .map((commission) => commission.name)
-          .filter(Boolean)
-          .join(', ')
-      case 'Organisation':
-        return [
-          ...item.lobbyGroups.map((lobbyGroup) => lobbyGroup.name),
-          item.legalForm,
-          item.location,
-        ]
-          .filter(Boolean)
-          .join(', ')
-    }
-  },
-}
-
-ListView.propTypes = {
-  locale: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      __typename: PropTypes.string.isRequired,
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      portrait: PropTypes.string,
-    }),
-  ).isRequired,
-  title: PropTypes.func.isRequired,
-  subtitle: PropTypes.func.isRequired,
 }
 
 export default ListView

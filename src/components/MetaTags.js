@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import Head from 'next/head'
 import { useT } from './Message'
@@ -79,12 +78,6 @@ class Raw extends Component {
       </Head>
     )
   }
-}
-
-Raw.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string,
-  image: PropTypes.string,
 }
 
 const pageTitle = (title) => {

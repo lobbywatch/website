@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import Image from 'next/image'
 import { css } from 'glamor'
@@ -51,6 +50,135 @@ const expandIconStyle = css({
   float: 'right',
 })
 
+const defaultDetails = (d, t, locale) => {
+  switch (d.__typename) {
+    case 'Parliamentarian':
+      return [
+        ['represents', numberFormat],
+        [
+          'councilTenure',
+          () => {
+            const years = Math.floor(d.councilTenure / 12)
+            const months = d.councilTenure % 12
+
+            return (
+              [
+                years && t.pluralize('detail/value/years', { count: years }),
+                months && t.pluralize('detail/value/months', { count: months }),
+              ]
+                .filter(Boolean)
+                .join(' ') + ` (${d.councilJoinDate})`
+            )
+          },
+        ],
+        ['age', () => t.pluralize('detail/value/years', { count: d.age })],
+        ['occupation'],
+        [
+          'family',
+          () => {
+            return [
+              d.civilStatus,
+              d.children !== null &&
+                t.pluralize('detail/value/children', { count: d.children }),
+            ]
+              .filter(Boolean)
+              .join(', ')
+          },
+        ],
+        ['website', formatWebsite],
+        [
+          'profile',
+          () => (
+            <A
+              href={`https://www.parlament.ch/${locale}/biografie?CouncillorId=${d.parliamentId}`}
+              target='_blank'
+            >
+              {d.name} ({d.parliamentId})
+            </A>
+          ),
+        ],
+        ['commissions', formatCommissions],
+      ]
+    case 'LobbyGroup':
+      return [['description'], ['commissions', formatCommissions]]
+    case 'Branch':
+      return [['description'], ['commissions', formatCommissions]]
+    case 'Organisation':
+      return [
+        ['website', formatWebsite],
+        [
+          'uid',
+          () =>
+            d.uid && (
+              <A
+                href={`https://www.uid.admin.ch/Detail.aspx?uid_id=${d.uid}`}
+                target='_blank'
+              >
+                {d.uid}
+              </A>
+            ),
+        ],
+        ['description'],
+      ]
+    default:
+      return []
+  }
+}
+
+const defaultSubtitle = (d, t, locale) => {
+  switch (d.__typename) {
+    case 'Parliamentarian':
+      return [
+        d.councilTitle,
+        d.partyMembership && d.partyMembership.party.abbr,
+        d.canton,
+      ]
+        .filter(Boolean)
+        .join(', ')
+    case 'Guest':
+      return (
+        <span>
+          {intersperse(
+            [
+              d.function,
+              <span key='invited'>
+                {t(`guest/${d.gender}/invited`)}{' '}
+                <StyledLink href={itemPath(d.parliamentarian, locale)}>
+                  {d.parliamentarian.name}
+                </StyledLink>
+              </span>,
+            ].filter(Boolean),
+            () => ', ',
+          )}
+          <br />
+          {d.occupation}
+        </span>
+      )
+    case 'LobbyGroup':
+      return (
+        <StyledLink href={itemPath(d.branch, locale)}>
+          {d.branch.name}
+        </StyledLink>
+      )
+    case 'Organisation':
+      return intersperse(
+        [
+          ...d.lobbyGroups.map((lobbyGroup, index) => (
+            <StyledLink key={index} href={itemPath(lobbyGroup, locale)}>
+              {lobbyGroup.name}
+            </StyledLink>
+          )),
+          d.legalForm,
+          d.location,
+        ].filter(Boolean),
+        () => ', ',
+      )
+  }
+}
+
+const defaultImage = (d) => d.portrait
+const defaultTitle = (d) => d.name
+
 class DetailHead extends Component {
   constructor(properties) {
     super(properties)
@@ -60,7 +188,15 @@ class DetailHead extends Component {
   }
 
   render() {
-    const { data, t, locale, image, title, subtitle, details } = this.props
+    const {
+      data,
+      t,
+      locale,
+      image = defaultImage,
+      title = defaultTitle,
+      subtitle = defaultSubtitle,
+      details = defaultDetails,
+    } = this.props
     const { expanded } = this.state
     const Icon = Icons[data.__typename]
     const img = image(data, t, locale)
@@ -130,145 +266,6 @@ const formatWebsite = (value) => {
       {label}
     </A>
   )
-}
-
-DetailHead.defaultProps = {
-  image: (d) => d.portrait,
-  title: (d) => d.name,
-  subtitle: (d, t, locale) => {
-    switch (d.__typename) {
-      case 'Parliamentarian':
-        return [
-          d.councilTitle,
-          d.partyMembership && d.partyMembership.party.abbr,
-          d.canton,
-        ]
-          .filter(Boolean)
-          .join(', ')
-      case 'Guest':
-        return (
-          <span>
-            {intersperse(
-              [
-                d.function,
-                <span key='invited'>
-                  {t(`guest/${d.gender}/invited`)}{' '}
-                  <StyledLink href={itemPath(d.parliamentarian, locale)}>
-                    {d.parliamentarian.name}
-                  </StyledLink>
-                </span>,
-              ].filter(Boolean),
-              () => ', ',
-            )}
-            <br />
-            {d.occupation}
-          </span>
-        )
-      case 'LobbyGroup':
-        return (
-          <StyledLink href={itemPath(d.branch, locale)}>
-            {d.branch.name}
-          </StyledLink>
-        )
-      case 'Organisation':
-        return intersperse(
-          [
-            ...d.lobbyGroups.map((lobbyGroup, index) => (
-              <StyledLink key={index} href={itemPath(lobbyGroup, locale)}>
-                {lobbyGroup.name}
-              </StyledLink>
-            )),
-            d.legalForm,
-            d.location,
-          ].filter(Boolean),
-          () => ', ',
-        )
-    }
-  },
-  details: (d, t, locale) => {
-    switch (d.__typename) {
-      case 'Parliamentarian':
-        return [
-          ['represents', numberFormat],
-          [
-            'councilTenure',
-            () => {
-              const years = Math.floor(d.councilTenure / 12)
-              const months = d.councilTenure % 12
-
-              return (
-                [
-                  years && t.pluralize('detail/value/years', { count: years }),
-                  months &&
-                    t.pluralize('detail/value/months', { count: months }),
-                ]
-                  .filter(Boolean)
-                  .join(' ') + ` (${d.councilJoinDate})`
-              )
-            },
-          ],
-          ['age', () => t.pluralize('detail/value/years', { count: d.age })],
-          ['occupation'],
-          [
-            'family',
-            () => {
-              return [
-                d.civilStatus,
-                d.children !== null &&
-                  t.pluralize('detail/value/children', { count: d.children }),
-              ]
-                .filter(Boolean)
-                .join(', ')
-            },
-          ],
-          ['website', formatWebsite],
-          [
-            'profile',
-            () => (
-              <A
-                href={`https://www.parlament.ch/${locale}/biografie?CouncillorId=${d.parliamentId}`}
-                target='_blank'
-              >
-                {d.name} ({d.parliamentId})
-              </A>
-            ),
-          ],
-          ['commissions', formatCommissions],
-        ]
-      case 'LobbyGroup':
-        return [['description'], ['commissions', formatCommissions]]
-      case 'Branch':
-        return [['description'], ['commissions', formatCommissions]]
-      case 'Organisation':
-        return [
-          ['website', formatWebsite],
-          [
-            'uid',
-            () =>
-              d.uid && (
-                <A
-                  href={`https://www.uid.admin.ch/Detail.aspx?uid_id=${d.uid}`}
-                  target='_blank'
-                >
-                  {d.uid}
-                </A>
-              ),
-          ],
-          ['description'],
-        ]
-      default:
-        return []
-    }
-  },
-}
-
-DetailHead.propTypes = {
-  title: PropTypes.func.isRequired,
-  subtitle: PropTypes.func.isRequired,
-  data: PropTypes.shape({
-    __typename: PropTypes.string.isRequired,
-  }).isRequired,
-  image: PropTypes.func.isRequired,
 }
 
 export default withT(DetailHead)

@@ -37,7 +37,13 @@ const iconStyle = css({
   verticalAlign: '-2px',
 })
 
-const Nav = ({ locale, prev, prevMessageId, next, nextMessageId }) => (
+const Nav = ({
+  locale,
+  prev,
+  prevMessageId = 'page/prev',
+  next,
+  nextMessageId = 'page/next',
+}) => (
   <Clear {...containerStyle}>
     {!!prev && (
       <Link {...prev}>
@@ -56,10 +62,5 @@ const Nav = ({ locale, prev, prevMessageId, next, nextMessageId }) => (
     )}
   </Clear>
 )
-
-Nav.defaultProps = {
-  prevMessageId: 'page/prev',
-  nextMessageId: 'page/next',
-}
 
 export default Nav

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -92,15 +91,6 @@ const Card = ({
       </div>
     </div>
   )
-}
-
-Card.propTypes = {
-  locale: PropTypes.oneOf(locales).isRequired,
-  path: PropTypes.arrayOf(PropTypes.string).isRequired,
-  title: PropTypes.string.isRequired,
-  published: PropTypes.string.isRequired,
-  lead: PropTypes.string.isRequired,
-  image: PropTypes.string,
 }
 
 export default Card

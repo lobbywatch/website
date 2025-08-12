@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { css, merge } from 'glamor'
 import Link from 'next/link'
@@ -77,17 +76,5 @@ const Legend = ({ locale, title, pagePath, items }) => (
     </span>
   </Clear>
 )
-
-Legend.propTypes = {
-  title: PropTypes.string.isRequired,
-  pagePath: PropTypes.array,
-  locale: PropTypes.string.isRequired,
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      color: PropTypes.string.isRequired,
-    }),
-  ),
-}
 
 export default Legend

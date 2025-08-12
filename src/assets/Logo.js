@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { LW_BLUE_LIGHT } from '../theme'
 
-const Logo = ({ size, style, className }) => (
+const Logo = ({ size = 74, style, className }) => (
   <svg
     width={size}
     height={size}
@@ -18,13 +17,5 @@ const Logo = ({ size, style, className }) => (
     </g>
   </svg>
 )
-
-Logo.defaultProps = {
-  size: 74,
-}
-Logo.propTypes = {
-  size: PropTypes.number.isRequired,
-  style: PropTypes.object,
-}
 
 export default Logo
