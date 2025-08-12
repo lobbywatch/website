@@ -1,8 +1,7 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { LW_BLUE_DARK, WHITE } from '../theme'
 
-const Icon = ({ size, style, className }) => (
+const Icon = ({ size = 40, style, className }) => (
   <svg
     width={size}
     height={size}
@@ -20,13 +19,5 @@ const Icon = ({ size, style, className }) => (
     />
   </svg>
 )
-
-Icon.defaultProps = {
-  size: 40,
-}
-Icon.propTypes = {
-  size: PropTypes.number.isRequired,
-  style: PropTypes.object,
-}
 
 export default Icon

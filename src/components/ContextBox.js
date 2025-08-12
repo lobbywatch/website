@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { css } from 'glamor'
 
@@ -97,13 +96,8 @@ export const ContextBoxValue = ({ label, children }) => {
   )
 }
 
-ContextBoxValue.propTypes = {
-  label: PropTypes.string,
-  children: PropTypes.node,
-}
-
 const ContextBox = ({
-  orientation: yOrientation,
+  orientation: yOrientation = 'below',
   x,
   y,
   contextWidth,
@@ -130,17 +124,6 @@ const ContextBox = ({
       />
     </div>
   )
-}
-
-ContextBox.defaultProps = {
-  orientation: 'below',
-}
-ContextBox.propTypes = {
-  x: PropTypes.number.isRequired,
-  y: PropTypes.number.isRequired,
-  contextWidth: PropTypes.number.isRequired,
-  orientation: PropTypes.oneOf(['top', 'below']).isRequired,
-  children: PropTypes.node,
 }
 
 export default ContextBox

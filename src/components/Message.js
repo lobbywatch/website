@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { useRouter } from 'next/router'
 
@@ -52,12 +51,6 @@ const Translate = ({ id, replacements, raw, locale }) => {
     )
   }
   return <>{translation}</>
-}
-
-Translate.propTypes = {
-  id: PropTypes.string,
-  raw: PropTypes.bool,
-  locale: PropTypes.oneOf(locales).isRequired,
 }
 
 export default Translate

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
 import { intersperse } from '../../../lib/helpers'
@@ -22,7 +21,18 @@ import { Center } from '../Frame'
 import Icons from '../../assets/TypeIcons'
 
 class Connections extends Component {
-  constructor(properties) {
+  constructor(
+    properties = {
+      directness: 0,
+      potency: false,
+      intermediate: () => '',
+      intermediates: [],
+      groupByDestination: false,
+      maxGroups: undefined,
+      connectionWeight: connectionWeight,
+      hoverValues,
+    },
+  ) {
     super(properties)
     this.state = {
       nodes: [],
@@ -591,14 +601,6 @@ const POTENCY_WEIGHT = {
 
 export const connectionWeight = (connection) =>
   POTENCY_WEIGHT[connection.potency] || 1
-
-Connections.propTypes = {
-  directness: PropTypes.number.isRequired,
-  groupByDestination: PropTypes.bool.isRequired,
-  potency: PropTypes.bool.isRequired,
-  connectionWeight: PropTypes.func.isRequired, // weight for sorting, default 1
-  hoverValues: PropTypes.arrayOf(PropTypes.array).isRequired,
-}
 
 Connections.defaultProps = {
   directness: 0,

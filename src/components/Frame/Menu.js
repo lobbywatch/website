@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { css } from 'glamor'
 import { StyledLink } from '../Styled'
@@ -108,20 +107,6 @@ const Menu = ({ items, expanded, id }) => {
       </ul>
     </nav>
   )
-}
-
-Menu.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      href: PropTypes.oneOfType([
-        PropTypes.string.isRequired,
-        PropTypes.object.isRequired,
-      ]).isRequired,
-      label: PropTypes.node.isRequired,
-      separator: PropTypes.bool,
-    }),
-  ),
-  expanded: PropTypes.bool,
 }
 
 export default Menu

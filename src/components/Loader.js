@@ -37,7 +37,11 @@ const barStyle = css({
 })
 
 class Loader extends Component {
-  constructor(properties) {
+  constructor(
+    properties = {
+      delay: 500,
+    },
+  ) {
     super(properties)
     this.state = {
       visible: false,
@@ -86,10 +90,6 @@ class Loader extends Component {
     }
     return render()
   }
-}
-
-Loader.defaultProps = {
-  delay: 500,
 }
 
 export default Loader

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import React from 'react'
 import { GREY_DARK } from '../theme'
 
@@ -10,9 +9,5 @@ const CreativeCommons = () => (
     </g>
   </svg>
 )
-
-CreativeCommons.propTypes = {
-  style: PropTypes.object,
-}
 
 export default CreativeCommons

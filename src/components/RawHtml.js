@@ -131,14 +131,10 @@ const aspectInner = {
 globalWithMediaQueries('.RawHtml .lw-16-9', aspect16to9)
 globalWithMediaQueries('.RawHtml .lw-16-9 iframe', aspectInner)
 
-const RawHtml = ({ type, dangerouslySetInnerHTML }) =>
+const RawHtml = ({ type = 'div', dangerouslySetInnerHTML }) =>
   createElement(type, {
     className: 'RawHtml',
     dangerouslySetInnerHTML,
   })
-
-RawHtml.defaultProps = {
-  type: 'div',
-}
 
 export default RawHtml

@@ -10,7 +10,11 @@ const gridStyle = css({
   flexWrap: 'wrap',
   margin: `0 -${PADDING}px`,
 })
-const Grid = ({ children }) => <div {...gridStyle}>{children}</div>
+const Grid = (
+  { children } = {
+    paddingBottom: PADDING * 2,
+  },
+) => <div {...gridStyle}>{children}</div>
 export default Grid
 
 const gridItemStyle = css({
@@ -26,7 +30,3 @@ export const GridItem = ({ children, paddingBottom }) => (
     {children}
   </div>
 )
-
-GridItem.defaultProps = {
-  paddingBottom: PADDING * 2,
-}
