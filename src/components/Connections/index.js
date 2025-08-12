@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 
-import { intersperse } from '@project-r/styleguide'
+import { intersperse } from '../../../lib/helpers'
 
 import { WHITE, BLACK, GREY_DARK, POTENCY_COLORS } from '../../theme'
 import GuestIcon from '../../assets/Guest'

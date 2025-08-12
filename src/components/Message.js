@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { useRouter } from 'next/router'
 
-import { createFormatter } from '@project-r/styleguide'
+import { createFormatter } from '../../lib/translate'
 import { getSafeLocale, locales } from '../../constants'
 import RawHtml from './RawHtml'
 

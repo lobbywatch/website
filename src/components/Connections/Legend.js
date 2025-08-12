@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import { css, merge } from 'glamor'
 import Link from 'next/link'
-import { intersperse } from '@project-r/styleguide'
+import { intersperse } from '../../../lib/helpers'
 
 import { LW_BLUE, GREY_DARK, mediaM } from '../../theme'
 import { Clear } from '../Styled'
