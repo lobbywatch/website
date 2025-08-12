@@ -7,7 +7,7 @@ import { A, StyledLink, Clear, h1Rule, metaRule, TextCenter } from './Styled'
 import { withT } from './Message'
 import { ContextBoxValue } from './ContextBox'
 
-import { intersperse } from '@project-r/styleguide'
+import { intersperse } from '../../lib/helpers'
 
 import { numberFormat } from '../utils/formats'
 import { itemPath } from '../utils/routes'
