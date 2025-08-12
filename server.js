@@ -34,8 +34,8 @@ app.prepare().then(() => {
     console.log(`> Listening on ${SERVER_PORT}`)
     console.log(
       `> Heap Limit: ${Math.round(
-        v8.getHeapStatistics().total_available_size / 1024 / 1024
-      )}mb`
+        v8.getHeapStatistics().total_available_size / 1024 / 1024,
+      )}mb`,
     )
     console.log(`> NODE_OPTIONS: ${process.env.NODE_OPTIONS}`)
   })

@@ -1,7 +1,5 @@
 const { GRAPHQL_URL, localeSegment, PUBLIC_BASE_URL } = require('./constants')
-const {
-  ASSETS_SERVER_SOURCE_BASE_URL
-} = process.env
+const { ASSETS_SERVER_SOURCE_BASE_URL } = process.env
 
 module.exports = {
   eslint: {

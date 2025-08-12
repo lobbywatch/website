@@ -1,4 +1,9 @@
-import { useColorContext, Interaction, Label, errorToString } from '@project-r/styleguide'
+import {
+  useColorContext,
+  Interaction,
+  Label,
+  errorToString,
+} from '@project-r/styleguide'
 
 const { P } = Interaction
 

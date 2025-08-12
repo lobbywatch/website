@@ -47,7 +47,7 @@ class Loader extends Component {
   componentDidMount() {
     this.timeout = setTimeout(
       () => this.setState({ visible: true }),
-      this.props.delay
+      this.props.delay,
     )
   }
 

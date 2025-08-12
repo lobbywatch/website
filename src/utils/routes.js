@@ -20,14 +20,14 @@ export const itemPath = (item, locale) => {
     return '/'
   }
   return `/${encodeURIComponent(locale)}/${typeSegment}/${encodeURIComponent(
-    getRawId(item, locale)
+    getRawId(item, locale),
   )}${name ? `/${encodeURIComponent(name)}` : ''}`
 }
 
 export const shouldIgnoreClick = (event, ignoreTarget) => {
   // based on https://github.com/zeit/next.js/blob/82d56e063aad12ac8fee5b9d5ed24ccf725b1a5b/packages/next-server/lib/link.js#L59
   const anchor = [event.target, event.currentTarget].find(
-    (node) => node.nodeName === 'A'
+    (node) => node.nodeName === 'A',
   )
   return (
     !!anchor &&

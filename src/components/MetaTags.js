@@ -99,7 +99,7 @@ const description = (item, t) => {
   switch (item.__typename) {
     case 'Parliamentarian': {
       const connections = item.connections.filter(
-        (connection) => connection.vias.length === 0
+        (connection) => connection.vias.length === 0,
       )
       const displayConnections = connections
         .slice(0, 5)
@@ -135,8 +135,8 @@ const description = (item, t) => {
         .rollup((values) => set(values.map((value) => value.to.id)))
         .entries(
           item.connections.filter(
-            (connection) => connection.to.__typename === 'Parliamentarian'
-          )
+            (connection) => connection.to.__typename === 'Parliamentarian',
+          ),
         )
         .sort((a, b) => descending(a.value.size(), b.value.size()))
 
@@ -162,8 +162,8 @@ const description = (item, t) => {
         .rollup((values) => set(values.map((value) => value.to.id)))
         .entries(
           item.connections.filter(
-            (connection) => connection.to.__typename === 'Parliamentarian'
-          )
+            (connection) => connection.to.__typename === 'Parliamentarian',
+          ),
         )
         .sort((a, b) => descending(a.value.size(), b.value.size()))
 
@@ -460,7 +460,7 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
         // "knows" is not specified for Organization, maybe search enginges are not that strict
         knows: item.connections
           .filter(
-            (linkedItem) => linkedItem.to.__typename === 'Parliamentarian'
+            (linkedItem) => linkedItem.to.__typename === 'Parliamentarian',
           )
           .map((innerItem) => {
             const linkedItem = innerItem.to
@@ -500,8 +500,8 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
         member: item.connections
           .filter((linkedItem) =>
             ['Organisation', 'Parliamentarian'].includes(
-              linkedItem.to.__typename
-            )
+              linkedItem.to.__typename,
+            ),
           )
           .map((innerItem) => {
             const linkedItem = innerItem.to
@@ -576,7 +576,7 @@ const MetaTags = ({ locale, fromT, data, page, ...rest }) => {
       properties.url = `${PUBLIC_BASE_URL || ''}${detailPath}`
       properties.shorturl = `${PUBLIC_BASE_URL || ''}${itemPath(
         { ...data, name: undefined },
-        locale
+        locale,
       )}`
     }
   } else if (page) {
@@ -590,7 +590,7 @@ const MetaTags = ({ locale, fromT, data, page, ...rest }) => {
     fromT,
     data ?? page,
     properties,
-    rest
+    rest,
   )
   return <Raw {...properties} />
 }

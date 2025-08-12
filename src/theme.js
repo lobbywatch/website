@@ -18,20 +18,20 @@ export const breakpointL = [1025, 1440]
 const toEm = (px) => `${px / 16}em`
 
 export const mediaSOnly = `@media only screen and (max-width: ${toEm(
-  breakpointS[1]
+  breakpointS[1],
 )})`
 export const mediaM = `@media only screen and (min-width: ${toEm(
-  breakpointM[0]
+  breakpointM[0],
 )})`
 const HEADER_EXPANDED_MIN_WIDTH = 850
 export const mediaHeaderCollasped = `@media only screen and (max-width: ${toEm(
-  HEADER_EXPANDED_MIN_WIDTH - 1
+  HEADER_EXPANDED_MIN_WIDTH - 1,
 )})`
 export const mediaHeaderExpanded = `@media only screen and (min-width: ${toEm(
-  HEADER_EXPANDED_MIN_WIDTH
+  HEADER_EXPANDED_MIN_WIDTH,
 )})`
 export const mediaL = `@media only screen and (min-width: ${toEm(
-  breakpointL[0]
+  breakpointL[0],
 )})`
 
 export const POTENCY_COLORS = {

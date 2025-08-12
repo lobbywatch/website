@@ -56,9 +56,7 @@ const ShareButtons = ({
       label: (
         <span style={{ display: 'inline-block', minWidth: 88 }}>
           {t(
-            `actionbar/link/label${
-              copyLinkSuffix ? `/${copyLinkSuffix}` : ''
-            }`,
+            `actionbar/link/label${copyLinkSuffix ? `/${copyLinkSuffix}` : ''}`,
           )}
         </span>
       ),

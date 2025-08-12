@@ -147,7 +147,7 @@ class Connections extends Component {
             ' ' +
             tcx +
             ',' +
-            ty
+            ty,
           // 'M' + scx + ',' + sey +
           // 'C' + (scx + tcx) / 2 + ',' + sey +
           // ' ' + (scx + tcx) / 2 + ',' + ty +
@@ -194,7 +194,7 @@ class Connections extends Component {
     const getVisible = (parent) =>
       !parent || parent.data.id === 'Root' || open.has(parent.data.id)
     const hasIndirect = !!nodes.find(
-      ({ data }) => data && data.connection && data.connection.indirect
+      ({ data }) => data && data.connection && data.connection.indirect,
     )
 
     return (
@@ -321,7 +321,7 @@ class Connections extends Component {
                             id: data.id,
                             name: data.label,
                           },
-                          locale
+                          locale,
                         )}
                         onClick={(e) => {
                           if (shouldIgnoreClick(e)) {
@@ -427,7 +427,9 @@ class Connections extends Component {
                     />
                   ),
                 ],
-                (_, i) => <br key={i} />
+                (_, i) => (
+                  <br key={i} />
+                ),
               )}
             </div>
           )}
@@ -493,7 +495,7 @@ const hoverValues = [
           connection: { paths },
         },
       },
-      { t, directness }
+      { t, directness },
     ) =>
       paths.map((path, index) => (
         <ContextBoxValue
@@ -501,7 +503,7 @@ const hoverValues = [
           label={t(
             `connections/context/paths/${
               path.length > directness ? 'indirect' : 'direct'
-            }`
+            }`,
           )}
         >
           <span>
@@ -552,7 +554,7 @@ const hoverValues = [
           connection: { compensations },
         },
       },
-      { t }
+      { t },
     ) =>
       compensations
         .filter((e, index) => index < 3)

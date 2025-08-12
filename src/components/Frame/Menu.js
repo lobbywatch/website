@@ -119,7 +119,7 @@ Menu.propTypes = {
       ]).isRequired,
       label: PropTypes.node.isRequired,
       separator: PropTypes.bool,
-    })
+    }),
   ),
   expanded: PropTypes.bool,
 }
