@@ -1,6 +1,5 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document'
 import { renderStaticOptimized } from 'glamor/server'
-import { fontFaces } from '@project-r/styleguide'
 
 import { WHITE } from '../src/theme'
 import { getSafeLocale } from '../constants'
@@ -43,7 +42,7 @@ export default class MyDocument extends Document {
         <Head>
           <script dangerouslySetInnerHTML={{ __html: motivationComment }} />
           <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
-          <style dangerouslySetInnerHTML={{ __html: fontFaces() }} />
+
           {css ? <style dangerouslySetInnerHTML={{ __html: css }} /> : null}
           <link
             rel='apple-touch-icon'
