@@ -1,9 +1,9 @@
+import React from 'react'
 import { useRouter } from 'next/router'
-import Cover from 'src/components/Frame/Cover'
 import Frame from 'src/components/Frame'
 import { useT } from 'src/components/Message'
-import MetaTags from 'src/components/MetaTags'
 
+import MetaTags from 'src/components/MetaTags'
 import { CDN_FRONTEND_BASE_URL, getSafeLocale } from '../../constants'
 
 const Page = () => {
@@ -12,7 +12,6 @@ const Page = () => {
 
   const t = useT(locale)
 
-  /* eslint-disable react/no-unescaped-entities */
   return (
     <Frame>
       <MetaTags
@@ -21,7 +20,6 @@ const Page = () => {
         description={t('index/meta/description')}
         image={`${CDN_FRONTEND_BASE_URL}/static/social/index.png`}
       />
-      <Cover locale={locale} localeLinks={[]} menuItems={[]} />
     </Frame>
   )
 }
