@@ -1,46 +1,43 @@
 const ENV =
   typeof window !== 'undefined' ? window.__NEXT_DATA__.env : process.env
 
-const locales = ['de', 'fr']
-exports.locales = locales
-exports.localeSegment = `:locale(${locales.join('|')})`
-exports.getSafeLocale = (locale) => (locales.includes(locale) ? locale : 'de')
+export const locales = ['de', 'fr']
+export const localeSegment = `:locale(${locales.join('|')})`
+export const getSafeLocale = (locale) => (locales.includes(locale) ? locale : 'de')
 
-exports.DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
-exports.DRUPAL_DATA_BASE_URL = 'https://data.lobbywatch.ch'
-exports.DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
+export const DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
+export const DRUPAL_DATA_BASE_URL = 'https://data.lobbywatch.ch'
+export const DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
 
 const SERVER_PORT = (typeof process !== 'undefined' && ENV.PORT) || 3000
-exports.SERVER_PORT = SERVER_PORT
 
 const NEXT_PUBLIC_VERCEL_URL = ENV.NEXT_PUBLIC_VERCEL_URL
 const PUBLIC_BASE_URL =
   ENV.PUBLIC_BASE_URL ||
   ENV.NEXT_PUBLIC_BASE_URL ||
   (NEXT_PUBLIC_VERCEL_URL ? `https://${NEXT_PUBLIC_VERCEL_URL}` : undefined)
-exports.PUBLIC_BASE_URL = PUBLIC_BASE_URL
-exports.CDN_FRONTEND_BASE_URL = PUBLIC_BASE_URL
-exports.ASSETS_SERVER_BASE_URL = ENV.ASSETS_SERVER_BASE_URL
-exports.STATEMENTS_FEATURED_IDS = ENV.STATEMENTS_FEATURED_IDS || ''
-exports.STATEMENTS_FEATURED_HERO_DE = ENV.STATEMENTS_FEATURED_HERO_DE || ''
-exports.STATEMENTS_FEATURED_HERO_FR = ENV.STATEMENTS_FEATURED_HERO_FR || ''
+export const CDN_FRONTEND_BASE_URL = PUBLIC_BASE_URL
+export const ASSETS_SERVER_BASE_URL = ENV.ASSETS_SERVER_BASE_URL
+export const STATEMENTS_FEATURED_IDS = ENV.STATEMENTS_FEATURED_IDS || ''
+export const STATEMENTS_FEATURED_HERO_DE = ENV.STATEMENTS_FEATURED_HERO_DE || ''
+export const STATEMENTS_FEATURED_HERO_FR = ENV.STATEMENTS_FEATURED_HERO_FR || ''
 
-exports.GRAPHQL_URL = ENV.GRAPHQL_URL
-exports.MATOMO_URL_BASE = ENV.MATOMO_URL_BASE
-exports.MATOMO_SITE_ID = ENV.MATOMO_SITE_ID
+export const GRAPHQL_URL = ENV.GRAPHQL_URL
+export const MATOMO_URL_BASE = ENV.MATOMO_URL_BASE
+export const MATOMO_SITE_ID = ENV.MATOMO_SITE_ID
 
-exports.MAILCHIMP_BASE_URL = 'https://lobbywatch.us8.list-manage.com'
-exports.MAILCHIMP_U = 'd27da194665399ad4c9acc6fd'
-exports.MAILCHIMP_ID = '82c011426c'
-exports.MAILCHIMPS_GROUP_FOR_LOCALE = {
+export const MAILCHIMP_BASE_URL = 'https://lobbywatch.us8.list-manage.com'
+export const MAILCHIMP_U = 'd27da194665399ad4c9acc6fd'
+export const MAILCHIMP_ID = '82c011426c'
+export const MAILCHIMPS_GROUP_FOR_LOCALE = {
   de: 'group[346712][4]',
   fr: 'group[346712][8]',
 }
 
-exports.DEBUG_INFORMATION = !!ENV.DEBUG_INFORMATION
+export const DEBUG_INFORMATION = !!ENV.DEBUG_INFORMATION
 
-exports.STATUS_POLL_INTERVAL_MS = +ENV.STATUS_POLL_INTERVAL_MS || 0
+export const STATUS_POLL_INTERVAL_MS = +ENV.STATUS_POLL_INTERVAL_MS || 0
 
-exports.STRIPE_PUBLISHABLE_KEY = ENV.STRIPE_PUBLISHABLE_KEY
-exports.PAYPAL_BUSINESS = ENV.PAYPAL_BUSINESS
-exports.PAYPAL_FORM_ACTION = ENV.PAYPAL_FORM_ACTION
+export const STRIPE_PUBLISHABLE_KEY = ENV.STRIPE_PUBLISHABLE_KEY
+export const PAYPAL_BUSINESS = ENV.PAYPAL_BUSINESS
+export const PAYPAL_FORM_ACTION = ENV.PAYPAL_FORM_ACTION
