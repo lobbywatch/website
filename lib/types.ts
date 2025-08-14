@@ -255,7 +255,7 @@ export type MappedLobbyGroup = {
     name: string
     __typename: 'Branch'
   }
-  commissions:Array< {
+  commissions: Array<{
     id: string
     name: string
     abbr: string

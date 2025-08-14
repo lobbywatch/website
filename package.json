@@ -6,14 +6,20 @@
   },
   "description": "Lobbywatch.ch Frontend",
   "scripts": {
-    "fmt": "prettier --write .",
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start -p ${PORT:=3000}",
-    "prepare": "husky",
-    "lint": "eslint --fix .",
+    "=== LINT ===": "",
+    "lint": "concurrently \"npm:lint:*\"",
+    "lint:format": "prettier --check --cache --cache-strategy content .",
+    "lint:static": "eslint --fix .",
+    "lint:ts": "tsc --noEmit",
+    "=== TEST ===": "",
     "test": "eslint",
-    "klog": "find . -name '*.js' -not -path \"./node_modules*\" -not -path \"./.next*\" | xargs wc -l"
+    "=== UTILITIES ===": "",
+    "klog": "find . -name '*.js' -not -path \"./node_modules*\" -not -path \"./.next*\" | xargs wc -l",
+    "=== HOOKS ===": "",
+    "prepare": "husky"
   },
   "author": "Thomas Preusse <t@preus.se> (https://t.preus.se/)",
   "license": "BSD-3-Clause",
@@ -54,6 +60,7 @@
   "devDependencies": {
     "@types/node": "^24.2.1",
     "@types/react": "^18.3.23",
+    "concurrently": "^9.2.0",
     "eslint": "^8.57.1",
     "eslint-config-next": "^14.2.31",
     "eslint-config-prettier": "^9.1.2",
