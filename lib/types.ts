@@ -15,7 +15,7 @@ type MappedPerson = {
   wikipedia_url: string
 }
 
-export type RawParlamentarian = {
+export type RawParliamentarian = {
   aktiv: number
   anzahl_kinder: number
   art: 'mitglied'
@@ -66,7 +66,7 @@ export type RawParlamentarian = {
   zweiter_vorname: string
 }
 
-export type MappedParlamentarian = MappedPerson & {
+export type MappedParliamentarian = MappedPerson & {
   __typename: 'Parliamentarian'
   active: boolean
   readonly age: number
@@ -135,7 +135,7 @@ export type RawGuest = {
   linkedin_profil_url: string
   mandate: RawConnection[]
   nachname: string
-  parlamentarier: RawParlamentarian
+  parlamentarier: RawParliamentarian
   twitter_name: string
   twitter_url: string
   updated_date_unix: number
@@ -159,7 +159,7 @@ export type MappedGuest = {
   middleName: string
   name: string
   occupation: string
-  parliamentarian: MappedParlamentarian
+  parliamentarian: MappedParliamentarian
   published: string
   publishedIso: string
   twitter_name: string
@@ -185,7 +185,7 @@ export type RawLobbyGroup = {
   kommission2_name: string
   name: string
   organisationen: RawOrganisation[]
-  parlamentarier: RawParlamentarian[]
+  parlamentarier: RawParliamentarian[]
   updated_date_unix: number
   wikidata_item_url: string
   wikipedia: string
@@ -201,7 +201,7 @@ export type RawConnection = {
   interessengruppe: string
   organisation_id: string
   organisation_name: string
-  parlamentarier: RawParlamentarian[]
+  parlamentarier: RawParliamentarian[]
   parlamentarier_name: string
   parlamentarier_id: string
   rechtsform: string
@@ -293,7 +293,7 @@ export type RawBranch = {
   updated_date_unix: number
   wikidata_item_url: string
   wikipedia: string
-  parlamentarier: RawParlamentarian[]
+  parlamentarier: RawParliamentarian[]
   organisationen: RawOrganisation[]
   zwischen_organisationen?: RawOrganisation[]
   zutrittsberechtigte: RawGuest[]
@@ -337,7 +337,7 @@ export type RawOrganisation = {
   land_iso2: string
   name: string
   ort: string
-  parlamentarier: RawParlamentarian[]
+  parlamentarier: RawParliamentarian[]
   rechtsform: 'Parlamentarische Gruppe' | 'Parlamentarische Freundschaftsgruppe'
   twitter_name: string
   twitter_url: string

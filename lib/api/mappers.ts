@@ -13,8 +13,8 @@ import type {
   RawOrganisation,
   RawGuest,
   MappedGuest,
-  RawParlamentarian,
-  MappedParlamentarian,
+  RawParliamentarian,
+  MappedParliamentarian,
   RawConnection,
   RawFunction,
   RawVerguetung,
@@ -482,7 +482,7 @@ export const mapOrganisation = (
 export const commissionIdPrefix = 'Commission-'
 
 const mapMandate = (
-  origin: MappedGuest | MappedParlamentarian,
+  origin: MappedGuest | MappedParliamentarian,
   connection: RawConnection,
   t: Formatter,
 ): MappedConnection => ({
@@ -514,9 +514,9 @@ const mapMandate = (
 
 export const guestIdPrefix = 'Guest-'
 export const mapGuest = (raw: RawGuest, t: Formatter): MappedGuest => {
-  const parliamentarian: MappedParlamentarian = raw.parlamentarier
+  const parliamentarian: MappedParliamentarian = raw.parlamentarier
     ? mapParliamentarian(raw.parlamentarier, t)
-    : ({} as MappedParlamentarian) // TODO fix
+    : ({} as MappedParliamentarian) // TODO fix
   const guest: MappedGuest = {
     id: `${guestIdPrefix}${raw.id}-${t.locale}`,
     updated: formatDate(new Date(raw.updated_date_unix * 1000)),
@@ -551,9 +551,9 @@ export const mapGuest = (raw: RawGuest, t: Formatter): MappedGuest => {
 
 export const parliamentarianIdPrefix = 'Parliamentarian-'
 export const mapParliamentarian = (
-  raw: RawParlamentarian,
+  raw: RawParliamentarian,
   t: Formatter,
-): MappedParlamentarian => {
+): MappedParliamentarian => {
   const dateOfBirth = parseDate(raw.geburtstag)
   const councilJoinDate = new Date(+raw.im_rat_seit_unix * 1000)
   const councilExitDate = raw.im_rat_bis_unix
@@ -600,7 +600,7 @@ export const mapParliamentarian = (
   }
 
   const ROUNDING_PRECISION = 1000
-  const parliamentarian: MappedParlamentarian = {
+  const parliamentarian: MappedParliamentarian = {
     id: `${parliamentarianIdPrefix}${raw.parlamentarier_id || raw.id}-${
       t.locale
     }`,
