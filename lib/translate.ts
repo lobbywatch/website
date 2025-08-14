@@ -13,7 +13,7 @@ export type FormatterFunction = (
 ) => string
 
 type FirstFunction = (
-  keys: string[],
+  keys: Array<string>,
   replacements?: Replacements,
   missingValue?: string | null,
 ) => string
@@ -31,7 +31,7 @@ type ElementsFunction = (
 ) => ReactNode
 
 type FirstElementsFunction = (
-  key: string | string[],
+  key: string | Array<string>,
   replacements?: Replacements,
   missingValue?: string,
 ) => ReactNode
