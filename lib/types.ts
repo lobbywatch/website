@@ -32,12 +32,12 @@ export type RawParliamentarian = {
   id: string
   im_rat_bis_unix: number
   im_rat_seit_unix: number
-  in_kommission: {
+  in_kommission: Array<{
     id: string
     name: string
     abkuerzung: string
-  }[]
-  interessenbindungen: RawConnection[]
+  }>
+  interessenbindungen: Array<RawConnection>
   kanton_name: string
   kommissionen_abkuerzung: string
   kommissionen_namen: string
@@ -54,7 +54,7 @@ export type RawParliamentarian = {
   twitter_name: string
   twitter_url: string
   updated_date_unix: number
-  verguetungen_pro_jahr: RawVerguetung[]
+  verguetungen_pro_jahr: Array<RawVerguetung>
   verguetungstransparenz_beurteilung: string
   verguetungstransparenz_beurteilung_stichdatum: string
   vertretene_bevoelkerung: number
@@ -62,7 +62,7 @@ export type RawParliamentarian = {
   wikidata_item_url: string
   wikipedia: string
   zivilstand: string
-  zutrittsberechtigungen: RawGuest[]
+  zutrittsberechtigungen: Array<RawGuest>
   zweiter_vorname: string
 }
 
@@ -73,23 +73,23 @@ export type MappedParliamentarian = MappedPerson & {
   canton: string
   children: number | null
   readonly civilStatus: string
-  commissions: {
+  commissions: Array<{
     id: string
     name: string
     abbr: string
-  }[]
+  }>
   compensationTransparence: {
     dueDate: string
     isTansparent: string // compensationTransparenceStateMap
   } | null
-  connections?: MappedConnection[]
+  connections?: Array<MappedConnection>
   council: string
   councilExitDate: string
   councilJoinDate: string
   readonly councilTenure: number
   readonly councilTitle: string
   dateOfBirth: string
-  guests: MappedGuest[]
+  guests: Array<MappedGuest>
   id: string
   kommissionen_abkuerzung: string
   kommissionen_namen: string
@@ -133,7 +133,7 @@ export type RawGuest = {
   homepage: string
   id: string
   linkedin_profil_url: string
-  mandate: RawConnection[]
+  mandate: Array<RawConnection>
   nachname: string
   parlamentarier: RawParliamentarian
   twitter_name: string
@@ -147,7 +147,7 @@ export type RawGuest = {
 
 export type MappedGuest = {
   __typename: 'Guest'
-  connections?: MappedConnection[]
+  connections?: Array<MappedConnection>
   facebook_name: string
   facebook_url: string
   firstName: string
@@ -184,14 +184,14 @@ export type RawLobbyGroup = {
   kommission2_id: string
   kommission2_name: string
   name: string
-  organisationen: RawOrganisation[]
-  parlamentarier: RawParliamentarian[]
+  organisationen: Array<RawOrganisation>
+  parlamentarier: Array<RawParliamentarian>
   updated_date_unix: number
   wikidata_item_url: string
   wikipedia: string
-  zwischen_organisationen?: RawOrganisation[]
-  zutrittsberechtigte: RawGuest[]
-  connections: RawConnection[]
+  zwischen_organisationen?: Array<RawOrganisation>
+  zutrittsberechtigte: Array<RawGuest>
+  connections: Array<RawConnection>
 }
 
 export type RawConnection = {
@@ -201,14 +201,14 @@ export type RawConnection = {
   interessengruppe: string
   organisation_id: string
   organisation_name: string
-  parlamentarier: RawParliamentarian[]
+  parlamentarier: Array<RawParliamentarian>
   parlamentarier_name: string
   parlamentarier_id: string
   rechtsform: string
   verguetung: number
   verguetung_beschreibung: string
   verguetung_jahr: number
-  verguetungen_pro_jahr: RawVerguetung[]
+  verguetungen_pro_jahr: Array<RawVerguetung>
   wirksamkeit_index: number
   ziel_organisation_id: string
   ziel_organisation_name: string
@@ -232,8 +232,8 @@ export type MappedConnection = {
   group?: string
   potency?: unknown
   to: MappedEdge
-  vias?: unknown[]
-  compensations?: MappedVerguetung[]
+  vias?: Array<unknown>
+  compensations?: Array<MappedVerguetung>
   compensation?: MappedVerguetung | null
 }
 
@@ -255,12 +255,12 @@ export type MappedLobbyGroup = {
     name: string
     __typename: 'Branch'
   }
-  commissions: {
+  commissions:Array< {
     id: string
     name: string
     abbr: string
-  }[]
-  connections?: MappedConnection[]
+  }>
+  connections?: Array<MappedConnection>
   description: string
   id: string
   name: string
@@ -277,11 +277,11 @@ export type RawBranch = {
   beschreibung: string
   freigabe_datum_unix: number
   id: string
-  interessengruppe: {
+  interessengruppe: Array<{
     beschreibung: string
     id: string
     name: string
-  }[]
+  }>
   kommission1_abkuerzung: string
   kommission1_id: string
   kommission1_name: string
@@ -293,21 +293,21 @@ export type RawBranch = {
   updated_date_unix: number
   wikidata_item_url: string
   wikipedia: string
-  parlamentarier: RawParliamentarian[]
-  organisationen: RawOrganisation[]
-  zwischen_organisationen?: RawOrganisation[]
-  zutrittsberechtigte: RawGuest[]
-  connections: RawConnection[]
+  parlamentarier: Array<RawParliamentarian>
+  organisationen: Array<RawOrganisation>
+  zwischen_organisationen?: Array<RawOrganisation>
+  zutrittsberechtigte: Array<RawGuest>
+  connections: Array<RawConnection>
 }
 
 export type MappedBranch = {
   __typename: 'Branch'
-  commissions: {
+  commissions: Array<{
     id: string
     name: string
     abbr: string
-  }[]
-  connections?: MappedConnection[]
+  }>
+  connections?: Array<MappedConnection>
   description: string
   id: string
   name: string
@@ -323,7 +323,7 @@ export type RawOrganisation = {
   abkuerzung: string
   adresse_plz: string
   beschreibung: string
-  beziehungen: RawConnection[]
+  beziehungen: Array<RawConnection>
   freigabe_datum_unix: number
   homepage: string
   id: string
@@ -337,7 +337,7 @@ export type RawOrganisation = {
   land_iso2: string
   name: string
   ort: string
-  parlamentarier: RawParliamentarian[]
+  parlamentarier: Array<RawParliamentarian>
   rechtsform: 'Parlamentarische Gruppe' | 'Parlamentarische Freundschaftsgruppe'
   twitter_name: string
   twitter_url: string
@@ -345,19 +345,19 @@ export type RawOrganisation = {
   updated_date_unix: number
   wikidata_item_url: string
   wikipedia: string
-  zutrittsberechtigte: RawGuest[]
+  zutrittsberechtigte: Array<RawGuest>
 }
 
 export type MappedOrganisation = {
   __typename: 'Organisation'
   abbr: string
-  connections?: MappedConnection[]
+  connections?: Array<MappedConnection>
   countryIso2: string
   description: string
   id: string
   legalForm: string
   legalFormId: string
-  lobbyGroups: Partial<MappedLobbyGroup>[]
+  lobbyGroups: Array<Partial<MappedLobbyGroup>>
   location: string
   name: string
   postalCode: string

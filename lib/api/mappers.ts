@@ -73,8 +73,8 @@ const mapFunction = (t: Formatter, raw: RawFunction): string => {
 }
 
 const mapCompensations = (
-  verguetungen: RawVerguetung[],
-): MappedVerguetung[] => {
+  verguetungen: Array<RawVerguetung>,
+): Array<MappedVerguetung> => {
   return (verguetungen || [])
     .map((raw) => {
       const money =
@@ -162,7 +162,7 @@ const mapParliamentariansFromConnections = (
         }),
       )
     }
-    const vias: MappedConnection[] = [
+    const vias: Array<MappedConnection> = [
       {
         from: structuredClone(origin),
         to: connectorOrganisation,
@@ -221,7 +221,7 @@ export const mapLobbyGroup = (
   raw: RawLobbyGroup,
   t: Formatter,
 ): MappedLobbyGroup => {
-  const connections = (): MappedConnection[] => {
+  const connections = (): Array<MappedConnection> => {
     const organisations: (MappedConnection | null)[] = raw.organisationen.map(
       (connection) => ({
         from: structuredClone(lobbyGroup),
@@ -304,7 +304,7 @@ export const mapLobbyGroup = (
 
 export const branchIdPrefix = 'Branch-'
 export const mapBranch = (raw: RawBranch, t: Formatter): MappedBranch => {
-  const connections = (): MappedConnection[] => {
+  const connections = (): Array<MappedConnection> => {
     const lobbygroups = raw.interessengruppe.map((connection) => ({
       from: structuredClone(branch),
       vias: [],
@@ -359,7 +359,7 @@ export const mapOrganisation = (
   raw: RawOrganisation,
   t: Formatter,
 ): MappedOrganisation => {
-  const connections = (): MappedConnection[] => {
+  const connections = (): Array<MappedConnection> => {
     const direct = raw.parlamentarier.map((directConnection) => {
       // filter out simple memberships of parlamentarian groups
       // https://lobbywatch.slack.com/archives/C1CJCPEJ0/p1708325513974089?thread_ts=1708011103.864789
@@ -389,7 +389,7 @@ export const mapOrganisation = (
         description: directConnection.beschreibung,
       }
     })
-    const indirect: MappedConnection[] = []
+    const indirect: Array<MappedConnection> = []
     for (const rawGuest of raw.zutrittsberechtigte) {
       if (rawGuest.parlamentarier) {
         const parliamentarian = mapParliamentarian(rawGuest.parlamentarier, t)
@@ -417,17 +417,19 @@ export const mapOrganisation = (
         })
       }
     }
-    const relations: MappedConnection[] = raw.beziehungen.map((connection) => ({
-      from: structuredClone(org),
-      to: {
-        id: `${orgIdPrefix}${connection.ziel_organisation_id}-${t.locale}`,
-        name: connection.ziel_organisation_name,
-        __typename: 'Organisation',
-      },
-      vias: [],
-      group: t(`connections/groups/${connection.art}`),
-      description: connection.beschreibung,
-    }))
+    const relations: Array<MappedConnection> = raw.beziehungen.map(
+      (connection) => ({
+        from: structuredClone(org),
+        to: {
+          id: `${orgIdPrefix}${connection.ziel_organisation_id}-${t.locale}`,
+          name: connection.ziel_organisation_name,
+          __typename: 'Organisation',
+        },
+        vias: [],
+        group: t(`connections/groups/${connection.art}`),
+        description: connection.beschreibung,
+      }),
+    )
     return [...direct, ...indirect]
       .concat(relations)
       .filter((item): item is MappedConnection => Boolean(item))
@@ -567,7 +569,7 @@ export const mapParliamentarian = (
 
   const guests = (raw.zutrittsberechtigungen || []).map((g) => mapGuest(g, t))
 
-  const connections = (): MappedConnection[] => {
+  const connections = (): Array<MappedConnection> => {
     // filter out simple memberships of parlamentarian groups
     // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1603379470004900
     // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1654865241867899
