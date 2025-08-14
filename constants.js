@@ -10,10 +10,10 @@ export const DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
 export const DRUPAL_DATA_BASE_URL = 'https://data.lobbywatch.ch'
 export const DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
 
-const SERVER_PORT = (typeof process !== 'undefined' && ENV.PORT) || 3000
+export const SERVER_PORT = (typeof process !== 'undefined' && ENV.PORT) || 3000
 
-const NEXT_PUBLIC_VERCEL_URL = ENV.NEXT_PUBLIC_VERCEL_URL
-const PUBLIC_BASE_URL =
+export const NEXT_PUBLIC_VERCEL_URL = ENV.NEXT_PUBLIC_VERCEL_URL
+export const PUBLIC_BASE_URL =
   ENV.PUBLIC_BASE_URL ||
   ENV.NEXT_PUBLIC_BASE_URL ||
   (NEXT_PUBLIC_VERCEL_URL ? `https://${NEXT_PUBLIC_VERCEL_URL}` : undefined)
