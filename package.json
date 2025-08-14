@@ -2,7 +2,7 @@
   "name": "lobbywatch-frontend",
   "version": "1.0.0",
   "engines": {
-    "node": "20.x"
+    "node": ">=22"
   },
   "description": "Lobbywatch.ch Frontend",
   "scripts": {
