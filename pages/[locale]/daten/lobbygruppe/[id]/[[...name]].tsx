@@ -9,15 +9,18 @@ import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
 import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
-import { createGetStaticProps } from 'lib/createGetStaticProps'
 import { getLobbyGroup } from 'lib/api/queries/lobbyGroups'
+import { MappedLobbyGroup } from 'lib/types'
+import { GetStaticProps, InferGetStaticPropsType } from 'next'
 
 const CONNECTION_WEIGHTS = {
   Parliamentarian: 0.1,
   Organisation: 1000,
 }
 
-const LobbyGroup = ({ data }) => {
+const LobbyGroup = ({
+  data,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {
     query: { locale, id },
     isFallback,
@@ -71,22 +74,18 @@ const LobbyGroup = ({ data }) => {
   )
 }
 
-export const getStaticProps = createGetStaticProps({
-  dataFetcher: getLobbyGroup,
-  getVariables: ({ params: { id, locale } }) => ({
-    id,
-    locale,
-  }),
-  getCustomStaticProps: ({ data }) => {
-    if (!data.lobbyGroup) {
-      return {
-        notFound: true,
-      }
-    } else {
-      return { props: { data } }
+export const getStaticProps = (async ({ params }) => {
+  const { data } = await getLobbyGroup({ id: params.id, locale: params.locale })
+  if (!data.lobbyGroup) {
+    return {
+      notFound: true,
     }
-  },
-})
+  } else {
+    return { props: { data } }
+  }
+}) satisfies GetStaticProps<{
+  data: { lobbyGroup: MappedLobbyGroup }
+}>
 
 export async function getStaticPaths() {
   return {

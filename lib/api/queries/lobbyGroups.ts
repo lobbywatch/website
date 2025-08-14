@@ -1,11 +1,16 @@
-import useSWR from 'swr'
+import useSWR, { SWRResponse } from 'swr'
 import { translator, useT } from '../../../src/components/Message'
 import { ascending } from 'd3-array'
 import * as api from '../api'
 import { lobbyGroupIdPrefix, mapLobbyGroup } from '../mappers'
 import { fetcher } from '../fetch'
+import { MappedLobbyGroup } from '../../types'
 
-export function useLobbyGroups({ locale }) {
+export function useLobbyGroups({ locale }): {
+  isLoading: boolean
+  error: Error | undefined
+  data: { lobbyGroups: MappedLobbyGroup }
+} {
   const t = useT(locale)
 
   const url = api.data(
@@ -30,7 +35,9 @@ export function useLobbyGroups({ locale }) {
   }
 }
 
-export const getAllLobbyGroups = async ({ locale }) => {
+export const getAllLobbyGroups = async ({
+  locale,
+}): Promise<{ data: { lobbyGroups: MappedLobbyGroup } }> => {
   const t = translator(locale)
 
   const url = api.data(
@@ -51,7 +58,10 @@ export const getAllLobbyGroups = async ({ locale }) => {
   }
 }
 
-export const getLobbyGroup = async ({ locale, id }) => {
+export const getLobbyGroup = async ({
+  locale,
+  id,
+}): Promise<{ data: { lobbyGroup: MappedLobbyGroup } }> => {
   const t = translator(locale)
   const rawId = id.replace(lobbyGroupIdPrefix, '')
   const url = api.data(

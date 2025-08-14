@@ -1,10 +1,25 @@
 import { DRUPAL_IMAGE_BASE_URL } from '../../constants'
-import { createFormatter } from '../translate'
-import * as entities from 'entities'
-import striptags from 'striptags'
+import type { Formatter } from '../translate'
 import { timeMonth, timeYear } from 'd3-time'
 import { timeFormat, timeParse } from 'd3-time-format'
 import { descending } from 'd3-array'
+import type {
+  MappedConnection,
+  MappedBranch,
+  MappedLobbyGroup,
+  MappedOrganisation,
+  RawBranch,
+  RawLobbyGroup,
+  RawOrganisation,
+  RawGuest,
+  MappedGuest,
+  RawParlamentarian,
+  MappedParlamentarian,
+  RawConnection,
+  RawFunction,
+  RawVerguetung,
+  MappedVerguetung,
+} from '../types'
 
 const parseDate = timeParse('%Y-%m-%d')
 const formatDate = timeFormat('%d.%m.%Y')
@@ -26,16 +41,8 @@ const compensationTransparenceStateMap = {
 // avoid error 'Reason: undefined cannot be serialized as JSON. Please use null or omit this value all together.'
 const replaceUndefinedWithNull = (obj) => JSON.parse(JSON.stringify(obj))
 
-export const mapFormatterWithLocale = (translations) => {
-  const formatter = createFormatter(translations)
-  formatter.locale = translations.locale
-  return formatter
-}
-
-const mapFunction = (
-  t,
-  { art, funktion_im_gremium: funktion, rechtsform, gender },
-) => {
+const mapFunction = (t: Formatter, raw: RawFunction): string => {
+  const { art, funktion_im_gremium: funktion, rechtsform, gender } = raw
   let translated = t.first(
     [
       `connection/function/${rechtsform}-${art}-${funktion}-${gender}`,
@@ -64,7 +71,9 @@ const mapFunction = (
   return translated
 }
 
-const mapCompensations = (verguetungen) => {
+const mapCompensations = (
+  verguetungen: RawVerguetung[],
+): MappedVerguetung[] => {
   return (verguetungen || [])
     .map((raw) => {
       const money =
@@ -86,7 +95,11 @@ const mapCompensations = (verguetungen) => {
     .filter((d) => d.year && (d.money !== null || d.description !== null))
 }
 
-const mapParliamentariansFromConnections = (raw, t, origin) => {
+const mapParliamentariansFromConnections = (
+  raw: RawBranch | RawLobbyGroup,
+  t: Formatter,
+  origin: MappedLobbyGroup | MappedBranch,
+): MappedConnection[] => {
   return raw.connections.map((connection) => {
     const parliamentarianRaw = raw.parlamentarier.find(
       (p) => p.id === connection.parlamentarier_id,
@@ -148,7 +161,7 @@ const mapParliamentariansFromConnections = (raw, t, origin) => {
         }),
       )
     }
-    const vias = [
+    const vias: MappedConnection[] = [
       {
         from: structuredClone(origin),
         to: connectorOrganisation,
@@ -203,19 +216,24 @@ const mapParliamentariansFromConnections = (raw, t, origin) => {
 }
 
 export const lobbyGroupIdPrefix = 'LobbyGroup-'
-export const mapLobbyGroup = (raw, t) => {
-  const connections = () => {
-    const organisations = raw.organisationen.map((connection) => ({
-      from: structuredClone(lobbyGroup),
-      vias: [],
-      to: {
-        id: `${orgIdPrefix}${connection.id}-${t.locale}`,
-        name: connection.name,
-        __typename: 'Organisation',
-      },
-      group: t('connections/organisation'),
-      description: connection.beschreibung,
-    }))
+export const mapLobbyGroup = (
+  raw: RawLobbyGroup,
+  t: Formatter,
+): MappedLobbyGroup => {
+  const connections = (): MappedConnection[] => {
+    const organisations: MappedConnection[] = raw.organisationen.map(
+      (connection) => ({
+        from: structuredClone(lobbyGroup),
+        vias: [],
+        to: {
+          id: `${orgIdPrefix}${connection.id}-${t.locale}`,
+          name: connection.name,
+          __typename: 'Organisation',
+        },
+        group: t('connections/organisation'),
+        description: connection.beschreibung,
+      }),
+    )
 
     const parliamentariansViaProfession = raw.parlamentarier
       .filter((p) => p.beruf_interessengruppe_id === raw.id)
@@ -245,7 +263,7 @@ export const mapLobbyGroup = (raw, t) => {
       .filter(Boolean)
   }
 
-  const lobbyGroup = {
+  const lobbyGroup: MappedLobbyGroup = {
     id: `${lobbyGroupIdPrefix}${raw.id}-${t.locale}`,
     updated: formatDate(new Date(raw.updated_date_unix * 1000)),
     published: formatDate(new Date(raw.freigabe_datum_unix * 1000)),
@@ -284,8 +302,8 @@ export const mapLobbyGroup = (raw, t) => {
 }
 
 export const branchIdPrefix = 'Branch-'
-export const mapBranch = (raw, t) => {
-  const connections = () => {
+export const mapBranch = (raw: RawBranch, t: Formatter): MappedBranch => {
+  const connections = (): MappedConnection[] => {
     const lobbygroups = raw.interessengruppe.map((connection) => ({
       from: structuredClone(branch),
       vias: [],
@@ -301,7 +319,7 @@ export const mapBranch = (raw, t) => {
     return parliamentarians.concat(lobbygroups).filter(Boolean)
   }
 
-  const branch = {
+  const branch: MappedBranch = {
     id: `${branchIdPrefix}${raw.id}-${t.locale}`,
     updated: formatDate(new Date(raw.updated_date_unix * 1000)),
     published: formatDate(new Date(raw.freigabe_datum_unix * 1000)),
@@ -334,8 +352,11 @@ export const mapBranch = (raw, t) => {
 }
 
 export const orgIdPrefix = 'Organisation-'
-export const mapOrganisation = (raw, t) => {
-  const connections = () => {
+export const mapOrganisation = (
+  raw: RawOrganisation,
+  t: Formatter,
+): MappedOrganisation => {
+  const connections = (): MappedConnection[] => {
     const direct = raw.parlamentarier.map((directConnection) => {
       // filter out simple memberships of parlamentarian groups
       // https://lobbywatch.slack.com/archives/C1CJCPEJ0/p1708325513974089?thread_ts=1708011103.864789
@@ -406,8 +427,8 @@ export const mapOrganisation = (raw, t) => {
     }))
     return [...direct, ...indirect].concat(relations).filter(Boolean)
   }
-
-  const org = {
+  console.log(raw)
+  const org: MappedOrganisation = {
     id: `${orgIdPrefix}${raw.id}-${t.locale}`,
     updated: formatDate(new Date(raw.updated_date_unix * 1000)),
     published: formatDate(new Date(raw.freigabe_datum_unix * 1000)),
@@ -430,17 +451,17 @@ export const mapOrganisation = (raw, t) => {
         name: raw.interessengruppe,
         id: raw.interessengruppe_id,
         __typename: 'LobbyGroup',
-      },
+      } satisfies Partial<MappedLobbyGroup>,
       {
         name: raw.interessengruppe2,
         id: raw.interessengruppe2_id,
         __typename: 'LobbyGroup',
-      },
+      } satisfies Partial<MappedLobbyGroup>,
       {
         name: raw.interessengruppe3,
-        id: raw.intferessengruppe3_id,
+        id: raw.interessengruppe3_id,
         __typename: 'LobbyGroup',
-      },
+      } satisfies Partial<MappedLobbyGroup>,
     ].filter((l) => l.name),
     uid: raw.uid,
     website: raw.homepage,
@@ -460,7 +481,11 @@ export const mapOrganisation = (raw, t) => {
 
 export const commissionIdPrefix = 'Commission-'
 
-const mapMandate = (origin, connection, t) => ({
+const mapMandate = (
+  origin: MappedGuest | MappedParlamentarian,
+  connection: RawConnection,
+  t: Formatter,
+): MappedConnection => ({
   from: structuredClone(origin),
   vias: [],
   to: {
@@ -488,11 +513,11 @@ const mapMandate = (origin, connection, t) => ({
 })
 
 export const guestIdPrefix = 'Guest-'
-export const mapGuest = (raw, t) => {
-  const parliamentarian = raw.parlamentarier
+export const mapGuest = (raw: RawGuest, t: Formatter): MappedGuest => {
+  const parliamentarian: MappedParlamentarian = raw.parlamentarier
     ? mapParliamentarian(raw.parlamentarier, t)
-    : {}
-  const guest = {
+    : ({} as MappedParlamentarian) // TODO fix
+  const guest: MappedGuest = {
     id: `${guestIdPrefix}${raw.id}-${t.locale}`,
     updated: formatDate(new Date(raw.updated_date_unix * 1000)),
     published: formatDate(new Date(raw.freigabe_datum_unix * 1000)),
@@ -525,7 +550,10 @@ export const mapGuest = (raw, t) => {
 }
 
 export const parliamentarianIdPrefix = 'Parliamentarian-'
-export const mapParliamentarian = (raw, t) => {
+export const mapParliamentarian = (
+  raw: RawParlamentarian,
+  t: Formatter,
+): MappedParlamentarian => {
   const dateOfBirth = parseDate(raw.geburtstag)
   const councilJoinDate = new Date(+raw.im_rat_seit_unix * 1000)
   const councilExitDate = raw.im_rat_bis_unix
@@ -534,7 +562,7 @@ export const mapParliamentarian = (raw, t) => {
 
   const guests = (raw.zutrittsberechtigungen || []).map((g) => mapGuest(g, t))
 
-  const connections = () => {
+  const connections = (): MappedConnection[] => {
     // filter out simple memberships of parlamentarian groups
     // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1603379470004900
     // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1654865241867899
@@ -572,8 +600,7 @@ export const mapParliamentarian = (raw, t) => {
   }
 
   const ROUNDING_PRECISION = 1000
-
-  const parliamentarian = {
+  const parliamentarian: MappedParlamentarian = {
     id: `${parliamentarianIdPrefix}${raw.parlamentarier_id || raw.id}-${
       t.locale
     }`,
