@@ -15,7 +15,7 @@ export type FormatterFunction = (
 type FirstFunction = (
   keys: string[],
   replacements?: Replacements,
-  missingValue?: string,
+  missingValue?: string | null,
 ) => string
 
 type PluralizeFunction = (
