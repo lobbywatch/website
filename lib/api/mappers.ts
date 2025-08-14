@@ -26,20 +26,21 @@ const formatDate = timeFormat('%d.%m.%Y')
 const formatTime = timeFormat('%d.%m.%Y %H:%M')
 const formatDateIso = timeFormat('%Y-%m-%d')
 
-const potencyMap = {
+const potencyMap: Record<number, string> = {
   3: 'HIGH',
   2: 'MEDIUM',
   1: 'LOW',
 }
 
-const compensationTransparenceStateMap = {
+const compensationTransparenceStateMap: Record<string, string> = {
   ja: 'YES',
   nein: 'NO',
   teilweise: 'PARTIAL',
 }
 
 // avoid error 'Reason: undefined cannot be serialized as JSON. Please use null or omit this value all together.'
-const replaceUndefinedWithNull = (obj) => JSON.parse(JSON.stringify(obj))
+const replaceUndefinedWithNull = (obj: unknown) =>
+  JSON.parse(JSON.stringify(obj))
 
 const mapFunction = (t: Formatter, raw: RawFunction): string => {
   const { art, funktion_im_gremium: funktion, rechtsform, gender } = raw
@@ -89,7 +90,7 @@ const mapCompensations = (
           (money === 1 && raw.beschreibung === 'Bezahlt')
             ? null
             : raw.beschreibung || null,
-      }
+      } satisfies MappedVerguetung
     })
     .sort((a, b) => descending(a.year, b.year))
     .filter((d) => d.year && (d.money !== null || d.description !== null))
@@ -99,7 +100,7 @@ const mapParliamentariansFromConnections = (
   raw: RawBranch | RawLobbyGroup,
   t: Formatter,
   origin: MappedLobbyGroup | MappedBranch,
-): MappedConnection[] => {
+): (MappedConnection | null)[] => {
   return raw.connections.map((connection) => {
     const parliamentarianRaw = raw.parlamentarier.find(
       (p) => p.id === connection.parlamentarier_id,
@@ -221,7 +222,7 @@ export const mapLobbyGroup = (
   t: Formatter,
 ): MappedLobbyGroup => {
   const connections = (): MappedConnection[] => {
-    const organisations: MappedConnection[] = raw.organisationen.map(
+    const organisations: (MappedConnection | null)[] = raw.organisationen.map(
       (connection) => ({
         from: structuredClone(lobbyGroup),
         vias: [],
@@ -260,7 +261,7 @@ export const mapLobbyGroup = (
     return organisations
       .concat(parliamentariansViaProfession)
       .concat(parliamentariansViaCon)
-      .filter(Boolean)
+      .filter((item): item is MappedConnection => Boolean(item))
   }
 
   const lobbyGroup: MappedLobbyGroup = {
@@ -316,7 +317,9 @@ export const mapBranch = (raw: RawBranch, t: Formatter): MappedBranch => {
       description: connection.beschreibung,
     }))
     const parliamentarians = mapParliamentariansFromConnections(raw, t, branch)
-    return parliamentarians.concat(lobbygroups).filter(Boolean)
+    return parliamentarians
+      .concat(lobbygroups)
+      .filter((item): item is MappedConnection => Boolean(item))
   }
 
   const branch: MappedBranch = {
@@ -386,7 +389,7 @@ export const mapOrganisation = (
         description: directConnection.beschreibung,
       }
     })
-    const indirect = []
+    const indirect: MappedConnection[] = []
     for (const rawGuest of raw.zutrittsberechtigte) {
       if (rawGuest.parlamentarier) {
         const parliamentarian = mapParliamentarian(rawGuest.parlamentarier, t)
@@ -414,7 +417,7 @@ export const mapOrganisation = (
         })
       }
     }
-    const relations = raw.beziehungen.map((connection) => ({
+    const relations: MappedConnection[] = raw.beziehungen.map((connection) => ({
       from: structuredClone(org),
       to: {
         id: `${orgIdPrefix}${connection.ziel_organisation_id}-${t.locale}`,
@@ -425,9 +428,11 @@ export const mapOrganisation = (
       group: t(`connections/groups/${connection.art}`),
       description: connection.beschreibung,
     }))
-    return [...direct, ...indirect].concat(relations).filter(Boolean)
+    return [...direct, ...indirect]
+      .concat(relations)
+      .filter((item): item is MappedConnection => Boolean(item))
   }
-  console.log(raw)
+
   const org: MappedOrganisation = {
     id: `${orgIdPrefix}${raw.id}-${t.locale}`,
     updated: formatDate(new Date(raw.updated_date_unix * 1000)),
@@ -581,7 +586,7 @@ export const mapParliamentarian = (
       )
     const indirect = []
     for (const guest of guests) {
-      for (const indirectConnection of guest.connections) {
+      for (const indirectConnection of guest?.connections ?? []) {
         indirect.push(
           Object.assign({}, indirectConnection, {
             from: structuredClone(parliamentarian),

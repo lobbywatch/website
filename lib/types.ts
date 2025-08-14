@@ -71,7 +71,7 @@ export type MappedParliamentarian = MappedPerson & {
   active: boolean
   readonly age: number
   canton: string
-  children: number
+  children: number | null
   readonly civilStatus: string
   commissions: {
     id: string
@@ -105,7 +105,7 @@ export type MappedParliamentarian = MappedPerson & {
       twitter_name: string
       twitter_url: string
     }
-  }
+  } | null
   portrait: string
   published: string
   publishedIso: string
@@ -234,7 +234,7 @@ export type MappedConnection = {
   to: MappedEdge
   vias?: unknown[]
   compensations?: MappedVerguetung[]
-  compensation?: MappedVerguetung
+  compensation?: MappedVerguetung | null
 }
 
 export type RawVerguetung = {
@@ -243,8 +243,8 @@ export type RawVerguetung = {
   verguetung: number
 }
 export type MappedVerguetung = {
-  description: string
-  money: number
+  description: string | null
+  money: number | null
   year: number
 }
 
