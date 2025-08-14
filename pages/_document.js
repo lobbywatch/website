@@ -96,6 +96,7 @@ export default class MyDocument extends Document {
           )}
           {matomo && (
             <noscript>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`${MATOMO_URL_BASE}/matomo.php?idsite=${MATOMO_SITE_ID}&rec=1`}
                 style={{ border: 0, position: 'fixed', left: -1 }}

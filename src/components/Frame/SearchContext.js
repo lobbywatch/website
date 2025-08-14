@@ -38,7 +38,7 @@ export const useSearchContextState = () => {
     return () => {
       clearTimeout(to)
     }
-  }, [currentLocale, value])
+  }, [router, currentLocale, value])
 
   return useMemo(() => [value, setValue], [value, setValue])
 }
