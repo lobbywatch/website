@@ -58,6 +58,14 @@
     "swr": "2.3.6"
   },
   "devDependencies": {
+    "@types/d3-array": "^1.2.12",
+    "@types/d3-collection": "^1.0.13",
+    "@types/d3-ease": "^1.0.13",
+    "@types/d3-format": "^1.4.5",
+    "@types/d3-hierarchy": "^1.1.11",
+    "@types/d3-interpolate": "^3.0.4",
+    "@types/d3-time": "^1.1.4",
+    "@types/d3-time-format": "^2.3.4",
     "@types/node": "^24.2.1",
     "@types/react": "^18.3.23",
     "concurrently": "^9.2.0",
