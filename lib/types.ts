@@ -84,7 +84,7 @@ export type MappedParliamentarian = MappedPerson & {
   } | null
   connections?: Array<MappedConnection>
   council: string
-  councilExitDate: string
+  councilExitDate?: string
   councilJoinDate: string
   readonly councilTenure: number
   readonly councilTitle: string
