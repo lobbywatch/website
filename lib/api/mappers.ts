@@ -608,34 +608,11 @@ export const mapParliamentarian = (
 
   const ROUNDING_PRECISION = 1000
   const parliamentarian: MappedParliamentarian = {
+    __typename: 'Parliamentarian',
     id: `${parliamentarianIdPrefix}${raw.parlamentarier_id || raw.id}-${
       t.locale
     }`,
-    updated: formatDate(new Date(raw.updated_date_unix * 1000)),
-    published: formatDate(new Date(raw.freigabe_datum_unix * 1000)),
-    updatedIso: formatDateIso(new Date(raw.updated_date_unix * 1000)),
-    publishedIso: formatDateIso(new Date(raw.freigabe_datum_unix * 1000)),
-    name: `${raw.vorname} ${raw.nachname}`,
-    parliamentId: raw.parlament_biografie_id,
-    firstName: raw.vorname,
-    middleName: raw.zweiter_vorname,
-    lastName: raw.nachname,
-    occupation: raw.beruf,
-    wikipedia_url: raw.wikipedia,
-    wikidata_url: raw.wikidata_item_url,
-    twitter_name: raw.twitter_name,
-    twitter_url: raw.twitter_url,
-    linkedin_url: raw.linkedin_profil_url,
-    facebook_name: raw.facebook_name,
-    facebook_url: raw.facebook_url,
-    parlament_biografie_url: raw.parlament_biografie_url,
-    gender: raw.geschlecht,
-    dateOfBirth: formatDate(dateOfBirth),
-    portrait: [
-      DRUPAL_IMAGE_BASE_URL,
-      'sites/lobbywatch.ch/app/files/parlamentarier_photos/portrait-260',
-      `${raw.parlament_number}.jpg`,
-    ].join('/'),
+    active: !!+raw.aktiv,
     get age() {
       const now = new Date()
       let age = timeYear.count(dateOfBirth, now)
@@ -648,39 +625,7 @@ export const mapParliamentarian = (
       }
       return age
     },
-    partyMembership: raw.partei
-      ? {
-          function: raw.parteifunktion,
-          party: {
-            name: raw.partei_name,
-            abbr: raw.partei,
-            wikipedia_url: raw.wikipedia,
-            wikidata_url: raw.wikidata_item_url,
-            twitter_name: raw.twitter_name,
-            twitter_url: raw.twitter_url,
-          },
-        }
-      : null,
     canton: raw.kanton_name,
-    active: !!+raw.aktiv,
-    council: raw.ratstyp,
-    get councilTitle() {
-      return t(
-        'parliamentarian/council/title/' +
-          `${parliamentarian.council}-${parliamentarian.gender}${
-            parliamentarian.active ? '' : '-Ex'
-          }`,
-      )
-    },
-    councilTenure: timeMonth.count(
-      councilJoinDate,
-      councilExitDate ?? new Date(),
-    ),
-    councilJoinDate: formatDate(councilJoinDate),
-    councilExitDate: councilExitDate && formatDate(councilExitDate),
-    represents:
-      Math.round(+raw.vertretene_bevoelkerung / ROUNDING_PRECISION) *
-      ROUNDING_PRECISION,
     children: raw.anzahl_kinder !== null ? +raw.anzahl_kinder : null,
     get civilStatus() {
       return t(
@@ -690,9 +635,6 @@ export const mapParliamentarian = (
         raw.zivilstand,
       )
     },
-    website: raw.homepage,
-    kommissionen_abkuerzung: raw.kommissionen_abkuerzung,
-    kommissionen_namen: raw.kommissionen_namen,
     commissions: raw.in_kommission
       ? raw.in_kommission.map((commission) => ({
           id: `${commissionIdPrefix}${commission.id}-${t.locale}`,
@@ -709,8 +651,67 @@ export const mapParliamentarian = (
             ],
         }
       : null,
+    council: raw.ratstyp,
+    councilExitDate:
+      councilExitDate != null ? formatDate(councilExitDate) : undefined,
+    councilJoinDate: formatDate(councilJoinDate),
+    councilTenure: timeMonth.count(
+      councilJoinDate,
+      councilExitDate ?? new Date(),
+    ),
+    get councilTitle() {
+      return t(
+        'parliamentarian/council/title/' +
+          `${parliamentarian.council}-${parliamentarian.gender}${
+            parliamentarian.active ? '' : '-Ex'
+          }`,
+      )
+    },
+    dateOfBirth: formatDate(dateOfBirth),
+    facebook_name: raw.facebook_name,
+    facebook_url: raw.facebook_url,
+    firstName: raw.vorname,
+    gender: raw.geschlecht,
     guests,
-    __typename: 'Parliamentarian',
+    kommissionen_abkuerzung: raw.kommissionen_abkuerzung,
+    kommissionen_namen: raw.kommissionen_namen,
+    lastName: raw.nachname,
+    linkedin_url: raw.linkedin_profil_url,
+    middleName: raw.zweiter_vorname,
+    name: `${raw.vorname} ${raw.nachname}`,
+    occupation: raw.beruf,
+    parlament_biografie_url: raw.parlament_biografie_url,
+    parliamentId: raw.parlament_biografie_id,
+    partyMembership: raw.partei
+      ? {
+          function: raw.parteifunktion,
+          party: {
+            name: raw.partei_name,
+            abbr: raw.partei,
+            wikipedia_url: raw.wikipedia,
+            wikidata_url: raw.wikidata_item_url,
+            twitter_name: raw.twitter_name,
+            twitter_url: raw.twitter_url,
+          },
+        }
+      : null,
+    portrait: [
+      DRUPAL_IMAGE_BASE_URL,
+      'sites/lobbywatch.ch/app/files/parlamentarier_photos/portrait-260',
+      `${raw.parlament_number}.jpg`,
+    ].join('/'),
+    published: formatDate(new Date(raw.freigabe_datum_unix * 1000)),
+    publishedIso: formatDateIso(new Date(raw.freigabe_datum_unix * 1000)),
+    represents:
+      Math.round(+raw.vertretene_bevoelkerung / ROUNDING_PRECISION) *
+      ROUNDING_PRECISION,
+    twitter_name: raw.twitter_name,
+    twitter_url: raw.twitter_url,
+    updated: formatDate(new Date(raw.updated_date_unix * 1000)),
+    updatedIso: formatDateIso(new Date(raw.updated_date_unix * 1000)),
+    website: raw.homepage,
+    wikidata_url: raw.wikidata_item_url,
+    wikipedia_url: raw.wikipedia,
   }
 
   if (raw.interessenbindungen) {
