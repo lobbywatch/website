@@ -20,10 +20,10 @@ import type {
   RawVerguetung,
   MappedVerguetung,
 } from '../types'
+import { requireNonNull } from '../../src/prelude'
 
 const parseDate = timeParse('%Y-%m-%d')
 const formatDate = timeFormat('%d.%m.%Y')
-const formatTime = timeFormat('%d.%m.%Y %H:%M')
 const formatDateIso = timeFormat('%Y-%m-%d')
 
 const potencyMap: Record<number, string> = {
@@ -561,7 +561,7 @@ export const mapParliamentarian = (
   raw: RawParliamentarian,
   t: Formatter,
 ): MappedParliamentarian => {
-  const dateOfBirth = parseDate(raw.geburtstag)
+  const dateOfBirth = requireNonNull(parseDate(raw.geburtstag))
   const councilJoinDate = new Date(+raw.im_rat_seit_unix * 1000)
   const councilExitDate = raw.im_rat_bis_unix
     ? new Date(+raw.im_rat_bis_unix * 1000)
