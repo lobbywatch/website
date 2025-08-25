@@ -1,10 +1,11 @@
-import useSWR, { SWRResponse } from 'swr'
+import useSWR from 'swr'
 import { translator, useT } from '../../../src/components/Message'
 import { ascending } from 'd3-array'
 import * as api from '../api'
 import { lobbyGroupIdPrefix, mapLobbyGroup } from '../mappers'
 import { fetcher } from '../fetch'
 import { LobbyGroupId, Locale, MappedLobbyGroup } from '../../types'
+import { Option, pipe } from 'effect'
 
 export function useLobbyGroups({ locale }: { locale: Locale }): {
   isLoading: boolean
@@ -66,7 +67,7 @@ export const getLobbyGroup = async ({
 }: {
   locale: Locale
   id: LobbyGroupId
-}): Promise<{ data: { lobbyGroup: MappedLobbyGroup } }> => {
+}): Promise<Option.Option<MappedLobbyGroup>> => {
   const t = translator(locale)
   const rawId = id.replace(lobbyGroupIdPrefix, '')
   const url = api.data(
@@ -77,7 +78,8 @@ export const getLobbyGroup = async ({
   )
   const data = await fetcher(url)
 
-  return {
-    data: { lobbyGroup: data.data && mapLobbyGroup(data.data, t) },
-  }
+  return pipe(
+    Option.fromNullable(data.data),
+    Option.map((x) => mapLobbyGroup(x, t)),
+  )
 }

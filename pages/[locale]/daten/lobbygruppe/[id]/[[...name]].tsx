@@ -10,17 +10,19 @@ import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
 import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from '../../../../../constants'
 import { getLobbyGroup } from 'lib/api/queries/lobbyGroups'
-import { MappedLobbyGroup } from 'lib/types'
-import { GetStaticProps, InferGetStaticPropsType } from 'next'
+import { LobbyGroupId, Locale, MappedLobbyGroup } from 'lib/types'
+import { InferGetStaticPropsType } from 'next'
+import { Option, pipe, Schema } from 'effect'
+import { withStaticPropsContext } from 'lib/next'
 
 const CONNECTION_WEIGHTS = {
   Parliamentarian: 0.1,
   Organisation: 1000,
 }
 
-const LobbyGroup = ({
-  data,
-}: InferGetStaticPropsType<typeof getStaticProps>) => {
+const LobbyGroup = (
+  lobbyGroup: InferGetStaticPropsType<typeof getStaticProps>,
+) => {
   const {
     query: { locale, id },
     isFallback,
@@ -31,7 +33,6 @@ const LobbyGroup = ({
       <Loader
         loading={isFallback}
         render={() => {
-          const { lobbyGroup } = data
           const { __typename, name } = lobbyGroup
           const rawId = id.replace(`${__typename}-`, '')
           const path = `/${locale}/daten/lobbygruppe/${rawId}/${name}`
@@ -74,18 +75,17 @@ const LobbyGroup = ({
   )
 }
 
-export const getStaticProps = (async ({ params }) => {
-  const { data } = await getLobbyGroup({ id: params.id, locale: params.locale })
-  if (!data.lobbyGroup) {
-    return {
-      notFound: true,
-    }
-  } else {
-    return { props: { data } }
-  }
-}) satisfies GetStaticProps<{
-  data: { lobbyGroup: MappedLobbyGroup }
-}>
+export const getStaticProps = withStaticPropsContext<MappedLobbyGroup>()(
+  Schema.Struct({ id: LobbyGroupId, locale: Locale }),
+  async ({ params }) =>
+    pipe(
+      await getLobbyGroup(params),
+      Option.match({
+        onNone: () => ({ notFound: true }),
+        onSome: (props) => ({ props }),
+      }),
+    ),
+)
 
 export async function getStaticPaths() {
   return {
