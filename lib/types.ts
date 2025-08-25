@@ -1,3 +1,5 @@
+import { Schema } from 'effect'
+
 type MappedPerson = {
   facebook_name: string
   facebook_url: string
@@ -372,3 +374,9 @@ export type MappedOrganisation = {
   wikidata_url: string
   wikipedia_url: string
 }
+
+export type Locale = Schema.Schema.Type<typeof Locale>
+export const Locale = Schema.Literal('de', 'fr')
+
+export type LobbyGroupId = Schema.Schema.Type<typeof LobbyGroupId>
+export const LobbyGroupId = Schema.String.pipe(Schema.brand('LobbyGroupId'))
