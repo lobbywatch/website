@@ -34,7 +34,6 @@
     "*.js": "eslint --cache --fix"
   },
   "dependencies": {
-    "@apollo/client": "^3.13.9",
     "accept-language": "^3.0.20",
     "clipboard-copy": "^4.0.1",
     "d3-array": "^1.2.4",
@@ -49,7 +48,6 @@
     "effect": "^3.17.7",
     "express": "^4.21.2",
     "glamor": "^2.20.40",
-    "graphql": "^16.11.0",
     "next": "^14.2.31",
     "querystring": "^0.2.1",
     "react": "^18.3.1",
