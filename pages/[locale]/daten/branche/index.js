@@ -8,7 +8,6 @@ import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
-import BlockRegion from 'src/components/BlockRegion'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
 import { getAllBranchen } from 'lib/api/queries/branchen'
@@ -39,11 +38,6 @@ const Branchs = ({ data }) => {
               </H1>
             </TextCenter>
             <ListView locale={locale} items={data.branchen} />
-            <BlockRegion
-              locale={locale}
-              region='rooster_branchs'
-              style={{ paddingTop: 50 }}
-            />
           </Center>
         )}
       />
