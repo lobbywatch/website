@@ -8,7 +8,6 @@ import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
-import BlockRegion from 'src/components/BlockRegion'
 
 import { createGetStaticProps } from 'lib/createGetStaticProps'
 import { getAllGuests } from 'lib/api/queries/guests'
@@ -40,11 +39,6 @@ const Guests = ({ data }) => {
               </H1>
             </TextCenter>
             <ListView locale={locale} items={data.guests} />
-            <BlockRegion
-              locale={locale}
-              region='rooster_guests'
-              style={{ paddingTop: 50 }}
-            />
           </Center>
         )}
       />
