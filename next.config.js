@@ -1,4 +1,4 @@
-const { GRAPHQL_URL, localeSegment, PUBLIC_BASE_URL } = require('./constants')
+const { localeSegment, PUBLIC_BASE_URL } = require('./constants')
 const { ASSETS_SERVER_SOURCE_BASE_URL } = process.env
 
 module.exports = {
@@ -16,10 +16,6 @@ module.exports = {
       {
         source: '/',
         destination: '/api/language',
-      },
-      {
-        source: '/graphql',
-        destination: GRAPHQL_URL,
       },
       ASSETS_SERVER_SOURCE_BASE_URL && {
         source: '/assets/:path*',
@@ -54,11 +50,6 @@ module.exports = {
         source: `/${localeSegment}/search/daten/:term`,
         destination: '/:locale/search?term=:term',
         permanent: true,
-      },
-      {
-        source: '/graphiql',
-        destination: GRAPHQL_URL.replace('/graphql', '/graphiql'),
-        permanent: false,
       },
       {
         source: '/angebote',

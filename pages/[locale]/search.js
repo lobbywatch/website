@@ -11,7 +11,6 @@ import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 
-import { withInitialProps } from 'lib/apolloClient'
 import { useSearch } from '../../lib/api/queries/useSearch'
 
 const Search = ({ term, locale }) => {
@@ -68,4 +67,4 @@ const Page = ({
   </Frame>
 )
 
-export default withInitialProps(withRouter(Page))
+export default withRouter(Page)
