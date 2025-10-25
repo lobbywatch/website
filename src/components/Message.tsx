@@ -1,48 +1,65 @@
-import React from 'react'
+import React, { ClassicComponent, ReactElement } from 'react'
 import { useRouter } from 'next/router'
 
-import { createFormatter } from '../../lib/translate'
-import { getSafeLocale, locales } from '../../constants'
+import { createFormatter, Replacements, Translation } from '../../lib/translate'
+import { getSafeLocale } from '../../constants'
 import RawHtml from './RawHtml'
 
 import translationsJson from '../assets/translations.json'
+import { Locale } from '../../lib/types'
 
-const translations = {}
+type TranslationsCache = Record<Locale, Array<Translation>>
 
-const getTranslations = (locale) => {
+const translations: TranslationsCache = {
+  de: [],
+  fr: [],
+}
+
+const getTranslations = (locale: Locale) => {
   const _locale = locale ?? getSafeLocale(locale)
 
-  if (!(locale in translations)) {
+  if (translations[locale].length === 0) {
     translations[locale] = translationsJson.data.reduce((acc, translation) => {
       const value = translation[_locale]
       const key = translation.key
-      acc.push({ key, value })
+      if (value != null) {
+        acc.push({ key, value })
+      }
       return acc
-    }, [])
+    }, new Array<Translation>())
   }
 
   return translations[locale]
 }
 
-export const translator = (locale) => {
+export const translator = (locale: Locale) => {
   return createFormatter(getTranslations(locale), locale)
 }
 
-export const useT = (locale) => {
+export const useT = (locale: Locale) => {
   const { query } = useRouter()
   const translations = getTranslations(getSafeLocale(query.locale))
   return createFormatter(translations, locale)
 }
 
-export const withT = (Component) => {
-  const WithT = (props) => {
+export function withT<P extends { locale: Locale }>(
+  Component: (props: P) => ReactElement,
+) {
+  const WithT = (props: P) => {
     const t = useT(props.locale)
     return <Component {...props} t={t} />
   }
   return WithT
 }
 
-const Translate = ({ id, replacements, raw, locale }) => {
+export interface TranslateProps {
+  id: string
+  locale: Locale
+  replacements?: Replacements
+  raw?: boolean
+}
+
+const Translate = ({ id, replacements, raw, locale }: TranslateProps) => {
   const t = useT(locale)
   const translation = t(id, replacements, null)
   if (raw) {

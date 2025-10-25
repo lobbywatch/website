@@ -15,9 +15,10 @@
     "lint:static": "eslint --fix .",
     "lint:ts": "tsc --noEmit",
     "=== TEST ===": "",
-    "test": "eslint",
+    "test": "vitest",
     "=== UTILITIES ===": "",
     "klog": "find . -name '*.js' -not -path \"./node_modules*\" -not -path \"./.next*\" | xargs wc -l",
+    "update-testdata": "tsx ./lib/types/test/update.ts",
     "=== HOOKS ===": "",
     "prepare": "husky"
   },
@@ -54,6 +55,7 @@
     "react-dom": "^18.3.1",
     "react-maskedinput": "^4.0.1",
     "react-textarea-autosize": "^7.1.2",
+    "shallow-equal": "^3.1.0",
     "swr": "2.3.6"
   },
   "devDependencies": {
@@ -74,7 +76,9 @@
     "husky": "^9.1.7",
     "lint-staged": "^15.5.2",
     "prettier": "3.6.2",
-    "typescript": "5.9.2"
+    "tsx": "^4.20.6",
+    "typescript": "5.9.2",
+    "vitest": "^4.0.3"
   },
   "cacheDirectories": [
     "node_modules",
