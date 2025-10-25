@@ -76,7 +76,8 @@ globalWithMediaQueries('.RawHtml a.button.donate-patron:before', {
   backgroundImage: 'url(/static/donate/patron.png)',
 })
 
-Object.keys(POTENCY_COLORS).map((key) => {
+type PotencyKey = keyof typeof POTENCY_COLORS
+;(Object.keys(POTENCY_COLORS) as Array<PotencyKey>).map((key) => {
   globalWithMediaQueries(`.RawHtml .lw-potency-${key.toLowerCase()}`, {
     display: 'inline-block',
     backgroundColor: POTENCY_COLORS[key],
@@ -131,7 +132,12 @@ const aspectInner = {
 globalWithMediaQueries('.RawHtml .lw-16-9', aspect16to9)
 globalWithMediaQueries('.RawHtml .lw-16-9 iframe', aspectInner)
 
-const RawHtml = ({ type = 'div', dangerouslySetInnerHTML }) =>
+export interface RawHtmlProps {
+  type: 'div' | 'span'
+  dangerouslySetInnerHTML: { __html: string | TrustedHTML }
+}
+
+const RawHtml = ({ type = 'div', dangerouslySetInnerHTML }: RawHtmlProps) =>
   createElement(type, {
     className: 'RawHtml',
     dangerouslySetInnerHTML,

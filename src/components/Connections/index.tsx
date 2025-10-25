@@ -1,51 +1,71 @@
-import React, { Component } from 'react'
+import { Component } from 'react'
 
 import { intersperse } from '../../../lib/helpers'
 
-import { WHITE, BLACK, GREY_DARK, POTENCY_COLORS } from '../../theme'
+import {
+  BLACK,
+  GREY_DARK,
+  POTENCY_COLORS,
+  POTENCY_COLORS_KEYS,
+  WHITE,
+} from '../../theme'
 import GuestIcon from '../../assets/Guest'
 import ContextBox, { ContextBoxValue } from '../ContextBox'
 import { metaRule } from '../Styled'
 import Legend from './Legend'
-import Message, { withT } from '../Message'
-import { shallowEqual } from '../../utils/helpers'
-import { chfFormat } from 'src/utils/formats'
+import Message, { useT } from '../Message'
+import { chfFormat } from '../../utils/formats'
 import { itemPath, shouldIgnoreClick } from '../../utils/routes'
-import { withRouter } from 'next/router'
-import layout, { START_Y } from './layout'
-import nest from './nest'
-import { set } from 'd3-collection'
+import { NextRouter, useRouter } from 'next/router'
+import layout, { LayoutDatum, LayoutNode, START_Y } from './layout'
+import nestConnections, {
+  HoverItem,
+  HoverValue,
+  NestConnectionsProps,
+} from './nest'
+import { set, Set } from 'd3-collection'
 import * as style from './style'
 import { Center } from '../Frame'
 
 import Icons from '../../assets/TypeIcons'
+import { Locale, MappedConnection } from '../../../lib/types'
+import { shallowEqual } from 'shallow-equal'
 
-class Connections extends Component {
-  constructor(
-    properties = {
-      directness: 0,
-      potency: false,
-      intermediate: () => '',
-      intermediates: [],
-      groupByDestination: false,
-      maxGroups: undefined,
-      connectionWeight: connectionWeight,
-      hoverValues,
-    },
-  ) {
-    super(properties)
-    this.state = {
-      nodes: [],
-      links: [],
-      open: set(),
-    }
+interface ConnectionsProps extends NestConnectionsProps {
+  locale: Locale
+  router: NextRouter
+  updated?: string
+  published?: string
+}
 
-    this.measure = () => {
-      const { nodes } = this.state
+export interface ConnectionsState {
+  nodes: Array<LayoutNode>
+  links: Array<LayoutNode & { source: LayoutNode; target: LayoutNode }>
+  open: Set
+  hover?: HoverItem | null
+  width?: number
+  hierarchy?: LayoutNode
+  previousProps?: NestConnectionsProps
+}
 
-      const containerRect = this.containerRef.getBoundingClientRect()
+class Connections extends Component<ConnectionsProps, ConnectionsState> {
+  state: ConnectionsState = {
+    nodes: [],
+    links: [],
+    open: set(),
+  }
 
-      for (const { data, ref } of nodes) {
+  private containerRef?: null | HTMLDivElement
+  private svgRef?: null | SVGSVGElement
+  private hoverNode?: null | LayoutNode
+
+  private measure = () => {
+    const { nodes } = this.state
+
+    const containerRect = this.containerRef?.getBoundingClientRect()
+
+    for (const { data, ref } of nodes) {
+      if (ref != null) {
         ref.style.removeProperty('position')
         ref.style.removeProperty('left')
         ref.style.removeProperty('top')
@@ -55,29 +75,32 @@ class Connections extends Component {
           height: Math.ceil(rect.height),
         }
       }
-
-      const width = containerRect.width
-      if (width !== this.state.width) {
-        this.setState({ width })
-      }
-      this.layout()
     }
+
+    const width = containerRect?.width
+    if (width !== this.state.width) {
+      this.setState({ width })
+    }
+    this.layout()
   }
 
-  static getDerivedStateFromProps(properties, state) {
+  static getDerivedStateFromProps(
+    properties: NestConnectionsProps,
+    state: ConnectionsState,
+  ) {
     if (state.previousProps && shallowEqual(properties, state.previousProps)) {
       return null
     }
-    const hierarchy = nest(properties)
-    const nodes = hierarchy.descendants()
+    const hierarchy = nestConnections(properties)
+    const nodes = hierarchy.descendants() as unknown as Array<LayoutNode>
     for (const node of nodes) {
-      node.setRef = (reference) => {
+      node.setRef = (reference: HTMLElement | SVGElement | null) => {
         node.ref = reference
       }
     }
-    const links = hierarchy.links()
+    const links = hierarchy.links() as unknown as Array<LayoutNode>
     for (const [, link] of links.entries()) {
-      link.setRef = (reference) => {
+      link.setRef = (reference: HTMLElement | SVGElement | null) => {
         link.ref = reference
       }
     }
@@ -94,23 +117,30 @@ class Connections extends Component {
   }
 
   layout() {
-    const height = layout(this.state)
+    const height =
+      this.state.hierarchy != null
+        ? layout(this.state.hierarchy, this.state.width ?? 0, (id) =>
+            this.state.open.has(id),
+          )
+        : 0
 
     const { nodes, links, open } = this.state
     const openSize = open.size()
     for (const { x, y, data, ref, parent, depth } of nodes) {
-      ref.style.position = 'absolute'
-      ref.style.left = `${x}px`
-      ref.style.top = `${y}px`
-      ref.style.margin = '0'
-      if (openSize) {
-        ref.style.opacity =
-          open.has(data.id) ||
-          (parent && open.has(parent.data.id) && depth > openSize)
-            ? 1
-            : 0.2
-      } else {
-        ref.style.opacity = 1
+      if (ref != null) {
+        ref.style.position = 'absolute'
+        ref.style.left = `${x}px`
+        ref.style.top = `${y}px`
+        ref.style.margin = '0'
+        if (openSize) {
+          ref.style.opacity =
+            open.has(data.id) ||
+            (parent && open.has(parent.data.id) && depth > openSize)
+              ? '1'
+              : '0.2'
+        } else {
+          ref.style.opacity = '1'
+        }
       }
     }
 
@@ -120,10 +150,10 @@ class Connections extends Component {
           ref.style.opacity =
             (source.depth === 0 || open.has(source.data.id)) &&
             (open.has(target.data.id) || target.depth > openSize)
-              ? 1
-              : 0.2
+              ? '1'
+              : '0.2'
         } else {
-          ref.style.opacity = 1
+          ref.style.opacity = '1'
         }
 
         const {
@@ -166,8 +196,8 @@ class Connections extends Component {
       }
     }
 
-    this.containerRef.style.height = `${height}px`
-    this.svgRef.style.height = `${height}px`
+    if (this.containerRef) this.containerRef.style.height = `${height}px`
+    if (this.svgRef) this.svgRef.style.height = `${height}px`
   }
 
   componentDidMount() {
@@ -201,10 +231,10 @@ class Connections extends Component {
     } = this.props
     let viaI = 0
 
-    const getVisible = (parent) =>
+    const getVisible = (parent: LayoutNode | null) =>
       !parent || parent.data.id === 'Root' || open.has(parent.data.id)
     const hasIndirect = !!nodes.find(
-      ({ data }) => data && data.connection && data.connection.indirect,
+      ({ data }) => data && 'connection' in data && data.connection.indirect,
     )
 
     return (
@@ -222,7 +252,7 @@ class Connections extends Component {
                 y={hover.y + hover.data.measurements.height + 12}
                 contextWidth={width}
               >
-                {hoverValues.map(([key, test, render], index) => {
+                {hoverValues?.map(([key, test, render], index) => {
                   const hasValue = test(hover, this.props)
                   if (!hasValue) {
                     return null
@@ -275,7 +305,8 @@ class Connections extends Component {
                 const isVisible = getVisible(parent)
                 const isOpen = open.has(data.id)
                 const toggle = () => {
-                  const isParentOpen = open.has(parent.data.id)
+                  const isParentOpen =
+                    parent != null && open.has(parent.data.id)
                   const nextOpen = isParentOpen ? set([parent.data.id]) : set()
                   if (!isOpen) {
                     nextOpen.add(data.id)
@@ -307,7 +338,13 @@ class Connections extends Component {
                           : undefined,
                       }}
                     >
-                      <span className={indirect ? style.countVia : style.count}>
+                      <span
+                        className={
+                          indirect
+                            ? style.countVia.toString()
+                            : style.count.toString()
+                        }
+                      >
                         {data.count}
                       </span>{' '}
                       {data.label}
@@ -317,14 +354,16 @@ class Connections extends Component {
                 if (data.type === 'Guest') {
                   const isFirst = viaI === 0
                   viaI += 1
-                  const isLast = viaI === intermediates.length
+                  const isLast = viaI === (intermediates?.length ?? 0)
                   return (
                     <span key={data.id}>
                       {!!isFirst && <br />}
                       <a
                         ref={setRef}
                         {...style.bubbleVia}
-                        className={!isVisible ? style.hidden : undefined}
+                        className={
+                          !isVisible ? style.hidden.toString() : undefined
+                        }
                         href={itemPath(
                           {
                             __typename: 'Guest',
@@ -345,7 +384,8 @@ class Connections extends Component {
                             children && children.length > 0 ? 'pointer' : '',
                         }}
                       >
-                        <GuestIcon className={style.icon} /> {data.label}
+                        <GuestIcon className={style.icon.toString()} />{' '}
+                        {data.label}
                       </a>
                       {!!isLast && <br />}
                     </span>
@@ -354,6 +394,7 @@ class Connections extends Component {
                 if (data.type === 'Connection') {
                   const { connection } = data
                   const canHover =
+                    !hoverValues ||
                     hoverValues
                       .map(([, test]) => test(node, this.props))
                       .filter(Boolean).length > 0
@@ -406,7 +447,8 @@ class Connections extends Component {
                         .filter(Boolean)
                         .join(' ')}
                       style={{
-                        backgroundColor: POTENCY_COLORS[connection.potency],
+                        backgroundColor:
+                          POTENCY_COLORS[connection.potency ?? 'LOW'],
                       }}
                     >
                       {connection.to.name}
@@ -449,7 +491,7 @@ class Connections extends Component {
             locale={locale}
             title={t('connections/legend/title')}
             pagePath={t('connections/legend/path').split('/')}
-            items={Object.keys(POTENCY_COLORS).map((key) => ({
+            items={POTENCY_COLORS_KEYS.map((key) => ({
               label: t(`connections/legend/${key}`),
               color: POTENCY_COLORS[key],
             }))}
@@ -479,35 +521,32 @@ class Connections extends Component {
   }
 }
 
-const hoverValues = [
+const hoverValues: Array<HoverValue> = [
   [
     'connections/context/occupation',
-    ({ data: { connection } }, { origin }) =>
+    ({ data }, { origin }) =>
       origin === 'LobbyGroup' &&
-      connection.vias.length === 0 &&
-      connection.function,
+      'connection' in data &&
+      data.connection.vias?.length === 0 &&
+      data.connection.function != null,
   ],
   [
     'connections/context/paths/direct',
     ({ data }, { origin }) =>
-      origin === 'Organisation' && data.connection.function,
+      origin === 'Organisation' &&
+      'connection' in data &&
+      data.connection.function != null,
   ],
   [
     null,
-    ({
-      data: {
-        connection: { paths },
-      },
-    }) => !!paths && paths.length,
-    (
-      {
-        data: {
-          connection: { paths },
-        },
-      },
-      { t, directness },
-    ) =>
-      paths.map((path, index) => (
+    ({ data }) =>
+      'connection' in data &&
+      data.connection.paths != null &&
+      data.connection.paths.length > 0,
+    ({ data }, { t, directness = 0 }) =>
+      'connection' in data &&
+      data.connection.paths != null &&
+      data.connection.paths.map((path, index) => (
         <ContextBoxValue
           key={`paths-${index}`}
           label={t(
@@ -521,10 +560,18 @@ const hoverValues = [
               .flat()
               .reverse()
               .map((via, ii) => {
-                const Icon = Icons[via.to.__typename]
+                const Icon =
+                  via.to.__typename != 'Parliamentarian'
+                    ? Icons[via.to.__typename]
+                    : undefined
                 return (
                   <span key={ii} {...style.pathSegment}>
-                    <Icon className={style.pathSegmentIcon} size={16} />
+                    {Icon && (
+                      <Icon
+                        className={style.pathSegmentIcon.toString()}
+                        size={16}
+                      />
+                    )}
                     {via.to.name}
                     <br />
                     <span {...style.pathSegmentFunction}>{via.function}</span>
@@ -539,40 +586,31 @@ const hoverValues = [
     'connections/context/function',
     ({ data }, { origin }) =>
       (origin === 'Parliamentarian' || origin === 'Guest') &&
-      data.connection.function,
+      'connection' in data &&
+      data.connection.function != null,
   ],
   [
     'connections/context/description',
-    ({ data }) => data.connection.description,
+    ({ data }) => 'connection' in data && data.connection.description != null,
   ],
   [
     'connections/context/compensation',
-    ({
-      data: {
-        connection,
-        connection: { compensations },
-      },
-    }) =>
-      !!compensations &&
-      compensations.length > 0 &&
-      (connection.from?.__typename === 'Parliamentarian' ||
-        connection.to?.__typename === 'Parliamentarian') &&
-      connection.vias.length === 0,
-    (
-      {
-        data: {
-          connection: { compensations },
-        },
-      },
-      { t },
-    ) =>
-      compensations
-        .filter((e, index) => index < 3)
+    ({ data }) =>
+      'connection' in data &&
+      !!data.connection.compensations &&
+      data.connection.compensations.length > 0 &&
+      (data.connection.from?.__typename === 'Parliamentarian' ||
+        data.connection.to?.__typename === 'Parliamentarian') &&
+      data.connection.vias?.length === 0,
+    ({ data }, { t }) =>
+      'connection' in data &&
+      data.connection.compensations
+        ?.filter((e, index) => index < 3)
         .map((compensation, index) => (
           <div key={`compensation-${index}`}>
             {compensation.year}
             {': '}
-            {compensation.money !== null
+            {compensation.money != null
               ? t.pluralize('connections/context/compensation/money', {
                   count: compensation.money,
                   formatted: chfFormat(compensation.money),
@@ -586,10 +624,13 @@ const hoverValues = [
   ],
   [
     'connections/context/lobbygroup',
-    (hover, { origin }) =>
+    ({ data, parent }, { origin }) =>
       (origin === 'Parliamentarian' || origin === 'Guest') &&
-      hover.data.connection.group !== hover.parent.data.label &&
-      hover.data.connection.group,
+      'connection' in data &&
+      (parent?.data == null ||
+        !('label' in parent.data) ||
+        data.connection.group !== parent?.data.label) &&
+      data.connection.group != null,
   ],
 ]
 
@@ -599,18 +640,30 @@ const POTENCY_WEIGHT = {
   LOW: 1,
 }
 
-export const connectionWeight = (connection) =>
-  POTENCY_WEIGHT[connection.potency] || 1
+export const connectionWeight = (connection: MappedConnection) =>
+  POTENCY_WEIGHT[connection.potency ?? 'LOW']
 
-Connections.defaultProps = {
-  directness: 0,
-  potency: false,
-  intermediate: () => '',
-  intermediates: [],
-  groupByDestination: false,
-  maxGroups: undefined,
-  connectionWeight: connectionWeight,
-  hoverValues,
+interface NewConnectionsProps extends Omit<NestConnectionsProps, 't'> {
+  locale: Locale
+  data: Array<MappedConnection>
+  published?: string
+  updated?: string
 }
 
-export default withT(withRouter(Connections))
+function NewConnections(props: NewConnectionsProps) {
+  const t = useT(props.locale)
+  const router = useRouter()
+  const defaultProps = {
+    directness: 0,
+    potency: false,
+    intermediate: () => '',
+    intermediates: [],
+    groupByDestination: false,
+    maxGroups: undefined,
+    connectionWeight: connectionWeight,
+    hoverValues,
+  }
+  return <Connections {...defaultProps} {...props} t={t} router={router} />
+}
+
+export default NewConnections

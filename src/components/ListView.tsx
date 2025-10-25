@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { metaRule } from './Styled'
-import { LW_BLUE, GREY_LIGHT, mediaM } from '../theme'
+import { GREY_LIGHT, LW_BLUE, mediaM } from '../theme'
 import { css } from 'glamor'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -9,6 +9,7 @@ import { itemPath } from '../utils/routes'
 import Grid, { GridItem } from './Grid'
 
 import Icons from '../assets/TypeIcons'
+import { Locale, MappedObject } from '../../lib/types'
 
 const SYMBOL_SIZE = 32
 const symbolStyle = css({
@@ -47,7 +48,7 @@ const metaStyle = css(metaRule, {
   },
 })
 
-const defaultTitle = (item) => {
+const defaultTitle = (item: MappedObject) => {
   switch (item.__typename) {
     case 'Parliamentarian':
     case 'Guest':
@@ -57,7 +58,7 @@ const defaultTitle = (item) => {
   }
 }
 
-const defaultSubtitle = (item) => {
+const defaultSubtitle = (item: MappedObject) => {
   switch (item.__typename) {
     case 'Parliamentarian':
       return [
@@ -87,7 +88,15 @@ const defaultSubtitle = (item) => {
   }
 }
 
-const ListView = (props) => {
+export interface ListViewProps<A extends MappedObject> {
+  locale: Locale
+  items: Array<A>
+  maxWidth?: number
+  title?: (a: A) => string
+  subtitle?: (a: A) => string
+}
+
+function ListView<A extends MappedObject>(props: ListViewProps<A>) {
   const {
     locale,
     items,
@@ -96,22 +105,26 @@ const ListView = (props) => {
     subtitle = defaultSubtitle,
   } = props
   const elements = items.map((item) => {
-    const { __typename, id, portrait } = item
-    const Icon = Icons[__typename]
+    const Icon = !('portrait' in item) ? Icons[item.__typename] : undefined
     return (
-      <Link key={id} href={itemPath(item, locale)} prefetch={false} {...aStyle}>
-        {!!portrait && (
+      <Link
+        key={item.id}
+        href={itemPath(item, locale)}
+        prefetch={false}
+        {...aStyle}
+      >
+        {'portrait' in item && (
           <span {...symbolStyle} {...portraitStyle}>
             <Image
               width={SYMBOL_SIZE}
               height={SYMBOL_SIZE}
-              src={portrait}
+              src={item.portrait}
               alt=''
             />
           </span>
         )}
-        {!portrait && !!Icon && (
-          <Icon className={symbolStyle} size={SYMBOL_SIZE} />
+        {!!Icon && (
+          <Icon className={symbolStyle.toString()} size={SYMBOL_SIZE} />
         )}
         <span>
           {title(item)}

@@ -4,15 +4,15 @@ import { useRouter } from 'next/router'
 
 import { getSafeLocale, locales } from '../../../constants'
 import CreativeCommons from '../../assets/CreativeCommons'
-import { BLACK, FRAME_PADDING, LW_BLUE, WHITE, mediaM } from '../../theme'
+import { BLACK, mediaM } from '../../theme'
 import { typeSegments } from '../../utils/routes'
 import { JsonLd } from '../JsonLd'
 import { useT } from '../Message'
-import DefaultHeader, { SEARCH_MAX_WIDTH } from './Header'
-import LoadingBar from './LoadingBar'
+import Header from './Header'
 import SearchContext, { useSearchContextState } from './SearchContext'
 
-import { metaStyle, Hr } from '../Styled'
+import { Hr, metaStyle } from '../Styled'
+import { ReactNode } from 'react'
 
 export { default as Center } from './Center'
 
@@ -22,23 +22,6 @@ css.global('body, h1, h2, h3, h4, h5, h6, input, textarea', {
   fontFamily: "'Roboto', sans-serif",
 })
 css.global('body', { color: BLACK })
-
-const promoContainerStyle = css({
-  // borderTop: `1px solid ${LW_BLUE_DARK}`,
-  // borderBottom: `1px solid ${LW_BLUE_DARK}`,
-  backgroundColor: LW_BLUE,
-  color: WHITE,
-  // color: '#fff'
-})
-const promoStyle = css({
-  margin: '0 auto',
-  maxWidth: SEARCH_MAX_WIDTH,
-  padding: `10px ${FRAME_PADDING}px`,
-  textAlign: 'center',
-  '& a': {
-    color: 'inherit',
-  },
-})
 
 const ccContainerStyle = css({
   [mediaM]: {
@@ -51,6 +34,7 @@ const ccTextStyle = css({
   ...metaStyle,
   textAlign: 'center',
   [mediaM]: {
+    // @ts-expect-error Can't be indexed by object
     ...metaStyle[mediaM],
     margin: 0,
     textAlign: 'left',
@@ -58,13 +42,11 @@ const ccTextStyle = css({
   },
 })
 
-const Frame = ({
-  localizeHref,
-  children,
-  Header = DefaultHeader,
-  footerProps,
-  focusMode = false,
-}) => {
+export interface FrameProps {
+  children: ReactNode
+}
+
+const Frame = ({ children }: FrameProps) => {
   const {
     asPath,
     query: { locale: queryLocale },
@@ -88,21 +70,19 @@ const Frame = ({
     },
   ].map((item) => ({
     ...item,
-    active: item.active ?? asPath.startsWith(item.href),
+    active: asPath.startsWith(item.href),
   }))
 
   const localizedRoutes = locales
     .filter((locale) => locale !== currentLocale)
     .map((locale) => {
-      const href = localizeHref
-        ? localizeHref(locale)
-        : asPath
-            .split('/')
-            .map((segment, i) =>
-              i === 1 && segment === currentLocale ? locale : segment,
-            )
-            .join('/')
-            .split('?')[0]
+      const href = asPath
+        .split('/')
+        .map((segment, i) =>
+          i === 1 && segment === currentLocale ? locale : segment,
+        )
+        .join('/')
+        .split('?')[0]
       return {
         locale,
         href,
@@ -120,7 +100,6 @@ const Frame = ({
   return (
     <SearchContext.Provider value={searchContextState}>
       <header>
-        <LoadingBar />
         <JsonLd
           data={{ '@context': 'http://schema.org/', '@type': 'WPHeader' }}
         />
@@ -133,21 +112,7 @@ const Frame = ({
           locale={currentLocale}
           menuItems={menuItems}
           localeLinks={localeLinks}
-          focusMode={focusMode}
         />
-        {t('banner/text', undefined, false) && (
-          <div {...promoContainerStyle}>
-            <div {...promoStyle}>
-              {t.elements('banner/text', {
-                link: (
-                  <a key='link' href={t('banner/link/href')}>
-                    {t('banner/link/text')}
-                  </a>
-                ),
-              })}
-            </div>
-          </div>
-        )}
       </header>
       <main>{children}</main>
       <footer>

@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { Component, ReactNode, useState } from 'react'
 import Image from 'next/image'
 import { css } from 'glamor'
 
 import { A, StyledLink, Clear, h1Rule, metaRule, TextCenter } from './Styled'
-import { withT } from './Message'
+import { useT, withT } from './Message'
 import { ContextBoxValue } from './ContextBox'
 
 import { intersperse } from '../../lib/helpers'
@@ -13,6 +13,8 @@ import { itemPath } from '../utils/routes'
 import { GREY_LIGHT } from '../theme'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
+import { Formatter } from '../../lib/translate'
+import { Locale, MappedObject, MappedParliamentarian } from '../../lib/types'
 
 const titleStyle = css(h1Rule, {
   marginTop: 0,
@@ -50,7 +52,15 @@ const expandIconStyle = css({
   float: 'right',
 })
 
-const defaultDetails = (d, t, locale) => {
+// type DetailsResult<A extends MappedObject> = Array<[keyof A] | [keyof A, (x: A[keyof A]) => string | undefined]>
+
+type DetailsFn = <A extends MappedObject, K extends keyof A>(
+  d: A,
+  t: Formatter,
+  locale: Locale,
+) => Array<[K] | [K, (v: A[K], a: A) => string | number]>
+
+const defaultDetails = ((d, t, locale) => {
   switch (d.__typename) {
     case 'Parliamentarian':
       return [
@@ -58,17 +68,22 @@ const defaultDetails = (d, t, locale) => {
         [
           'councilTenure',
           () => {
-            const years = Math.floor(d.councilTenure / 12)
-            const months = d.councilTenure % 12
+            if (d.councilTenure != null) {
+              const years = Math.floor(d.councilTenure / 12)
+              const months = d.councilTenure % 12
 
-            return (
-              [
-                years && t.pluralize('detail/value/years', { count: years }),
-                months && t.pluralize('detail/value/months', { count: months }),
-              ]
-                .filter(Boolean)
-                .join(' ') + ` (${d.councilJoinDate})`
-            )
+              return (
+                [
+                  years && t.pluralize('detail/value/years', { count: years }),
+                  months &&
+                    t.pluralize('detail/value/months', { count: months }),
+                ]
+                  .filter(Boolean)
+                  .join(' ') + ` (${d.councilJoinDate})`
+              )
+            } else {
+              return ''
+            }
           },
         ],
         ['age', () => t.pluralize('detail/value/years', { count: d.age })],
@@ -123,9 +138,9 @@ const defaultDetails = (d, t, locale) => {
     default:
       return []
   }
-}
+}) as DetailsFn
 
-const defaultSubtitle = (d, t, locale) => {
+const defaultSubtitle = (d: MappedObject, t: Formatter, locale: Locale) => {
   switch (d.__typename) {
     case 'Parliamentarian':
       return [
@@ -176,80 +191,100 @@ const defaultSubtitle = (d, t, locale) => {
   }
 }
 
-const defaultImage = (d) => d.portrait
-const defaultTitle = (d) => d.name
+const defaultImage = (d: MappedObject) =>
+  d.__typename === 'Parliamentarian' ? d.portrait : undefined
+const defaultTitle = (d: MappedObject) => d.name
 
-class DetailHead extends Component {
-  constructor(properties) {
-    super(properties)
-    this.state = {
-      expanded: false,
-    }
-  }
-
-  render() {
-    const {
-      data,
-      t,
-      locale,
-      image = defaultImage,
-      title = defaultTitle,
-      subtitle = defaultSubtitle,
-      details = defaultDetails,
-    } = this.props
-    const { expanded } = this.state
-    const Icon = Icons[data.__typename]
-    const img = image(data, t, locale)
-    const detailFields = details(data, t, locale)
-    return (
-      <TextCenter>
-        {!!img && (
-          <span {...symbolStyle} {...imageStyle}>
-            <Image
-              width={SYMBOL_SIZE}
-              height={SYMBOL_SIZE}
-              src={img}
-              priority
-              alt=''
-            />
-          </span>
-        )}
-        {!img && !!Icon && <Icon className={symbolStyle} size={SYMBOL_SIZE} />}
-        <h1 {...titleStyle}>{title(data, t, locale)}</h1>
-        <p {...metaStyle}>{subtitle(data, t, locale)}</p>
-        {detailFields.length > 0 && (
-          <Clear {...detailBoxStyle}>
-            <A
-              {...expandLinkStyle}
-              href=''
-              onClick={(e) => {
-                e.preventDefault()
-                this.setState({ expanded: !expanded })
-              }}
-            >
-              {t.first([`detail/${data.__typename}/title`, 'detail/title'])}
-              <ExpandIcon className={expandIconStyle} expanded={expanded} />
-            </A>
-            <div
-              style={{
-                display: expanded ? 'block' : 'none',
-                paddingBottom: 16,
-              }}
-            >
-              {detailFields.map(([key, renderer]) => (
-                <ContextBoxValue key={key} label={t(`detail/label/${key}`)}>
-                  {renderer ? renderer(data[key], data) : data[key]}
-                </ContextBoxValue>
-              ))}
-            </div>
-          </Clear>
-        )}
-      </TextCenter>
-    )
-  }
+export interface DetailHeadProps {
+  data: MappedObject
+  locale: Locale
+  image?: (d: MappedObject, t: Formatter, locale: Locale) => string
+  title?: (d: MappedObject, t: Formatter, locale: Locale) => ReactNode
+  subtitle?: (d: MappedObject, t: Formatter, locale: Locale) => ReactNode
+  details?: DetailsFn
 }
 
-const formatCommissions = (value) =>
+export interface DetailHeadState {
+  expanded: boolean
+}
+
+const DetailHead = (props: DetailHeadProps) => {
+  const [state, setState] = useState<DetailHeadState>({
+    expanded: false,
+  })
+  const {
+    data,
+    locale,
+    image = defaultImage,
+    title = defaultTitle,
+    subtitle = defaultSubtitle,
+    details = defaultDetails,
+  } = props
+  const t = useT(locale)
+  const { expanded } = state
+  const Icon =
+    data.__typename !== 'Parliamentarian' ? Icons[data.__typename] : undefined
+  const img = image(data, t, locale)
+  const detailFields = details(data, t, locale)
+  return (
+    <TextCenter>
+      {!!img && (
+        <span {...symbolStyle} {...imageStyle}>
+          <Image
+            width={SYMBOL_SIZE}
+            height={SYMBOL_SIZE}
+            src={img}
+            priority
+            alt=''
+          />
+        </span>
+      )}
+      {!img && !!Icon && (
+        <Icon className={symbolStyle.toString()} size={SYMBOL_SIZE} />
+      )}
+      <h1 {...titleStyle}>{title(data, t, locale)}</h1>
+      <p {...metaStyle}>{subtitle(data, t, locale)}</p>
+      {detailFields.length > 0 && (
+        <Clear {...detailBoxStyle}>
+          <A
+            {...expandLinkStyle}
+            href=''
+            onClick={(e) => {
+              e.preventDefault()
+              setState({ expanded: !expanded })
+            }}
+          >
+            {t.first([`detail/${data.__typename}/title`, 'detail/title'])}
+            <ExpandIcon
+              className={expandIconStyle.toString()}
+              expanded={expanded}
+            />
+          </A>
+          <div
+            style={{
+              display: expanded ? 'block' : 'none',
+              paddingBottom: 16,
+            }}
+          >
+            {detailFields.map(([key, renderer]) => (
+              <ContextBoxValue key={key} label={t(`detail/label/${key}`)}>
+                {
+                  renderer
+                    ? renderer(data[key], data)
+                    : (data[
+                        key
+                      ] as any) /* Not sure what this fallback is supposed to be */
+                }
+              </ContextBoxValue>
+            ))}
+          </div>
+        </Clear>
+      )}
+    </TextCenter>
+  )
+}
+
+const formatCommissions = (value: Array<{ name: string; abbr: string }>) =>
   value.length > 0 &&
   value.map((c, index) => (
     <span key={index}>
@@ -257,7 +292,7 @@ const formatCommissions = (value) =>
     </span>
   ))
 
-const formatWebsite = (value) => {
+const formatWebsite = (value?: string) => {
   if (!value) return null
   const label = value.replace(/^https?:\/\//, '').replace(/\/$/, '')
 
@@ -268,4 +303,4 @@ const formatWebsite = (value) => {
   )
 }
 
-export default withT(DetailHead)
+export default DetailHead
