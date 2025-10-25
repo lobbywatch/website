@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import { css } from 'glamor'
+import React, { Component, ReactNode } from 'react'
+import { css, keyframes } from 'glamor'
 import { GREY_MID, HEADER_HEIGHT } from '../theme'
 import { Center } from './Frame'
 
@@ -8,7 +8,12 @@ const spacerStyle = css({
   minWidth: '100%',
   minHeight: ['100vh', `calc(100vh - ${HEADER_HEIGHT}px)`],
 })
-const Spacer = ({ height, width, children }) => (
+export interface SpacerProps {
+  height?: number
+  width?: number
+  children?: ReactNode
+}
+const Spacer = ({ height, width, children }: SpacerProps) => (
   <div {...spacerStyle} style={{ minWidth: width, minHeight: height }}>
     {children}
   </div>
@@ -21,7 +26,7 @@ const containerStyle = css({
   top: '50%',
   left: '50%',
 })
-const spin = css.keyframes({
+const spin = keyframes({
   '0%': { opacity: 1 },
   '100%': { opacity: 0.15 },
 })
@@ -36,9 +41,25 @@ const barStyle = css({
   left: '-10%',
 })
 
-class Loader extends Component {
+export interface LoaderProps {
+  render: () => ReactNode
+  delay?: number
+  width?: number
+  height?: number
+  loading?: boolean
+  error?: string
+}
+
+interface LoaderState {
+  visible: boolean
+}
+
+class Loader extends Component<LoaderProps, LoaderState> {
+  private timeout?: NodeJS.Timeout
+
   constructor(
-    properties = {
+    properties: LoaderProps = {
+      render: () => null,
       delay: 500,
     },
   ) {
@@ -67,12 +88,10 @@ class Loader extends Component {
     } else if (loading) {
       const bars = []
       for (let index = 0; index < 12; index++) {
-        const style = {}
-        style.WebkitAnimationDelay = style.animationDelay =
-          (index - 12) / 10 + 's'
-        style.WebkitTransform = style.transform =
-          'rotate(' + index * 30 + 'deg) translate(146%)'
-
+        const style = {
+          animationDelay: (index - 12) / 10 + 's',
+          transform: 'rotate(' + index * 30 + 'deg) translate(146%)',
+        }
         bars.push(<div {...barStyle} style={style} key={index} />)
       }
 

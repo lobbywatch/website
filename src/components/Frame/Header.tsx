@@ -11,10 +11,11 @@ import {
 } from '../../theme'
 import Logo from '../../assets/Logo'
 
-import Menu from './Menu'
+import Menu, { MenuItem } from './Menu'
 import Toggle from './Toggle'
 import SearchField from './SearchField'
 import Center from './Center'
+import { Locale } from '../../../lib/types'
 
 const titleStyle = css({
   fontSize: 24,
@@ -58,7 +59,21 @@ const searchBoxStyle = css({
   maxWidth: SEARCH_MAX_WIDTH,
 })
 
-const Header = ({ locale, menuItems, localeLinks, transparent, focusMode }) => {
+export interface HeaderProps {
+  locale: Locale
+  menuItems: Array<MenuItem>
+  localeLinks: Array<MenuItem>
+  transparent?: boolean
+  focusMode?: boolean
+}
+
+const Header = ({
+  locale,
+  menuItems,
+  localeLinks,
+  transparent,
+  focusMode,
+}: HeaderProps) => {
   const [expanded, setExpanded] = useState(false)
 
   return (

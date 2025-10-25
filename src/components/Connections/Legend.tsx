@@ -5,6 +5,7 @@ import { intersperse } from '../../../lib/helpers'
 
 import { LW_BLUE, GREY_DARK, mediaM } from '../../theme'
 import { Clear } from '../Styled'
+import { Locale } from '../../../lib/types'
 
 const legendContainer = css({
   paddingTop: 20,
@@ -47,7 +48,21 @@ const legendBubble = css({
   borderRadius: '50%',
 })
 
-const Legend = ({ locale, title, pagePath, items }) => (
+export interface LegendItem {
+  label: string
+  color: string
+  textColor?: string
+  border?: string
+}
+
+export interface LegendProps {
+  locale: Locale
+  title: string
+  pagePath?: Array<string>
+  items: Array<LegendItem>
+}
+
+const Legend = ({ locale, title, pagePath, items }: LegendProps) => (
   <Clear {...legendContainer}>
     {!!pagePath && (
       <Link href={`/${locale}/${pagePath.join('/')}`} {...legendLink}>

@@ -55,7 +55,13 @@ const toggleStyle = css(plainButtonRule, {
   },
 })
 
-const Toggle = ({ expanded, onClick, id }) => (
+export interface ToggleProps {
+  id: string
+  expanded: boolean
+  onClick: () => void
+}
+
+const Toggle = ({ expanded, onClick, id }: ToggleProps) => (
   <button
     {...toggleStyle}
     onClick={onClick}

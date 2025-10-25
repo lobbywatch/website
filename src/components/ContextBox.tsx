@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { css } from 'glamor'
 
 import { metaRule } from './Styled'
@@ -79,7 +79,12 @@ const labledValueStyle = css({
   },
 })
 
-export const ContextBoxValue = ({ label, children }) => {
+export interface ContextBoxValueProps {
+  label: string
+  children?: ReactNode
+}
+
+export const ContextBoxValue = ({ label, children }: ContextBoxValueProps) => {
   if (!children) {
     return null
   }
@@ -96,15 +101,22 @@ export const ContextBoxValue = ({ label, children }) => {
   )
 }
 
+export interface ContextBoxProps {
+  label?: string
+  x?: number
+  y?: number
+  contextWidth?: number
+  children?: ReactNode
+}
+
 const ContextBox = ({
-  orientation: yOrientation = 'below',
-  x,
-  y,
-  contextWidth,
+  x = 0,
+  y = 0,
+  contextWidth = 0,
   children,
-}) => {
+}: ContextBoxProps) => {
   const maxWidth = Math.min(400, contextWidth)
-  let xOrientation = 'center'
+  let xOrientation: 'left' | 'center' | 'right' = 'center'
   if (contextWidth - x < maxWidth / 2) {
     xOrientation = 'right'
   } else if (x < maxWidth / 2) {
@@ -114,13 +126,13 @@ const ContextBox = ({
   return (
     <div
       {...boxStyle}
-      className={boxPosition[yOrientation][xOrientation]}
+      className={boxPosition['below'][xOrientation].toString()}
       style={{ left: x, top: y, maxWidth }}
     >
       <div>{children}</div>
       <div
         {...notchStyle}
-        className={notchPosition[yOrientation][xOrientation]}
+        className={notchPosition['below'][xOrientation].toString()}
       />
     </div>
   )

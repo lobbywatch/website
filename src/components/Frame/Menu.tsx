@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { css } from 'glamor'
 import { StyledLink } from '../Styled'
 import {
@@ -87,7 +87,20 @@ const listItemSeparatorStyle = css({
   },
 })
 
-const Menu = ({ items, expanded, id }) => {
+export interface MenuItem {
+  label: ReactNode;
+  href: string;
+  active?: boolean;
+  separator?: boolean;
+}
+
+export interface MenuProps {
+  id: string;
+  items: Array<MenuItem>;
+  expanded?: boolean
+}
+
+const Menu = ({ items, expanded = false, id }: MenuProps) => {
   return (
     <nav {...menuStyle} role='navigation' id={id} data-expanded={expanded}>
       <ul {...listStyle}>

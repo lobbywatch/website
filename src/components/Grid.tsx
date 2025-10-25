@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { css } from 'glamor'
 
 import { mediaM } from '../theme'
@@ -10,11 +10,9 @@ const gridStyle = css({
   flexWrap: 'wrap',
   margin: `0 -${PADDING}px`,
 })
-const Grid = (
-  { children } = {
-    paddingBottom: PADDING * 2,
-  },
-) => <div {...gridStyle}>{children}</div>
+const Grid = ({ children }: { children?: ReactNode }) => (
+  <div {...gridStyle}>{children}</div>
+)
 export default Grid
 
 const gridItemStyle = css({
@@ -25,7 +23,13 @@ const gridItemStyle = css({
     width: '50%',
   },
 })
-export const GridItem = ({ children, paddingBottom }) => (
+export const GridItem = ({
+  children,
+  paddingBottom,
+}: {
+  children?: ReactNode
+  paddingBottom?: number
+}) => (
   <div {...gridItemStyle} style={{ paddingBottom }}>
     {children}
   </div>

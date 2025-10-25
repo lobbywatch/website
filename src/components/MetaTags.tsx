@@ -1,15 +1,30 @@
 import React, { Component } from 'react'
 import Head from 'next/head'
 import { useT } from './Message'
-import { set, nest } from 'd3-collection'
+import { nest, set, Set } from 'd3-collection'
 import { descending } from 'd3-array'
 import { A, H2, Meta } from './Styled'
 import { DRUPAL_BASE_URL, PUBLIC_BASE_URL } from '../../constants'
 import { itemPath } from '../utils/routes'
 import { recursivelyRemoveNullsInPlace } from '../utils/helpers'
 import { convertDateToIso } from '../utils/formats'
+import { Locale, MappedConnection, MappedObject } from '../../lib/types'
+import { Formatter } from '../../lib/translate'
 
-class Raw extends Component {
+export interface RawProps {
+  title: string
+  pageTitle: string
+  description: string
+  image?: string
+  url?: string
+  shorturl?: string
+  publishedIso?: string
+  updatedIso?: string
+  jsonLds?: Array<unknown>
+  locale: Locale
+}
+
+class Raw extends Component<RawProps> {
   render() {
     const {
       title,
@@ -80,29 +95,28 @@ class Raw extends Component {
   }
 }
 
-const pageTitle = (title) => {
+const pageTitle = (title?: string) => {
   return [title, 'Lobbywatch.ch'].filter(Boolean).join(' – ')
 }
 
-const title = (item) => {
+const title = (item: { name: string }): string => {
   return item.name
 }
 
-const description = (item, t) => {
+const description = (item: MappedObject, t: Formatter) => {
   switch (item.__typename) {
     case 'Parliamentarian': {
-      const connections = item.connections.filter(
-        (connection) => connection.vias.length === 0,
-      )
+      const connections =
+        item.connections?.filter(
+          (connection) => connection.vias?.length === 0,
+        ) ?? []
       const displayConnections = connections
         .slice(0, 5)
         .map((connection) => connection.to.name)
       return t.pluralize(`parliamentarian/meta/description/${item.gender}`, {
         councilTitle: item.councilTitle,
         name: item.name,
-        party: item.partyMembership
-          ? item.partyMembership.party.abbr
-          : t('connections/party/none'),
+        party: item.partyMembership?.party?.abbr ?? t('connections/party/none'),
         connections: `${displayConnections.join(', ')}${
           displayConnections.length < connections.length ? '…' : ''
         }`,
@@ -110,37 +124,43 @@ const description = (item, t) => {
       })
     }
     case 'Guest': {
-      const connections = item.connections
-        .slice(0, 5)
-        .map((connection) => connection.to.name)
+      const connections =
+        item.connections?.slice(0, 5).map((connection) => connection.to.name) ??
+        []
       return t.pluralize(`guest/meta/description/${item.gender}`, {
         name: item.name,
         invitedBy: item.parliamentarian.name,
         connections: `${connections.join(', ')}${
-          connections.length < item.connections.length ? '…' : ''
+          connections.length < (item.connections?.length ?? 0) ? '…' : ''
         }`,
-        count: item.connections.length,
+        count: item.connections?.length ?? 0,
       })
     }
     case 'LobbyGroup': {
-      const partyCounts = nest()
-        .key((connection) => connection.group)
+      const partyCounts = nest<MappedConnection, Set>()
+        .key((connection) => connection.group ?? '–')
         .rollup((values) => set(values.map((value) => value.to.id)))
         .entries(
-          item.connections.filter(
+          item.connections?.filter(
             (connection) => connection.to.__typename === 'Parliamentarian',
-          ),
+          ) ?? [],
         )
-        .sort((a, b) => descending(a.value.size(), b.value.size()))
+        .sort((a, b) => descending(a.value?.size(), b.value?.size()))
 
-      const count = partyCounts.reduce((c, party) => c + party.value.size(), 0)
+      const count = partyCounts.reduce(
+        (c, party) => c + (party.value?.size() ?? 0),
+        0,
+      )
 
       return t.pluralize('lobbygroup/meta/description', {
         name: item.name,
         sector: item.branch.name,
         count,
         partyCounts: partyCounts
-          .map((partyCount) => `${partyCount.value.size()} ${partyCount.key}`)
+          .map(
+            (partyCount) =>
+              `${partyCount.value?.size() ?? 0} ${partyCount.key}`,
+          )
           .join(', '),
       })
     }
@@ -150,26 +170,32 @@ const description = (item, t) => {
       })
     }
     case 'Organisation': {
-      const partyCounts = nest()
-        .key((connection) => connection.group)
+      const partyCounts = nest<MappedConnection, Set>()
+        .key((connection) => connection.group ?? '–')
         .rollup((values) => set(values.map((value) => value.to.id)))
         .entries(
-          item.connections.filter(
+          item.connections?.filter(
             (connection) => connection.to.__typename === 'Parliamentarian',
-          ),
+          ) ?? [],
         )
-        .sort((a, b) => descending(a.value.size(), b.value.size()))
+        .sort((a, b) => descending(a.value?.size(), b.value?.size()))
 
-      const count = partyCounts.reduce((c, party) => c + party.value.size(), 0)
+      const count = partyCounts.reduce(
+        (c, party) => c + (party.value?.size() ?? 0),
+        0,
+      )
 
       return t.pluralize('organisation/meta/description', {
         name: item.name,
         legalForm: item.legalForm,
-        uid: item.uid,
+        uid: item.uid ?? '',
         legalFormAndUid: [item.legalForm, item.uid].filter(Boolean).join(', '),
         count,
         partyCounts: partyCounts
-          .map((partyCount) => `${partyCount.value.size()} ${partyCount.key}`)
+          .map(
+            (partyCount) =>
+              `${partyCount.value?.size() ?? []} ${partyCount.key}`,
+          )
           .join(', '),
       })
     }
@@ -190,8 +216,14 @@ const description = (item, t) => {
  * https://developers.google.com/search/docs/data-types/dataset
  * https://search.google.com/test/rich-results
  */
-const generateJsonLds = (locale, t, fromT, item, properties) => {
-  const MAX_HEADLINE = 110
+const generateJsonLds = (
+  locale: Locale,
+  t: Formatter,
+  item: MappedObject,
+  properties?: {
+    url?: string
+  },
+) => {
   const jsonLds = []
   const baseUrl = PUBLIC_BASE_URL || ''
   const baseId = baseUrl + '#'
@@ -244,69 +276,25 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
     creator: lobbywatchOrganization,
   })
 
-  const affiliations = (connections) =>
+  const affiliations = (connections: Array<MappedConnection> = []) =>
     connections
-      .filter((innerItem) => innerItem.to.__typename === 'Organisation')
-      .map((innerItem) => {
-        const linkedItem = innerItem.to
+      .map(({ to }) => to)
+      .filter((innerItem) => innerItem.__typename === 'Organisation')
+      .map((linkedItem) => {
         return {
           '@context': 'https://schema.org',
           '@type': 'Organization',
           '@language': locale,
           '@id': baseId + linkedItem.id,
-          identifier: linkedItem.uid,
           name: linkedItem.name,
           url: baseUrl + itemPath(linkedItem, locale),
-          sameAs: [linkedItem.wikidata_url],
+          // TODO Not available on datum
+          // identifier: linkedItem.uid,
+          // sameAs: [linkedItem.wikidata_url],
         }
       })
 
-  switch (item?.__typename) {
-    case 'Page': {
-      const pageUrl = `${baseUrl}/${locale}/` + item.path.join('/')
-      switch (item.type) {
-        case 'article': {
-          // https://schema.org/NewsArticle, https://jsonld.com/news-article/
-          // https://schema.org/BlogPosting, https://jsonld.com/blog-post/
-          jsonLds.push({
-            '@context': 'https://schema.org',
-            '@type': 'NewsArticle',
-            additionalType: ['BlogPosting'],
-            '@language': locale,
-            '@id': `${baseId}nid-${item.nid}`,
-            headline: item.title?.slice(0, Math.max(0, MAX_HEADLINE)),
-            name: item.title,
-            description: item.lead,
-            inLanguage: locale,
-            url: pageUrl,
-            author: {
-              '@type': 'Person',
-              '@id': `${baseId}uid-${item.authorUid}`,
-              name: item.author,
-            },
-            datePublished: convertDateToIso(item.published),
-            dateModified: convertDateToIso(item.updated),
-            image: item.image,
-            publisher: lobbywatchOrganization,
-          })
-          break
-        }
-        case 'page': {
-          // https://schema.org/WebPage, https://jsonld.com/web-page/
-          jsonLds.push({
-            '@context': 'https://schema.org',
-            '@type': 'WebPage',
-            '@language': locale,
-            '@id': `${baseId}nid-${item.nid}`,
-            name: item.title,
-            description: item.lead,
-            url: pageUrl,
-          })
-          break
-        }
-      }
-      break
-    }
+  switch (item.__typename) {
     case 'Parliamentarian': {
       const NR = {
         '@context': 'https://schema.org',
@@ -339,7 +327,7 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
         birthDate: convertDateToIso(item.dateOfBirth),
         gender: item.gender === 'M' ? 'Male' : 'Female',
         nationality: 'CH',
-        url: properties.url,
+        ...(properties?.url ? { url: properties.url } : {}),
         image: item.portrait,
         sameAs: [
           item.wikidata_url,
@@ -394,7 +382,7 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
         additionalName: guestItem.middleName,
         birthDate: convertDateToIso(guestItem.dateOfBirth),
         gender: guestItem.gender === 'M' ? 'Male' : 'Female',
-        url: properties.url,
+        ...(properties?.url ? { url: properties.url } : {}),
         sameAs: [
           guestItem.wikidata_url,
           guestItem.wikipedia_url,
@@ -428,7 +416,7 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
         identifier: item.uid,
         name: item.name,
         description: item.description,
-        url: properties.url,
+        ...(properties?.url ? { url: properties.url } : {}),
         address: {
           '@type': 'PostalAddress',
           addressLocality: item.location,
@@ -451,22 +439,21 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
           }
         }),
         // "knows" is not specified for Organization, maybe search enginges are not that strict
-        knows: item.connections
-          .filter(
-            (linkedItem) => linkedItem.to.__typename === 'Parliamentarian',
-          )
-          .map((innerItem) => {
-            const linkedItem = innerItem.to
+        knows: (item.connections ?? [])
+          .map(({ to }) => to)
+          .filter((linkedItem) => linkedItem.__typename === 'Parliamentarian')
+          .map((linkedItem) => {
             return {
               '@context': 'https://schema.org',
               '@type': 'Person',
               '@id': baseId + linkedItem.id,
               name: linkedItem.name,
               url: baseUrl + itemPath(linkedItem, locale),
-              sameAs: [
-                linkedItem.wikidata_url,
-                linkedItem.parlament_biografie_url,
-              ],
+              // TODO Not available on datum
+              // sameAs: [
+              //   linkedItem.wikidata_url,
+              //   linkedItem.parlament_biografie_url,
+              // ],
             }
           }),
       })
@@ -479,7 +466,7 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
         '@type': 'Organization',
         '@language': locale,
         '@id': baseId + item.id,
-        url: properties.url,
+        ...(properties?.url ? { url: properties.url } : {}),
         name: item.name,
         description: item.description,
         sameAs: [item.wikipedia_url, item.wikidata_url],
@@ -490,7 +477,7 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
           name: linkedItem.name,
           url: baseUrl + itemPath(linkedItem, locale),
         },
-        member: item.connections
+        member: (item.connections ?? [])
           .filter((linkedItem) =>
             ['Organisation', 'Parliamentarian'].includes(
               linkedItem.to.__typename,
@@ -519,11 +506,11 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
         '@type': 'Organization',
         '@language': locale,
         '@id': baseId + item.id,
-        url: properties.url,
+        ...(properties?.url ? { url: properties.url } : {}),
         name: item.name,
         description: item.description,
         sameAs: [item.wikipedia_url, item.wikidata_url],
-        member: item.connections
+        member: (item.connections ?? [])
           .filter((linkedItem) => linkedItem.to.__typename === 'LobbyGroup')
           .map((innerItem) => {
             const linkedItem = innerItem.to
@@ -545,52 +532,94 @@ const generateJsonLds = (locale, t, fromT, item, properties) => {
   return jsonLds
 }
 
-const MetaTags = ({ locale, fromT, data, page, ...rest }) => {
+interface FromT {
+  (t: Formatter): {
+    title: string
+    description: string
+  }
+}
+
+export interface MetaTagsProps1 {
+  locale: Locale
+  data: MappedObject
+}
+
+export interface MetaTagsProps2 {
+  locale: Locale
+  fromT: FromT
+}
+
+export interface MetaTagsProps3 {
+  locale: Locale
+  title: string
+  description?: string
+  image?: string
+}
+
+export type MetaTagsProps = MetaTagsProps1 | MetaTagsProps2 | MetaTagsProps3
+
+const MetaTags = (props: MetaTagsProps) => {
+  const { locale } = props
   const t = useT(locale)
 
-  let properties = rest
-  if (fromT) {
-    properties = {
-      ...properties,
-      ...fromT(t),
-    }
-  }
-  if (data) {
-    properties = {
-      ...properties,
-      title: title(data, t),
-      description: description(data, t),
-      publishedIso: convertDateToIso(data.published),
-      updatedIso: convertDateToIso(data.updated),
-    }
-
+  if ('data' in props) {
+    const { data } = props
     const detailPath = itemPath(data, locale)
-    if (detailPath) {
-      properties.url = `${PUBLIC_BASE_URL || ''}${detailPath}`
-      properties.shorturl = `${PUBLIC_BASE_URL || ''}${itemPath(
-        { ...data, name: undefined },
-        locale,
-      )}`
-    }
-  } else if (page) {
-    properties.url = `${PUBLIC_BASE_URL || ''}/${locale}/` + page.path.join('/')
-    properties.shorturl = `${PUBLIC_BASE_URL || ''}/${locale}/node/${page.nid}`
+    const url = detailPath ? `${PUBLIC_BASE_URL || ''}${detailPath}` : undefined
+    const shorturl = detailPath
+      ? `${PUBLIC_BASE_URL || ''}${itemPath(
+          { ...data, name: undefined },
+          locale,
+        )}`
+      : undefined
+    return (
+      <Raw
+        locale={locale}
+        title={title(data)}
+        pageTitle={pageTitle(title(data))}
+        description={description(data, t)}
+        publishedIso={convertDateToIso(data.published)}
+        updatedIso={convertDateToIso(data.updated)}
+        jsonLds={
+          url
+            ? generateJsonLds(locale, t, data, { url })
+            : generateJsonLds(locale, t, data)
+        }
+        {...(url && shorturl ? { url, shorturl } : {})}
+      />
+    )
+  } else if ('fromT' in props) {
+    const { title, description } = props.fromT(t)
+    return (
+      <Raw
+        locale={locale}
+        title={title}
+        description={description}
+        pageTitle={pageTitle(title)}
+      />
+    )
+  } else {
+    return (
+      <Raw
+        locale={locale}
+        title={props.title}
+        pageTitle={pageTitle(props.title)}
+        description={props.description ?? ''}
+        image={props.image}
+      />
+    )
   }
-  properties.pageTitle = properties.pageTitle || pageTitle(properties.title)
-  properties.jsonLds = generateJsonLds(
-    locale,
-    t,
-    fromT,
-    data ?? page,
-    properties,
-    rest,
-  )
-  return <Raw {...properties} />
 }
 
 export default MetaTags
 
-export const GooglePreview = ({ data, locale, path }) => {
+export interface GooglePreviewProps {
+  locale: Locale
+  data: MappedObject
+  path: string
+}
+
+export const GooglePreview = ({ data, locale, path }: GooglePreviewProps) => {
   const t = useT(locale)
 
   return (

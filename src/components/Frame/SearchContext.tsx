@@ -1,13 +1,35 @@
-import { createContext, useEffect, useMemo, useState } from 'react'
-import { useRouter } from 'next/router'
+import {
+  createContext,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react'
 
 import { getSafeLocale } from '../../../constants'
+import { useSafeRouter } from '../../../lib/next'
+import { Schema } from 'effect'
+import { Locale } from '../../../lib/types'
+import { ParsedUrlQuery } from 'node:querystring'
 
-let beforeSearch
+let beforeSearch:
+  | undefined
+  | {
+      pathname: string
+      query: ParsedUrlQuery
+    }
 
-const SearchContext = createContext()
+const SearchContext = createContext<
+  readonly [string, Dispatch<SetStateAction<string>>]
+>(['', () => undefined])
 export const useSearchContextState = () => {
-  const router = useRouter()
+  const router = useSafeRouter(
+    Schema.Struct({
+      locale: Schema.optional(Locale),
+      term: Schema.optional(Schema.String),
+    }),
+  )
   const [value, setValue] = useState(router.query.term || '')
   const currentLocale = getSafeLocale(router.query.locale)
 
@@ -40,7 +62,7 @@ export const useSearchContextState = () => {
     }
   }, [router, currentLocale, value])
 
-  return useMemo(() => [value, setValue], [value, setValue])
+  return useMemo(() => [value, setValue] as const, [value, setValue])
 }
 
 export default SearchContext
