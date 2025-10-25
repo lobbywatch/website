@@ -1,5 +1,5 @@
-import React from 'react'
-import NextLink from 'next/link'
+import React, { ReactNode } from 'react'
+import NextLink, { LinkProps } from 'next/link'
 import {
   LW_BLUE,
   LW_BLUE_HOVER,
@@ -35,14 +35,23 @@ export const linkStyle = {
     color: LW_BLUE_HOVER,
   },
 }
+
+export interface NextLinkWithChildren extends LinkProps {
+  className?: string
+  children?: ReactNode
+}
+
 const linkRule = css(linkStyle)
-export const StyledLink = ({ children, ...props }) => (
+export const StyledLink = ({ children, ...props }: NextLinkWithChildren) => (
   <NextLink {...props} {...linkRule}>
     {children}
   </NextLink>
 )
 
-export const A = React.forwardRef(({ children, ...props }, ref) => (
+export const A = React.forwardRef<
+  HTMLAnchorElement,
+  JSX.IntrinsicElements['a']
+>(({ children, ...props }, ref) => (
   <a ref={ref} {...props} {...linkRule}>
     {children}
   </a>
@@ -63,20 +72,22 @@ export const buttonLinkStyle = {
   },
 }
 export const buttonLinkRule = css(buttonLinkStyle)
-export const ButtonLink = ({ children, ...props }) => (
+export const ButtonLink = ({ children, ...props }: NextLinkWithChildren) => (
   <NextLink {...props} {...buttonLinkRule}>
     {children}
   </NextLink>
 )
 
-const textCenterRule = css({
-  textAlign: 'center',
-})
-export const TextCenter = ({ children, ...props }) => (
-  <div {...props} {...textCenterRule}>
+const textCenterRule = css({ textAlign: 'center' })
+export const TextCenter = React.forwardRef<
+  HTMLDivElement,
+  JSX.IntrinsicElements['div']
+>(({ children, ...props }, ref) => (
+  <div ref={ref} {...props} {...textCenterRule}>
     {children}
   </div>
-)
+))
+TextCenter.displayName = 'TextCenter'
 
 export const h1Style = {
   fontSize: 32,
@@ -89,11 +100,15 @@ export const h1Style = {
   margin: '0.7em 0',
 }
 export const h1Rule = css(h1Style)
-export const H1 = ({ children, ...props }) => (
-  <h1 {...props} {...h1Rule}>
+export const H1 = React.forwardRef<
+  HTMLHeadingElement,
+  JSX.IntrinsicElements['h1']
+>(({ children, ...props }, ref) => (
+  <h1 ref={ref} {...props} {...h1Rule}>
     {children}
   </h1>
-)
+))
+H1.displayName = 'H1'
 
 export const h2Style = {
   fontSize: 24,
@@ -102,11 +117,15 @@ export const h2Style = {
   margin: '0.8em 0',
 }
 export const h2Rule = css(h2Style)
-export const H2 = ({ children, ...props }) => (
-  <h2 {...props} {...h2Rule}>
+export const H2 = React.forwardRef<
+  HTMLHeadingElement,
+  JSX.IntrinsicElements['h2']
+>(({ children, ...props }, ref) => (
+  <h2 ref={ref} {...props} {...h2Rule}>
     {children}
   </h2>
-)
+))
+H2.displayName = 'H2'
 
 export const h3Style = {
   fontSize: 18,
@@ -115,43 +134,35 @@ export const h3Style = {
   margin: '0 0 1em',
 }
 export const h3Rule = css(h3Style)
-export const H3 = ({ children, ...props }) => (
-  <h3 {...props} {...h3Rule}>
+export const H3 = React.forwardRef<
+  HTMLHeadingElement,
+  JSX.IntrinsicElements['h3']
+>(({ children, ...props }, ref) => (
+  <h3 ref={ref} {...props} {...h3Rule}>
     {children}
   </h3>
-)
+))
+H3.displayName = 'H3'
 
 export const pStyle = {
   fontSize: 16,
   lineHeight: '24px',
 }
 export const pRule = css(pStyle)
-export const P = ({ children, ...props }) => (
-  <p {...props} {...pRule}>
+export const P = React.forwardRef<
+  HTMLParagraphElement,
+  JSX.IntrinsicElements['p']
+>(({ children, ...props }, ref) => (
+  <p ref={ref} {...props} {...pRule}>
     {children}
   </p>
-)
+))
+P.displayName = 'P'
 
 export const smallStyle = {
   fontSize: 14,
   lineHeight: '20px',
 }
-export const smallRule = css(smallStyle)
-export const Small = ({ children, ...props }) => (
-  <small {...props} {...smallRule}>
-    {children}
-  </small>
-)
-
-export const strongStyle = {
-  fontWeight: 700,
-}
-export const strongRule = css(strongStyle)
-export const Strong = ({ children, ...props }) => (
-  <strong {...props} {...strongRule}>
-    {children}
-  </strong>
-)
 
 export const metaStyle = {
   fontSize: 12,
@@ -163,11 +174,15 @@ export const metaStyle = {
   },
 }
 export const metaRule = css(metaStyle)
-export const Meta = ({ children, ...props }) => (
-  <p {...props} {...metaRule}>
+export const Meta = React.forwardRef<
+  HTMLParagraphElement,
+  JSX.IntrinsicElements['p']
+>(({ children, ...props }, ref) => (
+  <p ref={ref} {...props} {...metaRule}>
     {children}
   </p>
-)
+))
+Meta.displayName = 'Meta'
 
 export const hrStyle = {
   margin: '30px 0',
@@ -175,7 +190,10 @@ export const hrStyle = {
   borderTop: `1px solid ${GREY_LIGHT}`,
 }
 export const hrRule = css(hrStyle)
-export const Hr = (props) => <hr {...props} {...hrRule} />
+export const Hr = React.forwardRef<HTMLHRElement, JSX.IntrinsicElements['hr']>(
+  (props, ref) => <hr ref={ref} {...props} {...hrRule} />,
+)
+Hr.displayName = 'Hr'
 
 export const inputStyle = {
   appearance: 'none',
@@ -205,7 +223,11 @@ export const inputStyle = {
   },
 }
 export const inputRule = css(inputStyle)
-export const Input = (props) => <input {...props} {...inputRule} />
+export const Input = React.forwardRef<
+  HTMLInputElement,
+  JSX.IntrinsicElements['input']
+>((props, ref) => <input ref={ref} {...props} {...inputRule} />)
+Input.displayName = 'Input'
 
 export const submitStyle = {
   backgroundColor: LW_BLUE,
@@ -217,9 +239,11 @@ export const submitStyle = {
   },
 }
 export const submitRule = merge(inputStyle, submitStyle)
-export const Submit = (props) => (
-  <input type='submit' {...props} {...submitRule} />
-)
+export const Submit = React.forwardRef<
+  HTMLInputElement,
+  JSX.IntrinsicElements['input']
+>((props, ref) => <input ref={ref} type='submit' {...props} {...submitRule} />)
+Submit.displayName = 'Submit'
 
 export const clearStyle = {
   ':after': {
@@ -229,8 +253,12 @@ export const clearStyle = {
   },
 }
 export const clearRule = css(clearStyle)
-export const Clear = ({ children, ...props }) => (
-  <div {...props} {...clearRule}>
+export const Clear = React.forwardRef<
+  HTMLDivElement,
+  JSX.IntrinsicElements['div']
+>(({ children, ...props }, ref) => (
+  <div ref={ref} {...props} {...clearRule}>
     {children}
   </div>
-)
+))
+Clear.displayName = 'Clear'

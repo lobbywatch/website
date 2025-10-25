@@ -1,6 +1,65 @@
+import { NestConnectionType } from './nest'
+import { HierarchyNode } from 'd3-hierarchy'
+import { MappedConnection, Potency } from '../../../lib/types'
+
 export const START_Y = 70
 
-const layout = ({ hierarchy, width, open }) => {
+export type LayoutDatumRoot = {
+  type: 'Root'
+  id: 'Root'
+}
+
+export type LayoutDatumConnection = {
+  type: 'Connection'
+  id: string
+  parentId: string
+  label?: string
+  connection: MappedConnection
+}
+
+export type LayoutDatumGroup = {
+  type: 'Group'
+  id: string
+  parentId: string
+  potency: Potency
+  count: number
+  label: string
+}
+
+export type LayoutDatumGuest = {
+  type: 'Guest'
+  id: string
+  parentId: string
+  label: string
+}
+
+export type LayoutDatum =
+  | LayoutDatumRoot
+  | LayoutDatumConnection
+  | LayoutDatumGroup
+  | LayoutDatumGuest
+
+export interface LayoutNode
+  extends HierarchyNode<
+    LayoutDatum & {
+      measurements: {
+        height: number
+        width: number
+      }
+    }
+  > {
+  ref: HTMLElement | SVGElement | null
+  setRef: (ref: HTMLElement | SVGElement | null) => void
+  x: number
+  y: number
+  row: number
+}
+
+const layout = (
+  hierarchy: LayoutNode,
+  width: number,
+  isOpen: (id: string) => boolean,
+): number => {
   const MARGIN = 10
   const Y_SPACE = 10
   const Y_SPACE_BIG = 30
@@ -8,26 +67,26 @@ const layout = ({ hierarchy, width, open }) => {
   let y = START_Y
   let x = 0
   let row = 0
-  let lastType
-  const nextRow = (rowHeight, bigSpace) => {
+  let lastType: null | NestConnectionType = null
+  const nextRow = (rowHeight: number, bigSpace: boolean) => {
     x = 0
     y += rowHeight + (bigSpace ? Y_SPACE_BIG : Y_SPACE)
     row += 1
   }
-  const visit = (node, align = 0.5) => {
+  const visit = (node: LayoutNode, align = 0.5) => {
     if (!node.children) {
       return
     }
     let rowHeight = 0
-    let rowChildren = []
-    let openChildren = []
-    const newRow = (newType) => {
+    let rowChildren = new Array<LayoutNode>()
+    let openChildren = new Array<LayoutNode>()
+    const newRow = (newType: boolean) => {
       const xLeftOver = width - x
       const xPush = xLeftOver * align // center
       for (const rowChild of rowChildren) {
         rowChild.x += xPush
       }
-      nextRow(rowHeight, newType || openChildren.length)
+      nextRow(rowHeight, newType || openChildren.length > 0)
       rowHeight = 0
       rowChildren = []
       if (openChildren.length > 0) {
@@ -48,7 +107,7 @@ const layout = ({ hierarchy, width, open }) => {
     for (const child of node.children) {
       const measurements = child.data.measurements
 
-      const newType = lastType && lastType !== child.data.type
+      const newType = lastType != null && lastType !== child.data.type
       if (x + measurements.width > width || newType) {
         newRow(newType)
       }
@@ -59,7 +118,7 @@ const layout = ({ hierarchy, width, open }) => {
       rowHeight = Math.max(measurements.height, rowHeight)
       rowChildren.push(child)
       x += measurements.width + MARGIN
-      if (open.has(child.data.id)) {
+      if (isOpen(child.data.id)) {
         openChildren.push(child)
       }
       lastType = child.data.type
