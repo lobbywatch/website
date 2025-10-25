@@ -1,5 +1,6 @@
 import { css } from 'glamor'
 import { FRAME_PADDING } from '../../theme'
+import { CSSProperties, ReactNode } from 'react'
 
 const centerStyle = css({
   maxWidth: 800,
@@ -7,8 +8,13 @@ const centerStyle = css({
   margin: '0 auto',
 })
 
-const Center = ({ children, ...properties }) => (
-  <div {...properties} {...centerStyle}>
+export interface CenterProps {
+  children?: ReactNode
+  style?: CSSProperties
+}
+
+const Center = ({ children, style }: CenterProps) => (
+  <div style={style} {...centerStyle}>
     {children}
   </div>
 )

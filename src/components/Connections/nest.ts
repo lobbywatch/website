@@ -1,19 +1,35 @@
 import { nest } from 'd3-collection'
-import { stratify } from 'd3-hierarchy'
-import { descending, ascending, sum } from 'd3-array'
+import { HierarchyNode, stratify } from 'd3-hierarchy'
+import { ascending, descending, sum } from 'd3-array'
+import {
+  MappedConnection,
+  MappedGuest,
+  MappedObjectType,
+} from '../../../lib/types'
+import { Formatter } from '../../../lib/translate'
+import { ReactNode } from 'react'
+import {
+  LayoutDatum,
+  LayoutDatumConnection,
+  LayoutDatumGroup,
+  LayoutDatumGuest,
+  LayoutNode,
+} from './layout'
 
-const groupConnections = (connections, directness) => {
-  const groups = nest()
+export type NestConnectionType = 'Root' | 'Group' | 'Connection' | 'Guest'
+
+const groupConnections = (
+  connections: Array<MappedConnection>,
+  directness: number,
+) => {
+  const groups = nest<MappedConnection, MappedConnection>()
     .key((connection) => connection.to.id)
     .entries(connections)
 
-  return groups.map(({ values }) => {
-    let paths = values.map((value) => value.vias)
+  return groups.map(({ values }: { values: Array<MappedConnection> }) => {
+    let paths = values.map((value) => value.vias ?? [])
     paths.sort((a, b) => ascending(a.length, b.length))
-    if (paths.length === 0) {
-      paths = undefined
-    }
-    const indirect = paths && paths[0].length > directness
+    const indirect = paths.length > 0 && paths[0].length > directness
 
     return {
       ...values[0],
@@ -24,28 +40,55 @@ const groupConnections = (connections, directness) => {
   })
 }
 
+export type HoverItem = LayoutNode
+
+export type HoverValue = [
+  key: string | null,
+  test: (hover: HoverItem, props: NestConnectionsProps) => boolean,
+  render?: (hover: HoverItem, props: NestConnectionsProps) => ReactNode,
+]
+
+export interface NestConnectionsProps {
+  data: Array<MappedConnection>
+  t: Formatter
+  origin: MappedObjectType
+  connectionWeight: (c: MappedConnection) => number
+  directness?: number
+  groupByDestination?: boolean
+  hoverValues?: Array<HoverValue>
+  intermediate?: (a: MappedConnection) => string
+  intermediates?: Array<MappedGuest>
+  maxGroups?: number
+  potency?: boolean
+}
+
 const nestConnections = ({
   data,
   groupByDestination,
-  directness,
-  intermediate,
-  intermediates,
+  directness = 0,
+  intermediate = () => '',
+  intermediates = [],
   maxGroups,
   connectionWeight,
   t,
-}) => {
-  let connectionData
+}: NestConnectionsProps): HierarchyNode<LayoutDatum> => {
+  let connectionData: Array<MappedConnection>
   connectionData = groupByDestination
     ? groupConnections(data, directness)
     : data
 
   const moreKey = t('connections/more/plural')
-  const groupTree = nest()
+  const groupTree: Array<{
+    key: string
+    values: Array<{
+      key: string
+      values: Array<MappedConnection>
+    }>
+  }> = nest<MappedConnection>()
     .key(intermediate)
     .key((connection) => (connection.group ? connection.group : moreKey))
     .entries(connectionData)
-
-  const nodeData = groupTree.reduce(
+  const nodeData: Array<LayoutDatum> = groupTree.reduce(
     (rootAccumulator, viaLevel) => {
       viaLevel.values
         .sort((a, b) => ascending(a.key, b.key))
@@ -65,7 +108,10 @@ const nestConnections = ({
       const visibleGroups = groups.slice(0, maxGroups)
       if (moreGroups.length > 0) {
         more.values = more.values.concat(
-          moreGroups.reduce((rest, { values }) => rest.concat(values), []),
+          moreGroups.reduce(
+            (rest, { values }) => rest.concat(values),
+            new Array<MappedConnection>(),
+          ),
         )
         more.values.sort((a, b) =>
           descending(connectionWeight(a), connectionWeight(b)),
@@ -82,41 +128,47 @@ const nestConnections = ({
             .concat({
               id: `Group-${groupId}`,
               parentId: viaLevel.key || 'Root',
-              type: 'Group',
-              potency: values.map((v) => v.potency)[0],
+              type: 'Group' as const,
+              potency: values.map((v) => v.potency)[0] ?? 'LOW',
               count: values.length,
               label: group,
-            })
+            } satisfies LayoutDatumGroup)
             .concat(
-              values.map((connection, index) => ({
-                id: `Connection-${groupId}-${index}`,
-                parentId: `Group-${groupId}`,
-                type: 'Connection',
-                label: connection.to.name,
-                connection,
-              })),
+              values.map(
+                (connection: MappedConnection, index: number) =>
+                  ({
+                    id: `Connection-${groupId}-${index}`,
+                    parentId: `Group-${groupId}`,
+                    type: 'Connection' as const,
+                    label: connection.to.name,
+                    connection,
+                  }) satisfies LayoutDatumConnection,
+              ),
             )
         },
-        [],
+        new Array<LayoutDatum>(),
       )
 
       return viaLevel.key
         ? rootAccumulator.concat(viaNodes) // after via
         : viaNodes.concat(rootAccumulator) // before via
     },
-    intermediates.map((via) => ({
-      id: via.id,
-      parentId: 'Root',
-      type: 'Guest',
-      label: via.name,
-    })),
+    intermediates.map(
+      (via) =>
+        ({
+          id: via.id,
+          parentId: 'Root',
+          type: 'Guest' as const,
+          label: via.name,
+        }) satisfies LayoutDatumGuest,
+    ) as Array<LayoutDatum>,
   )
   nodeData.unshift({
     id: 'Root',
-    type: 'Root',
+    type: 'Root' as const,
   })
 
-  return stratify()(nodeData)
+  return stratify<LayoutDatum>()(nodeData)
 }
 
 export default nestConnections
