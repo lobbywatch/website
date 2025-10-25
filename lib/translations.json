@@ -1131,15 +1131,6 @@
       "fr": "Conseil/Comité de patronage/Commission d'experts/Advisory Board"
     },
     {
-      "key": "banner/text"
-    },
-    {
-      "key": "banner/link/text"
-    },
-    {
-      "key": "banner/link/href"
-    },
-    {
       "key": "crowdfunding/status/goal/people",
       "de": "von {count} Mitgliedern"
     },

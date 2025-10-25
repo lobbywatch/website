@@ -1,4 +1,7 @@
-export const intersperse = (list, separator) => {
+export const intersperse = <A, B>(
+  list: Array<A>,
+  separator: (a: A, i: number) => B,
+): Array<A | B> => {
   if (list.length === 0) {
     return []
   }
@@ -7,6 +10,6 @@ export const intersperse = (list, separator) => {
     (items, item, i) => {
       return items.concat([separator(item, i), item])
     },
-    [list[0]],
+    [list[0]] as Array<A | B>,
   )
 }

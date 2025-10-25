@@ -3,7 +3,7 @@ import type { Formatter } from '../translate'
 import { timeMonth, timeYear } from 'd3-time'
 import { timeFormat, timeParse } from 'd3-time-format'
 import { descending } from 'd3-array'
-import type {
+import {
   MappedConnection,
   MappedBranch,
   MappedLobbyGroup,
@@ -19,6 +19,8 @@ import type {
   RawFunction,
   RawVerguetung,
   MappedVerguetung,
+  MappedOrganisationLobbyGroup,
+  MappedEdge,
 } from '../types'
 import { requireNonNull } from '../../src/prelude'
 
@@ -26,17 +28,17 @@ const parseDate = timeParse('%Y-%m-%d')
 const formatDate = timeFormat('%d.%m.%Y')
 const formatDateIso = timeFormat('%Y-%m-%d')
 
-const potencyMap: Record<number, string> = {
+const potencyMap = {
   3: 'HIGH',
   2: 'MEDIUM',
   1: 'LOW',
-}
+} as const
 
-const compensationTransparenceStateMap: Record<string, string> = {
+const compensationTransparenceStateMap = {
   ja: 'YES',
   nein: 'NO',
   teilweise: 'PARTIAL',
-}
+} as const
 
 // avoid error 'Reason: undefined cannot be serialized as JSON. Please use null or omit this value all together.'
 const replaceUndefinedWithNull = (obj: unknown) =>
@@ -73,14 +75,11 @@ const mapFunction = (t: Formatter, raw: RawFunction): string => {
 }
 
 const mapCompensations = (
-  verguetungen: Array<RawVerguetung>,
+  verguetungen?: ReadonlyArray<RawVerguetung>,
 ): Array<MappedVerguetung> => {
   return (verguetungen || [])
     .map((raw) => {
-      const money =
-        raw.verguetung !== undefined && raw.verguetung !== null
-          ? +raw.verguetung
-          : null
+      const money = raw.verguetung != null ? +raw.verguetung : undefined
       return {
         year: raw.jahr && +raw.jahr,
         money,
@@ -88,8 +87,8 @@ const mapCompensations = (
           (money === -1 && raw.beschreibung === 'Bezahlendes Mitglied') ||
           (money === 0 && raw.beschreibung === 'Ehrenamtlich') ||
           (money === 1 && raw.beschreibung === 'Bezahlt')
-            ? null
-            : raw.beschreibung || null,
+            ? undefined
+            : raw.beschreibung || undefined,
       } satisfies MappedVerguetung
     })
     .sort((a, b) => descending(a.year, b.year))
@@ -101,8 +100,8 @@ const mapParliamentariansFromConnections = (
   t: Formatter,
   origin: MappedLobbyGroup | MappedBranch,
 ): (MappedConnection | null)[] => {
-  return raw.connections.map((connection) => {
-    const parliamentarianRaw = raw.parlamentarier.find(
+  return (raw.connections ?? []).map((connection) => {
+    const parliamentarianRaw = raw.parlamentarier?.find(
       (p) => p.id === connection.parlamentarier_id,
     )
     if (!parliamentarianRaw) {
@@ -114,7 +113,7 @@ const mapParliamentariansFromConnections = (
     }
     const parliamentarian = mapParliamentarian(parliamentarianRaw, t)
 
-    const rawConnectorOrganisation = raw.organisationen.find(
+    const rawConnectorOrganisation = raw.organisationen?.find(
       (org) => org.id === connection.connector_organisation_id,
     )
     if (!rawConnectorOrganisation) {
@@ -138,6 +137,7 @@ const mapParliamentariansFromConnections = (
     const connectorOrganisation = mapOrganisation(rawConnectorOrganisation, t)
     const rawIntermediateOrganisation =
       connection.zwischen_organisation_id &&
+      'zwischen_organisationen' in raw &&
       raw.zwischen_organisationen?.find(
         (org) => org.id === connection.zwischen_organisation_id,
       )
@@ -176,7 +176,11 @@ const mapParliamentariansFromConnections = (
         function: t(`connections/art/${connection.zwischen_organisation_art}`),
       })
     }
-    if (connection.person_id && raw.zutrittsberechtigte) {
+    if (
+      connection.person_id &&
+      'zutrittsberechtigte' in raw &&
+      raw.zutrittsberechtigte
+    ) {
       const rawGuest = raw.zutrittsberechtigte.find(
         (g) => g.person_id === connection.person_id,
       )
@@ -222,21 +226,21 @@ export const mapLobbyGroup = (
   t: Formatter,
 ): MappedLobbyGroup => {
   const connections = (): Array<MappedConnection> => {
-    const organisations: (MappedConnection | null)[] = raw.organisationen.map(
-      (connection) => ({
-        from: structuredClone(lobbyGroup),
-        vias: [],
-        to: {
-          id: `${orgIdPrefix}${connection.id}-${t.locale}`,
-          name: connection.name,
-          __typename: 'Organisation',
-        },
-        group: t('connections/organisation'),
-        description: connection.beschreibung,
-      }),
-    )
+    const organisations: (MappedConnection | null)[] = (
+      raw.organisationen ?? []
+    ).map((connection) => ({
+      from: structuredClone(lobbyGroup),
+      vias: [],
+      to: {
+        id: `${orgIdPrefix}${connection.id}-${t.locale}`,
+        name: connection.name,
+        __typename: 'Organisation',
+      },
+      group: t('connections/organisation'),
+      description: connection.beschreibung,
+    }))
 
-    const parliamentariansViaProfession = raw.parlamentarier
+    const parliamentariansViaProfession = (raw.parlamentarier ?? [])
       .filter((p) => p.beruf_interessengruppe_id === raw.id)
       .map((parliamentarianRaw) => {
         const parliamentarian = mapParliamentarian(parliamentarianRaw, t)
@@ -312,7 +316,7 @@ export const mapBranch = (raw: RawBranch, t: Formatter): MappedBranch => {
         id: `${lobbyGroupIdPrefix}${connection.id}-${t.locale}`,
         name: connection.name,
         __typename: 'Branch',
-      },
+      } satisfies MappedEdge,
       group: t('connections/lobbyGroup'),
       description: connection.beschreibung,
     }))
@@ -437,10 +441,18 @@ export const mapOrganisation = (
 
   const org: MappedOrganisation = {
     id: `${orgIdPrefix}${raw.id}-${t.locale}`,
-    updated: formatDate(new Date(raw.updated_date_unix * 1000)),
-    published: formatDate(new Date(raw.freigabe_datum_unix * 1000)),
-    updatedIso: formatDateIso(new Date(raw.updated_date_unix * 1000)),
-    publishedIso: formatDateIso(new Date(raw.freigabe_datum_unix * 1000)),
+    updated: raw.updated_date_unix
+      ? formatDate(new Date(raw.updated_date_unix * 1000))
+      : undefined,
+    published: raw.freigabe_datum_unix
+      ? formatDate(new Date(raw.freigabe_datum_unix * 1000))
+      : undefined,
+    updatedIso: raw.updated_date_unix
+      ? formatDateIso(new Date(raw.updated_date_unix * 1000))
+      : undefined,
+    publishedIso: raw.freigabe_datum_unix
+      ? formatDateIso(new Date(raw.freigabe_datum_unix * 1000))
+      : undefined,
     name: raw.name,
     abbr: raw.abkuerzung,
     legalForm: t(
@@ -458,18 +470,20 @@ export const mapOrganisation = (
         name: raw.interessengruppe,
         id: raw.interessengruppe_id,
         __typename: 'LobbyGroup',
-      } satisfies Partial<MappedLobbyGroup>,
+      },
       {
         name: raw.interessengruppe2,
         id: raw.interessengruppe2_id,
         __typename: 'LobbyGroup',
-      } satisfies Partial<MappedLobbyGroup>,
+      },
       {
         name: raw.interessengruppe3,
         id: raw.interessengruppe3_id,
         __typename: 'LobbyGroup',
-      } satisfies Partial<MappedLobbyGroup>,
-    ].filter((l) => l.name),
+      },
+    ].filter(
+      (l): l is MappedOrganisationLobbyGroup => l.id != null && l.name != null,
+    ),
     uid: raw.uid,
     website: raw.homepage,
     wikipedia_url: raw.wikipedia,
@@ -503,17 +517,14 @@ const mapMandate = (
   group: connection.interessengruppe,
   potency:
     connection.wirksamkeit_index && potencyMap[connection.wirksamkeit_index],
-  function: mapFunction(
-    t,
-    Object.assign({ gender: origin.gender }, connection),
-  ),
+  function: mapFunction(t, { gender: origin.gender, ...connection }),
   description: connection.beschreibung,
   compensations: mapCompensations(connection.verguetungen_pro_jahr),
   compensation:
     connection.verguetung !== null
       ? {
-          year: connection.verguetung_jahr && +connection.verguetung_jahr,
-          money: +connection.verguetung,
+          year: connection.verguetung_jahr,
+          money: connection.verguetung,
           description: connection.verguetung_beschreibung,
         }
       : null,
@@ -562,7 +573,9 @@ export const mapParliamentarian = (
   t: Formatter,
 ): MappedParliamentarian => {
   const dateOfBirth = requireNonNull(parseDate(raw.geburtstag))
-  const councilJoinDate = new Date(+raw.im_rat_seit_unix * 1000)
+  const councilJoinDate = raw.im_rat_seit_unix
+    ? new Date(+raw.im_rat_seit_unix * 1000)
+    : undefined
   const councilExitDate = raw.im_rat_bis_unix
     ? new Date(+raw.im_rat_bis_unix * 1000)
     : null
@@ -573,7 +586,7 @@ export const mapParliamentarian = (
     // filter out simple memberships of parlamentarian groups
     // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1603379470004900
     // https://lobbywatch.slack.com/archives/CLXU2R9V0/p1654865241867899
-    const direct = raw.interessenbindungen
+    const direct = (raw.interessenbindungen ?? [])
       .filter(
         (directConnection) =>
           !(
@@ -626,7 +639,7 @@ export const mapParliamentarian = (
       return age
     },
     canton: raw.kanton_name,
-    children: raw.anzahl_kinder !== null ? +raw.anzahl_kinder : null,
+    children: raw.anzahl_kinder != null ? +raw.anzahl_kinder : null,
     get civilStatus() {
       return t(
         'parliamentarian/civilStatus/' +
@@ -650,15 +663,14 @@ export const mapParliamentarian = (
               raw.verguetungstransparenz_beurteilung
             ],
         }
-      : null,
+      : undefined,
     council: raw.ratstyp,
     councilExitDate:
       councilExitDate != null ? formatDate(councilExitDate) : undefined,
-    councilJoinDate: formatDate(councilJoinDate),
-    councilTenure: timeMonth.count(
-      councilJoinDate,
-      councilExitDate ?? new Date(),
-    ),
+    councilJoinDate: councilJoinDate ? formatDate(councilJoinDate) : undefined,
+    councilTenure: councilJoinDate
+      ? timeMonth.count(councilJoinDate, councilExitDate ?? new Date())
+      : undefined,
     get councilTitle() {
       return t(
         'parliamentarian/council/title/' +
@@ -694,21 +706,30 @@ export const mapParliamentarian = (
             twitter_url: raw.twitter_url,
           },
         }
-      : null,
+      : undefined,
     portrait: [
       DRUPAL_IMAGE_BASE_URL,
       'sites/lobbywatch.ch/app/files/parlamentarier_photos/portrait-260',
       `${raw.parlament_number}.jpg`,
     ].join('/'),
-    published: formatDate(new Date(raw.freigabe_datum_unix * 1000)),
-    publishedIso: formatDateIso(new Date(raw.freigabe_datum_unix * 1000)),
-    represents:
-      Math.round(+raw.vertretene_bevoelkerung / ROUNDING_PRECISION) *
-      ROUNDING_PRECISION,
+    published: raw.freigabe_datum_unix
+      ? formatDate(new Date(raw.freigabe_datum_unix * 1000))
+      : undefined,
+    publishedIso: raw.freigabe_datum_unix
+      ? formatDateIso(new Date(raw.freigabe_datum_unix * 1000))
+      : undefined,
+    represents: raw.vertretene_bevoelkerung
+      ? Math.round(raw.vertretene_bevoelkerung / ROUNDING_PRECISION) *
+        ROUNDING_PRECISION
+      : undefined,
     twitter_name: raw.twitter_name,
     twitter_url: raw.twitter_url,
-    updated: formatDate(new Date(raw.updated_date_unix * 1000)),
-    updatedIso: formatDateIso(new Date(raw.updated_date_unix * 1000)),
+    updated: raw.updated_date_unix
+      ? formatDate(new Date(raw.updated_date_unix * 1000))
+      : undefined,
+    updatedIso: raw.updated_date_unix
+      ? formatDateIso(new Date(raw.updated_date_unix * 1000))
+      : undefined,
     website: raw.homepage,
     wikidata_url: raw.wikidata_item_url,
     wikipedia_url: raw.wikipedia,
