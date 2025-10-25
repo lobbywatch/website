@@ -2,21 +2,24 @@ import useSWR from 'swr'
 import * as api from '../api'
 import { guestIdPrefix, mapGuest } from '../mappers'
 import { translator, useT } from '../../../src/components/Message'
-import { fetcher, safeFetcher } from '../fetch'
+import { fetcher, Query, safeFetcher } from '../fetch'
 import { GuestId, Locale, MappedGuest, RawGuest } from '../../types'
 import { Array, Option, Order, pipe, Schema } from 'effect'
 import { Formatter } from '../../translate'
 
-const guestsUrl = (locale: Locale, query?: Record<string, string>) =>
+const guestsUrl = (locale: Locale, query?: Query<RawGuest>) =>
   api.data(
     locale,
     'data/interface/v1/json/table/zutrittsberechtigung/flat/list',
     query,
   )
 
-const guestsFetcher = safeFetcher(
-  Schema.Struct({ data: Schema.Array(RawGuest) }),
-)
+const guestsFetcher = (query?: Query<RawGuest>) => {
+  const schema = query
+    ? RawGuest.pipe(Schema.pick(...query.select_fields))
+    : RawGuest
+  return safeFetcher(Schema.Struct({ data: Schema.Array(schema) }))
+}
 
 const parseRawGuestsData =
   (formatter: Formatter) =>
@@ -32,7 +35,7 @@ export const useGuests = ({
   query,
 }: {
   locale: Locale
-  query: Record<string, string>
+  query: Query<RawGuest>
 }): {
   isLoading: boolean
   error: Error | undefined
@@ -44,7 +47,7 @@ export const useGuests = ({
     data = Option.none(),
     error,
     isLoading,
-  } = useSWR(guestsUrl(locale, query), guestsFetcher, {
+  } = useSWR(guestsUrl(locale, query), guestsFetcher(query), {
     revalidateOnFocus: false,
   })
 
@@ -57,22 +60,19 @@ export const useGuests = ({
   return { data: guests, error, isLoading }
 }
 
-export const fetchAllGuests =
-  (query?: Record<string, string>) => async (locale: Locale) => {
-    const url = guestsUrl(locale, query)
-    const { data } = await fetcher(url)
-    return data ?? []
-  }
+export const fetchAllGuests = async (locale: Locale) => {
+  const url = guestsUrl(locale)
+  const { data } = await fetcher(url)
+  return data ?? []
+}
 
 export const getAllGuests = async ({
   locale,
-  query,
 }: {
   locale: Locale
-  query?: Record<string, string>
 }): Promise<Array<MappedGuest>> => {
   const t = translator(locale)
-  const data = await guestsFetcher(guestsUrl(locale, query))
+  const data = await guestsFetcher()(guestsUrl(locale))
 
   return pipe(
     data,

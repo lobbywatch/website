@@ -59,7 +59,7 @@ const Search = ({ term, locale }: { term: string; locale: Locale }) => {
 }
 
 export const getStaticProps = withStaticPropsContext<{}>()(
-  Schema.Struct({ locale: Locale }),
+  Schema.Struct({ locale: Locale, term: Schema.optional(Schema.String) }),
   async () => ({ props: {} }),
 )
 

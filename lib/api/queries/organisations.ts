@@ -1,6 +1,6 @@
 import * as api from '../api'
 import { mapOrganisation, orgIdPrefix } from '../mappers'
-import { fetcher, safeFetcher } from '../fetch'
+import { fetcher, Query, safeFetcher } from '../fetch'
 import useSWR from 'swr'
 import { translator, useT } from '../../../src/components/Message'
 import {
@@ -12,12 +12,15 @@ import {
 import { Array, Option, pipe, Schema } from 'effect'
 import { Formatter } from '../../translate'
 
-const fetchOrganisationsUrl = (locale: Locale, query: Record<string, string>) =>
+const fetchOrganisationsUrl = <A>(locale: Locale, query: Query<A>) =>
   api.data(locale, `data/interface/v1/json/table/organisation/flat/list`, query)
 
-const organisationsFetcher = safeFetcher(
-  Schema.Struct({ data: Schema.Array(RawOrganisation) }),
-)
+const organisationsFetcher = (query?: Query<RawOrganisation>) => {
+  const schema = query
+    ? RawOrganisation.pipe(Schema.pick(...query.select_fields))
+    : RawOrganisation
+  return safeFetcher(Schema.Struct({ data: Schema.Array(schema) }))
+}
 
 const parseRawOrganisationsData =
   (formatter: Formatter) =>
@@ -32,7 +35,7 @@ const parseRawOrganisationsData =
     )
 
 export const fetchAllOrganisations =
-  (query: Record<string, string>) => async (locale: Locale) => {
+  (query: Query<RawOrganisation>) => async (locale: Locale) => {
     const url = fetchOrganisationsUrl(locale, query)
     const { data } = await fetcher(url)
     return data ?? []
@@ -43,7 +46,7 @@ export const useOrganisations = ({
   query,
 }: {
   locale: Locale
-  query: Record<string, string>
+  query: Query<RawOrganisation>
 }): {
   isLoading: boolean
   error: Error | undefined
@@ -55,9 +58,11 @@ export const useOrganisations = ({
     data = Option.none(),
     error,
     isLoading,
-  } = useSWR(fetchOrganisationsUrl(locale, query), organisationsFetcher, {
-    revalidateOnFocus: false,
-  })
+  } = useSWR(
+    fetchOrganisationsUrl(locale, query),
+    organisationsFetcher(query),
+    { revalidateOnFocus: false },
+  )
 
   const organisations = pipe(
     data,

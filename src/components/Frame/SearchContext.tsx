@@ -33,34 +33,39 @@ export const useSearchContextState = () => {
   const [value, setValue] = useState(router.query.term || '')
   const currentLocale = getSafeLocale(router.query.locale)
 
-  useEffect(() => {
-    const to = setTimeout(() => {
-      if (value.trim()) {
-        const path = `/${encodeURIComponent(
-          currentLocale,
-        )}/search?term=${encodeURIComponent(value)}`
-        if (router.pathname === '/[locale]/search' && router.query.term) {
-          router.replace(path)
-        } else {
-          beforeSearch = {
-            pathname: router.pathname,
-            query: router.query,
+  useEffect(
+    () => {
+      const to = setTimeout(() => {
+        if (value.trim()) {
+          const path = `/${encodeURIComponent(
+            currentLocale,
+          )}/search?term=${encodeURIComponent(value)}`
+          if (router.pathname === '/[locale]/search' && router.query.term) {
+            router.replace(path)
+          } else {
+            beforeSearch = {
+              pathname: router.pathname,
+              query: router.query,
+            }
+            router.push(path)
           }
-          router.push(path)
+        } else if (router.query.term) {
+          router.push(
+            beforeSearch || {
+              pathname: '/[locale]/search',
+              query: { locale: currentLocale },
+            },
+          )
         }
-      } else if (router.query.term) {
-        router.push(
-          beforeSearch || {
-            pathname: '/[locale]/search',
-            query: { locale: currentLocale },
-          },
-        )
+      }, 100)
+      return () => {
+        clearTimeout(to)
       }
-    }, 100)
-    return () => {
-      clearTimeout(to)
-    }
-  }, [router, currentLocale, value])
+    },
+    // We can't pass in router here, because it would lead to an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [currentLocale, value],
+  )
 
   return useMemo(() => [value, setValue] as const, [value, setValue])
 }
