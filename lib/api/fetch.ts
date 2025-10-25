@@ -23,6 +23,10 @@ export const fetcher = flow(fetch, (p) =>
   p.then(checkStatus).then((response) => response.json()),
 )
 
+export type Query<A> = {
+  select_fields: Array<keyof A>
+}
+
 export const safeFetcher = <A, I>(schema: Schema.Schema<A, I>) =>
   flow(
     fetcher,

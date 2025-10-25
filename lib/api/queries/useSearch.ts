@@ -205,6 +205,7 @@ export const useSearch = ({
     locale,
     query: {
       select_fields: [
+        'id',
         'parlament_number',
         'vorname',
         'zweiter_vorname',
@@ -214,20 +215,12 @@ export const useSearch = ({
         'geburtstag',
         'parteifunktion',
         'partei_name',
-        'partei_name_fr',
         'partei',
-        'partei_fr',
-        'kanton_name_de',
-        'kanton_name_fr',
         'ratstyp',
         'aktiv',
         'im_rat_bis_unix',
         'im_rat_seit_unix',
-        'kommissionen_namen_de',
-        'kommissionen_namen_fr',
-        'kommissionen_abkuerzung_de',
-        'kommissionen_abkuerzung_fr',
-      ].join(','),
+      ],
     },
   })
   const guests = useGuests({
@@ -241,8 +234,7 @@ export const useSearch = ({
         'geschlecht',
         'funktion',
         'zweiter_vorname',
-        'bis_unix',
-      ].join(','),
+      ],
     },
   })
   const lobbyGroups = useLobbyGroups({ locale })
@@ -251,25 +243,13 @@ export const useSearch = ({
     locale,
     query: {
       select_fields: [
-        'name_de',
-        'name_fr',
+        'id',
+        'name',
         'rechtsform',
         'ort',
-        'abkuerzung_de',
-        'abkuerzung_fr',
-        'interessengruppe_de',
-        'interessengruppe_fr',
         'interessengruppe_id',
-        'interessengruppe2_de',
-        'interessengruppe2_fr',
-        'interessengruppe2_id',
-        'interessengruppe3_de',
-        'interessengruppe3_fr',
-        'interessengruppe3_id',
         'uid',
-        'alias_namen_de',
-        'alias_namen_fr',
-      ].join(','),
+      ],
     },
   })
 

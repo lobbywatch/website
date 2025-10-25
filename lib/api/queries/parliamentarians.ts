@@ -2,21 +2,24 @@ import { translator, useT } from '../../../src/components/Message'
 import useSWR from 'swr'
 import * as api from '../api'
 import { mapParliamentarian, parliamentarianIdPrefix } from '../mappers'
-import { fetcher, safeFetcher } from '../fetch'
+import { fetcher, Query, safeFetcher } from '../fetch'
 import { Locale, MappedParliamentarian, RawParliamentarian } from '../../types'
 import { Array, Option, Order, pipe, Schema } from 'effect'
 import { Formatter } from '../../translate'
 
-const parliamentariansUrl = (locale: Locale, query?: Record<string, string>) =>
+const parliamentariansUrl = <A>(locale: Locale, query?: Query<A>) =>
   api.data(
     locale,
     'data/interface/v1/json/table/parlamentarier/flat/list',
     query,
   )
 
-const parliamentariansFetcher = safeFetcher(
-  Schema.Struct({ data: Schema.Array(RawParliamentarian) }),
-)
+const parliamentariansFetcher = (query?: Query<RawParliamentarian>) => {
+  const schema = query
+    ? RawParliamentarian.pipe(Schema.pick(...query.select_fields))
+    : RawParliamentarian
+  return safeFetcher(Schema.Struct({ data: Schema.Array(schema) }))
+}
 
 const parseRawParliamentariansData =
   (formatter: Formatter) =>
@@ -36,7 +39,7 @@ export const useParliamentarians = ({
   query,
 }: {
   locale: Locale
-  query: Record<string, string>
+  query: Query<RawParliamentarian>
 }): {
   isLoading: boolean
   error: Error | undefined
@@ -48,9 +51,13 @@ export const useParliamentarians = ({
     data = Option.none(),
     error,
     isLoading,
-  } = useSWR(parliamentariansUrl(locale, query), parliamentariansFetcher, {
-    revalidateOnFocus: false,
-  })
+  } = useSWR(
+    parliamentariansUrl(locale, query),
+    parliamentariansFetcher(query),
+    {
+      revalidateOnFocus: false,
+    },
+  )
 
   const parliamentarians = pipe(
     data,
@@ -61,23 +68,20 @@ export const useParliamentarians = ({
   return { data: parliamentarians, error, isLoading }
 }
 
-export const fetchAllParliamentarians =
-  (query?: Record<string, string>) => async (locale: Locale) => {
-    const url = parliamentariansUrl(locale, query)
-    const { data } = await fetcher(url)
-    return data
-  }
+export const fetchAllParliamentarians = async (locale: Locale) => {
+  const url = parliamentariansUrl(locale)
+  const { data } = await fetcher(url)
+  return data
+}
 
 export const getAllParliamentarians = async ({
   locale,
-  query,
 }: {
   locale: Locale
-  query?: Record<string, string>
 }): Promise<Array<MappedParliamentarian>> => {
   const t = translator(locale)
-  const url = parliamentariansUrl(locale, query)
-  const data = await parliamentariansFetcher(url)
+  const url = parliamentariansUrl(locale)
+  const data = await parliamentariansFetcher()(url)
   return pipe(
     data,
     Option.map(parseRawParliamentariansData(t)),

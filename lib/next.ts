@@ -1,6 +1,7 @@
 import { flow, ParseResult, Schema } from 'effect'
 import { GetStaticPropsResult } from 'next'
 import { NextRouter, useRouter } from 'next/router'
+import { ParsedUrlQuery } from 'node:querystring'
 
 export interface PropsContext<A> {
   params: A
@@ -32,9 +33,9 @@ export type UseSafeRouterResult<A> = NextRouter & {
 export function useSafeRouter<A, I>(
   querySchema: Schema.Schema<A, I>,
 ): UseSafeRouterResult<A> {
-  const { query, ...rest } = useRouter()
-  return {
-    ...rest,
-    query: Schema.decodeUnknownSync(querySchema)(query),
-  } as UseSafeRouterResult<A>
+  const router = useRouter()
+  router.query = Schema.decodeUnknownSync(querySchema)(
+    router.query,
+  ) as ParsedUrlQuery
+  return router as UseSafeRouterResult<A>
 }

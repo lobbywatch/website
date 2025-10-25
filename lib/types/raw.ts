@@ -141,7 +141,7 @@ export interface RawGuestEncoded
 
 const rawGuestFields = {
   person_id: Schema.String,
-  beruf: Schema.String,
+  beruf: Schema.optionalWith(Schema.String, { nullable: true }),
   beschreibung: Schema.optionalWith(Schema.String, {
     exact: true,
     nullable: true,

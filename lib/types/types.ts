@@ -110,7 +110,7 @@ export type MappedGuest = {
   linkedin_url?: string
   middleName?: string
   name: string
-  occupation: string
+  occupation?: string
   parliamentarian: MappedParliamentarian
   published: string
   publishedIso: string
