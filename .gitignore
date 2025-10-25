@@ -3,6 +3,7 @@
 
 # testing
 /coverage
+/lib/types/test/data
 
 # production
 /build

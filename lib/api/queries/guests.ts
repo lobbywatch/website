@@ -1,75 +1,117 @@
 import useSWR from 'swr'
 import * as api from '../api'
-import { ascending } from 'd3-array'
 import { guestIdPrefix, mapGuest } from '../mappers'
 import { translator, useT } from '../../../src/components/Message'
-import { fetcher } from '../fetch'
+import { fetcher, safeFetcher } from '../fetch'
+import { GuestId, Locale, MappedGuest, RawGuest } from '../../types'
+import { Array, Option, Order, pipe, Schema } from 'effect'
+import { Formatter } from '../../translate'
 
-export const useGuests = ({ locale, query }) => {
-  const t = useT(locale)
-  const url = api.data(
+const guestsUrl = (locale: Locale, query?: Record<string, string>) =>
+  api.data(
     locale,
     'data/interface/v1/json/table/zutrittsberechtigung/flat/list',
     query,
   )
-  const { data, error, isLoading } = useSWR(url, fetcher, {
+
+const guestsFetcher = safeFetcher(
+  Schema.Struct({ data: Schema.Array(RawGuest) }),
+)
+
+const parseRawGuestsData =
+  (formatter: Formatter) =>
+  ({ data }: { data: ReadonlyArray<RawGuest> }): Array<MappedGuest> =>
+    pipe(
+      data,
+      Array.map((x) => mapGuest(x, formatter)),
+      Array.sortWith((x) => x.lastName.toLocaleLowerCase(), Order.string),
+    )
+
+export const useGuests = ({
+  locale,
+  query,
+}: {
+  locale: Locale
+  query: Record<string, string>
+}): {
+  isLoading: boolean
+  error: Error | undefined
+  data: Array<MappedGuest>
+} => {
+  const t = useT(locale)
+
+  const {
+    data = Option.none(),
+    error,
+    isLoading,
+  } = useSWR(guestsUrl(locale, query), guestsFetcher, {
     revalidateOnFocus: false,
   })
 
-  const guests = data?.data.map((g) => mapGuest(g, t)) ?? []
-
-  // default: sort by lastname
-  guests.sort((a, b) =>
-    ascending(a.lastName.toLowerCase(), b.lastName.toLowerCase()),
+  const guests = pipe(
+    data,
+    Option.map(parseRawGuestsData(t)),
+    Option.getOrElse(() => []),
   )
 
-  return { data: { guests }, error, isLoading }
+  return { data: guests, error, isLoading }
 }
 
-export const getAllGuests = async ({ locale, query }) => {
+export const fetchAllGuests =
+  (query?: Record<string, string>) => async (locale: Locale) => {
+    const url = guestsUrl(locale, query)
+    const { data } = await fetcher(url)
+    return data ?? []
+  }
+
+export const getAllGuests = async ({
+  locale,
+  query,
+}: {
+  locale: Locale
+  query?: Record<string, string>
+}): Promise<Array<MappedGuest>> => {
   const t = translator(locale)
-  const url = api.data(
-    locale,
-    'data/interface/v1/json/table/zutrittsberechtigung/flat/list',
-    query,
+  const data = await guestsFetcher(guestsUrl(locale, query))
+
+  return pipe(
+    data,
+    Option.map(parseRawGuestsData(t)),
+    Option.getOrElse(() => []),
   )
-  const data = await fetcher(url)
-
-  const guests = data?.data.map((g) => mapGuest(g, t)) ?? []
-
-  // default: sort by lastname
-  guests.sort((a, b) =>
-    ascending(a.lastName.toLowerCase(), b.lastName.toLowerCase()),
-  )
-
-  return { data: { guests } }
 }
 
-export const getGuest = async ({ locale, id }) => {
-  const t = translator(locale)
-  const rawId = id.replace(guestIdPrefix, '')
+export const fetchGuest = async (locale: Locale, id: string) => {
   const url = api.data(
     locale,
-    `data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(
-      rawId,
-    )}`,
+    `data/interface/v1/json/table/zutrittsberechtigung/aggregated/id/${encodeURIComponent(id)}`,
   )
-
-  const guest = await fetcher(url)
+  const { data: guest } = await fetcher(url)
 
   // must load parliamentarian separately for some reason, guest only has an ID, not the data
   const parliamentarianUrl = api.data(
     locale,
     `data/interface/v1/json/table/parlamentarier/aggregated/id/${encodeURIComponent(
-      guest.data?.parlamentarier_id,
+      guest.parlamentarier_id,
     )}`,
   )
 
   const parliamentarian = await fetcher(parliamentarianUrl)
 
-  guest.data.parlamentarier = parliamentarian.data
+  guest.parlamentarier = parliamentarian.data
 
-  return {
-    data: { guest: mapGuest(guest.data, t) },
-  }
+  return guest
+}
+
+export const getGuest = async ({
+  locale,
+  id,
+}: {
+  locale: Locale
+  id: GuestId
+}): Promise<MappedGuest | void> => {
+  const t = translator(locale)
+  const rawId = id.replace(guestIdPrefix, '')
+  const data = await fetchGuest(locale, rawId)
+  return data ? mapGuest(data, t) : undefined
 }
