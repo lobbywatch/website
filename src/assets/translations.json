@@ -1716,15 +1716,6 @@
       "fr": "Partager sur Whatsapp"
     },
     {
-      "key": "banner/link/href"
-    },
-    {
-      "key": "banner/link/text"
-    },
-    {
-      "key": "banner/text"
-    },
-    {
       "key": "crowdfunding/status/goal/memberships",
       "de": "von {count} Mitgliedschaften",
       "fr": "de {count} adhésions"

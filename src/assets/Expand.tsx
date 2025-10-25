@@ -1,5 +1,13 @@
-import React from 'react'
+import React, { CSSProperties } from 'react'
 import { LW_BLUE, WHITE } from '../theme'
+
+export interface IconProps {
+  size?: number
+  style?: CSSProperties
+  className?: string
+  color?: string
+  expanded?: boolean
+}
 
 const Icon = ({
   size = 24,
@@ -7,7 +15,7 @@ const Icon = ({
   className,
   color = LW_BLUE,
   expanded = false,
-}) => (
+}: IconProps) => (
   <svg
     width={size}
     height={size}
