@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { withRouter } from 'next/router'
-
 import { P } from 'src/components/Styled'
 import Message from 'src/components/Message'
 import { SEARCH_MAX_WIDTH } from 'src/components/Frame/Header'
@@ -12,13 +10,16 @@ import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 
 import { useSearch } from '../../lib/api/queries/useSearch'
+import { Locale } from '../../lib/types'
+import { useSafeRouter, withStaticPropsContext } from '../../lib/next'
+import { Schema } from 'effect'
 
-const Search = ({ term, locale }) => {
+const Search = ({ term, locale }: { term: string; locale: Locale }) => {
   const { data: results, error, isLoading } = useSearch({ locale, term })
   return (
     <Loader
       loading={isLoading}
-      error={error}
+      error={error?.toString()}
       render={() => (
         <Center>
           <MetaTags
@@ -57,14 +58,29 @@ const Search = ({ term, locale }) => {
   )
 }
 
-const Page = ({
-  router: {
-    query: { locale, term },
-  },
-}) => (
-  <Frame>
-    <Search locale={locale} term={term ?? ''} />
-  </Frame>
+export const getStaticProps = withStaticPropsContext<{}>()(
+  Schema.Struct({ locale: Locale }),
+  async () => ({ props: {} }),
 )
 
-export default withRouter(Page)
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+const Page = () => {
+  const {
+    query: { locale, term },
+  } = useSafeRouter(
+    Schema.Struct({ locale: Locale, term: Schema.optional(Schema.String) }),
+  )
+  return (
+    <Frame>
+      <Search locale={locale} term={term ?? ''} />
+    </Frame>
+  )
+}
+
+export default Page

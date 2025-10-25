@@ -4,11 +4,12 @@ import { useRouter } from 'next/router'
 
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
-import { H1, P, A } from 'src/components/Styled'
+import { A, H1, P } from 'src/components/Styled'
 
 import { getSafeLocale } from '../constants'
+import { NextApiResponse } from 'next'
 
-function Error({ statusCode }) {
+function Error({ statusCode }: NextApiResponse) {
   const {
     query: { locale: queryLocale },
   } = useRouter()
@@ -16,7 +17,10 @@ function Error({ statusCode }) {
 
   return (
     <Frame>
-      <MetaTags locale={locale} title={statusCode || 'Unbekannter Fehler'} />
+      <MetaTags
+        locale={locale}
+        title={statusCode.toString() || 'Unbekannter Fehler'}
+      />
       <Center>
         <H1>Unerwarteter Fehler</H1>
         <P>
@@ -37,7 +41,13 @@ function Error({ statusCode }) {
   )
 }
 
-Error.getInitialProps = ({ res, err }) => {
+Error.getInitialProps = ({
+  res,
+  err,
+}: {
+  res: NextApiResponse
+  err: NextApiResponse
+}) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : undefined
   if (res) {
     // server only

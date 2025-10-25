@@ -1,13 +1,36 @@
-import Document, { Html, Head, Main, NextScript } from 'next/document'
+import Document, {
+  DocumentContext,
+  DocumentInitialProps,
+  DocumentProps,
+  Head,
+  Html,
+  Main,
+  NextScript,
+} from 'next/document'
+// @ts-expect-error Package is not typed
 import { renderStaticOptimized } from 'glamor/server'
 
 import { WHITE } from '../src/theme'
 import { getSafeLocale } from '../constants'
 
 import 'glamor/reset'
+import { Locale } from '../lib/types'
+
+export interface MyDocumentProps extends DocumentInitialProps {
+  locale: Locale
+  env: {
+    MATOMO_URL_BASE: string
+    MATOMO_SITE_ID: string
+    PUBLIC_BASE_URL: string
+  }
+  css?: string
+}
 
 export default class MyDocument extends Document {
-  static async getInitialProps({ renderPage, query: { locale } }) {
+  static async getInitialProps({
+    renderPage,
+    query: { locale },
+  }: DocumentContext): Promise<MyDocumentProps> {
     const page = await renderPage()
     const styles = renderStaticOptimized(() => page.html)
 
@@ -18,19 +41,20 @@ export default class MyDocument extends Document {
       locale: getSafeLocale(locale),
     }
   }
-  constructor(props) {
+  constructor(props: DocumentProps) {
     super(props)
-    const { __NEXT_DATA__, env } = props
-    if (env) {
-      __NEXT_DATA__.env = this.props.env
+    const { __NEXT_DATA__ } = props
+    if ('env' in this.props) {
+      // @ts-expect-error env is not defined on __NEXT_DATA__
+      __NEXT_DATA__['env'] = this.props.env
     }
   }
   render() {
     const {
-      css,
       locale,
       env: { MATOMO_URL_BASE, MATOMO_SITE_ID, PUBLIC_BASE_URL },
-    } = this.props
+      css,
+    } = this.props as unknown as MyDocumentProps
     const motivationComment = `/*
 🤔 You look like a curious person.
 💁 That's good, we need people like you!

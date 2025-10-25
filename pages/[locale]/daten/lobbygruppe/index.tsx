@@ -1,5 +1,4 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 
 import { H1, TextCenter } from 'src/components/Styled'
 import Message from 'src/components/Message'
@@ -8,15 +7,19 @@ import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
-
-import { createGetStaticProps } from 'lib/createGetStaticProps'
 import { getAllLobbyGroups } from 'lib/api/queries/lobbyGroups'
+import { useSafeRouter, withStaticPropsContext } from '../../../../lib/next'
+import { Schema } from 'effect'
+import { Locale, MappedLobbyGroup } from '../../../../lib/types'
+import { InferGetStaticPropsType } from 'next'
 
-const LobbyGroups = ({ data }) => {
+const LobbyGroups = ({
+  lobbyGroups,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {
     query: { locale },
     isFallback,
-  } = useRouter()
+  } = useSafeRouter(Schema.Struct({ locale: Locale }))
 
   return (
     <Frame>
@@ -29,7 +32,7 @@ const LobbyGroups = ({ data }) => {
               fromT={(t) => ({
                 title: t('menu/lobbygroups'),
                 description: t('lobbygroups/meta/description', {
-                  count: data.lobbyGroups.length,
+                  count: lobbyGroups.length,
                 }),
               })}
             />
@@ -38,7 +41,7 @@ const LobbyGroups = ({ data }) => {
                 <Message id='menu/lobbygroups' locale={locale} />
               </H1>
             </TextCenter>
-            <ListView locale={locale} items={data.lobbyGroups} />
+            <ListView locale={locale} items={lobbyGroups} />
           </Center>
         )}
       />
@@ -46,8 +49,11 @@ const LobbyGroups = ({ data }) => {
   )
 }
 
-export const getStaticProps = createGetStaticProps({
-  dataFetcher: getAllLobbyGroups,
+export const getStaticProps = withStaticPropsContext<{
+  lobbyGroups: Array<MappedLobbyGroup>
+}>()(Schema.Struct({ locale: Locale }), async ({ params }) => {
+  const lobbyGroups = await getAllLobbyGroups(params)
+  return { props: { lobbyGroups } }
 })
 
 export async function getStaticPaths() {

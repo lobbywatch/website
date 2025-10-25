@@ -1,5 +1,4 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
@@ -7,23 +6,24 @@ import MetaTags, { GooglePreview } from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
-import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
-
-import { createGetStaticProps } from 'lib/createGetStaticProps'
+import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from '../../../../../constants'
 import { getGuest } from 'lib/api/queries/guests'
+import { useSafeRouter, withStaticPropsContext } from '../../../../../lib/next'
+import { GuestId, Locale, MappedGuest } from '../../../../../lib/types'
+import { Schema } from 'effect'
+import { InferGetStaticPropsType } from 'next'
 
-const Guest = ({ data }) => {
+const Guest = (guest: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {
     query: { locale, id },
     isFallback,
-  } = useRouter()
+  } = useSafeRouter(Schema.Struct({ locale: Locale, id: GuestId }))
 
   return (
     <Frame>
       <Loader
         loading={isFallback}
         render={() => {
-          const { guest } = data
           const { __typename, updated, published, name } = guest
           const rawId = id.replace(`${__typename}-`, '')
           const path = `/${locale}/daten/zutrittsberechtigter/${rawId}/${name}`
@@ -39,8 +39,9 @@ const Guest = ({ data }) => {
                 potency
                 updated={updated}
                 published={published}
-                data={guest.connections}
+                data={guest.connections ?? []}
                 maxGroups={7}
+                connectionWeight={() => 1}
               />
               {DEBUG_INFORMATION && (
                 <Center>
@@ -54,7 +55,7 @@ const Guest = ({ data }) => {
                       Live
                     </A>
                   </Meta>
-                  <GooglePreview data={guest} path={path} />
+                  <GooglePreview locale={locale} data={guest} path={path} />
                 </Center>
               )}
             </div>
@@ -65,18 +66,14 @@ const Guest = ({ data }) => {
   )
 }
 
-export const getStaticProps = createGetStaticProps({
-  dataFetcher: getGuest,
-  getCustomStaticProps: async ({ data }) => {
-    if (!data.guest) {
-      return {
-        notFound: true,
-      }
-    } else {
-      return { props: { data } }
-    }
+export const getStaticProps = withStaticPropsContext<MappedGuest>()(
+  Schema.Struct({ locale: Locale, id: GuestId }),
+  async ({ params }) => {
+    const props = await getGuest(params)
+    return props ? { props } : { notFound: true }
   },
-})
+)
+
 export async function getStaticPaths() {
   return {
     paths: [],

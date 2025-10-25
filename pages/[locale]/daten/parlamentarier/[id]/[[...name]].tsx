@@ -1,5 +1,4 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
@@ -7,22 +6,29 @@ import MetaTags, { GooglePreview } from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
-import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
-
-import { createGetStaticProps } from 'lib/createGetStaticProps'
+import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from '../../../../../constants'
 import { getParliamentarian } from 'lib/api/queries/parliamentarians'
+import { useSafeRouter, withStaticPropsContext } from '../../../../../lib/next'
+import {
+  Locale,
+  MappedParliamentarian,
+  ParliamentarianId,
+} from '../../../../../lib/types'
+import { Schema } from 'effect'
+import { InferGetStaticPropsType } from 'next'
 
-const Parliamentarian = ({ data }) => {
+const Parliamentarian = (
+  parliamentarian: InferGetStaticPropsType<typeof getStaticProps>,
+) => {
   const {
     query: { locale, id },
     isFallback,
-  } = useRouter()
+  } = useSafeRouter(Schema.Struct({ locale: Locale, id: ParliamentarianId }))
   return (
     <Frame>
       <Loader
         loading={isFallback}
         render={() => {
-          const { parliamentarian } = data
           const { __typename, name, updated, published } = parliamentarian
           const rawId = id.replace(`${__typename}-`, '')
           const path = `/${locale}/daten/parlamentarier/${rawId}/${name}`
@@ -36,14 +42,17 @@ const Parliamentarian = ({ data }) => {
                 origin={__typename}
                 locale={locale}
                 potency
-                data={parliamentarian.connections}
+                data={parliamentarian.connections ?? []}
                 maxGroups={7}
                 updated={updated}
                 published={published}
                 intermediate={(connection) =>
-                  connection.vias.length > 0 ? connection.vias[0].to.id : ''
+                  connection.vias != null && connection.vias.length > 0
+                    ? connection.vias[0].to.id
+                    : ''
                 }
                 intermediates={parliamentarian.guests}
+                connectionWeight={() => 1}
               />
               {DEBUG_INFORMATION && (
                 <Center>
@@ -72,22 +81,13 @@ const Parliamentarian = ({ data }) => {
   )
 }
 
-export const getStaticProps = createGetStaticProps({
-  dataFetcher: getParliamentarian,
-  getCustomStaticProps: ({ data }) => {
-    if (!data.parliamentarian) {
-      return {
-        notFound: true,
-      }
-    } else {
-      return {
-        props: {
-          data,
-        },
-      }
-    }
+export const getStaticProps = withStaticPropsContext<MappedParliamentarian>()(
+  Schema.Struct({ locale: Locale, id: ParliamentarianId }),
+  async ({ params }) => {
+    const props = await getParliamentarian(params)
+    return props ? { props } : { notFound: true }
   },
-})
+)
 
 export async function getStaticPaths() {
   return {
