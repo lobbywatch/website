@@ -1,6 +1,6 @@
-import { css, cssFor } from 'glamor'
+import { css, cssFor, CSSProperties } from 'glamor'
 
-const getCssText = (selector, close, styles) => {
+const getCssText = (selector: string, close: string, styles: CSSProperties) => {
   const className = css(styles).toString()
   const mediaCss = cssFor(styles)
   const expectedSelector = `.${className},[data-${className}]{`
@@ -13,8 +13,11 @@ const getCssText = (selector, close, styles) => {
   return selector + mediaCss.replace(expectedSelector, '') + close
 }
 
-export const globalWithMediaQueries = (selector, styles) => {
-  const plainStyles = {}
+export const globalWithMediaQueries = (
+  selector: string,
+  styles: CSSProperties,
+) => {
+  const plainStyles: CSSProperties = {}
   for (const key of Object.keys(styles)) {
     if (key.indexOf('@media') === 0) {
       css.insert(getCssText(`${key}{${selector}{`, '}', styles[key]))

@@ -1,3 +1,5 @@
+import { Potency } from '../lib/types'
+
 export const LW_BLUE = '#0077D7'
 export const LW_BLUE_HOVER = '#004C88'
 export const LW_BLUE_DARK = '#112233'
@@ -15,7 +17,7 @@ export const breakpointM = [781, 1024]
 export const breakpointL = [1025, 1440]
 
 // em for best browser support http://zellwk.com/blog/media-query-units/
-const toEm = (px) => `${px / 16}em`
+const toEm = (px: number) => `${px / 16}em`
 
 export const mediaSOnly = `@media only screen and (max-width: ${toEm(
   breakpointS[1],
@@ -34,11 +36,13 @@ export const mediaL = `@media only screen and (min-width: ${toEm(
   breakpointL[0],
 )})`
 
-export const POTENCY_COLORS = {
+export const POTENCY_COLORS: Record<Potency, string> = {
   HIGH: '#00305A',
   MEDIUM: '#005599',
   LOW: LW_BLUE,
 }
+
+export const POTENCY_COLORS_KEYS: Array<Potency> = ['LOW', 'MEDIUM', 'HIGH']
 
 export const HEADER_HEIGHT = 75
 export const FRAME_PADDING = 20

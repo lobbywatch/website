@@ -1,4 +1,9 @@
-const getRawId = ({ id, __typename }, locale) =>
+import { Locale, MappedEdge, MappedObject } from '../../lib/types'
+
+const getRawId = (
+  { id, __typename }: Pick<MappedObject, 'id' | '__typename'>,
+  locale: Locale,
+) =>
   id
     ?.split('-')
     .filter((part) => part !== __typename && part !== locale)
@@ -12,7 +17,7 @@ export const typeSegments = {
   Guest: 'daten/zutrittsberechtigter',
 }
 
-export const itemPath = (item, locale) => {
+export const itemPath = (item: MappedEdge, locale: Locale) => {
   const { __typename, name } = item
   const typeSegment = typeSegments[__typename]
   if (!typeSegment) {
@@ -24,15 +29,21 @@ export const itemPath = (item, locale) => {
   )}${name ? `/${encodeURIComponent(name)}` : ''}`
 }
 
-export const shouldIgnoreClick = (event, ignoreTarget) => {
+export const shouldIgnoreClick = (
+  event: React.MouseEvent<HTMLAnchorElement, MouseEvent>,
+  ignoreTarget?: boolean,
+) => {
   // based on https://github.com/zeit/next.js/blob/82d56e063aad12ac8fee5b9d5ed24ccf725b1a5b/packages/next-server/lib/link.js#L59
   const anchor = [event.target, event.currentTarget].find(
-    (node) => node.nodeName === 'A',
+    (node) => 'nodeName' in node && node.nodeName === 'A',
   )
   return (
     !!anchor &&
     !!(
-      (!ignoreTarget && anchor.target && anchor.target !== '_self') ||
+      (!ignoreTarget &&
+        'target' in anchor &&
+        anchor.target &&
+        anchor.target !== '_self') ||
       event.metaKey ||
       event.ctrlKey ||
       event.shiftKey ||
