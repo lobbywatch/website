@@ -1,18 +1,12 @@
 import qs from 'querystring'
-import { DRUPAL_BASE_URL, DRUPAL_DATA_BASE_URL } from '../../constants'
+import { DRUPAL_DATA_BASE_URL } from '../../constants'
+import { Locale } from '../types'
 
-export const drupal = (locale, path, query) => {
-  const queryString = query ? '?' + qs.encode(query) : ''
-  return [
-    DRUPAL_BASE_URL,
-    '/',
-    encodeURIComponent(locale),
-    path ? `/${path}` : '',
-    queryString,
-  ].join('')
-}
-
-export const data = (locale, path, query) => {
+export const data = (
+  locale: Locale,
+  path: string,
+  query?: Record<string, string>,
+) => {
   const fullQuery = Object.assign(
     {
       q: [encodeURIComponent(locale), path].join('/'),

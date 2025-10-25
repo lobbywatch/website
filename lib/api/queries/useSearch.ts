@@ -4,6 +4,16 @@ import { useGuests } from './guests'
 import { useLobbyGroups } from './lobbyGroups'
 import { useBranchen } from './branchen'
 import { useOrganisations } from './organisations'
+import {
+  Locale,
+  MappedBranch,
+  MappedGuest,
+  MappedLobbyGroup,
+  MappedObject,
+  MappedObjectType,
+  MappedOrganisation,
+  MappedParliamentarian,
+} from '../../types'
 
 const diacritics = [
   { base: 'a', letters: ['ä', 'â', 'à'] },
@@ -13,21 +23,31 @@ const diacritics = [
   { base: 'o', letters: ['ö', 'ô', 'ò'] },
   { base: 'u', letters: ['ü', 'ù', 'û'] },
   { base: 'ss', letters: ['ß'] },
-]
+] as const
+
+type DiacriticBase = (typeof diacritics)[number]['base']
+type DiacriticLetter = (typeof diacritics)[number]['letters'][number]
+type DiacriticsMap = Record<DiacriticLetter, DiacriticBase>
 
 const diacriticsMap = diacritics.reduce((map, diacritic) => {
   for (const letter of diacritic.letters) {
     map[letter] = diacritic.base
   }
   return map
-}, {})
+}, {} as DiacriticsMap)
 
-const normalize = (keyword) =>
+const isDiacriticLetter = (a: string): a is DiacriticLetter =>
+  a in diacriticsMap
+
+const normalize = (keyword: string) =>
   keyword
     .toLowerCase() // eslint-disable-next-line no-control-regex
-    .replace(/[^\u0000-\u007E]/g, (a) => diacriticsMap[a] || a)
-const cleanKeywords = (keywords) =>
-  keywords.filter(Boolean).map((keyword) => normalize(keyword))
+    .replace(/[^\u0000-\u007E]/g, (a) =>
+      isDiacriticLetter(a) ? diacriticsMap[a] : a,
+    )
+
+const cleanKeywords = (keywords: Array<string | undefined>) =>
+  keywords.filter((x) => x != null).map((keyword) => normalize(keyword))
 
 const BOOSTS = {
   Parliamentarian: 1,
@@ -37,7 +57,7 @@ const BOOSTS = {
   Branch: 0,
 }
 
-const search = (term, index) => {
+const search = (term: string, index: ReturnType<typeof buildIndex>) => {
   if (term.length === 0) {
     return []
   }
@@ -63,13 +83,13 @@ const search = (term, index) => {
         return sum
       }, 0)
       if (matchedTerms >= terms.length && match > 0) {
-        return [match + BOOSTS[item.type], item]
+        return [match + BOOSTS[item.type as MappedObjectType], item] as const
       }
     })
-    .filter(Boolean)
+    .filter((x) => x != null)
     .sort((a, b) => descending(a[0], b[0]))
     .slice(0, 30)
-    .map(([score, item]) => item.raw)
+    .map(([_score, item]) => item.raw)
 }
 
 const buildIndex = ({
@@ -78,7 +98,29 @@ const buildIndex = ({
   lobbyGroups,
   branchen,
   organisations,
-}) => {
+}: {
+  parliamentarians: {
+    data: Array<MappedParliamentarian>
+    error: unknown
+    isLoading: boolean
+  }
+  guests: { data: Array<MappedGuest>; error: unknown; isLoading: boolean }
+  lobbyGroups: {
+    data: Array<MappedLobbyGroup>
+    error: unknown
+    isLoading: boolean
+  }
+  branchen: { data: Array<MappedBranch>; error: unknown; isLoading: boolean }
+  organisations: {
+    data: Array<MappedOrganisation>
+    error: unknown
+    isLoading: boolean
+  }
+}): Array<{
+  type: MappedObject['__typename']
+  raw: MappedObject
+  keywords: Array<string>
+}> => {
   const notReady =
     parliamentarians.isLoading ||
     !parliamentarians.data ||
@@ -93,9 +135,10 @@ const buildIndex = ({
   if (notReady) {
     return []
   }
-  return parliamentarians.data.parliamentarians
-    .map((parliamentarian) => ({
-      type: 'Parliamentarian',
+
+  return [
+    ...parliamentarians.data.map((parliamentarian) => ({
+      type: parliamentarian.__typename,
       raw: parliamentarian,
       keywords: cleanKeywords([
         parliamentarian.lastName,
@@ -110,55 +153,54 @@ const buildIndex = ({
           ? parliamentarian.kommissionen_namen.split(';')
           : []),
       ]),
-    }))
-    .concat(
-      guests.data.guests.map((guest) => ({
-        type: 'Guest',
-        raw: guest,
-        keywords: cleanKeywords([
-          guest.lastName,
-          guest.firstName,
-          guest.middleName,
-          ...guest.function?.split(','),
+    })),
+    ...guests.data.map((guest) => ({
+      type: guest.__typename,
+      raw: guest,
+      keywords: cleanKeywords([
+        guest.lastName,
+        guest.firstName,
+        guest.middleName,
+        ...guest.function?.split(','),
+      ]),
+    })),
+    ...lobbyGroups.data.map((lobbyGroup) => ({
+      type: lobbyGroup.__typename,
+      raw: lobbyGroup,
+      keywords: cleanKeywords([
+        lobbyGroup.name,
+        lobbyGroup.branch.name,
+        ...lobbyGroup.commissions.flatMap((commission) => [
+          commission.abbr,
+          commission.name,
         ]),
-      })),
-    )
-    .concat(
-      lobbyGroups.data.lobbyGroups.map((lobbyGroup) => ({
-        type: 'LobbyGroup',
-        raw: lobbyGroup,
-        keywords: cleanKeywords([
-          lobbyGroup.name,
-          lobbyGroup.branche,
-          ...lobbyGroup.commissions.flatMap((commission) => [
-            commission.abbr,
-            commission.name,
-          ]),
-        ]),
-      })),
-    )
-    .concat(
-      branchen.data.branchen.map((branch) => ({
-        type: 'Branch',
-        raw: branch,
-        keywords: cleanKeywords([branch.name]),
-      })),
-    )
-    .concat(
-      organisations.data.organisations.map((organisation) => ({
-        type: 'Organisation',
-        raw: organisation,
-        keywords: cleanKeywords([
-          organisation.name,
-          organisation.uid,
-          organisation.abbr,
-          ...organisation.lobbyGroups.map((group) => group.name),
-        ]),
-      })),
-    )
+      ]),
+    })),
+    ...branchen.data.map((branch) => ({
+      type: branch.__typename,
+      raw: branch,
+      keywords: cleanKeywords([branch.name]),
+    })),
+    ...organisations.data.map((organisation) => ({
+      type: organisation.__typename,
+      raw: organisation,
+      keywords: cleanKeywords([
+        organisation.name,
+        organisation.uid,
+        organisation.abbr,
+        ...organisation.lobbyGroups.map((group) => group.name),
+      ]),
+    })),
+  ]
 }
 
-export const useSearch = ({ locale, term }) => {
+export const useSearch = ({
+  locale,
+  term,
+}: {
+  locale: Locale
+  term: string
+}) => {
   const parliamentarians = useParliamentarians({
     locale,
     query: {
