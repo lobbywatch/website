@@ -1,5 +1,4 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 
 import { nest } from 'd3-collection'
 import { ascending } from 'd3-array'
@@ -11,15 +10,19 @@ import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
-
-import { createGetStaticProps } from 'lib/createGetStaticProps'
 import { getAllParliamentarians } from 'lib/api/queries/parliamentarians'
+import { InferGetStaticPropsType } from 'next'
+import { useSafeRouter, withStaticPropsContext } from '../../../../lib/next'
+import { Schema } from 'effect'
+import { Locale, MappedParliamentarian } from '../../../../lib/types'
 
-const Parliamentarians = ({ data }) => {
+const Parliamentarians = ({
+  parliamentarians,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {
     query: { locale },
     isFallback,
-  } = useRouter()
+  } = useSafeRouter(Schema.Struct({ locale: Locale }))
 
   return (
     <Frame>
@@ -32,7 +35,7 @@ const Parliamentarians = ({ data }) => {
               fromT={(t) => ({
                 title: t('parliamentarians/meta/title'),
                 description: t('parliamentarians/meta/description', {
-                  count: data.parliamentarians.length,
+                  count: parliamentarians.length,
                 }),
               })}
             />
@@ -41,16 +44,16 @@ const Parliamentarians = ({ data }) => {
                 <Message id='parliamentarians/meta/title' locale={locale} />
               </H1>
             </TextCenter>
-            {nest()
-              .key((item) => item.canton)
+            {nest<MappedParliamentarian>()
+              .key((item) => item.canton ?? '–')
               .sortKeys(ascending)
-              .entries(data.parliamentarians)
+              .entries(parliamentarians)
               .map(({ key, values }) => (
                 <div key={key} style={{ marginBottom: 50 }}>
                   <H2>{key}</H2>
                   <ListView
                     locale={locale}
-                    items={values}
+                    items={values as Array<MappedParliamentarian>}
                     subtitle={(item) =>
                       [
                         item.councilTitle,
@@ -69,8 +72,11 @@ const Parliamentarians = ({ data }) => {
   )
 }
 
-export const getStaticProps = createGetStaticProps({
-  dataFetcher: getAllParliamentarians,
+export const getStaticProps = withStaticPropsContext<{
+  parliamentarians: Array<MappedParliamentarian>
+}>()(Schema.Struct({ locale: Locale }), async ({ params }) => {
+  const parliamentarians = await getAllParliamentarians(params)
+  return { props: { parliamentarians } }
 })
 
 export async function getStaticPaths() {

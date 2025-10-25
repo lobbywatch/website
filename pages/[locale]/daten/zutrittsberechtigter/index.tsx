@@ -1,5 +1,4 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 
 import { H1, TextCenter } from 'src/components/Styled'
 import Message from 'src/components/Message'
@@ -8,15 +7,17 @@ import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
-
-import { createGetStaticProps } from 'lib/createGetStaticProps'
 import { getAllGuests } from 'lib/api/queries/guests'
+import { useSafeRouter, withStaticPropsContext } from '../../../../lib/next'
+import { Locale, MappedGuest } from '../../../../lib/types'
+import { Schema } from 'effect'
+import { InferGetStaticPropsType } from 'next'
 
-const Guests = ({ data }) => {
+const Guests = ({ guests }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {
     query: { locale },
     isFallback,
-  } = useRouter()
+  } = useSafeRouter(Schema.Struct({ locale: Locale }))
 
   return (
     <Frame>
@@ -29,7 +30,7 @@ const Guests = ({ data }) => {
               fromT={(t) => ({
                 title: t('guests/meta/title'),
                 description: t('guests/meta/description', {
-                  count: data.guests.length,
+                  count: guests.length,
                 }),
               })}
             />
@@ -38,7 +39,7 @@ const Guests = ({ data }) => {
                 <Message id='guests/meta/title' locale={locale} />
               </H1>
             </TextCenter>
-            <ListView locale={locale} items={data.guests} />
+            <ListView locale={locale} items={guests} />
           </Center>
         )}
       />
@@ -46,8 +47,11 @@ const Guests = ({ data }) => {
   )
 }
 
-export const getStaticProps = createGetStaticProps({
-  dataFetcher: getAllGuests,
+export const getStaticProps = withStaticPropsContext<{
+  guests: Array<MappedGuest>
+}>()(Schema.Struct({ locale: Locale }), async ({ params }) => {
+  const guests = await getAllGuests(params)
+  return { props: { guests } }
 })
 
 export async function getStaticPaths() {

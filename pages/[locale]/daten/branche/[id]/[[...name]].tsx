@@ -1,5 +1,4 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
@@ -7,28 +6,32 @@ import MetaTags, { GooglePreview } from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { A, Meta } from 'src/components/Styled'
-import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from 'constants'
-
-import { createGetStaticProps } from 'lib/createGetStaticProps'
+import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from '../../../../../constants'
 import { getBranche } from 'lib/api/queries/branchen'
+import { useSafeRouter, withStaticPropsContext } from '../../../../../lib/next'
+import { Schema } from 'effect'
+import { BranchId, Locale, MappedBranch } from '../../../../../lib/types'
+import { InferGetStaticPropsType } from 'next'
 
 const CONNECTION_WEIGHTS = {
+  Branch: 1,
+  Guest: 1,
   LobbyGroup: 1000,
   Organisation: 0,
+  Parliamentarian: 1,
 }
 
-const Branch = ({ data }) => {
+const Branch = (branche: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {
     query: { locale, id },
     isFallback,
-  } = useRouter()
+  } = useSafeRouter(Schema.Struct({ locale: Locale, id: BranchId }))
 
   return (
     <Frame>
       <Loader
         loading={isFallback}
         render={() => {
-          const { branche } = data
           const { __typename, name } = branche
           const rawId = id.replace(`${__typename}-`, '')
           const path = `/${locale}/daten/branch/${rawId}/${name}`
@@ -42,7 +45,7 @@ const Branch = ({ data }) => {
                 origin={__typename}
                 locale={locale}
                 directness={1}
-                data={branche.connections}
+                data={branche.connections ?? []}
                 groupByDestination
                 connectionWeight={(connection) =>
                   CONNECTION_WEIGHTS[connection.to.__typename]
@@ -60,7 +63,7 @@ const Branch = ({ data }) => {
                       Live
                     </A>
                   </Meta>
-                  <GooglePreview data={branche} path={path} />
+                  <GooglePreview locale={locale} data={branche} path={path} />
                 </Center>
               )}
             </div>
@@ -71,18 +74,14 @@ const Branch = ({ data }) => {
   )
 }
 
-export const getStaticProps = createGetStaticProps({
-  dataFetcher: getBranche,
-  getCustomStaticProps: ({ data }) => {
-    if (!data.branche) {
-      return {
-        notFound: true,
-      }
-    } else {
-      return { props: { data } }
-    }
+export const getStaticProps = withStaticPropsContext<MappedBranch>()(
+  Schema.Struct({ locale: Locale, id: BranchId }),
+  async ({ params }) => {
+    const props = await getBranche(params)
+    return props ? { props } : { notFound: true }
   },
-})
+)
+
 export async function getStaticPaths() {
   return {
     paths: [],

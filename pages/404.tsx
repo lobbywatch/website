@@ -3,7 +3,6 @@ import React from 'react'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import { H1, P } from 'src/components/Styled'
-import { createGetStaticProps } from 'lib/createGetStaticProps'
 
 export const NotFound = () => (
   <>
@@ -24,9 +23,5 @@ const Page = () => {
     </Frame>
   )
 }
-
-export const getStaticProps = createGetStaticProps({
-  defaultLocale: 'de',
-})
 
 export default Page
