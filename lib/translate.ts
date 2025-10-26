@@ -45,7 +45,7 @@ export type Formatter = FormatterFunction & {
   locale: Locale
 }
 
-export const replaceKeys = (message: string, replacements: Replacements) => {
+const replaceKeys = (message: string, replacements: Replacements) => {
   let withReplacements = message
   Object.keys(replacements).forEach((replacementKey) => {
     withReplacements = withReplacements.replace(

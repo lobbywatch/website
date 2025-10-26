@@ -640,7 +640,7 @@ const POTENCY_WEIGHT = {
   LOW: 1,
 }
 
-export const connectionWeight = (connection: MappedConnection) =>
+const connectionWeight = (connection: MappedConnection) =>
   POTENCY_WEIGHT[connection.potency ?? 'LOW']
 
 interface NewConnectionsProps extends Omit<NestConnectionsProps, 't'> {

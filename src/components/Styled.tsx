@@ -71,12 +71,6 @@ export const buttonLinkStyle = {
     backgroundColor: LW_BLUE_HOVER,
   },
 }
-export const buttonLinkRule = css(buttonLinkStyle)
-export const ButtonLink = ({ children, ...props }: NextLinkWithChildren) => (
-  <NextLink {...props} {...buttonLinkRule}>
-    {children}
-  </NextLink>
-)
 
 const textCenterRule = css({ textAlign: 'center' })
 export const TextCenter = React.forwardRef<
@@ -116,7 +110,7 @@ export const h2Style = {
   fontWeight: 400,
   margin: '0.8em 0',
 }
-export const h2Rule = css(h2Style)
+const h2Rule = css(h2Style)
 export const H2 = React.forwardRef<
   HTMLHeadingElement,
   JSX.IntrinsicElements['h2']
@@ -133,22 +127,12 @@ export const h3Style = {
   fontWeight: 700,
   margin: '0 0 1em',
 }
-export const h3Rule = css(h3Style)
-export const H3 = React.forwardRef<
-  HTMLHeadingElement,
-  JSX.IntrinsicElements['h3']
->(({ children, ...props }, ref) => (
-  <h3 ref={ref} {...props} {...h3Rule}>
-    {children}
-  </h3>
-))
-H3.displayName = 'H3'
 
 export const pStyle = {
   fontSize: 16,
   lineHeight: '24px',
 }
-export const pRule = css(pStyle)
+const pRule = css(pStyle)
 export const P = React.forwardRef<
   HTMLParagraphElement,
   JSX.IntrinsicElements['p']
@@ -189,7 +173,7 @@ export const hrStyle = {
   border: 'none',
   borderTop: `1px solid ${GREY_LIGHT}`,
 }
-export const hrRule = css(hrStyle)
+const hrRule = css(hrStyle)
 export const Hr = React.forwardRef<HTMLHRElement, JSX.IntrinsicElements['hr']>(
   (props, ref) => <hr ref={ref} {...props} {...hrRule} />,
 )
@@ -222,28 +206,6 @@ export const inputStyle = {
     height: 0,
   },
 }
-export const inputRule = css(inputStyle)
-export const Input = React.forwardRef<
-  HTMLInputElement,
-  JSX.IntrinsicElements['input']
->((props, ref) => <input ref={ref} {...props} {...inputRule} />)
-Input.displayName = 'Input'
-
-export const submitStyle = {
-  backgroundColor: LW_BLUE,
-  color: WHITE,
-  border: 'none',
-  cursor: 'pointer',
-  ':hover': {
-    backgroundColor: LW_BLUE_HOVER,
-  },
-}
-export const submitRule = merge(inputStyle, submitStyle)
-export const Submit = React.forwardRef<
-  HTMLInputElement,
-  JSX.IntrinsicElements['input']
->((props, ref) => <input ref={ref} type='submit' {...props} {...submitRule} />)
-Submit.displayName = 'Submit'
 
 export const clearStyle = {
   ':after': {
@@ -252,7 +214,7 @@ export const clearStyle = {
     clear: 'both',
   },
 }
-export const clearRule = css(clearStyle)
+const clearRule = css(clearStyle)
 export const Clear = React.forwardRef<
   HTMLDivElement,
   JSX.IntrinsicElements['div']

@@ -500,7 +500,7 @@ export const mapOrganisation = (
   return replaceUndefinedWithNull(org)
 }
 
-export const commissionIdPrefix = 'Commission-'
+const commissionIdPrefix = 'Commission-'
 
 const mapMandate = (
   origin: MappedGuest | MappedParliamentarian,
