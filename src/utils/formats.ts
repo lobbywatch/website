@@ -1,9 +1,8 @@
 import { formatLocale } from 'd3-format'
 
-export const thousandSeparator = '\u2019'
 const swissNumbers = formatLocale({
   decimal: '.',
-  thousands: thousandSeparator,
+  thousands: '\u2019',
   grouping: [3],
   currency: ['', '\u00A0CHF'],
 })

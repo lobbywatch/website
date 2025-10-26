@@ -7,7 +7,7 @@ export interface PropsContext<A> {
   params: A
 }
 
-export const GetStaticPropsContext = <A, I, R>(
+const GetStaticPropsContext = <A, I, R>(
   paramsSchema: Schema.Schema<A, I, R>,
 ): Schema.Schema<PropsContext<A>, PropsContext<I>, R> =>
   Schema.declare(
