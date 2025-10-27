@@ -1,16 +1,7 @@
 import React, { ReactNode } from 'react'
 import NextLink, { LinkProps } from 'next/link'
-import {
-  LW_BLUE,
-  LW_BLUE_HOVER,
-  GREY_DARK,
-  GREY_LIGHT,
-  GREY_MID,
-  WHITE,
-  GREY_SOFT,
-  mediaM,
-} from '../theme'
-import { css, merge } from 'glamor'
+import { mediaM } from '../theme'
+import { css } from 'glamor'
 
 export const plainButtonRule = css({
   fontFamily: 'inherit',
@@ -27,12 +18,12 @@ export const plainButtonRule = css({
 
 export const linkStyle = {
   textDecoration: 'none',
-  color: LW_BLUE,
+  color: 'var(--colorPrimary)',
   ':visited': {
-    color: LW_BLUE,
+    color: 'var(--colorPrimary)',
   },
   ':hover': {
-    color: LW_BLUE_HOVER,
+    color: 'var(--colorPrimaryHover)',
   },
 }
 
@@ -62,13 +53,13 @@ export const buttonLinkStyle = {
   display: 'inline-block',
   textAlign: 'center',
   textDecoration: 'none',
-  backgroundColor: LW_BLUE,
-  color: WHITE,
+  backgroundColor: 'var(--colorPrimary)',
+  color: 'var(--colorWhite)',
   borderRadius: 4,
   minWidth: 160,
   padding: 11,
   ':hover': {
-    backgroundColor: LW_BLUE_HOVER,
+    backgroundColor: 'var(--colorPrimaryHover)',
   },
 }
 
@@ -151,7 +142,7 @@ export const smallStyle = {
 export const metaStyle = {
   fontSize: 12,
   lineHeight: '14px',
-  color: GREY_DARK,
+  color: 'var(--colorGreyDark)',
   [mediaM]: {
     fontSize: 14,
     lineHeight: '18px',
@@ -171,7 +162,7 @@ Meta.displayName = 'Meta'
 export const hrStyle = {
   margin: '30px 0',
   border: 'none',
-  borderTop: `1px solid ${GREY_LIGHT}`,
+  borderTop: '1px solid var(--colorGreyLight)',
 }
 const hrRule = css(hrStyle)
 export const Hr = React.forwardRef<HTMLHRElement, JSX.IntrinsicElements['hr']>(
@@ -182,24 +173,24 @@ Hr.displayName = 'Hr'
 export const inputStyle = {
   appearance: 'none',
   width: '100%',
-  border: `1px solid ${GREY_LIGHT}`,
+  border: '1px solid var(--colorGreyLight)',
   textOverflow: 'ellipsis',
   paddingLeft: 8,
   paddingRight: 8,
   height: 40,
   borderRadius: 4,
-  backgroundColor: GREY_SOFT,
+  backgroundColor: 'var(--colorGreySoft)',
   [mediaM]: {
     paddingLeft: 16,
     paddingRight: 16,
   },
   '::placeholder': {
-    color: GREY_MID,
+    color: 'var(--colorGreyMid)',
     textOverflow: 'ellipsis',
   },
   ':focus': {
     outline: 'none',
-    borderColor: GREY_MID,
+    borderColor: 'var(--colorGreyMid)',
   },
   '::-ms-clear': {
     width: 0,

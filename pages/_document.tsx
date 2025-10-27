@@ -10,10 +10,8 @@ import Document, {
 // @ts-expect-error Package is not typed
 import { renderStaticOptimized } from 'glamor/server'
 
-import { WHITE } from '../src/theme'
 import { getSafeLocale } from '../constants'
 
-import 'glamor/reset'
 import { Locale } from '../lib/types'
 
 export interface MyDocumentProps extends DocumentInitialProps {
@@ -91,7 +89,7 @@ export default class MyDocument extends Document {
             name='msapplication-config'
             content='/static/browserconfig.xml'
           />
-          <meta name='theme-color' content={WHITE} />
+          <meta name='theme-color' content={'var(--colorWhite)'} />
         </Head>
         <body>
           <script

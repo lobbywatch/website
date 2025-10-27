@@ -1,17 +1,17 @@
 import { createElement } from 'react'
 import {
-  linkStyle,
   buttonLinkStyle,
+  clearStyle,
   h1Style,
   h2Style,
   h3Style,
+  hrStyle,
+  linkStyle,
   pStyle,
   smallStyle,
-  hrStyle,
-  clearStyle,
 } from './Styled'
 import { globalWithMediaQueries } from '../utils/css'
-import { mediaM, POTENCY_COLORS, WHITE } from '../theme'
+import { mediaM, POTENCY_COLORS } from '../theme'
 
 const { ':visited': linkStyleVisited, ...linkStyleGeneral } = linkStyle
 
@@ -81,7 +81,7 @@ type PotencyKey = keyof typeof POTENCY_COLORS
   globalWithMediaQueries(`.RawHtml .lw-potency-${key.toLowerCase()}`, {
     display: 'inline-block',
     backgroundColor: POTENCY_COLORS[key],
-    color: WHITE,
+    color: 'var(--colorWhite)',
     borderRadius: 5,
     padding: '0 4px',
   })

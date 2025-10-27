@@ -1,0 +1,24 @@
+:root {
+  --colorBlack: #000000;
+  --colorWhite: #ffffff;
+
+  --colorGreySoft: #f2f2f2;
+  --colorGreyLight: #dddddd;
+  --colorGreyMid: #999999;
+  --colorGreyDark: #666666;
+
+  --colorPrimary: #0077d7;
+  --colorPrimaryLight: #74d7ff;
+  --colorPrimaryDark: #112233;
+  --colorPrimaryHover: #004c88;
+
+  --colorPotencyHigh: #00305a;
+  --colorPotencyLow: var(--colorPrimary);
+  --colorPotencyMedium: #005599;
+}
+
+body {
+  background-color: var(--colorWhite);
+  color: var(--colorBlack);
+  font-family: 'Roboto', sans-serif;
+}

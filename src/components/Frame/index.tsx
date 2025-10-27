@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 
 import { getSafeLocale, locales } from '../../../constants'
 import CreativeCommons from '../../assets/CreativeCommons'
-import { BLACK, mediaM } from '../../theme'
+import { mediaM } from '../../theme'
 import { typeSegments } from '../../utils/routes'
 import { JsonLd } from '../JsonLd'
 import { useT } from '../Message'
@@ -15,13 +15,6 @@ import { Hr, metaStyle } from '../Styled'
 import { ReactNode } from 'react'
 
 export { default as Center } from './Center'
-
-css.global('html', { boxSizing: 'border-box' })
-css.global('*, *:before, *:after', { boxSizing: 'inherit' })
-css.global('body, h1, h2, h3, h4, h5, h6, input, textarea', {
-  fontFamily: "'Roboto', sans-serif",
-})
-css.global('body', { color: BLACK })
 
 const ccContainerStyle = css({
   [mediaM]: {

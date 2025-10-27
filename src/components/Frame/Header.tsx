@@ -2,13 +2,7 @@ import React, { useState } from 'react'
 import { css } from 'glamor'
 import Link from 'next/link'
 
-import {
-  LW_BLUE_LIGHT,
-  LW_BLUE_DARK,
-  mediaHeaderExpanded,
-  HEADER_HEIGHT,
-  FRAME_PADDING,
-} from '../../theme'
+import { FRAME_PADDING, HEADER_HEIGHT, mediaHeaderExpanded } from '../../theme'
 import Logo from '../../assets/Logo'
 
 import Menu, { MenuItem } from './Menu'
@@ -21,7 +15,7 @@ const titleStyle = css({
   fontSize: 24,
   lineHeight: '34px',
   textDecoration: 'none',
-  color: LW_BLUE_LIGHT,
+  color: 'var(--colorPrimaryLight)',
   position: 'relative',
   zIndex: 5,
 })
@@ -39,14 +33,14 @@ const barStyle = css({
   left: 0,
   right: 0,
   height: HEADER_HEIGHT,
-  backgroundColor: LW_BLUE_DARK,
+  backgroundColor: 'var(--colorPrimaryDark)',
   padding: FRAME_PADDING,
   zIndex: 10,
 })
 
 const searchContainerStyle = css({
   paddingTop: HEADER_HEIGHT,
-  backgroundColor: LW_BLUE_DARK,
+  backgroundColor: 'var(--colorPrimaryDark)',
   paddingBottom: 20,
   [mediaHeaderExpanded]: {
     paddingTop: HEADER_HEIGHT + 20,

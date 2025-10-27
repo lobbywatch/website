@@ -2,12 +2,11 @@ import React, { ReactNode } from 'react'
 import { css } from 'glamor'
 
 import { metaRule } from './Styled'
-import { WHITE, GREY_DARK, GREY_LIGHT, BLACK } from '../theme'
 
 const boxStyle = css({
   position: 'absolute',
-  backgroundColor: WHITE,
-  color: GREY_DARK,
+  backgroundColor: 'var(--colorWhite)',
+  color: 'var(--colorGreyDark)',
   boxShadow: '0 2px 24px 0 rgba(0,0,0,0.25)',
   fontSize: 14,
   lineHeight: '1.1em',
@@ -37,7 +36,7 @@ const notchStyle = css({
   height: 0,
   borderStyle: 'solid',
   borderWidth: '8px 7.5px 0 7.5px',
-  borderColor: `${WHITE} transparent transparent transparent`,
+  borderColor: 'var(--colorWhite) transparent transparent transparent',
 })
 
 const notchPosition = {
@@ -68,10 +67,10 @@ const notchPosition = {
 const labledValueStyle = css({
   fontSize: 14,
   lineHeight: '20px',
-  borderBottom: `1px solid ${GREY_LIGHT}`,
+  borderBottom: '1px solid var(--colorGreyLight)',
   paddingBottom: 10,
   marginBottom: 5,
-  color: BLACK,
+  color: 'var(--colorBlack)',
   ':last-child': {
     borderBottom: 'none',
     paddingBottom: 5,

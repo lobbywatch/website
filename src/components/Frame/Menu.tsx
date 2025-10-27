@@ -2,19 +2,16 @@ import React, { ReactNode } from 'react'
 import { css } from 'glamor'
 import { StyledLink } from '../Styled'
 import {
-  LW_BLUE_LIGHT,
-  LW_BLUE_DARK,
-  WHITE,
-  mediaHeaderExpanded,
-  mediaHeaderCollasped,
   HEADER_HEIGHT,
+  mediaHeaderCollasped,
+  mediaHeaderExpanded,
 } from '../../theme'
 
 const ITEM_MARGIN_LEFT = 15
 const menuStyle = css({
   [mediaHeaderCollasped]: {
     display: 'flex',
-    backgroundColor: LW_BLUE_DARK,
+    backgroundColor: 'var(--colorPrimaryDark)',
     boxSizing: 'border-box',
     position: 'absolute',
     top: 0,
@@ -61,13 +58,13 @@ const listItemStyle = css({
     position: 'relative',
   },
   '& a, & a:visited, & a:hover': {
-    color: LW_BLUE_LIGHT,
+    color: 'var(--colorPrimaryLight)',
   },
   '& a:hover': {
-    color: WHITE,
+    color: 'var(--colorWhite)',
   },
   '& a.active': {
-    color: WHITE,
+    color: 'var(--colorWhite)',
   },
 })
 const listItemSeparatorStyle = css({
@@ -77,7 +74,7 @@ const listItemSeparatorStyle = css({
   },
   [mediaHeaderExpanded]: {
     display: 'inline-block',
-    backgroundColor: WHITE,
+    backgroundColor: 'var(--colorWhite)',
     verticalAlign: 'middle',
     marginRight: 25,
     marginLeft: 25 - ITEM_MARGIN_LEFT,
@@ -88,15 +85,15 @@ const listItemSeparatorStyle = css({
 })
 
 export interface MenuItem {
-  label: ReactNode;
-  href: string;
-  active?: boolean;
-  separator?: boolean;
+  label: ReactNode
+  href: string
+  active?: boolean
+  separator?: boolean
 }
 
 export interface MenuProps {
-  id: string;
-  items: Array<MenuItem>;
+  id: string
+  items: Array<MenuItem>
   expanded?: boolean
 }
 

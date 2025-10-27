@@ -1,6 +1,6 @@
 import React from 'react'
 import { css } from 'glamor'
-import { LW_BLUE_LIGHT, mediaHeaderExpanded } from '../../theme'
+import { mediaHeaderExpanded } from '../../theme'
 import { plainButtonRule } from '../Styled'
 
 const toggleStyle = css(plainButtonRule, {
@@ -18,7 +18,7 @@ const toggleStyle = css(plainButtonRule, {
     display: 'block',
     position: 'absolute',
     height: 2,
-    backgroundColor: LW_BLUE_LIGHT,
+    backgroundColor: 'var(--colorPrimaryLight)',
     opacity: 1,
     left: 0,
     width: 24,
@@ -27,7 +27,7 @@ const toggleStyle = css(plainButtonRule, {
     transform: 'rotate(0deg)',
     transformOrigin: 'left center',
     ':hover': {
-      backgroundColor: LW_BLUE_LIGHT,
+      backgroundColor: 'var(--colorPrimaryLight)',
     },
     ':nth-child(1)': {
       top: 4,

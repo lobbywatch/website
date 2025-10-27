@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { metaRule } from './Styled'
-import { GREY_LIGHT, LW_BLUE, mediaM } from '../theme'
+import { mediaM } from '../theme'
 import { css } from 'glamor'
 import Link from 'next/link'
 import { itemPath } from '../utils/routes'
@@ -28,13 +28,13 @@ const aStyle = css({
   color: 'inherit',
   minHeight: '100%',
   textDecoration: 'none',
-  borderBottom: `1px solid ${GREY_LIGHT}`,
+  borderBottom: '1px solid var(--colorGreyLight)',
   paddingTop: 12,
   paddingBottom: 12,
   paddingLeft: SYMBOL_SIZE + 10,
   position: 'relative',
   ':hover': {
-    color: LW_BLUE,
+    color: 'var(--colorPrimary)',
   },
 })
 const metaStyle = css(metaRule, {
@@ -43,7 +43,7 @@ const metaStyle = css(metaRule, {
     lineHeight: '16px',
   },
   'a:hover &': {
-    color: LW_BLUE,
+    color: 'var(--colorPrimary)',
   },
 })
 

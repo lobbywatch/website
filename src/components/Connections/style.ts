@@ -1,11 +1,11 @@
 import { css, merge } from 'glamor'
 
-import { LW_BLUE_DARK, WHITE, GREY_LIGHT, GREY_DARK, mediaM } from '../../theme'
+import { mediaM } from '../../theme'
 import { plainButtonRule } from '../Styled'
 
 export const edge = css({
   position: 'relative',
-  backgroundColor: GREY_LIGHT,
+  backgroundColor: 'var(--colorGreyLight)',
   marginBottom: 20,
 })
 export const container = css({
@@ -20,8 +20,8 @@ export const bubble = css(plainButtonRule, {
   display: 'inline-block',
   fontSize: 14,
   lineHeight: '24px',
-  backgroundColor: LW_BLUE_DARK,
-  color: WHITE,
+  backgroundColor: 'var(--colorPrimaryDark)',
+  color: 'var(--colorWhite)',
   borderRadius: 20,
   padding: '8px 16px',
   marginRight: 10,
@@ -30,9 +30,9 @@ export const bubble = css(plainButtonRule, {
   zIndex: 1,
 })
 export const bubbleVia = merge(bubble, {
-  color: LW_BLUE_DARK,
-  backgroundColor: WHITE,
-  border: `1px solid ${LW_BLUE_DARK}`,
+  color: 'var(--colorPrimaryDark)',
+  backgroundColor: 'var(--colorWhite)',
+  border: '1px solid var(--colorPrimaryDark)',
   textDecoration: 'none',
 })
 export const count = css({
@@ -44,13 +44,13 @@ export const count = css({
   marginLeft: -8,
   padding: '0 8px',
   marginRight: 3,
-  backgroundColor: WHITE,
-  color: LW_BLUE_DARK,
+  backgroundColor: 'var(--colorWhite)',
+  color: 'var(--colorPrimaryDark)',
   fontWeight: 500,
 })
 export const countVia = merge(count, {
-  color: WHITE,
-  backgroundColor: LW_BLUE_DARK,
+  color: 'var(--colorWhite)',
+  backgroundColor: 'var(--colorPrimaryDark)',
 })
 export const icon = css({
   marginLeft: -8,
@@ -62,8 +62,8 @@ export const connection = css({
   display: 'inline-block',
   textDecoration: 'none',
   borderRadius: 8,
-  backgroundColor: GREY_DARK,
-  color: WHITE,
+  backgroundColor: 'var(--colorGreyDark)',
+  color: 'var(--colorWhite)',
   fontSize: 14,
   lineHeight: '16px',
   padding: '5px 10px',
@@ -72,9 +72,9 @@ export const connection = css({
   marginBottom: 10,
 })
 export const connectionIndirect = merge(connection, {
-  backgroundColor: WHITE,
-  color: GREY_DARK,
-  border: `1px solid ${GREY_DARK}`,
+  backgroundColor: 'var(--colorWhite)',
+  color: 'var(--colorGreyDark)',
+  border: '1px solid var(--colorGreyDark)',
 })
 
 export const hidden = css({
@@ -100,7 +100,7 @@ export const pathSegment = css({
 })
 
 export const pathSegmentFunction = css({
-  color: GREY_DARK,
+  color: 'var(--colorGreyDark)',
 })
 
 export const pathSegmentIcon = css({
