@@ -2,11 +2,9 @@ import React from 'react'
 
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
-import MetaTags, { GooglePreview } from 'src/components/MetaTags'
+import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
-import { A, Meta } from 'src/components/Styled'
-import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from '../../../../../constants'
 import { getParliamentarian } from 'lib/api/queries/parliamentarians'
 import { useSafeRouter, withStaticPropsContext } from '../../../../../lib/next'
 import {
@@ -54,25 +52,6 @@ const Parliamentarian = (
                 intermediates={parliamentarian.guests}
                 connectionWeight={() => 1}
               />
-              {DEBUG_INFORMATION && (
-                <Center>
-                  <Meta>
-                    Original Profil:{' '}
-                    <A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>
-                      Staging
-                    </A>
-                    {', '}
-                    <A target='_blank' href={`https://lobbywatch.ch${path}`}>
-                      Live
-                    </A>
-                  </Meta>
-                  <GooglePreview
-                    locale={locale}
-                    data={parliamentarian}
-                    path={path}
-                  />
-                </Center>
-              )}
             </div>
           )
         }}
