@@ -2,13 +2,7 @@ import { Component } from 'react'
 
 import { intersperse } from '../../../lib/helpers'
 
-import {
-  BLACK,
-  GREY_DARK,
-  POTENCY_COLORS,
-  POTENCY_COLORS_KEYS,
-  WHITE,
-} from '../../theme'
+import { POTENCY_COLORS, POTENCY_COLORS_KEYS } from '../../theme'
 import GuestIcon from '../../assets/Guest'
 import ContextBox, { ContextBoxValue } from '../ContextBox'
 import { metaRule } from '../Styled'
@@ -17,7 +11,7 @@ import Message, { useT } from '../Message'
 import { chfFormat } from '../../utils/formats'
 import { itemPath, shouldIgnoreClick } from '../../utils/routes'
 import { NextRouter, useRouter } from 'next/router'
-import layout, { LayoutDatum, LayoutNode, START_Y } from './layout'
+import layout, { LayoutNode, START_Y } from './layout'
 import nestConnections, {
   HoverItem,
   HoverValue,
@@ -286,7 +280,7 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
                         key={index}
                         ref={setRef}
                         fill='none'
-                        stroke={WHITE}
+                        stroke={'var(--colorWhite)'}
                         strokeWidth={2}
                       />
                     )
@@ -503,15 +497,15 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
             title={t('connections/legend/type/title')}
             items={[
               {
-                color: GREY_DARK,
-                textColor: BLACK,
+                color: 'var(--colorGreyDark)',
+                textColor: 'var(--colorBlack)',
                 label: t('connections/legend/direct'),
               },
               {
-                color: WHITE,
+                color: 'var(--colorWhite)',
                 label: t('connections/legend/indirect'),
-                border: `1px solid ${GREY_DARK}`,
-                textColor: BLACK,
+                border: '1px solid var(--colorGreyDark)',
+                textColor: 'var(--colorBlack)',
               },
             ]}
           />

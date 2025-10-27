@@ -1,6 +1,6 @@
 import React, { Component, ReactNode } from 'react'
 import { css, keyframes } from 'glamor'
-import { GREY_MID, HEADER_HEIGHT } from '../theme'
+import { HEADER_HEIGHT } from '../theme'
 import { Center } from './Frame'
 
 const spacerStyle = css({
@@ -33,7 +33,7 @@ const spin = keyframes({
 const barStyle = css({
   animation: `${spin} 1.2s linear infinite`,
   borderRadius: 5,
-  backgroundColor: GREY_MID,
+  backgroundColor: 'var(--colorGreyMid)',
   position: 'absolute',
   width: '20%',
   height: '7.8%',

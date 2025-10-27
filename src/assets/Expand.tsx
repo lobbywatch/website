@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react'
-import { LW_BLUE, WHITE } from '../theme'
 
 export interface IconProps {
   size?: number
@@ -13,7 +12,7 @@ const Icon = ({
   size = 24,
   style,
   className,
-  color = LW_BLUE,
+  color = 'var(--colorPrimary)',
   expanded = false,
 }: IconProps) => (
   <svg
@@ -26,7 +25,7 @@ const Icon = ({
     <circle
       stroke={color}
       strokeWidth='1'
-      fill={WHITE}
+      fill={'var(--colorWhite)'}
       cx='12'
       cy='12'
       r='11'

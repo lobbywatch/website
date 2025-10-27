@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react'
-import { LW_BLUE_LIGHT } from '../theme'
 
 export interface IconProps {
   size?: number
@@ -17,7 +16,7 @@ const Logo = ({ size = 74, style, className }: IconProps) => (
   >
     <title>Logo</title>
     <g>
-      <circle fill={LW_BLUE_LIGHT} cx='37' cy='37' r='37' />
+      <circle fill={'var(--colorPrimaryLight)'} cx='37' cy='37' r='37' />
       <circle fill='#1f2532' cx='37' cy='37' r='20' />
       <circle fill='#fff' cx='45' cy='29' r='5' />
     </g>

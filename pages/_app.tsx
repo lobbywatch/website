@@ -1,6 +1,8 @@
 import Head from 'next/head'
 
+import './reset.css'
 import './font.css'
+import './index.css'
 import { AppProps } from 'next/app'
 
 const WebApp = ({ Component, pageProps }: AppProps) => {

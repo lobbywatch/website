@@ -9,7 +9,6 @@ import { intersperse } from '../../lib/helpers'
 
 import { numberFormat } from '../utils/formats'
 import { itemPath } from '../utils/routes'
-import { GREY_LIGHT } from '../theme'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
 import { Formatter } from '../../lib/translate'
@@ -34,7 +33,7 @@ const imageStyle = css({
 })
 
 const detailBoxStyle = css({
-  borderTop: `1px solid ${GREY_LIGHT}`,
+  borderTop: '1px solid var(--colorGreyLight)',
   maxWidth: 400,
   margin: '0 auto',
   textAlign: 'left',

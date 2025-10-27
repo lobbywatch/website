@@ -1,5 +1,4 @@
 import React, { CSSProperties } from 'react'
-import { LW_BLUE_DARK, WHITE } from '../theme'
 
 export interface IconProps {
   size?: number
@@ -15,8 +14,8 @@ const Icon = ({ size = 24, style, className }: IconProps) => (
     className={className}
     viewBox='0 0 24 24'
   >
-    <circle fill={LW_BLUE_DARK} cx='12' cy='12' r='12' />
-    <g transform='translate(6 5)' fill={WHITE}>
+    <circle fill={'var(--colorPrimaryDark)'} cx='12' cy='12' r='12' />
+    <g transform='translate(6 5)' fill={'var(--colorWhite)'}>
       <circle cx='9.5' cy='8' r='1.5' />
       <path d='M12 12H7v-.542c0-.327.157-.633.426-.82.41-.286 1.11-.638 2.074-.638.964 0 1.665.352 2.075.64.268.186.425.492.425.818V12z' />
       <circle cx='2.5' cy='8' r='1.5' />

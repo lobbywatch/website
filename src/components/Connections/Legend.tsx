@@ -3,7 +3,7 @@ import { css, merge } from 'glamor'
 import Link from 'next/link'
 import { intersperse } from '../../../lib/helpers'
 
-import { LW_BLUE, GREY_DARK, mediaM } from '../../theme'
+import { mediaM } from '../../theme'
 import { Clear } from '../Styled'
 import { Locale } from '../../../lib/types'
 
@@ -23,14 +23,14 @@ const legendContainer = css({
 })
 
 const legendLabel = css({
-  color: GREY_DARK,
+  color: 'var(--colorGreyDark)',
   [mediaM]: {
     marginRight: 10,
   },
 })
 const legendLink = merge(legendLabel, {
   textDecoration: 'none',
-  color: LW_BLUE,
+  color: 'var(--colorPrimary)',
 })
 const legendValues = css({
   float: 'right',
