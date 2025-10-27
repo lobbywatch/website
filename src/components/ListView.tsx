@@ -4,7 +4,6 @@ import { metaRule } from './Styled'
 import { GREY_LIGHT, LW_BLUE, mediaM } from '../theme'
 import { css } from 'glamor'
 import Link from 'next/link'
-import Image from 'next/image'
 import { itemPath } from '../utils/routes'
 import Grid, { GridItem } from './Grid'
 
@@ -115,7 +114,8 @@ function ListView<A extends MappedObject>(props: ListViewProps<A>) {
       >
         {'portrait' in item && (
           <span {...symbolStyle} {...portraitStyle}>
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               width={SYMBOL_SIZE}
               height={SYMBOL_SIZE}
               src={item.portrait}

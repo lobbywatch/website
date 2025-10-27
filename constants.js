@@ -8,7 +8,7 @@ export const getSafeLocale = (locale) =>
 
 export const DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
 export const DRUPAL_DATA_BASE_URL = 'https://data.lobbywatch.ch'
-export const DRUPAL_IMAGE_BASE_URL = 'https://cms.lobbywatch.ch'
+export const IMAGE_BASE_URL = 'https://www.parlament.ch/sitecollectionimages/profil/portrait-260/'
 
 export const SERVER_PORT = (typeof process !== 'undefined' && ENV.PORT) || 3000
 

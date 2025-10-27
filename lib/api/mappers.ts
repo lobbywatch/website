@@ -1,4 +1,4 @@
-import { DRUPAL_IMAGE_BASE_URL } from '../../constants'
+import { IMAGE_BASE_URL } from '../../constants'
 import type { Formatter } from '../translate'
 import { timeMonth, timeYear } from 'd3-time'
 import { timeFormat, timeParse } from 'd3-time-format'
@@ -707,11 +707,7 @@ export const mapParliamentarian = (
           },
         }
       : undefined,
-    portrait: [
-      DRUPAL_IMAGE_BASE_URL,
-      'sites/lobbywatch.ch/app/files/parlamentarier_photos/portrait-260',
-      `${raw.parlament_number}.jpg`,
-    ].join('/'),
+    portrait: `${IMAGE_BASE_URL}${raw.parlament_number}.jpg`,
     published: raw.freigabe_datum_unix
       ? formatDate(new Date(raw.freigabe_datum_unix * 1000))
       : undefined,
