@@ -1,9 +1,8 @@
-import React, { Component, ReactNode, useState } from 'react'
-import Image from 'next/image'
+import React, { ReactNode, useState } from 'react'
 import { css } from 'glamor'
 
-import { A, StyledLink, Clear, h1Rule, metaRule, TextCenter } from './Styled'
-import { useT, withT } from './Message'
+import { A, Clear, h1Rule, metaRule, StyledLink, TextCenter } from './Styled'
+import { useT } from './Message'
 import { ContextBoxValue } from './ContextBox'
 
 import { intersperse } from '../../lib/helpers'
@@ -14,7 +13,7 @@ import { GREY_LIGHT } from '../theme'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
 import { Formatter } from '../../lib/translate'
-import { Locale, MappedObject, MappedParliamentarian } from '../../lib/types'
+import { Locale, MappedObject } from '../../lib/types'
 
 const titleStyle = css(h1Rule, {
   marginTop: 0,
@@ -230,13 +229,8 @@ const DetailHead = (props: DetailHeadProps) => {
     <TextCenter>
       {!!img && (
         <span {...symbolStyle} {...imageStyle}>
-          <Image
-            width={SYMBOL_SIZE}
-            height={SYMBOL_SIZE}
-            src={img}
-            priority
-            alt=''
-          />
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img width={SYMBOL_SIZE} height={SYMBOL_SIZE} src={img} alt='' />
         </span>
       )}
       {!img && !!Icon && (
