@@ -1,4 +1,4 @@
-FROM node:20-alpine3.21@sha256:be56e91681a8ec1bba91e3006039bd228dc797fd984794a3efedab325b36e679 AS build
+FROM node:22.21.0-alpine3.21@sha256:03a43779873834861f97dc1d2cc7be8aeb7f910a6fc60bd1c42d69d4dfd008fb AS build
 
 ENV NODE_ENV=production
 
