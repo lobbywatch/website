@@ -2,11 +2,9 @@ import React from 'react'
 
 import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
-import MetaTags, { GooglePreview } from 'src/components/MetaTags'
+import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
-import { A, Meta } from 'src/components/Styled'
-import { DEBUG_INFORMATION, DRUPAL_BASE_URL } from '../../../../../constants'
 import { getOrganisation } from 'lib/api/queries/organisations'
 import { useSafeRouter, withStaticPropsContext } from '../../../../../lib/next'
 import {
@@ -54,25 +52,6 @@ const Org = (organisation: InferGetStaticPropsType<typeof getStaticProps>) => {
                   CONNECTION_WEIGHTS[connection.to.__typename]
                 }
               />
-              {DEBUG_INFORMATION && (
-                <Center>
-                  <Meta>
-                    Original Profil:{' '}
-                    <A target='_blank' href={`${DRUPAL_BASE_URL}${path}`}>
-                      Staging
-                    </A>
-                    {', '}
-                    <A target='_blank' href={`https://lobbywatch.ch${path}`}>
-                      Live
-                    </A>
-                  </Meta>
-                  <GooglePreview
-                    locale={locale}
-                    data={organisation}
-                    path={path}
-                  />
-                </Center>
-              )}
             </div>
           )
         }}

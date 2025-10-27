@@ -4,7 +4,7 @@ import Frame from 'src/components/Frame'
 import { useT } from 'src/components/Message'
 
 import MetaTags from 'src/components/MetaTags'
-import { CDN_FRONTEND_BASE_URL, getSafeLocale } from '../../constants'
+import { getSafeLocale, PUBLIC_BASE_URL } from '../../constants'
 
 const Page = () => {
   const router = useRouter()
@@ -18,7 +18,7 @@ const Page = () => {
         locale={locale}
         title={''}
         description={t('index/meta/description')}
-        image={`${CDN_FRONTEND_BASE_URL}/static/social/index.png`}
+        image={`${PUBLIC_BASE_URL}/static/social/index.png`}
       />
     </Frame>
   )
