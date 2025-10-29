@@ -15,10 +15,62 @@
   --colorPotencyHigh: #00305a;
   --colorPotencyLow: var(--colorPrimary);
   --colorPotencyMedium: #005599;
+
+  --colorText: var(--colorBlack);
+  --colorTextSecondary: var(--colorGreyDark);
+
+  --fontSizeS: 0.875rem;
+  --fontSizeM: 1rem;
+
+  --sizeXXS: 4px;
+  --sizeXS: 8px;
+  --sizeS: 12px;
+  --sizeM: 16px;
+  --sizeL: 20px;
+  --sizeXL: 24px;
+  --sizeXXL: 32px;
+
+  --sizeContentWidth: 760px;
+}
+
+html,
+body,
+#__next {
+  height: 100%;
 }
 
 body {
   background-color: var(--colorWhite);
-  color: var(--colorBlack);
+  color: var(--colorText);
   font-family: 'Roboto', sans-serif;
+}
+
+.page-footer {
+  position: sticky;
+  top: 100vh;
+
+  font-size: var(--fontSizeS);
+  color: var(--colorTextSecondary);
+  background: var(--colorGreySoft);
+  padding: var(--sizeL);
+
+  & > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--sizeXL);
+
+    & > svg {
+      flex-shrink: 0;
+    }
+  }
+
+  a {
+    color: inherit;
+  }
+}
+
+.u-center {
+  margin-inline: auto;
+  max-width: var(--sizeContentWidth);
 }
