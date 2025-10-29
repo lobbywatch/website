@@ -58,23 +58,6 @@ globalWithMediaQueries('.RawHtml .grid .item a.button', {
   fontWeight: 300,
   boxShadow: '0 8px 16px 0 rgba(0,0,0,0.20)',
 })
-globalWithMediaQueries(
-  '.RawHtml a.button.donate-member:before, .RawHtml a.button.donate-patron:before',
-  {
-    content: '""',
-    width: 46,
-    height: 46,
-    margin: '0 auto',
-    display: 'block',
-    backgroundSize: '100%',
-  },
-)
-globalWithMediaQueries('.RawHtml a.button.donate-member:before', {
-  backgroundImage: 'url(/static/donate/member.png)',
-})
-globalWithMediaQueries('.RawHtml a.button.donate-patron:before', {
-  backgroundImage: 'url(/static/donate/patron.png)',
-})
 
 type PotencyKey = keyof typeof POTENCY_COLORS
 ;(Object.keys(POTENCY_COLORS) as Array<PotencyKey>).map((key) => {
