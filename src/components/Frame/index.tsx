@@ -1,39 +1,15 @@
-import { css } from 'glamor'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { getSafeLocale, locales } from '../../../constants'
-import CreativeCommons from '../../assets/CreativeCommons'
-import { mediaM } from '../../theme'
 import { typeSegments } from '../../utils/routes'
 import { JsonLd } from '../JsonLd'
 import { useT } from '../Message'
 import Header from './Header'
 import SearchContext, { useSearchContextState } from './SearchContext'
-
-import { Hr, metaStyle } from '../Styled'
 import { ReactNode } from 'react'
 
 export { default as Center } from './Center'
-
-const ccContainerStyle = css({
-  [mediaM]: {
-    display: 'flex',
-    alignItems: 'center',
-  },
-})
-
-const ccTextStyle = css({
-  ...metaStyle,
-  textAlign: 'center',
-  [mediaM]: {
-    // @ts-expect-error Can't be indexed by object
-    ...metaStyle[mediaM],
-    margin: 0,
-    textAlign: 'left',
-    paddingLeft: 30,
-  },
-})
 
 export interface FrameProps {
   children: ReactNode
@@ -108,18 +84,6 @@ const Frame = ({ children }: FrameProps) => {
         />
       </header>
       <main>{children}</main>
-      <footer>
-        <Hr />
-        <div {...ccContainerStyle}>
-          <CreativeCommons />
-          <p
-            style={ccTextStyle}
-            dangerouslySetInnerHTML={{
-              __html: t('footer/cc'),
-            }}
-          ></p>
-        </div>
-      </footer>
     </SearchContext.Provider>
   )
 }

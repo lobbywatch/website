@@ -164,11 +164,6 @@ export const hrStyle = {
   border: 'none',
   borderTop: '1px solid var(--colorGreyLight)',
 }
-const hrRule = css(hrStyle)
-export const Hr = React.forwardRef<HTMLHRElement, JSX.IntrinsicElements['hr']>(
-  (props, ref) => <hr ref={ref} {...props} {...hrRule} />,
-)
-Hr.displayName = 'Hr'
 
 export const inputStyle = {
   appearance: 'none',
