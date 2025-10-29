@@ -1,9 +1,8 @@
-import React, { ClassicComponent, ReactElement } from 'react'
+import React from 'react'
 import { useRouter } from 'next/router'
 
 import { createFormatter, Replacements, Translation } from '../../lib/translate'
 import { getSafeLocale } from '../../constants'
-import RawHtml from './RawHtml'
 
 import translationsJson from '../assets/translations.json'
 import { Locale } from '../../lib/types'
@@ -42,16 +41,6 @@ export const useT = (locale: Locale) => {
   return createFormatter(translations, locale)
 }
 
-export function withT<P extends { locale: Locale }>(
-  Component: (props: P) => ReactElement,
-) {
-  const WithT = (props: P) => {
-    const t = useT(props.locale)
-    return <Component {...props} t={t} />
-  }
-  return WithT
-}
-
 export interface TranslateProps {
   id: string
   locale: Locale
@@ -62,12 +51,11 @@ export interface TranslateProps {
 const Translate = ({ id, replacements, raw, locale }: TranslateProps) => {
   const t = useT(locale)
   const translation = t(id, replacements, null)
-  if (raw) {
-    return (
-      <RawHtml type='span' dangerouslySetInnerHTML={{ __html: translation }} />
-    )
-  }
-  return <>{translation}</>
+  return raw ? (
+    <span dangerouslySetInnerHTML={{ __html: translation }} />
+  ) : (
+    <>{translation}</>
+  )
 }
 
 export default Translate
