@@ -6,12 +6,8 @@ import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getOrganisation } from 'lib/api/queries/organisations'
-import { useSafeRouter, withStaticPropsContext } from '../../../../../lib/next'
-import {
-  Locale,
-  MappedOrganisation,
-  OrganisationId,
-} from '../../../../../lib/types'
+import { useSafeRouter, withStaticPropsContext } from 'lib/next'
+import { Locale, MappedOrganisation, OrganisationId } from 'lib/types'
 import { Schema } from 'effect'
 import { InferGetStaticPropsType } from 'next'
 
@@ -33,28 +29,23 @@ const Org = (organisation: InferGetStaticPropsType<typeof getStaticProps>) => {
     <Frame>
       <Loader
         loading={isFallback}
-        render={() => {
-          const { __typename, name } = organisation
-          const rawId = id.replace(`${__typename}-`, '')
-          const path = `/${locale}/daten/organisation/${rawId}/${name}`
-          return (
-            <div>
-              <MetaTags locale={locale} data={organisation} />
-              <Center>
-                <DetailHead locale={locale} data={organisation} />
-              </Center>
-              <Connections
-                origin={__typename}
-                locale={locale}
-                data={organisation.connections ?? []}
-                groupByDestination
-                connectionWeight={(connection) =>
-                  CONNECTION_WEIGHTS[connection.to.__typename]
-                }
-              />
-            </div>
-          )
-        }}
+        render={() => (
+          <div>
+            <MetaTags locale={locale} data={organisation} />
+            <Center>
+              <DetailHead locale={locale} data={organisation} />
+            </Center>
+            <Connections
+              origin={organisation.__typename}
+              locale={locale}
+              data={organisation.connections ?? []}
+              groupByDestination
+              connectionWeight={(connection) =>
+                CONNECTION_WEIGHTS[connection.to.__typename]
+              }
+            />
+          </div>
+        )}
       />
     </Frame>
   )

@@ -7,20 +7,19 @@ import Loader from 'src/components/Loader'
 import Frame, { Center } from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
-import { getAllLobbyGroups } from 'lib/api/queries/lobbyGroups'
-import { useSafeRouter, withStaticPropsContext } from '../../../../lib/next'
+import { getAllBranchen } from 'lib/api/queries/branchen'
+import { useSafeRouter, withStaticPropsContext } from 'lib/next'
 import { Schema } from 'effect'
-import { Locale, MappedLobbyGroup } from '../../../../lib/types'
+import { Locale, MappedBranch } from 'lib/types'
 import { InferGetStaticPropsType } from 'next'
 
-const LobbyGroups = ({
-  lobbyGroups,
+const Branchs = ({
+  branchen,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {
     query: { locale },
     isFallback,
   } = useSafeRouter(Schema.Struct({ locale: Locale }))
-
   return (
     <Frame>
       <Loader
@@ -30,18 +29,18 @@ const LobbyGroups = ({
             <MetaTags
               locale={locale}
               fromT={(t) => ({
-                title: t('menu/lobbygroups'),
-                description: t('lobbygroups/meta/description', {
-                  count: lobbyGroups.length,
+                title: t('menu/branchs'),
+                description: t('branchs/meta/description', {
+                  count: branchen.length,
                 }),
               })}
             />
             <TextCenter>
               <H1>
-                <Message id='menu/lobbygroups' locale={locale} />
+                <Message id='menu/branchs' locale={locale} />
               </H1>
             </TextCenter>
-            <ListView locale={locale} items={lobbyGroups} />
+            <ListView locale={locale} items={branchen} />
           </Center>
         )}
       />
@@ -50,10 +49,10 @@ const LobbyGroups = ({
 }
 
 export const getStaticProps = withStaticPropsContext<{
-  lobbyGroups: Array<MappedLobbyGroup>
+  branchen: Array<MappedBranch>
 }>()(Schema.Struct({ locale: Locale }), async ({ params }) => {
-  const lobbyGroups = await getAllLobbyGroups(params)
-  return { props: { lobbyGroups } }
+  const branchen = await getAllBranchen(params)
+  return { props: { branchen } }
 })
 
 export async function getStaticPaths() {
@@ -63,4 +62,4 @@ export async function getStaticPaths() {
   }
 }
 
-export default LobbyGroups
+export default Branchs

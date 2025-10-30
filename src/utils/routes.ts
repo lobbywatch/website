@@ -10,11 +10,11 @@ const getRawId = (
     .join('-')
 
 export const typeSegments = {
-  Parliamentarian: 'daten/parlamentarier',
-  LobbyGroup: 'daten/lobbygruppe',
-  Branch: 'daten/branche',
-  Organisation: 'daten/organisation',
-  Guest: 'daten/zutrittsberechtigter',
+  Parliamentarian: 'parlamentarier',
+  LobbyGroup: 'lobbygruppe',
+  Branch: 'branche',
+  Organisation: 'organisation',
+  Guest: 'zutrittsberechtigter',
 }
 
 export const itemPath = (item: MappedEdge, locale: Locale) => {

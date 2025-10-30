@@ -6,12 +6,8 @@ import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getParliamentarian } from 'lib/api/queries/parliamentarians'
-import { useSafeRouter, withStaticPropsContext } from '../../../../../lib/next'
-import {
-  Locale,
-  MappedParliamentarian,
-  ParliamentarianId,
-} from '../../../../../lib/types'
+import { useSafeRouter, withStaticPropsContext } from 'lib/next'
+import { Locale, MappedParliamentarian, ParliamentarianId } from 'lib/types'
 import { Schema } from 'effect'
 import { InferGetStaticPropsType } from 'next'
 
@@ -27,9 +23,7 @@ const Parliamentarian = (
       <Loader
         loading={isFallback}
         render={() => {
-          const { __typename, name, updated, published } = parliamentarian
-          const rawId = id.replace(`${__typename}-`, '')
-          const path = `/${locale}/daten/parlamentarier/${rawId}/${name}`
+          const { __typename, updated, published } = parliamentarian
           return (
             <div>
               <MetaTags locale={locale} data={parliamentarian} />
