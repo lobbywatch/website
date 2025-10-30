@@ -6,8 +6,8 @@ import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getGuest } from 'lib/api/queries/guests'
-import { useSafeRouter, withStaticPropsContext } from '../../../../../lib/next'
-import { GuestId, Locale, MappedGuest } from '../../../../../lib/types'
+import { useSafeRouter, withStaticPropsContext } from 'lib/next'
+import { GuestId, Locale, MappedGuest } from 'lib/types'
 import { Schema } from 'effect'
 import { InferGetStaticPropsType } from 'next'
 
@@ -22,9 +22,7 @@ const Guest = (guest: InferGetStaticPropsType<typeof getStaticProps>) => {
       <Loader
         loading={isFallback}
         render={() => {
-          const { __typename, updated, published, name } = guest
-          const rawId = id.replace(`${__typename}-`, '')
-          const path = `/${locale}/daten/zutrittsberechtigter/${rawId}/${name}`
+          const { __typename, updated, published } = guest
           return (
             <div>
               <MetaTags locale={locale} data={guest} />

@@ -41,21 +41,6 @@ module.exports = {
         permanent: true,
         destination: `${PUBLIC_BASE_URL}/:path*`,
       },
-      {
-        source: `/${localeSegment}/search/daten`,
-        destination: '/:locale/search',
-        permanent: true,
-      },
-      {
-        source: `/${localeSegment}/search/daten/:term`,
-        destination: '/:locale/search?term=:term',
-        permanent: true,
-      },
-      {
-        source: '/angebote',
-        destination: '/de/patronage',
-        permanent: false,
-      },
     ].filter(Boolean)
   },
   poweredByHeader: false,

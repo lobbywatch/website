@@ -6,9 +6,9 @@ import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getBranche } from 'lib/api/queries/branchen'
-import { useSafeRouter, withStaticPropsContext } from '../../../../../lib/next'
+import { useSafeRouter, withStaticPropsContext } from 'lib/next'
 import { Schema } from 'effect'
-import { BranchId, Locale, MappedBranch } from '../../../../../lib/types'
+import { BranchId, Locale, MappedBranch } from 'lib/types'
 import { InferGetStaticPropsType } from 'next'
 
 const CONNECTION_WEIGHTS = {
@@ -29,29 +29,24 @@ const Branch = (branche: InferGetStaticPropsType<typeof getStaticProps>) => {
     <Frame>
       <Loader
         loading={isFallback}
-        render={() => {
-          const { __typename, name } = branche
-          const rawId = id.replace(`${__typename}-`, '')
-          const path = `/${locale}/daten/branch/${rawId}/${name}`
-          return (
-            <div>
-              <MetaTags locale={locale} data={branche} />
-              <Center>
-                <DetailHead locale={locale} data={branche} />
-              </Center>
-              <Connections
-                origin={__typename}
-                locale={locale}
-                directness={1}
-                data={branche.connections ?? []}
-                groupByDestination
-                connectionWeight={(connection) =>
-                  CONNECTION_WEIGHTS[connection.to.__typename]
-                }
-              />
-            </div>
-          )
-        }}
+        render={() => (
+          <div>
+            <MetaTags locale={locale} data={branche} />
+            <Center>
+              <DetailHead locale={locale} data={branche} />
+            </Center>
+            <Connections
+              origin={branche.__typename}
+              locale={locale}
+              directness={1}
+              data={branche.connections ?? []}
+              groupByDestination
+              connectionWeight={(connection) =>
+                CONNECTION_WEIGHTS[connection.to.__typename]
+              }
+            />
+          </div>
+        )}
       />
     </Frame>
   )

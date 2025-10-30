@@ -37,9 +37,7 @@ const LobbyGroup = (
       <Loader
         loading={isFallback}
         render={() => {
-          const { __typename, name } = lobbyGroup
-          const rawId = id.replace(`${__typename}-`, '')
-          const path = `/${locale}/daten/lobbygruppe/${rawId}/${name}`
+          const { __typename } = lobbyGroup
           return (
             <div>
               <MetaTags locale={locale} data={lobbyGroup} />
