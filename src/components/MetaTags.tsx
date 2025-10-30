@@ -3,7 +3,6 @@ import Head from 'next/head'
 import { useT } from './Message'
 import { nest, set, Set } from 'd3-collection'
 import { descending } from 'd3-array'
-import { A, H2, Meta } from './Styled'
 import { DRUPAL_BASE_URL, PUBLIC_BASE_URL } from '../../constants'
 import { itemPath } from '../utils/routes'
 import { recursivelyRemoveNullsInPlace } from '../utils/helpers'
@@ -612,24 +611,3 @@ const MetaTags = (props: MetaTagsProps) => {
 }
 
 export default MetaTags
-
-export interface GooglePreviewProps {
-  locale: Locale
-  data: MappedObject
-  path: string
-}
-
-export const GooglePreview = ({ data, locale, path }: GooglePreviewProps) => {
-  const t = useT(locale)
-
-  return (
-    <div style={{ maxWidth: 600 }}>
-      <Meta style={{ marginBottom: 0 }}>Google Snippet Preview</Meta>
-      <H2 style={{ margin: 0, fontSize: 18 }}>{data.name} – Lobbywatch.ch</H2>
-      <A style={{ margin: 0, fontSize: 14 }}>https://lobbywatch.ch{path}</A>
-      <Meta style={{ margin: 0, marginTop: 3, fontSize: 13 }}>
-        {description(data, t)}
-      </Meta>
-    </div>
-  )
-}

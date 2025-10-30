@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Loader from 'src/components/Loader'
-import Frame, { Center } from 'src/components/Frame'
+import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
@@ -28,9 +28,9 @@ const LobbyGroup = (
   lobbyGroup: InferGetStaticPropsType<typeof getStaticProps>,
 ) => {
   const {
-    query: { locale, id },
+    query: { locale },
     isFallback,
-  } = useSafeRouter(Schema.Struct({ locale: Locale, id: LobbyGroupId }))
+  } = useSafeRouter(Schema.Struct({ locale: Locale }))
 
   return (
     <Frame>
@@ -41,9 +41,9 @@ const LobbyGroup = (
           return (
             <div>
               <MetaTags locale={locale} data={lobbyGroup} />
-              <Center>
+              <div className='u-center-container'>
                 <DetailHead locale={locale} data={lobbyGroup} />
-              </Center>
+              </div>
               <Connections
                 origin={__typename}
                 locale={locale}

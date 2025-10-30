@@ -1,10 +1,8 @@
 import React from 'react'
-
-import { H1, TextCenter } from 'src/components/Styled'
 import Message from 'src/components/Message'
 
 import Loader from 'src/components/Loader'
-import Frame, { Center } from 'src/components/Frame'
+import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import { getAllBranchen } from 'lib/api/queries/branchen'
@@ -25,7 +23,7 @@ const Branchs = ({
       <Loader
         loading={isFallback}
         render={() => (
-          <Center>
+          <div className='u-center-container'>
             <MetaTags
               locale={locale}
               fromT={(t) => ({
@@ -35,13 +33,11 @@ const Branchs = ({
                 }),
               })}
             />
-            <TextCenter>
-              <H1>
-                <Message id='menu/branchs' locale={locale} />
-              </H1>
-            </TextCenter>
+            <h1 className='u-center-text'>
+              <Message id='menu/branchs' locale={locale} />
+            </h1>
             <ListView locale={locale} items={branchen} />
-          </Center>
+          </div>
         )}
       />
     </Frame>

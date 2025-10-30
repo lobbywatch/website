@@ -1,51 +1,16 @@
 import React from 'react'
 
-import { metaRule } from './Styled'
-import { mediaM } from '../theme'
-import { css } from 'glamor'
+import styles from './ListView.module.css'
 import Link from 'next/link'
 import { itemPath } from '../utils/routes'
-import Grid, { GridItem } from './Grid'
 
 import Icons from '../assets/TypeIcons'
 import { Locale, MappedObject } from '../../lib/types'
 
+/**
+ * Keep in sync with CSS
+ */
 const SYMBOL_SIZE = 32
-const symbolStyle = css({
-  position: 'absolute',
-  top: 12 + 1,
-  left: 0,
-  display: 'block',
-  width: SYMBOL_SIZE,
-  height: SYMBOL_SIZE,
-})
-const portraitStyle = css({
-  borderRadius: '50%',
-  overflow: 'hidden',
-})
-const aStyle = css({
-  display: 'block',
-  color: 'inherit',
-  minHeight: '100%',
-  textDecoration: 'none',
-  borderBottom: '1px solid var(--colorGreyLight)',
-  paddingTop: 12,
-  paddingBottom: 12,
-  paddingLeft: SYMBOL_SIZE + 10,
-  position: 'relative',
-  ':hover': {
-    color: 'var(--colorPrimary)',
-  },
-})
-const metaStyle = css(metaRule, {
-  lineHeight: '16px',
-  [mediaM]: {
-    lineHeight: '16px',
-  },
-  'a:hover &': {
-    color: 'var(--colorPrimary)',
-  },
-})
 
 const defaultTitle = (item: MappedObject) => {
   switch (item.__typename) {
@@ -99,7 +64,6 @@ function ListView<A extends MappedObject>(props: ListViewProps<A>) {
   const {
     locale,
     items,
-    maxWidth,
     title = defaultTitle,
     subtitle = defaultSubtitle,
   } = props
@@ -110,10 +74,10 @@ function ListView<A extends MappedObject>(props: ListViewProps<A>) {
         key={item.id}
         href={itemPath(item, locale)}
         prefetch={false}
-        {...aStyle}
+        className={styles.link}
       >
         {'portrait' in item && (
-          <span {...symbolStyle} {...portraitStyle}>
+          <span className={[styles.symbol, styles.portrait].join(' ')}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               width={SYMBOL_SIZE}
@@ -123,29 +87,26 @@ function ListView<A extends MappedObject>(props: ListViewProps<A>) {
             />
           </span>
         )}
-        {!!Icon && (
-          <Icon className={symbolStyle.toString()} size={SYMBOL_SIZE} />
-        )}
+        {!!Icon && <Icon className={styles.symbol} size={SYMBOL_SIZE} />}
         <span>
           {title(item)}
           <br />
-          <span {...metaStyle}>{subtitle(item) || ' '}</span>
+          <span className={['text-meta', styles.meta].join(' ')}>
+            {subtitle(item) || ' '}
+          </span>
         </span>
       </Link>
     )
   })
 
-  if (maxWidth) {
-    return <div style={{ maxWidth, margin: '0 auto' }}>{elements}</div>
-  }
   return (
-    <Grid>
+    <div className={styles.grid}>
       {elements.map((element) => (
-        <GridItem key={element.key} paddingBottom={0}>
+        <div key={element.key} className={styles.gridItem}>
           {element}
-        </GridItem>
+        </div>
       ))}
-    </Grid>
+    </div>
   )
 }
 

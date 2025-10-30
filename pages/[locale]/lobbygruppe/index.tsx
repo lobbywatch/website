@@ -1,10 +1,8 @@
 import React from 'react'
-
-import { H1, TextCenter } from 'src/components/Styled'
 import Message from 'src/components/Message'
 
 import Loader from 'src/components/Loader'
-import Frame, { Center } from 'src/components/Frame'
+import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import { getAllLobbyGroups } from 'lib/api/queries/lobbyGroups'
@@ -26,7 +24,7 @@ const LobbyGroups = ({
       <Loader
         loading={isFallback}
         render={() => (
-          <Center>
+          <div className='u-center-container'>
             <MetaTags
               locale={locale}
               fromT={(t) => ({
@@ -36,13 +34,11 @@ const LobbyGroups = ({
                 }),
               })}
             />
-            <TextCenter>
-              <H1>
-                <Message id='menu/lobbygroups' locale={locale} />
-              </H1>
-            </TextCenter>
+            <h1 className='u-center-text'>
+              <Message id='menu/lobbygroups' locale={locale} />
+            </h1>
             <ListView locale={locale} items={lobbyGroups} />
-          </Center>
+          </div>
         )}
       />
     </Frame>

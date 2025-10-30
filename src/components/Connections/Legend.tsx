@@ -1,52 +1,8 @@
 import React from 'react'
-import { css, merge } from 'glamor'
 import Link from 'next/link'
 import { intersperse } from '../../../lib/helpers'
-
-import { mediaM } from '../../theme'
-import { Clear } from '../Styled'
 import { Locale } from '../../../lib/types'
-
-const legendContainer = css({
-  paddingTop: 20,
-  paddingBottom: 20,
-  position: 'absolute',
-  top: 0,
-  left: 20,
-  right: 20,
-  fontSize: 12,
-  textAlign: 'left',
-  [mediaM]: {
-    fontSize: 14,
-    textAlign: 'right',
-  },
-})
-
-const legendLabel = css({
-  color: 'var(--colorGreyDark)',
-  [mediaM]: {
-    marginRight: 10,
-  },
-})
-const legendLink = merge(legendLabel, {
-  textDecoration: 'none',
-  color: 'var(--colorPrimary)',
-})
-const legendValues = css({
-  float: 'right',
-})
-const legendValue = css({
-  whiteSpace: 'nowrap',
-})
-
-const legendBubble = css({
-  display: 'inline-block',
-  marginRight: 5,
-  marginLeft: 5,
-  width: 8,
-  height: 8,
-  borderRadius: '50%',
-})
+import styles from './Legend.module.css'
 
 export interface LegendItem {
   label: string
@@ -63,24 +19,27 @@ export interface LegendProps {
 }
 
 const Legend = ({ locale, title, pagePath, items }: LegendProps) => (
-  <Clear {...legendContainer}>
+  <div className={['u-clear', styles.legendContainer].join(' ')}>
     {!!pagePath && (
-      <Link href={`/${locale}/${pagePath.join('/')}`} {...legendLink}>
+      <Link
+        href={`/${locale}/${pagePath.join('/')}`}
+        className={[styles.legendLabel, styles.legendLabelLink].join(' ')}
+      >
         {title}
       </Link>
     )}
-    {!pagePath && <span {...legendLabel}>{title}</span>}
+    {!pagePath && <span className={styles.legendLabel}>{title}</span>}
 
-    <span {...legendValues}>
+    <span className={styles.legendValues}>
       {intersperse(
         items.map(({ label, color, textColor, border }, index) => (
           <span
             key={index}
-            {...legendValue}
+            className='u-nowrap'
             style={{ color: textColor || color }}
           >
             <span
-              {...legendBubble}
+              className={styles.legendBubble}
               style={{ backgroundColor: color, border }}
             />
             {label}
@@ -89,7 +48,7 @@ const Legend = ({ locale, title, pagePath, items }: LegendProps) => (
         () => ' ',
       )}
     </span>
-  </Clear>
+  </div>
 )
 
 export default Legend

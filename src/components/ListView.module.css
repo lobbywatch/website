@@ -1,0 +1,56 @@
+.meta {
+  a:hover & {
+    color: var(--colorPrimary) !important;
+  }
+}
+
+.grid {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin: 0 -10px;
+}
+
+.gridItem {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 0;
+  width: 100%;
+
+  @media only screen and (min-width: 48em) {
+    width: 50%;
+  }
+}
+
+.symbol {
+  position: absolute;
+  top: calc(12px + 1px);
+  left: 0;
+  display: block;
+  width: 32px;
+  height: 32px;
+}
+
+.portrait {
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.link {
+  display: block;
+  min-height: 100%;
+  text-decoration: none;
+  border-bottom: 1px solid var(--colorGreyLight);
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: calc(32px + 10px);
+  position: relative;
+  &,
+  &:visited {
+    color: inherit;
+  }
+
+  &:hover {
+    color: var(--colorPrimary);
+  }
+}

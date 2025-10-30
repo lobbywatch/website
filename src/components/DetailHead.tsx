@@ -1,7 +1,5 @@
 import React, { ReactNode, useState } from 'react'
-import { css } from 'glamor'
-
-import { A, Clear, h1Rule, metaRule, StyledLink, TextCenter } from './Styled'
+import styles from './DetailHead.module.css'
 import { useT } from './Message'
 import { ContextBoxValue } from './ContextBox'
 
@@ -14,41 +12,8 @@ import ExpandIcon from '../assets/Expand'
 import { Formatter } from '../../lib/translate'
 import { Locale, MappedObject } from '../../lib/types'
 
-const titleStyle = css(h1Rule, {
-  marginTop: 0,
-  marginBottom: 0,
-})
-const metaStyle = css(metaRule, {
-  marginTop: 0,
-})
-const symbolStyle = css({
-  display: 'inline-block',
-})
+// Keep in sync with CSS definition
 const SYMBOL_SIZE = 64
-const imageStyle = css({
-  width: SYMBOL_SIZE,
-  height: SYMBOL_SIZE,
-  borderRadius: '50%',
-  overflow: 'hidden',
-})
-
-const detailBoxStyle = css({
-  borderTop: '1px solid var(--colorGreyLight)',
-  maxWidth: 400,
-  margin: '0 auto',
-  textAlign: 'left',
-  marginBottom: -20,
-})
-const expandLinkStyle = css({
-  display: 'block',
-  paddingTop: 16,
-  paddingBottom: 16,
-})
-const expandIconStyle = css({
-  marginTop: -4,
-  marginLeft: 10,
-  float: 'right',
-})
 
 // type DetailsResult<A extends MappedObject> = Array<[keyof A] | [keyof A, (x: A[keyof A]) => string | undefined]>
 
@@ -102,12 +67,12 @@ const defaultDetails = ((d, t, locale) => {
         [
           'profile',
           () => (
-            <A
+            <a
               href={`https://www.parlament.ch/${locale}/biografie?CouncillorId=${d.parliamentId}`}
               target='_blank'
             >
               {d.name} ({d.parliamentId})
-            </A>
+            </a>
           ),
         ],
         ['commissions', formatCommissions],
@@ -123,12 +88,12 @@ const defaultDetails = ((d, t, locale) => {
           'uid',
           () =>
             d.uid && (
-              <A
+              <a
                 href={`https://www.uid.admin.ch/Detail.aspx?uid_id=${d.uid}`}
                 target='_blank'
               >
                 {d.uid}
-              </A>
+              </a>
             ),
         ],
         ['description'],
@@ -156,9 +121,9 @@ const defaultSubtitle = (d: MappedObject, t: Formatter, locale: Locale) => {
               d.function,
               <span key='invited'>
                 {t(`guest/${d.gender}/invited`)}{' '}
-                <StyledLink href={itemPath(d.parliamentarian, locale)}>
+                <a href={itemPath(d.parliamentarian, locale)}>
                   {d.parliamentarian.name}
-                </StyledLink>
+                </a>
               </span>,
             ].filter(Boolean),
             () => ', ',
@@ -168,18 +133,14 @@ const defaultSubtitle = (d: MappedObject, t: Formatter, locale: Locale) => {
         </span>
       )
     case 'LobbyGroup':
-      return (
-        <StyledLink href={itemPath(d.branch, locale)}>
-          {d.branch.name}
-        </StyledLink>
-      )
+      return <a href={itemPath(d.branch, locale)}>{d.branch.name}</a>
     case 'Organisation':
       return intersperse(
         [
           ...d.lobbyGroups.map((lobbyGroup, index) => (
-            <StyledLink key={index} href={itemPath(lobbyGroup, locale)}>
+            <a key={index} href={itemPath(lobbyGroup, locale)}>
               {lobbyGroup.name}
-            </StyledLink>
+            </a>
           )),
           d.legalForm,
           d.location,
@@ -225,22 +186,22 @@ const DetailHead = (props: DetailHeadProps) => {
   const img = image(data, t, locale)
   const detailFields = details(data, t, locale)
   return (
-    <TextCenter>
+    <div className='u-center-text'>
       {!!img && (
-        <span {...symbolStyle} {...imageStyle}>
+        <span className={[styles.symbol, styles.image].join(' ')}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img width={SYMBOL_SIZE} height={SYMBOL_SIZE} src={img} alt='' />
         </span>
       )}
-      {!img && !!Icon && (
-        <Icon className={symbolStyle.toString()} size={SYMBOL_SIZE} />
-      )}
-      <h1 {...titleStyle}>{title(data, t, locale)}</h1>
-      <p {...metaStyle}>{subtitle(data, t, locale)}</p>
+      {!img && !!Icon && <Icon className={styles.symbol} size={SYMBOL_SIZE} />}
+      <h1 className={styles.title}>{title(data, t, locale)}</h1>
+      <p className={['text-meta', styles.meta].join(' ')}>
+        {subtitle(data, t, locale)}
+      </p>
       {detailFields.length > 0 && (
-        <Clear {...detailBoxStyle}>
-          <A
-            {...expandLinkStyle}
+        <div className={['u-clear', styles.detailBox].join(' ')}>
+          <a
+            className={styles.expandLink}
             href=''
             onClick={(e) => {
               e.preventDefault()
@@ -248,11 +209,8 @@ const DetailHead = (props: DetailHeadProps) => {
             }}
           >
             {t.first([`detail/${data.__typename}/title`, 'detail/title'])}
-            <ExpandIcon
-              className={expandIconStyle.toString()}
-              expanded={expanded}
-            />
-          </A>
+            <ExpandIcon className={styles.expandIcon} expanded={expanded} />
+          </a>
           <div
             style={{
               display: expanded ? 'block' : 'none',
@@ -271,9 +229,9 @@ const DetailHead = (props: DetailHeadProps) => {
               </ContextBoxValue>
             ))}
           </div>
-        </Clear>
+        </div>
       )}
-    </TextCenter>
+    </div>
   )
 }
 
@@ -290,9 +248,9 @@ const formatWebsite = (value?: string) => {
   const label = value.replace(/^https?:\/\//, '').replace(/\/$/, '')
 
   return (
-    <A href={value} target='_blank'>
+    <a href={value} target='_blank'>
       {label}
-    </A>
+    </a>
   )
 }
 

@@ -1,37 +1,12 @@
 import React, { useContext, useEffect, useRef } from 'react'
-import { css } from 'glamor'
 import { useRouter } from 'next/router'
+import styles from './SearchField.module.css'
 
 import SearchIcon from '../../assets/Search'
-import { mediaHeaderExpanded } from '../../theme'
 
 import { useT } from '../Message'
-import { inputStyle } from '../Styled'
 import { getSafeLocale } from '../../../constants'
 import SearchContext from './SearchContext'
-
-const styles = {
-  container: css({
-    position: 'relative',
-  }),
-  input: css(inputStyle, {
-    backgroundColor: 'var(--colorWhite)',
-    paddingRight: 8 + 21 + 5,
-    [mediaHeaderExpanded]: {
-      height: 56,
-      paddingRight: 16 + 21 + 5,
-    },
-  }),
-  icon: css({
-    position: 'absolute',
-    top: '50%',
-    marginTop: -10,
-    right: 8,
-    [mediaHeaderExpanded]: {
-      right: 16,
-    },
-  }),
-}
 
 let isFocused: boolean = false
 
@@ -52,9 +27,9 @@ const SearchField = () => {
   const [searchValue, setSearchValue] = useContext(SearchContext)
 
   return (
-    <div {...styles.container}>
+    <div className={styles.container}>
       <input
-        {...styles.input}
+        className={styles.input}
         type='text'
         ref={inputRef}
         onChange={(event) => {
@@ -69,7 +44,7 @@ const SearchField = () => {
         value={searchValue}
         placeholder={t('search/placeholder')}
       />
-      <SearchIcon className={styles.icon.toString()} />
+      <SearchIcon className={styles.icon} />
     </div>
   )
 }

@@ -1,11 +1,8 @@
 import React from 'react'
-
-import { P } from 'src/components/Styled'
 import Message from 'src/components/Message'
-import { SEARCH_MAX_WIDTH } from 'src/components/Frame/Header'
 
 import Loader from 'src/components/Loader'
-import Frame, { Center } from 'src/components/Frame'
+import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 
@@ -21,7 +18,7 @@ const Search = ({ term, locale }: { term: string; locale: Locale }) => {
       loading={isLoading}
       error={error?.toString()}
       render={() => (
-        <Center>
+        <div className='u-center-container'>
           <MetaTags
             locale={locale}
             fromT={(t) => ({
@@ -32,27 +29,23 @@ const Search = ({ term, locale }: { term: string; locale: Locale }) => {
               }),
             })}
           />
-          <ListView
-            locale={locale}
-            items={results}
-            maxWidth={SEARCH_MAX_WIDTH}
-          />
+          <ListView locale={locale} items={results} />
           {results.length === 30 && (
-            <P
+            <p
               style={{
-                maxWidth: SEARCH_MAX_WIDTH,
+                maxWidth: 'var(--sizeSearchMaxWidth)',
                 margin: '20px auto 0',
               }}
             >
               <Message locale={locale} id='search/more' />
-            </P>
+            </p>
           )}
           {results.length === 0 && term.length === 0 && (
-            <P>
+            <p>
               <Message locale={locale} id='search/hint' />
-            </P>
+            </p>
           )}
-        </Center>
+        </div>
       )}
     />
   )

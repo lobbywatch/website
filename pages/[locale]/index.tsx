@@ -1,11 +1,10 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import Frame, { Center } from 'src/components/Frame'
+import Frame from 'src/components/Frame'
 import Message, { useT } from 'src/components/Message'
 
 import MetaTags from 'src/components/MetaTags'
 import { getSafeLocale, PUBLIC_BASE_URL } from '../../constants'
-import { H1, H2, P } from '../../src/components/Styled'
 
 const Page = () => {
   const router = useRouter()
@@ -21,36 +20,36 @@ const Page = () => {
         description={t('index/meta/description')}
         image={`${PUBLIC_BASE_URL}/static/social/index.png`}
       />
-      <Center>
-        <H1>
+      <div className='u-center-container'>
+        <h1>
           <Message id={'claim'} locale={locale} />
-        </H1>
+        </h1>
 
-        <P>
+        <p>
           <Message id={'index/meta/description'} locale={locale} />
-        </P>
+        </p>
 
-        <H2>
+        <h2>
           <Message id={'purpose/research/title'} locale={locale} />
-        </H2>
-        <P>
+        </h2>
+        <p>
           <Message id={'purpose/research/text'} locale={locale} />
-        </P>
+        </p>
 
-        <H2>
+        <h2>
           <Message id={'purpose/independence/title'} locale={locale} />
-        </H2>
-        <P>
+        </h2>
+        <p>
           <Message id={'purpose/independence/text'} locale={locale} />
-        </P>
+        </p>
 
-        <H2>
+        <h2>
           <Message id={'purpose/nonprofit/title'} locale={locale} />
-        </H2>
-        <P>
+        </h2>
+        <p>
           <Message id={'purpose/nonprofit/text'} locale={locale} />
-        </P>
-      </Center>
+        </p>
+      </div>
     </Frame>
   )
 }
