@@ -1,0 +1,40 @@
+.legendContainer {
+  padding-block: var(--sizeL);
+  position: absolute;
+  top: 0;
+  left: var(--sizeL);
+  right: var(--sizeL);
+  font-size: var(--fontSizeXS);
+  text-align: left;
+
+  @media only screen and (min-width: 48em) {
+    font-size: var(--fontSizeS);
+    text-align: right;
+  }
+}
+
+.legendLabel {
+  color: var(--colorGreyDark);
+
+  @media only screen and (min-width: 48em) {
+    margin-right: 10px;
+  }
+}
+
+.legendLabelLink {
+  text-decoration: none;
+  color: var(--colorPrimary);
+}
+
+.legendValues {
+  float: right;
+}
+
+.legendBubble {
+  display: inline-block;
+  margin-right: 5px;
+  margin-left: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}

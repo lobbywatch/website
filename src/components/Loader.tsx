@@ -1,45 +1,16 @@
 import React, { Component, ReactNode } from 'react'
-import { css, keyframes } from 'glamor'
-import { HEADER_HEIGHT } from '../theme'
-import { Center } from './Frame'
+import styles from './Loader.module.css'
 
-const spacerStyle = css({
-  position: 'relative',
-  minWidth: '100%',
-  minHeight: ['100vh', `calc(100vh - ${HEADER_HEIGHT}px)`],
-})
 export interface SpacerProps {
   height?: number
   width?: number
   children?: ReactNode
 }
 const Spacer = ({ height, width, children }: SpacerProps) => (
-  <div {...spacerStyle} style={{ minWidth: width, minHeight: height }}>
+  <div className={styles.spacer} style={{ minWidth: width, minHeight: height }}>
     {children}
   </div>
 )
-
-const containerStyle = css({
-  position: 'absolute',
-  width: 50,
-  height: 50,
-  top: '50%',
-  left: '50%',
-})
-const spin = keyframes({
-  '0%': { opacity: 1 },
-  '100%': { opacity: 0.15 },
-})
-const barStyle = css({
-  animation: `${spin} 1.2s linear infinite`,
-  borderRadius: 5,
-  backgroundColor: 'var(--colorGreyMid)',
-  position: 'absolute',
-  width: '20%',
-  height: '7.8%',
-  top: '-3.9%',
-  left: '-10%',
-})
 
 export interface LoaderProps {
   render: () => ReactNode
@@ -92,18 +63,18 @@ class Loader extends Component<LoaderProps, LoaderState> {
           animationDelay: (index - 12) / 10 + 's',
           transform: 'rotate(' + index * 30 + 'deg) translate(146%)',
         }
-        bars.push(<div {...barStyle} style={style} key={index} />)
+        bars.push(<div className={styles.bar} style={style} key={index} />)
       }
 
       return (
         <Spacer width={width} height={height}>
-          <div {...containerStyle}>{bars}</div>
+          <div className={styles.container}>{bars}</div>
         </Spacer>
       )
     } else if (error) {
       return (
         <Spacer width={width} height={height}>
-          <Center>{error.toString()}</Center>
+          <div className='u-center-container'>{error.toString()}</div>
         </Spacer>
       )
     }

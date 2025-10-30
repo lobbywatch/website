@@ -1,11 +1,11 @@
 import { Component } from 'react'
 
 import { intersperse } from '../../../lib/helpers'
+import styles from './index.module.css'
 
 import { POTENCY_COLORS, POTENCY_COLORS_KEYS } from '../../theme'
 import GuestIcon from '../../assets/Guest'
 import ContextBox, { ContextBoxValue } from '../ContextBox'
-import { metaRule } from '../Styled'
 import Legend from './Legend'
 import Message, { useT } from '../Message'
 import { chfFormat } from '../../utils/formats'
@@ -18,12 +18,15 @@ import nestConnections, {
   NestConnectionsProps,
 } from './nest'
 import { set, Set } from 'd3-collection'
-import * as style from './style'
-import { Center } from '../Frame'
 
 import Icons from '../../assets/TypeIcons'
 import { Locale, MappedConnection } from '../../../lib/types'
 import { shallowEqual } from 'shallow-equal'
+
+const styleBubble = ['u-plain-button', styles.bubble].join(' ')
+const styleBubbleVia = ['u-plain-button', styles.bubble, styles.bubbleVia].join(
+  ' ',
+)
 
 interface ConnectionsProps extends NestConnectionsProps {
   locale: Locale
@@ -232,10 +235,13 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
     )
 
     return (
-      <div {...style.edge}>
-        <Center style={{ paddingTop: 0, paddingBottom: 0 }}>
+      <div className={styles.edge}>
+        <div
+          className='u-center-container'
+          style={{ paddingTop: 0, paddingBottom: 0 }}
+        >
           <div
-            {...style.container}
+            className={styles.container}
             ref={(reference) => {
               this.containerRef = reference
             }}
@@ -310,7 +316,9 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
                   this.setState({ open: nextOpen })
                 }
                 if (data.type === 'Root') {
-                  return <span key={data.id} ref={setRef} {...style.root} />
+                  return (
+                    <span className={styles.root} key={data.id} ref={setRef} />
+                  )
                 }
                 if (data.type === 'Group') {
                   const indirect = data.parentId !== 'Root'
@@ -319,8 +327,8 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
                       key={data.id}
                       ref={setRef}
                       className={[
-                        indirect ? style.bubbleVia : style.bubble,
-                        !isVisible && style.hidden,
+                        indirect ? styleBubbleVia : styleBubble,
+                        !isVisible && styles.hidden,
                       ]
                         .filter(Boolean)
                         .join(' ')}
@@ -335,8 +343,8 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
                       <span
                         className={
                           indirect
-                            ? style.countVia.toString()
-                            : style.count.toString()
+                            ? [styles.count, styles.countVia].join(' ')
+                            : styles.count
                         }
                       >
                         {data.count}
@@ -354,10 +362,12 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
                       {!!isFirst && <br />}
                       <a
                         ref={setRef}
-                        {...style.bubbleVia}
-                        className={
-                          !isVisible ? style.hidden.toString() : undefined
-                        }
+                        className={[
+                          styleBubbleVia,
+                          !isVisible ? styles.hidden : undefined,
+                        ]
+                          .filter(Boolean)
+                          .join(' ')}
                         href={itemPath(
                           {
                             __typename: 'Guest',
@@ -378,8 +388,7 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
                             children && children.length > 0 ? 'pointer' : '',
                         }}
                       >
-                        <GuestIcon className={style.icon.toString()} />{' '}
-                        {data.label}
+                        <GuestIcon className={styles.icon} /> {data.label}
                       </a>
                       {!!isLast && <br />}
                     </span>
@@ -434,9 +443,11 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
                       onMouseOut={onBlur}
                       className={[
                         connection.indirect
-                          ? style.connectionIndirect
-                          : style.connection,
-                        !isVisible && style.hidden,
+                          ? [styles.connection, styles.connectionIndirect].join(
+                              ' ',
+                            )
+                          : styles.connection,
+                        !isVisible && styles.hidden,
                       ]
                         .filter(Boolean)
                         .join(' ')}
@@ -453,7 +464,7 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
             </div>
           </div>
           {!!(published || updated) && (
-            <div {...style.metaBox} {...metaRule}>
+            <div className={[styles.metaBox, 'text-meta'].join(' ')}>
               {intersperse(
                 [
                   !!published && (
@@ -479,7 +490,7 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
               )}
             </div>
           )}
-        </Center>
+        </div>
         {potency && (
           <Legend
             locale={locale}
@@ -559,16 +570,15 @@ const hoverValues: Array<HoverValue> = [
                     ? Icons[via.to.__typename]
                     : undefined
                 return (
-                  <span key={ii} {...style.pathSegment}>
+                  <span key={ii} className={styles.pathSegment}>
                     {Icon && (
-                      <Icon
-                        className={style.pathSegmentIcon.toString()}
-                        size={16}
-                      />
+                      <Icon className={styles.pathSegmentIcon} size={16} />
                     )}
                     {via.to.name}
                     <br />
-                    <span {...style.pathSegmentFunction}>{via.function}</span>
+                    <span className={styles.pathSegmentFunction}>
+                      {via.function}
+                    </span>
                   </span>
                 )
               })}

@@ -2,12 +2,10 @@ import React from 'react'
 
 import { nest } from 'd3-collection'
 import { ascending } from 'd3-array'
-
-import { H1, H2, TextCenter } from 'src/components/Styled'
 import Message from 'src/components/Message'
 
 import Loader from 'src/components/Loader'
-import Frame, { Center } from 'src/components/Frame'
+import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import { getAllParliamentarians } from 'lib/api/queries/parliamentarians'
@@ -29,7 +27,7 @@ const Parliamentarians = ({
       <Loader
         loading={isFallback}
         render={() => (
-          <Center>
+          <div className='u-center-container'>
             <MetaTags
               locale={locale}
               fromT={(t) => ({
@@ -39,18 +37,16 @@ const Parliamentarians = ({
                 }),
               })}
             />
-            <TextCenter>
-              <H1>
-                <Message id='parliamentarians/meta/title' locale={locale} />
-              </H1>
-            </TextCenter>
+            <h1 className='u-center-text'>
+              <Message id='parliamentarians/meta/title' locale={locale} />
+            </h1>
             {nest<MappedParliamentarian>()
               .key((item) => item.canton ?? '–')
               .sortKeys(ascending)
               .entries(parliamentarians)
               .map(({ key, values }) => (
                 <div key={key} style={{ marginBottom: 50 }}>
-                  <H2>{key}</H2>
+                  <h2>{key}</h2>
                   <ListView
                     locale={locale}
                     items={values as Array<MappedParliamentarian>}
@@ -65,7 +61,7 @@ const Parliamentarians = ({
                   />
                 </div>
               ))}
-          </Center>
+          </div>
         )}
       />
     </Frame>

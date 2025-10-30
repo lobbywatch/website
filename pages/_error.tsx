@@ -2,9 +2,8 @@ import React from 'react'
 
 import { useRouter } from 'next/router'
 
-import Frame, { Center } from 'src/components/Frame'
+import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
-import { A, H1, P } from 'src/components/Styled'
 
 import { getSafeLocale } from '../constants'
 import { NextApiResponse } from 'next'
@@ -21,22 +20,22 @@ function Error({ statusCode }: NextApiResponse) {
         locale={locale}
         title={statusCode.toString() || 'Unbekannter Fehler'}
       />
-      <Center>
-        <H1>Unerwarteter Fehler</H1>
-        <P>
+      <div className='u-center-container'>
+        <h1>Unerwarteter Fehler</h1>
+        <p>
           Wir bitten um Entschuldigung. Versuchen Sie die Seite nochmals
           neuzuladen.
-        </P>
-        <H1>Erreur inattendue</H1>
-        <P>
+        </p>
+        <h1>Erreur inattendue</h1>
+        <p>
           Nous demandons des excuses. Essayez à nouveau de recharger la page.
-        </P>
-        <H1>Status Code {statusCode || 'Unkown'}</H1>
-        <P>
+        </p>
+        <h1>Status Code {statusCode || 'Unkown'}</h1>
+        <p>
           If the issue persists please open an issue on{' '}
-          <A href='https://github.com/lobbywatch/website/issues/new'>GitHub</A>.
-        </P>
-      </Center>
+          <a href='https://github.com/lobbywatch/website/issues/new'>GitHub</a>.
+        </p>
+      </div>
     </Frame>
   )
 }

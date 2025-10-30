@@ -1,18 +1,17 @@
 import React from 'react'
 
-import Frame, { Center } from 'src/components/Frame'
+import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
-import { H1, P } from 'src/components/Styled'
 
 export const NotFound = () => (
   <>
     <MetaTags locale='de' title='404' />
-    <Center>
-      <H1>Seite nicht gefunden</H1>
-      <P>Die angeforderte Seite konnte nicht gefunden werden.</P>
-      <H1>Page non trouvée</H1>
-      <P>La page demandée n&apos;a pas pu être trouvée.</P>
-    </Center>
+    <div className='u-center-container'>
+      <h1>Seite nicht gefunden</h1>
+      <p>Die angeforderte Seite konnte nicht gefunden werden.</p>
+      <h1>Page non trouvée</h1>
+      <p>La page demandée n&apos;a pas pu être trouvée.</p>
+    </div>
   </>
 )
 

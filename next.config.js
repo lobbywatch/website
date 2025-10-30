@@ -1,4 +1,4 @@
-const { localeSegment, PUBLIC_BASE_URL } = require('./constants')
+const { PUBLIC_BASE_URL } = require('./constants')
 const { ASSETS_SERVER_SOURCE_BASE_URL } = process.env
 
 module.exports = {

@@ -4,25 +4,10 @@ import './reset.css'
 import './font.css'
 import './index.css'
 import { AppProps } from 'next/app'
-import { metaStyle } from '../src/components/Styled'
 import CreativeCommons from '../src/assets/CreativeCommons'
-import { css } from 'glamor'
-import { mediaM } from '../src/theme'
 import { useRouter } from 'next/router'
 import { getSafeLocale } from '../constants'
 import { useT } from '../src/components/Message'
-
-const ccTextStyle = css({
-  ...metaStyle,
-  textAlign: 'center',
-  [mediaM]: {
-    // @ts-expect-error Can't be indexed by object
-    ...metaStyle[mediaM],
-    margin: 0,
-    textAlign: 'left',
-    paddingLeft: 30,
-  },
-})
 
 const WebApp = ({ Component, pageProps }: AppProps) => {
   const {
@@ -41,7 +26,7 @@ const WebApp = ({ Component, pageProps }: AppProps) => {
         <div className='u-center'>
           <CreativeCommons />
           <p
-            style={ccTextStyle}
+            className='text-meta'
             dangerouslySetInnerHTML={{
               __html: t('footer/cc'),
             }}

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Loader from 'src/components/Loader'
-import Frame, { Center } from 'src/components/Frame'
+import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
@@ -21,9 +21,9 @@ const CONNECTION_WEIGHTS = {
 
 const Org = (organisation: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {
-    query: { locale, id },
+    query: { locale },
     isFallback,
-  } = useSafeRouter(Schema.Struct({ locale: Locale, id: OrganisationId }))
+  } = useSafeRouter(Schema.Struct({ locale: Locale }))
 
   return (
     <Frame>
@@ -32,9 +32,9 @@ const Org = (organisation: InferGetStaticPropsType<typeof getStaticProps>) => {
         render={() => (
           <div>
             <MetaTags locale={locale} data={organisation} />
-            <Center>
+            <div className='u-center-container'>
               <DetailHead locale={locale} data={organisation} />
-            </Center>
+            </div>
             <Connections
               origin={organisation.__typename}
               locale={locale}

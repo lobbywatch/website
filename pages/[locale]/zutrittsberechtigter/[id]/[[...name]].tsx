@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Loader from 'src/components/Loader'
-import Frame, { Center } from 'src/components/Frame'
+import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
@@ -13,9 +13,9 @@ import { InferGetStaticPropsType } from 'next'
 
 const Guest = (guest: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {
-    query: { locale, id },
+    query: { locale },
     isFallback,
-  } = useSafeRouter(Schema.Struct({ locale: Locale, id: GuestId }))
+  } = useSafeRouter(Schema.Struct({ locale: Locale }))
 
   return (
     <Frame>
@@ -26,9 +26,9 @@ const Guest = (guest: InferGetStaticPropsType<typeof getStaticProps>) => {
           return (
             <div>
               <MetaTags locale={locale} data={guest} />
-              <Center>
+              <div className='u-center-container'>
                 <DetailHead locale={locale} data={guest} />
-              </Center>
+              </div>
               <Connections
                 origin={__typename}
                 locale={locale}

@@ -35,7 +35,7 @@ export const shouldIgnoreClick = (
 ) => {
   // based on https://github.com/zeit/next.js/blob/82d56e063aad12ac8fee5b9d5ed24ccf725b1a5b/packages/next-server/lib/link.js#L59
   const anchor = [event.target, event.currentTarget].find(
-    (node) => 'nodeName' in node && node.nodeName === 'A',
+    (node) => 'nodeName' in node && node.nodeName === 'a',
   )
   return (
     !!anchor &&
