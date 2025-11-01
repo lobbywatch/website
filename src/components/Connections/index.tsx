@@ -3,7 +3,6 @@ import { Component } from 'react'
 import { intersperse } from '../../../lib/helpers'
 import styles from './index.module.css'
 
-import { POTENCY_COLORS, POTENCY_COLORS_KEYS } from '../../theme'
 import GuestIcon from '../../assets/Guest'
 import ContextBox, { ContextBoxValue } from '../ContextBox'
 import Legend from './Legend'
@@ -20,8 +19,16 @@ import nestConnections, {
 import { set, Set } from 'd3-collection'
 
 import Icons from '../../assets/TypeIcons'
-import { Locale, MappedConnection } from '../../../lib/types'
+import { Locale, MappedConnection, Potency } from '../../../lib/types'
 import { shallowEqual } from 'shallow-equal'
+
+const POTENCY_COLORS: Record<Potency, string> = {
+  HIGH: 'var(--colorPotencyHigh)',
+  MEDIUM: 'var(--colorPotencyMedium)',
+  LOW: 'var(--colorPotencyLow)',
+}
+
+const POTENCY_COLORS_KEYS: Array<Potency> = ['LOW', 'MEDIUM', 'HIGH']
 
 const styleBubble = ['u-plain-button', styles.bubble].join(' ')
 const styleBubbleVia = ['u-plain-button', styles.bubble, styles.bubbleVia].join(
