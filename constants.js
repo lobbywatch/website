@@ -1,11 +1,6 @@
 const ENV =
   typeof window !== 'undefined' ? window.__NEXT_DATA__.env : process.env
 
-export const locales = ['de', 'fr']
-export const localeSegment = `:locale(${locales.join('|')})`
-export const getSafeLocale = (locale) =>
-  locales.includes(locale) ? locale : 'de'
-
 export const DRUPAL_BASE_URL = 'https://cms.lobbywatch.ch'
 export const DRUPAL_DATA_BASE_URL = 'https://data.lobbywatch.ch'
 export const IMAGE_BASE_URL =

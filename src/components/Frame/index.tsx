@@ -1,13 +1,14 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 
-import { getSafeLocale, locales } from '../../../constants'
 import { typeSegments } from '../../utils/routes'
 import { JsonLd } from '../JsonLd'
 import { useT } from '../Message'
 import Header from './Header'
 import SearchContext, { useSearchContextState } from './SearchContext'
 import { ReactNode } from 'react'
+import { useSafeRouter } from '../../../lib/next'
+import { Schema } from 'effect'
+import { Locale } from '../../../lib/types'
 
 export interface FrameProps {
   children: ReactNode
@@ -16,9 +17,12 @@ export interface FrameProps {
 const Frame = ({ children }: FrameProps) => {
   const {
     asPath,
-    query: { locale: queryLocale },
-  } = useRouter()
-  const currentLocale = getSafeLocale(queryLocale)
+    query: { locale: currentLocale },
+  } = useSafeRouter(
+    Schema.Struct({
+      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
+    }),
+  )
   const searchContextState = useSearchContextState()
   const t = useT(currentLocale)
 
@@ -40,7 +44,7 @@ const Frame = ({ children }: FrameProps) => {
     active: asPath.startsWith(item.href),
   }))
 
-  const localizedRoutes = locales
+  const localizedRoutes = Locale.literals
     .filter((locale) => locale !== currentLocale)
     .map((locale) => {
       const href = asPath

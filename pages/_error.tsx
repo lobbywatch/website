@@ -1,18 +1,21 @@
 import React from 'react'
 
-import { useRouter } from 'next/router'
-
 import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 
-import { getSafeLocale } from '../constants'
 import { NextApiResponse } from 'next'
+import { useSafeRouter } from '../lib/next'
+import { Schema } from 'effect'
+import { Locale } from '../lib/types'
 
 function Error({ statusCode }: NextApiResponse) {
   const {
-    query: { locale: queryLocale },
-  } = useRouter()
-  const locale = getSafeLocale(queryLocale)
+    query: { locale },
+  } = useSafeRouter(
+    Schema.Struct({
+      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
+    }),
+  )
 
   return (
     <Frame>

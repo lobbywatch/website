@@ -5,16 +5,20 @@ import './font.css'
 import './index.css'
 import { AppProps } from 'next/app'
 import CreativeCommons from '../src/assets/CreativeCommons'
-import { useRouter } from 'next/router'
-import { getSafeLocale } from '../constants'
 import { useT } from '../src/components/Message'
+import { useSafeRouter } from '../lib/next'
+import { Schema } from 'effect'
+import { Locale } from '../lib/types'
 
 const WebApp = ({ Component, pageProps }: AppProps) => {
   const {
-    query: { locale: queryLocale },
-  } = useRouter()
-  const currentLocale = getSafeLocale(queryLocale)
-  const t = useT(currentLocale)
+    query: { locale },
+  } = useSafeRouter(
+    Schema.Struct({
+      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
+    }),
+  )
+  const t = useT(locale)
 
   return (
     <>

@@ -8,9 +8,8 @@ import Document, {
   NextScript,
 } from 'next/document'
 
-import { getSafeLocale } from '../constants'
-
 import { Locale } from '../lib/types'
+import { Option, Schema } from 'effect'
 
 export interface MyDocumentProps extends DocumentInitialProps {
   locale: Locale
@@ -25,15 +24,14 @@ export interface MyDocumentProps extends DocumentInitialProps {
 export default class MyDocument extends Document {
   static async getInitialProps({
     renderPage,
-    query: { locale },
+    query,
   }: DocumentContext): Promise<MyDocumentProps> {
     const page = await renderPage()
+    const locale = Schema.decodeUnknownOption(Locale)(query.locale).pipe(
+      Option.getOrElse((): Locale => 'de'),
+    )
 
-    return {
-      ...page,
-      env: require('../constants'),
-      locale: getSafeLocale(locale),
-    }
+    return { ...page, env: require('../constants'), locale }
   }
   constructor(props: DocumentProps) {
     super(props)
