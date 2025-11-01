@@ -7,8 +7,6 @@ import Document, {
   Main,
   NextScript,
 } from 'next/document'
-// @ts-expect-error Package is not typed
-import { renderStaticOptimized } from 'glamor/server'
 
 import { getSafeLocale } from '../constants'
 
@@ -30,11 +28,9 @@ export default class MyDocument extends Document {
     query: { locale },
   }: DocumentContext): Promise<MyDocumentProps> {
     const page = await renderPage()
-    const styles = renderStaticOptimized(() => page.html)
 
     return {
       ...page,
-      ...styles,
       env: require('../constants'),
       locale: getSafeLocale(locale),
     }
