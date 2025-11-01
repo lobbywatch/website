@@ -22,7 +22,11 @@ import {
   MappedOrganisationLobbyGroup,
   MappedEdge,
 } from '../types'
-import { requireNonNull } from '../../src/prelude'
+
+const requireNonNull = <A>(a: A): NonNullable<A> => {
+  if (a == null) throw new Error('Expected non-null value')
+  return a
+}
 
 const parseDate = timeParse('%Y-%m-%d')
 const formatDate = timeFormat('%d.%m.%Y')
