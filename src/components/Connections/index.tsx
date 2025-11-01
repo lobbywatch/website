@@ -645,7 +645,7 @@ const POTENCY_WEIGHT = {
 }
 
 const connectionWeight = (connection: MappedConnection) =>
-  POTENCY_WEIGHT[connection.potency ?? 'LOW']
+  POTENCY_WEIGHT[connection.potency ?? 'HIGH']
 
 interface NewConnectionsProps extends Omit<NestConnectionsProps, 't'> {
   locale: Locale
