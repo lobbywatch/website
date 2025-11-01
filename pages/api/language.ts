@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next'
+import { Locale } from '../../lib/types'
 
 const acceptLanguage = require('accept-language')
-const { locales } = require('../../constants')
 
-acceptLanguage.languages(locales)
+acceptLanguage.languages(Locale.literals)
 
 export default function handler(request: NextApiRequest, res: NextApiResponse) {
   res.redirect(

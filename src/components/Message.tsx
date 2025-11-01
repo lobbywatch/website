@@ -1,11 +1,11 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 
 import { createFormatter, Replacements, Translation } from '../../lib/translate'
-import { getSafeLocale } from '../../constants'
 
 import translationsJson from '../assets/translations.json'
 import { Locale } from '../../lib/types'
+import { useSafeRouter } from '../../lib/next'
+import { Schema } from 'effect'
 
 type TranslationsCache = Record<Locale, Array<Translation>>
 
@@ -15,11 +15,9 @@ const translations: TranslationsCache = {
 }
 
 const getTranslations = (locale: Locale) => {
-  const _locale = locale ?? getSafeLocale(locale)
-
   if (translations[locale].length === 0) {
     translations[locale] = translationsJson.data.reduce((acc, translation) => {
-      const value = translation[_locale]
+      const value = translation[locale]
       const key = translation.key
       if (value != null) {
         acc.push({ key, value })
@@ -36,8 +34,12 @@ export const translator = (locale: Locale) => {
 }
 
 export const useT = (locale: Locale) => {
-  const { query } = useRouter()
-  const translations = getTranslations(getSafeLocale(query.locale))
+  const { query } = useSafeRouter(
+    Schema.Struct({
+      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
+    }),
+  )
+  const translations = getTranslations(query.locale)
   return createFormatter(translations, locale)
 }
 

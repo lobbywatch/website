@@ -1,19 +1,24 @@
 import React, { useContext, useEffect, useRef } from 'react'
-import { useRouter } from 'next/router'
 import styles from './SearchField.module.css'
 
 import SearchIcon from '../../assets/Search'
 
 import { useT } from '../Message'
-import { getSafeLocale } from '../../../constants'
 import SearchContext from './SearchContext'
+import { useSafeRouter } from '../../../lib/next'
+import { Schema } from 'effect'
+import { Locale } from '../../../lib/types'
 
 let isFocused: boolean = false
 
 const SearchField = () => {
-  const router = useRouter()
+  const router = useSafeRouter(
+    Schema.Struct({
+      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
+    }),
+  )
   const inputRef = useRef<HTMLInputElement>(null)
-  const currentLocale = getSafeLocale(router.query.locale)
+  const currentLocale = router.query.locale
   const t = useT(currentLocale)
 
   useEffect(() => {

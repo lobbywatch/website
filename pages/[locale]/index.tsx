@@ -1,14 +1,20 @@
 import React from 'react'
-import { useRouter } from 'next/router'
 import Frame from 'src/components/Frame'
 import Message, { useT } from 'src/components/Message'
 
 import MetaTags from 'src/components/MetaTags'
-import { getSafeLocale, PUBLIC_BASE_URL } from '../../constants'
+import { PUBLIC_BASE_URL } from '../../constants'
+import { useSafeRouter } from '../../lib/next'
+import { Schema } from 'effect'
+import { Locale } from '../../lib/types'
 
 const Page = () => {
-  const router = useRouter()
-  const locale = getSafeLocale(router.query.locale)
+  const router = useSafeRouter(
+    Schema.Struct({
+      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
+    }),
+  )
+  const locale = router.query.locale
 
   const t = useT(locale)
 

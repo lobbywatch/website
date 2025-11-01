@@ -7,7 +7,6 @@ import {
   useState,
 } from 'react'
 
-import { getSafeLocale } from '../../../constants'
 import { useSafeRouter } from '../../../lib/next'
 import { Schema } from 'effect'
 import { Locale } from '../../../lib/types'
@@ -26,12 +25,12 @@ const SearchContext = createContext<
 export const useSearchContextState = () => {
   const router = useSafeRouter(
     Schema.Struct({
-      locale: Schema.optional(Locale),
+      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
       term: Schema.optional(Schema.String),
     }),
   )
   const [value, setValue] = useState(router.query.term || '')
-  const currentLocale = getSafeLocale(router.query.locale)
+  const currentLocale = router.query.locale
 
   useEffect(
     () => {
