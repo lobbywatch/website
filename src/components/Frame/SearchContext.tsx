@@ -11,6 +11,7 @@ import { useSafeRouter } from '../../../lib/next'
 import { Schema } from 'effect'
 import { Locale } from '../../../lib/types'
 import { ParsedUrlQuery } from 'node:querystring'
+import { useSearchParams } from 'next/navigation'
 
 let beforeSearch:
   | undefined
@@ -23,13 +24,13 @@ const SearchContext = createContext<
   readonly [string, Dispatch<SetStateAction<string>>]
 >(['', () => undefined])
 export const useSearchContextState = () => {
+  const term = useSearchParams().get('term')
   const router = useSafeRouter(
     Schema.Struct({
       locale: Schema.optionalWith(Locale, { default: () => 'de' }),
-      term: Schema.optional(Schema.String),
     }),
   )
-  const [value, setValue] = useState(router.query.term || '')
+  const [value, setValue] = useState(term || '')
   const currentLocale = router.query.locale
 
   useEffect(
@@ -39,7 +40,7 @@ export const useSearchContextState = () => {
           const path = `/${encodeURIComponent(
             currentLocale,
           )}/search?term=${encodeURIComponent(value)}`
-          if (router.pathname === '/[locale]/search' && router.query.term) {
+          if (router.pathname === '/[locale]/search' && term) {
             router.replace(path)
           } else {
             beforeSearch = {
@@ -48,7 +49,7 @@ export const useSearchContextState = () => {
             }
             router.push(path)
           }
-        } else if (router.query.term) {
+        } else if (term) {
           router.push(
             beforeSearch || {
               pathname: '/[locale]/search',

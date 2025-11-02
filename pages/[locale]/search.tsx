@@ -10,6 +10,7 @@ import { useSearch } from '../../lib/api/queries/useSearch'
 import { Locale } from '../../lib/types'
 import { useSafeRouter, withStaticPropsContext } from '../../lib/next'
 import { Schema } from 'effect'
+import { useSearchParams } from 'next/navigation'
 
 const Search = ({ term, locale }: { term: string; locale: Locale }) => {
   const { data: results, error, isLoading } = useSearch({ locale, term })
@@ -52,7 +53,7 @@ const Search = ({ term, locale }: { term: string; locale: Locale }) => {
 }
 
 export const getStaticProps = withStaticPropsContext<{}>()(
-  Schema.Struct({ locale: Locale, term: Schema.optional(Schema.String) }),
+  Schema.Struct({ locale: Locale }),
   async () => ({ props: {} }),
 )
 
@@ -64,11 +65,10 @@ export async function getStaticPaths() {
 }
 
 const Page = () => {
+  const term = useSearchParams().get('term')
   const {
-    query: { locale, term },
-  } = useSafeRouter(
-    Schema.Struct({ locale: Locale, term: Schema.optional(Schema.String) }),
-  )
+    query: { locale },
+  } = useSafeRouter(Schema.Struct({ locale: Locale }))
   return (
     <Frame>
       <Search locale={locale} term={term ?? ''} />
