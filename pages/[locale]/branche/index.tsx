@@ -46,8 +46,8 @@ const Branchs = ({
 
 export const getStaticProps = withStaticPropsContext<{
   branchen: Array<MappedBranch>
-}>()(Schema.Struct({ locale: Locale }), async ({ params }) => {
-  const branchen = await getAllBranchen(params)
+}>()(Schema.Struct({ locale: Locale }), async ({ params: { locale } }) => {
+  const branchen = await getAllBranchen(locale)
   return { props: { branchen } }
 })
 

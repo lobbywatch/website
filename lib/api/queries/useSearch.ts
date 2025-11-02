@@ -1,9 +1,9 @@
-import { useParliamentarians } from './parliamentarians'
+import { getAllParliamentarians } from './parliamentarians'
 import { descending } from 'd3-array'
-import { useGuests } from './guests'
-import { useLobbyGroups } from './lobbyGroups'
-import { useBranchen } from './branchen'
-import { useOrganisations } from './organisations'
+import { getAllGuests } from './guests'
+import { getAllLobbyGroups } from './lobbyGroups'
+import { getAllBranchen } from './branchen'
+import { getAllOrganisations } from './organisations'
 import {
   Locale,
   MappedBranch,
@@ -14,6 +14,7 @@ import {
   MappedOrganisation,
   MappedParliamentarian,
 } from '../../types'
+import { useFetcher } from '../fetch'
 
 const diacritics = [
   { base: 'a', letters: ['ä', 'â', 'à'] },
@@ -201,56 +202,47 @@ export const useSearch = ({
   locale: Locale
   term: string
 }) => {
-  const parliamentarians = useParliamentarians({
-    locale,
-    query: {
-      select_fields: [
-        'id',
-        'parlament_number',
-        'vorname',
-        'zweiter_vorname',
-        'nachname',
-        'beruf',
-        'geschlecht',
-        'geburtstag',
-        'parteifunktion',
-        'partei_name',
-        'partei',
-        'ratstyp',
-        'aktiv',
-        'im_rat_bis_unix',
-        'im_rat_seit_unix',
-      ],
-    },
+  const parliamentarians = useFetcher(locale, getAllParliamentarians, {
+    select_fields: [
+      'id',
+      'parlament_number',
+      'vorname',
+      'zweiter_vorname',
+      'nachname',
+      'beruf',
+      'geschlecht',
+      'geburtstag',
+      'parteifunktion',
+      'partei_name',
+      'partei',
+      'ratstyp',
+      'aktiv',
+      'im_rat_bis_unix',
+      'im_rat_seit_unix',
+    ],
   })
-  const guests = useGuests({
-    locale,
-    query: {
-      select_fields: [
-        'id',
-        'vorname',
-        'nachname',
-        'beruf',
-        'geschlecht',
-        'funktion',
-        'zweiter_vorname',
-      ],
-    },
+  const guests = useFetcher(locale, getAllGuests, {
+    select_fields: [
+      'id',
+      'vorname',
+      'nachname',
+      'beruf',
+      'geschlecht',
+      'funktion',
+      'zweiter_vorname',
+    ],
   })
-  const lobbyGroups = useLobbyGroups({ locale })
-  const branchen = useBranchen({ locale })
-  const organisations = useOrganisations({
-    locale,
-    query: {
-      select_fields: [
-        'id',
-        'name',
-        'rechtsform',
-        'ort',
-        'interessengruppe_id',
-        'uid',
-      ],
-    },
+  const lobbyGroups = useFetcher(locale, getAllLobbyGroups)
+  const branchen = useFetcher(locale, getAllBranchen)
+  const organisations = useFetcher(locale, getAllOrganisations, {
+    select_fields: [
+      'id',
+      'name',
+      'rechtsform',
+      'ort',
+      'interessengruppe_id',
+      'uid',
+    ],
   })
 
   const index = buildIndex({

@@ -1,4 +1,6 @@
-import { Either, flow, Option, ParseResult, Schema } from 'effect'
+import { Array, Either, flow, Option, ParseResult, Schema } from 'effect'
+import { Locale } from '../types'
+import useSWR from 'swr'
 
 const { formatIssueSync } = ParseResult.TreeFormatter
 
@@ -44,3 +46,25 @@ export const safeFetcher = <A, I>(schema: Schema.Schema<A, I>) =>
         ),
       ),
   )
+
+export const useFetcher = <A, B>(
+  locale: Locale,
+  getData: (locale: Locale, query?: Query<A>) => Promise<Array<B>>,
+  query?: Query<A>,
+): {
+  isLoading: boolean
+  error: Error | undefined
+  data: Array<B>
+} => {
+  const {
+    data = [],
+    error,
+    isLoading,
+  } = useSWR(
+    `${locale}-${JSON.stringify(query)}`,
+    () => getData(locale, query),
+    { revalidateOnFocus: false },
+  )
+
+  return { data, error, isLoading }
+}

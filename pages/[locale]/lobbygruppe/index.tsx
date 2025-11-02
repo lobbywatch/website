@@ -47,8 +47,8 @@ const LobbyGroups = ({
 
 export const getStaticProps = withStaticPropsContext<{
   lobbyGroups: Array<MappedLobbyGroup>
-}>()(Schema.Struct({ locale: Locale }), async ({ params }) => {
-  const lobbyGroups = await getAllLobbyGroups(params)
+}>()(Schema.Struct({ locale: Locale }), async ({ params: { locale } }) => {
+  const lobbyGroups = await getAllLobbyGroups(locale)
   return { props: { lobbyGroups } }
 })
 

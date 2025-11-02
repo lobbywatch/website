@@ -9,59 +9,52 @@ import {
   RawOrganisation,
   RawParliamentarian,
 } from '../types'
-import { fetchAllBranchen, fetchBranche } from '../../api/queries/branchen'
+import { branchesUrl, branchUrl } from '../../api/queries/branchen'
 import {
-  fetchAllOrganisations,
-  fetchOrganisation,
+  organisationsUrl,
+  organisationUrl,
 } from '../../api/queries/organisations'
+import { lobbyGroupsUrl, lobbyGroupUrl } from '../../api/queries/lobbyGroups'
 import {
-  fetchAllLobbyGroups,
-  fetchLobbyGroup,
-} from '../../api/queries/lobbyGroups'
-import {
-  fetchAllParliamentarians,
-  fetchParliamentarian,
+  parliamentariansUrl,
+  parliamentarianUrl,
 } from '../../api/queries/parliamentarians'
-import { fetchAllGuests, fetchGuest } from '../../api/queries/guests'
+import { fetchGuest, guestsUrl } from '../../api/queries/guests'
+import { flow } from 'effect'
+import { fetcher } from '../../api/fetch'
+
+const fetchRawData = (url: string) => fetcher(url).then(({ data }) => data)
 
 const resources = [
   {
     name: 'branches',
     decoder: RawBranch.toString(),
-    fetchAll: fetchAllBranchen,
-    fetchById: fetchBranche,
+    fetchAll: flow(branchesUrl, fetchRawData),
+    fetchById: flow(branchUrl, fetchRawData),
   },
   {
     name: 'guests',
     decoder: RawGuest.toString(),
-    fetchAll: fetchAllGuests,
+    fetchAll: flow(guestsUrl, fetchRawData),
     fetchById: fetchGuest,
   },
   {
     name: 'lobbyGroups',
     decoder: RawLobbyGroup.toString(),
-    fetchAll: fetchAllLobbyGroups,
-    fetchById: fetchLobbyGroup,
+    fetchAll: flow(lobbyGroupsUrl, fetchRawData),
+    fetchById: flow(lobbyGroupUrl, fetchRawData),
   },
   {
     name: 'organisations',
     decoder: RawOrganisation.toString(),
-    fetchAll: fetchAllOrganisations({
-      select_fields: [
-        'name',
-        'rechtsform',
-        'ort',
-        'interessengruppe_id',
-        'uid',
-      ],
-    }),
-    fetchById: fetchOrganisation,
+    fetchAll: flow(organisationsUrl, fetchRawData),
+    fetchById: flow(organisationUrl, fetchRawData),
   },
   {
     name: 'parliamentarians',
     decoder: RawParliamentarian.toString(),
-    fetchAll: fetchAllParliamentarians,
-    fetchById: fetchParliamentarian,
+    fetchAll: flow(parliamentariansUrl, fetchRawData),
+    fetchById: flow(parliamentarianUrl, fetchRawData),
   },
 ]
 
