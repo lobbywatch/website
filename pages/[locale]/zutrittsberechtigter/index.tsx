@@ -45,8 +45,8 @@ const Guests = ({ guests }: InferGetStaticPropsType<typeof getStaticProps>) => {
 
 export const getStaticProps = withStaticPropsContext<{
   guests: Array<MappedGuest>
-}>()(Schema.Struct({ locale: Locale }), async ({ params }) => {
-  const guests = await getAllGuests(params)
+}>()(Schema.Struct({ locale: Locale }), async ({ params: { locale } }) => {
+  const guests = await getAllGuests(locale)
   return { props: { guests } }
 })
 

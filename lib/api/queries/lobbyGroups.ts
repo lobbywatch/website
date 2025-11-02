@@ -1,8 +1,7 @@
-import useSWR from 'swr'
-import { translator, useT } from '../../../src/components/Message'
+import { translator } from '../../../src/components/Message'
 import * as api from '../api'
-import { lobbyGroupIdPrefix, mapLobbyGroup } from '../mappers'
-import { fetcher, safeFetcher } from '../fetch'
+import { mapLobbyGroup } from '../mappers'
+import { safeFetcher } from '../fetch'
 import {
   LobbyGroupId,
   Locale,
@@ -10,78 +9,12 @@ import {
   RawLobbyGroup,
 } from '../../types'
 import { Array, Option, Order, pipe, Schema } from 'effect'
-import { Formatter } from 'src/utils/translate'
 
-const lobbyGroupsUrl = (locale: Locale) =>
-  api.data(locale, 'data/interface/v1/json/table/interessengruppe/flat/list')
-
-export const fetchAllLobbyGroups = async (locale: Locale) => {
-  const url = lobbyGroupsUrl(locale)
-  const { data } = await fetcher(url)
-  return data ?? []
-}
-
-const lobbyGroupFetcher = safeFetcher(
-  Schema.Struct({ data: Schema.Array(RawLobbyGroup) }),
-)
-
-const parseRawLobbyGroupData =
-  (formatter: Formatter) =>
-  ({ data }: { data: ReadonlyArray<RawLobbyGroup> }): Array<MappedLobbyGroup> =>
-    pipe(
-      data,
-      Array.sortWith((x) => x.name.toLocaleLowerCase(), Order.string),
-      Array.map((x) => mapLobbyGroup(x, formatter)),
-    )
-
-export function useLobbyGroups({ locale }: { locale: Locale }): {
-  isLoading: boolean
-  error: Error | undefined
-  data: Array<MappedLobbyGroup>
-} {
-  const t = useT(locale)
-
-  const {
-    data = Option.none(),
-    error,
-    isLoading,
-  } = useSWR(lobbyGroupsUrl(locale), lobbyGroupFetcher, {
-    revalidateOnFocus: false,
-  })
-
-  const lobbyGroups = pipe(
-    data,
-    Option.map(parseRawLobbyGroupData(t)),
-    Option.getOrElse(() => []),
-  )
-
-  return { data: lobbyGroups, error, isLoading }
-}
-
-export const getAllLobbyGroups = async ({
-  locale,
-}: {
-  locale: Locale
-}): Promise<Array<MappedLobbyGroup>> => {
-  const t = translator(locale)
-
-  const data = await pipe(locale, lobbyGroupsUrl, lobbyGroupFetcher)
-
-  return pipe(
-    data,
-    Option.map(parseRawLobbyGroupData(t)),
-    Option.getOrElse(() => []),
-  )
-}
-
-export const fetchLobbyGroup = async (locale: Locale, id: string) => {
-  const url = api.data(
+export const lobbyGroupUrl = (locale: Locale, id: LobbyGroupId) =>
+  api.data(
     locale,
     `data/interface/v1/json/table/interessengruppe/aggregated/id/${encodeURIComponent(id)}`,
   )
-  const { data } = await fetcher(url)
-  return data
-}
 
 export const getLobbyGroup = async ({
   locale,
@@ -91,7 +24,33 @@ export const getLobbyGroup = async ({
   id: LobbyGroupId
 }): Promise<MappedLobbyGroup | void> => {
   const t = translator(locale)
-  const rawId = id.replace(lobbyGroupIdPrefix, '')
-  const data = await fetchLobbyGroup(locale, rawId)
-  return data ? mapLobbyGroup(data, t) : undefined
+  const url = lobbyGroupUrl(locale, id)
+  return pipe(
+    await safeFetcher(Schema.Struct({ data: RawLobbyGroup }))(url),
+    Option.map(({ data }) => mapLobbyGroup(data, t)),
+    Option.getOrElse(() => undefined),
+  )
+}
+
+export const lobbyGroupsUrl = (locale: Locale) =>
+  api.data(locale, 'data/interface/v1/json/table/interessengruppe/flat/list')
+
+export const getAllLobbyGroups = async (
+  locale: Locale,
+): Promise<Array<MappedLobbyGroup>> => {
+  const t = translator(locale)
+  const url = lobbyGroupsUrl(locale)
+  return pipe(
+    await safeFetcher(Schema.Struct({ data: Schema.Array(RawLobbyGroup) }))(
+      url,
+    ),
+    Option.map(({ data }) =>
+      pipe(
+        data,
+        Array.sortWith((x) => x.name.toLocaleLowerCase(), Order.string),
+        Array.map((x) => mapLobbyGroup(x, t)),
+      ),
+    ),
+    Option.getOrElse(() => []),
+  )
 }

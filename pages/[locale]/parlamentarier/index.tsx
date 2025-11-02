@@ -70,8 +70,8 @@ const Parliamentarians = ({
 
 export const getStaticProps = withStaticPropsContext<{
   parliamentarians: Array<MappedParliamentarian>
-}>()(Schema.Struct({ locale: Locale }), async ({ params }) => {
-  const parliamentarians = await getAllParliamentarians(params)
+}>()(Schema.Struct({ locale: Locale }), async ({ params: { locale } }) => {
+  const parliamentarians = await getAllParliamentarians(locale)
   return { props: { parliamentarians } }
 })
 
