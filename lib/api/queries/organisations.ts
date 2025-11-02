@@ -10,7 +10,7 @@ import {
   RawOrganisation,
 } from '../../types'
 import { Array, Option, pipe, Schema } from 'effect'
-import { Formatter } from '../../translate'
+import { Formatter } from 'src/utils/translate'
 
 const fetchOrganisationsUrl = <A>(locale: Locale, query: Query<A>) =>
   api.data(locale, `data/interface/v1/json/table/organisation/flat/list`, query)

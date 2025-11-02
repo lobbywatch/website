@@ -8,7 +8,7 @@ import { itemPath } from '../utils/routes'
 import { recursivelyRemoveNullsInPlace } from '../utils/helpers'
 import { convertDateToIso } from '../utils/formats'
 import { Locale, MappedConnection, MappedObject } from '../../lib/types'
-import { Formatter } from '../../lib/translate'
+import { Formatter } from '../utils/translate'
 
 export interface RawProps {
   title: string

@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Locale } from './types'
+import { Locale } from 'lib/types'
 
 export interface Translation {
   key: string

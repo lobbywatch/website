@@ -10,7 +10,7 @@ import {
   RawLobbyGroup,
 } from '../../types'
 import { Array, Option, Order, pipe, Schema } from 'effect'
-import { Formatter } from '../../translate'
+import { Formatter } from 'src/utils/translate'
 
 const lobbyGroupsUrl = (locale: Locale) =>
   api.data(locale, 'data/interface/v1/json/table/interessengruppe/flat/list')
