@@ -7,7 +7,7 @@ import { numberFormat } from '../utils/formats'
 import { itemPath } from '../utils/routes'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
-import { Formatter } from '../../lib/translate'
+import { Formatter } from '../utils/translate'
 import { Locale, MappedObject } from '../../lib/types'
 import { intersperse } from '../utils/helpers'
 

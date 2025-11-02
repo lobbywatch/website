@@ -1,11 +1,11 @@
 import useSWR from 'swr'
 import * as api from '../api'
 import { guestIdPrefix, mapGuest } from '../mappers'
-import { translator, useT } from '../../../src/components/Message'
+import { translator, useT } from 'src/components/Message'
 import { fetcher, Query, safeFetcher } from '../fetch'
 import { GuestId, Locale, MappedGuest, RawGuest } from '../../types'
 import { Array, Option, Order, pipe, Schema } from 'effect'
-import { Formatter } from '../../translate'
+import { Formatter } from 'src/utils/translate'
 
 const guestsUrl = (locale: Locale, query?: Query<RawGuest>) =>
   api.data(

@@ -5,7 +5,7 @@ import * as api from '../api'
 import { branchIdPrefix, mapBranch } from '../mappers'
 import { BranchId, Locale, MappedBranch, RawBranch } from '../../types'
 import { Array, Option, Order, pipe, Schema } from 'effect'
-import { Formatter } from '../../translate'
+import { Formatter } from 'src/utils/translate'
 
 const branchesUrl = (locale: Locale) =>
   api.data(locale, 'data/interface/v1/json/table/branche/flat/list')

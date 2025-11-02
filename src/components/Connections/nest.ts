@@ -6,7 +6,7 @@ import {
   MappedGuest,
   MappedObjectType,
 } from '../../../lib/types'
-import { Formatter } from '../../../lib/translate'
+import { Formatter } from '../../utils/translate'
 import { ReactNode } from 'react'
 import {
   LayoutDatum,

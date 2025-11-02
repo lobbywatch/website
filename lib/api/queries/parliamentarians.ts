@@ -5,7 +5,7 @@ import { mapParliamentarian, parliamentarianIdPrefix } from '../mappers'
 import { fetcher, Query, safeFetcher } from '../fetch'
 import { Locale, MappedParliamentarian, RawParliamentarian } from '../../types'
 import { Array, Option, Order, pipe, Schema } from 'effect'
-import { Formatter } from '../../translate'
+import { Formatter } from 'src/utils/translate'
 
 const parliamentariansUrl = <A>(locale: Locale, query?: Query<A>) =>
   api.data(
