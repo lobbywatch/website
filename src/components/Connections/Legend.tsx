@@ -1,8 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
-import { intersperse } from '../../../lib/helpers'
 import { Locale } from '../../../lib/types'
 import styles from './Legend.module.css'
+import { intersperse } from '../../utils/helpers'
 
 export interface LegendItem {
   label: string

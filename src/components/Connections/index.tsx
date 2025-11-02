@@ -1,6 +1,5 @@
 import { Component } from 'react'
 
-import { intersperse } from '../../../lib/helpers'
 import styles from './index.module.css'
 
 import GuestIcon from '../../assets/Guest'
@@ -21,6 +20,7 @@ import { set, Set } from 'd3-collection'
 import Icons from '../../assets/TypeIcons'
 import { Locale, MappedConnection, Potency } from '../../../lib/types'
 import { shallowEqual } from 'shallow-equal'
+import { intersperse } from '../../utils/helpers'
 
 const POTENCY_COLORS: Record<Potency, string> = {
   HIGH: 'var(--colorPotencyHigh)',

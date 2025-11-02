@@ -3,14 +3,13 @@ import styles from './DetailHead.module.css'
 import { useT } from './Message'
 import { ContextBoxValue } from './ContextBox'
 
-import { intersperse } from '../../lib/helpers'
-
 import { numberFormat } from '../utils/formats'
 import { itemPath } from '../utils/routes'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
 import { Formatter } from '../../lib/translate'
 import { Locale, MappedObject } from '../../lib/types'
+import { intersperse } from '../utils/helpers'
 
 // Keep in sync with CSS definition
 const SYMBOL_SIZE = 64
