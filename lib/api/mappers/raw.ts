@@ -327,10 +327,6 @@ export const RawConnection = Schema.Struct({
   ),
 }).annotations({ identifier: 'RawConnection' })
 
-const bla = Schema.optional(
-  Schema.NumberFromString.pipe(Schema.pickLiteral(1, 2, 3)),
-)
-
 // -------------------------------------------------------------------------------------------------
 
 export type RawVerguetung = Schema.Schema.Type<typeof RawVerguetung>

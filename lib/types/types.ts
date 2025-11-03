@@ -1,6 +1,6 @@
 import { Schema } from 'effect'
 
-export * from './raw'
+export * from '../api/mappers/raw'
 
 export type Locale = Schema.Schema.Type<typeof Locale>
 export const Locale = Schema.Literal('de', 'fr')

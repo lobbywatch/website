@@ -1,4 +1,4 @@
-import { IMAGE_BASE_URL } from '../../constants'
+import { IMAGE_BASE_URL } from '../../../constants'
 import type { Formatter } from 'src/utils/translate'
 import { timeMonth, timeYear } from 'd3-time'
 import { timeFormat, timeParse } from 'd3-time-format'
@@ -21,7 +21,7 @@ import {
   MappedVerguetung,
   MappedOrganisationLobbyGroup,
   MappedEdge,
-} from '../types'
+} from '../../types'
 
 const requireNonNull = <A>(a: A): NonNullable<A> => {
   if (a == null) throw new Error('Expected non-null value')
