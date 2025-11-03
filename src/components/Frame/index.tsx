@@ -6,7 +6,7 @@ import { useT } from '../Message'
 import Header from './Header'
 import SearchContext, { useSearchContextState } from './SearchContext'
 import { ReactNode } from 'react'
-import { useSafeRouter } from '../../../lib/next'
+import { useSafeRouter } from '../../vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../../domain'
 

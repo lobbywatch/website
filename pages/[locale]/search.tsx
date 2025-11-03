@@ -8,7 +8,7 @@ import ListView from 'src/components/ListView'
 
 import { useSearch } from '../../lib/api/queries/useSearch'
 import { Locale } from '../../src/domain'
-import { useSafeRouter, withStaticPropsContext } from '../../lib/next'
+import { useSafeRouter, withStaticPropsContext } from '../../src/vendor/next'
 import { Schema } from 'effect'
 import { useSearchParams } from 'next/navigation'
 

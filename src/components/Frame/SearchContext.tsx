@@ -7,7 +7,7 @@ import {
   useState,
 } from 'react'
 
-import { useSafeRouter } from '../../../lib/next'
+import { useSafeRouter } from '../../vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../../domain'
 import { ParsedUrlQuery } from 'node:querystring'

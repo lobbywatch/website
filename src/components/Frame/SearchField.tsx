@@ -5,7 +5,7 @@ import SearchIcon from '../../assets/Search'
 
 import { useT } from '../Message'
 import SearchContext from './SearchContext'
-import { useSafeRouter } from '../../../lib/next'
+import { useSafeRouter } from '../../vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../../domain'
 

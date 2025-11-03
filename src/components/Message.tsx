@@ -4,7 +4,7 @@ import { createFormatter, Replacements, Translation } from '../utils/translate'
 
 import translationsJson from '../assets/translations.json'
 import { Locale } from '../domain'
-import { useSafeRouter } from '../../lib/next'
+import { useSafeRouter } from '../vendor/next'
 import { Schema } from 'effect'
 
 type TranslationsCache = Record<Locale, Array<Translation>>

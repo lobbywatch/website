@@ -4,7 +4,7 @@ import Message, { useT } from 'src/components/Message'
 
 import MetaTags from 'src/components/MetaTags'
 import { PUBLIC_BASE_URL } from '../../constants'
-import { useSafeRouter } from '../../lib/next'
+import { useSafeRouter } from '../../src/vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../../src/domain'
 
