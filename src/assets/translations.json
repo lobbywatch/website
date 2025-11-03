@@ -476,11 +476,6 @@
       "fr": "moyen"
     },
     {
-      "key": "connections/legend/path",
-      "de": "seite/wirksamkeit",
-      "fr": "page/efficacite"
-    },
-    {
       "key": "connections/legend/title",
       "de": "Wirksamkeit",
       "fr": "Efficacité"

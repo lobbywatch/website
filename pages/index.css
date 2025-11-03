@@ -81,6 +81,9 @@ p {
   font-size: var(--fontSizeM);
   line-height: 1.5;
 }
+:where(p, ul, ol) + p {
+  padding-top: 0.6em;
+}
 
 a {
   text-decoration: none;
@@ -178,4 +181,28 @@ a {
   outline: none;
   appearance: none;
   padding: 0;
+}
+
+.lw-potency-high {
+  display: inline-block;
+  background-color: var(--colorPrimaryDark);
+  color: var(--colorWhite);
+  border-radius: 5px;
+  padding: 0 4px;
+}
+
+.lw-potency-medium {
+  display: inline-block;
+  background-color: var(--colorPrimaryHover);
+  color: var(--colorWhite);
+  border-radius: 5px;
+  padding: 0 4px;
+}
+
+.lw-potency-low {
+  display: inline-block;
+  background-color: var(--colorPrimary);
+  color: var(--colorWhite);
+  border-radius: 5px;
+  padding: 0 4px;
 }
