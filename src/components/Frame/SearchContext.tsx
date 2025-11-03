@@ -7,11 +7,10 @@ import {
   useState,
 } from 'react'
 
-import { useSafeRouter } from '../../vendor/next'
+import { useSafeRouter, useSearchParams } from '../../vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../../domain'
 import { ParsedUrlQuery } from 'node:querystring'
-import { useSearchParams } from 'next/navigation'
 
 let beforeSearch:
   | undefined

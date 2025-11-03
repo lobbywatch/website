@@ -1,5 +1,4 @@
 import React from 'react'
-import Link from 'next/link'
 import { Locale } from '../../domain'
 import styles from './Legend.module.css'
 import { intersperse } from '../../utils/helpers'
@@ -21,12 +20,12 @@ export interface LegendProps {
 const Legend = ({ locale, title, pagePath, items }: LegendProps) => (
   <div className={['u-clear', styles.legendContainer].join(' ')}>
     {!!pagePath && (
-      <Link
+      <a
         href={`/${locale}/${pagePath.join('/')}`}
         className={[styles.legendLabel, styles.legendLabelLink].join(' ')}
       >
         {title}
-      </Link>
+      </a>
     )}
     {!pagePath && <span className={styles.legendLabel}>{title}</span>}
 

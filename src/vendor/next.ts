@@ -3,6 +3,8 @@ import { GetStaticPropsResult } from 'next'
 import { NextRouter, useRouter } from 'next/router'
 import { ParsedUrlQuery } from 'node:querystring'
 
+export { useSearchParams } from 'next/navigation'
+
 export interface PropsContext<A> {
   params: A
 }
