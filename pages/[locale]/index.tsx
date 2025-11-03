@@ -6,7 +6,7 @@ import MetaTags from 'src/components/MetaTags'
 import { PUBLIC_BASE_URL } from '../../constants'
 import { useSafeRouter } from '../../lib/next'
 import { Schema } from 'effect'
-import { Locale } from '../../lib/types'
+import { Locale } from '../../src/domain'
 
 const Page = () => {
   const router = useSafeRouter(

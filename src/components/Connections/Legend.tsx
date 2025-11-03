@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { Locale } from '../../../lib/types'
+import { Locale } from '../../domain'
 import styles from './Legend.module.css'
 import { intersperse } from '../../utils/helpers'
 

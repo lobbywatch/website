@@ -7,7 +7,7 @@ import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 
 import { useSearch } from '../../lib/api/queries/useSearch'
-import { Locale } from '../../lib/types'
+import { Locale } from '../../src/domain'
 import { useSafeRouter, withStaticPropsContext } from '../../lib/next'
 import { Schema } from 'effect'
 import { useSearchParams } from 'next/navigation'

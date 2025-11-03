@@ -9,7 +9,7 @@ import {
 
 import { useSafeRouter } from '../../../lib/next'
 import { Schema } from 'effect'
-import { Locale } from '../../../lib/types'
+import { Locale } from '../../domain'
 import { ParsedUrlQuery } from 'node:querystring'
 import { useSearchParams } from 'next/navigation'
 

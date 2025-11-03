@@ -7,7 +7,7 @@ import {
   MappedOrganisation,
   OrganisationId,
   RawOrganisation,
-} from '../../types'
+} from '../../../src/domain'
 import { Array, Option, pipe, Schema } from 'effect'
 
 export const organisationUrl = <A>(locale: Locale, id: OrganisationId) =>

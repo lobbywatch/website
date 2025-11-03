@@ -8,7 +8,7 @@ import ListView from 'src/components/ListView'
 import { getAllLobbyGroups } from 'lib/api/queries/lobbyGroups'
 import { useSafeRouter, withStaticPropsContext } from 'lib/next'
 import { Schema } from 'effect'
-import { Locale, MappedLobbyGroup } from 'lib/types'
+import { Locale, MappedLobbyGroup } from 'src/domain'
 import { InferGetStaticPropsType } from 'next'
 
 const LobbyGroups = ({

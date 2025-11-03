@@ -8,7 +8,7 @@ import { itemPath } from '../utils/routes'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
 import { Formatter } from '../utils/translate'
-import { Locale, MappedObject } from '../../lib/types'
+import { Locale, MappedObject } from '../domain'
 import { intersperse } from '../utils/helpers'
 
 // Keep in sync with CSS definition

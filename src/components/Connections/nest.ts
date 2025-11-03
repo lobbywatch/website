@@ -1,11 +1,7 @@
 import { nest } from 'd3-collection'
 import { HierarchyNode, stratify } from 'd3-hierarchy'
 import { ascending, descending, sum } from 'd3-array'
-import {
-  MappedConnection,
-  MappedGuest,
-  MappedObjectType,
-} from '../../../lib/types'
+import { MappedConnection, MappedGuest, MappedObjectType } from '../../domain'
 import { Formatter } from '../../utils/translate'
 import { ReactNode } from 'react'
 import {

@@ -7,7 +7,7 @@ import { useT } from '../Message'
 import SearchContext from './SearchContext'
 import { useSafeRouter } from '../../../lib/next'
 import { Schema } from 'effect'
-import { Locale } from '../../../lib/types'
+import { Locale } from '../../domain'
 
 let isFocused: boolean = false
 

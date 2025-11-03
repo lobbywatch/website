@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { itemPath } from '../utils/routes'
 
 import Icons from '../assets/TypeIcons'
-import { Locale, MappedObject } from '../../lib/types'
+import { Locale, MappedObject } from '../domain'
 
 /**
  * Keep in sync with CSS

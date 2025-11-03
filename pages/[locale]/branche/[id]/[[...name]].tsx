@@ -8,7 +8,7 @@ import DetailHead from 'src/components/DetailHead'
 import { getBranche } from 'lib/api/queries/branchen'
 import { useSafeRouter, withStaticPropsContext } from 'lib/next'
 import { Schema } from 'effect'
-import { BranchId, Locale, MappedBranch } from 'lib/types'
+import { BranchId, Locale, MappedBranch } from 'src/domain'
 import { InferGetStaticPropsType } from 'next'
 
 const CONNECTION_WEIGHTS = {

@@ -7,7 +7,7 @@ import {
   MappedParliamentarian,
   ParliamentarianId,
   RawParliamentarian,
-} from '../../types'
+} from '../../../src/domain'
 import { Array, Option, Order, pipe, Schema } from 'effect'
 
 export const parliamentarianUrl = (locale: Locale, id: ParliamentarianId) =>
