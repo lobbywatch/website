@@ -8,7 +8,7 @@ import Legend from './Legend'
 import Message, { useT } from '../Message'
 import { chfFormat } from '../../utils/formats'
 import { itemPath, shouldIgnoreClick } from '../../utils/routes'
-import { NextRouter, useRouter } from 'next/router'
+import { useRouter } from 'next/router'
 import layout, { LayoutNode, START_Y } from './layout'
 import nestConnections, {
   HoverItem,
@@ -37,7 +37,7 @@ const styleBubbleVia = ['u-plain-button', styles.bubble, styles.bubbleVia].join(
 
 interface ConnectionsProps extends NestConnectionsProps {
   locale: Locale
-  router: NextRouter
+  navigateTo: (path: string) => Promise<boolean>
   updated?: string
   published?: string
 }
@@ -231,7 +231,7 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
       updated,
       published,
       hoverValues,
-      router,
+      navigateTo,
     } = this.props
     let viaI = 0
 
@@ -437,7 +437,7 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
                         // ensure Android only navigates on second tap
                         // - matching iOS hover behaviour
                         if (!canHover || this.hoverNode !== node) {
-                          router.push(detailPath)
+                          navigateTo(detailPath)
                         }
                       }}
                       onTouchStart={() => {
@@ -674,7 +674,14 @@ function NewConnections(props: NewConnectionsProps) {
     connectionWeight: connectionWeight,
     hoverValues,
   }
-  return <Connections {...defaultProps} {...props} t={t} router={router} />
+  return (
+    <Connections
+      {...defaultProps}
+      {...props}
+      t={t}
+      navigateTo={(path) => router.push(path)}
+    />
+  )
 }
 
 export default NewConnections
