@@ -10,7 +10,7 @@ import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import { getAllParliamentarians } from 'lib/api/queries/parliamentarians'
 import { InferGetStaticPropsType } from 'next'
-import { useSafeRouter, withStaticPropsContext } from 'lib/next'
+import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
 import { Schema } from 'effect'
 import { Locale, MappedParliamentarian } from 'src/domain'
 

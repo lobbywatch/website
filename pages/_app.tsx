@@ -6,7 +6,7 @@ import './index.css'
 import { AppProps } from 'next/app'
 import CreativeCommons from '../src/assets/CreativeCommons'
 import { useT } from '../src/components/Message'
-import { useSafeRouter } from '../lib/next'
+import { useSafeRouter } from '../src/vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../src/domain'
 

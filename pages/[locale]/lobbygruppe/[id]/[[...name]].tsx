@@ -14,7 +14,7 @@ import {
 } from 'src/domain'
 import { InferGetStaticPropsType } from 'next'
 import { Schema } from 'effect'
-import { useSafeRouter, withStaticPropsContext } from 'lib/next'
+import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
 
 const CONNECTION_WEIGHTS: Record<MappedObjectType, number> = {
   Branch: 1,
