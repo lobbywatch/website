@@ -8,20 +8,17 @@ import {
   RawLobbyGroup,
   RawOrganisation,
   RawParliamentarian,
-} from '../types'
-import { branchesUrl, branchUrl } from '../../api/queries/branchen'
-import {
-  organisationsUrl,
-  organisationUrl,
-} from '../../api/queries/organisations'
-import { lobbyGroupsUrl, lobbyGroupUrl } from '../../api/queries/lobbyGroups'
+} from '../../types'
+import { branchesUrl, branchUrl } from '../queries/branchen'
+import { organisationsUrl, organisationUrl } from '../queries/organisations'
+import { lobbyGroupsUrl, lobbyGroupUrl } from '../queries/lobbyGroups'
 import {
   parliamentariansUrl,
   parliamentarianUrl,
-} from '../../api/queries/parliamentarians'
-import { fetchGuest, guestsUrl } from '../../api/queries/guests'
+} from '../queries/parliamentarians'
+import { fetchGuest, guestsUrl } from '../queries/guests'
 import { flow } from 'effect'
-import { fetcher } from '../../api/fetch'
+import { fetcher } from '../fetch'
 
 const fetchRawData = (url: string) => fetcher(url).then(({ data }) => data)
 

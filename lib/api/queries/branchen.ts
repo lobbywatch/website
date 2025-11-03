@@ -1,7 +1,7 @@
 import { safeFetcher } from '../fetch'
 import { translator } from 'src/components/Message'
 import * as api from '../api'
-import { mapBranch } from '../mappers'
+import { mapBranch } from '../mappers/mappers'
 import { BranchId, Locale, MappedBranch, RawBranch } from '../../types'
 import { Array, Option, Order, pipe, Schema } from 'effect'
 

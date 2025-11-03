@@ -1,6 +1,6 @@
 import { translator } from '../../../src/components/Message'
 import * as api from '../api'
-import { mapLobbyGroup } from '../mappers'
+import { mapLobbyGroup } from '../mappers/mappers'
 import { safeFetcher } from '../fetch'
 import {
   LobbyGroupId,

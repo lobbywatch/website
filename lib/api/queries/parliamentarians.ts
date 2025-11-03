@@ -1,6 +1,6 @@
 import { translator } from '../../../src/components/Message'
 import * as api from '../api'
-import { mapParliamentarian } from '../mappers'
+import { mapParliamentarian } from '../mappers/mappers'
 import { Query, safeFetcher } from '../fetch'
 import {
   Locale,

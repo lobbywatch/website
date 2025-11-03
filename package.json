@@ -16,9 +16,9 @@
     "lint:ts": "tsc --noEmit",
     "=== TEST ===": "",
     "test": "vitest",
+    "test:update": "tsx ./lib/api/test/update.ts",
     "=== UTILITIES ===": "",
     "klog": "find . -name '*.js' -not -path \"./node_modules*\" -not -path \"./.next*\" | xargs wc -l",
-    "update-testdata": "tsx ./lib/types/test/update.ts",
     "=== HOOKS ===": "",
     "prepare": "husky"
   },

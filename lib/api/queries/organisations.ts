@@ -1,5 +1,5 @@
 import * as api from '../api'
-import { mapOrganisation } from '../mappers'
+import { mapOrganisation } from '../mappers/mappers'
 import { Query, safeFetcher } from '../fetch'
 import { translator } from '../../../src/components/Message'
 import {

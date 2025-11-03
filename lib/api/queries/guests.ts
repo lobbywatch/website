@@ -1,5 +1,5 @@
 import * as api from '../api'
-import { mapGuest } from '../mappers'
+import { mapGuest } from '../mappers/mappers'
 import { translator } from 'src/components/Message'
 import { fetcher, Query, safeFetcher } from '../fetch'
 import { GuestId, Locale, MappedGuest, RawGuest } from '../../types'
