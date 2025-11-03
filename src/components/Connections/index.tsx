@@ -502,7 +502,7 @@ class Connections extends Component<ConnectionsProps, ConnectionsState> {
           <Legend
             locale={locale}
             title={t('connections/legend/title')}
-            pagePath={t('connections/legend/path').split('/')}
+            pagePath={['wirksamkeit']}
             items={POTENCY_COLORS_KEYS.map((key) => ({
               label: t(`connections/legend/${key}`),
               color: POTENCY_COLORS[key],
