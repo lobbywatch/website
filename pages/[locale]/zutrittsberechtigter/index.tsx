@@ -7,7 +7,7 @@ import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import { getAllGuests } from 'lib/api/queries/guests'
 import { useSafeRouter, withStaticPropsContext } from 'lib/next'
-import { Locale, MappedGuest } from 'lib/types'
+import { Locale, MappedGuest } from 'src/domain'
 import { Schema } from 'effect'
 import { InferGetStaticPropsType } from 'next'
 

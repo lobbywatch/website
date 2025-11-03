@@ -7,7 +7,7 @@ import {
   Locale,
   MappedLobbyGroup,
   RawLobbyGroup,
-} from '../../types'
+} from '../../../src/domain'
 import { Array, Option, Order, pipe, Schema } from 'effect'
 
 export const lobbyGroupUrl = (locale: Locale, id: LobbyGroupId) =>

@@ -8,7 +8,7 @@ import SearchContext, { useSearchContextState } from './SearchContext'
 import { ReactNode } from 'react'
 import { useSafeRouter } from '../../../lib/next'
 import { Schema } from 'effect'
-import { Locale } from '../../../lib/types'
+import { Locale } from '../../domain'
 
 export interface FrameProps {
   children: ReactNode

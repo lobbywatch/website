@@ -11,7 +11,7 @@ import {
   Locale,
   MappedLobbyGroup,
   MappedObjectType,
-} from 'lib/types'
+} from 'src/domain'
 import { InferGetStaticPropsType } from 'next'
 import { Schema } from 'effect'
 import { useSafeRouter, withStaticPropsContext } from 'lib/next'

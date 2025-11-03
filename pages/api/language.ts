@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Locale } from '../../lib/types'
+import { Locale } from '../../src/domain'
 
 const acceptLanguage = require('accept-language')
 

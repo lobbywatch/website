@@ -7,7 +7,7 @@ import { DRUPAL_BASE_URL, PUBLIC_BASE_URL } from '../../constants'
 import { itemPath } from '../utils/routes'
 import { recursivelyRemoveNullsInPlace } from '../utils/helpers'
 import { convertDateToIso } from '../utils/formats'
-import { Locale, MappedConnection, MappedObject } from '../../lib/types'
+import { Locale, MappedConnection, MappedObject } from '../domain'
 import { Formatter } from '../utils/translate'
 
 export interface RawProps {

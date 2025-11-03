@@ -18,7 +18,7 @@ import nestConnections, {
 import { set, Set } from 'd3-collection'
 
 import Icons from '../../assets/TypeIcons'
-import { Locale, MappedConnection, Potency } from '../../../lib/types'
+import { Locale, MappedConnection, Potency } from '../../domain'
 import { shallowEqual } from 'shallow-equal'
 import { intersperse } from '../../utils/helpers'
 

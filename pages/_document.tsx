@@ -8,7 +8,7 @@ import Document, {
   NextScript,
 } from 'next/document'
 
-import { Locale } from '../lib/types'
+import { Locale } from '../src/domain'
 import { Option, Schema } from 'effect'
 
 export interface MyDocumentProps extends DocumentInitialProps {

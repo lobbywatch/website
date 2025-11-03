@@ -8,7 +8,7 @@ import {
   RawLobbyGroup,
   RawOrganisation,
   RawParliamentarian,
-} from '../../types'
+} from 'src/domain'
 import { branchesUrl, branchUrl } from '../queries/branchen'
 import { organisationsUrl, organisationUrl } from '../queries/organisations'
 import { lobbyGroupsUrl, lobbyGroupUrl } from '../queries/lobbyGroups'

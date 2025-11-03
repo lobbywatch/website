@@ -13,7 +13,7 @@ import {
   MappedObjectType,
   MappedOrganisation,
   MappedParliamentarian,
-} from '../../types'
+} from 'src/domain'
 import { useFetcher } from '../fetch'
 
 const diacritics = [

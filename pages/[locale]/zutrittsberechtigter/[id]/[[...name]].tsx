@@ -7,7 +7,7 @@ import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getGuest } from 'lib/api/queries/guests'
 import { useSafeRouter, withStaticPropsContext } from 'lib/next'
-import { GuestId, Locale, MappedGuest } from 'lib/types'
+import { GuestId, Locale, MappedGuest } from 'src/domain'
 import { Schema } from 'effect'
 import { InferGetStaticPropsType } from 'next'
 

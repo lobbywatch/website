@@ -7,7 +7,7 @@ import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getParliamentarian } from 'lib/api/queries/parliamentarians'
 import { useSafeRouter, withStaticPropsContext } from 'lib/next'
-import { Locale, MappedParliamentarian, ParliamentarianId } from 'lib/types'
+import { Locale, MappedParliamentarian, ParliamentarianId } from 'src/domain'
 import { Schema } from 'effect'
 import { InferGetStaticPropsType } from 'next'
 

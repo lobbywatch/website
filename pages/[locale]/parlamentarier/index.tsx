@@ -12,7 +12,7 @@ import { getAllParliamentarians } from 'lib/api/queries/parliamentarians'
 import { InferGetStaticPropsType } from 'next'
 import { useSafeRouter, withStaticPropsContext } from 'lib/next'
 import { Schema } from 'effect'
-import { Locale, MappedParliamentarian } from 'lib/types'
+import { Locale, MappedParliamentarian } from 'src/domain'
 
 const Parliamentarians = ({
   parliamentarians,

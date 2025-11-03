@@ -5,7 +5,7 @@ import Logo from '../../assets/Logo'
 import Menu, { MenuItem } from './Menu'
 import Toggle from './Toggle'
 import SearchField from './SearchField'
-import { Locale } from '../../../lib/types'
+import { Locale } from '../../domain'
 
 export interface HeaderProps {
   locale: Locale

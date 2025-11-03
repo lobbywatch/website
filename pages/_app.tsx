@@ -8,7 +8,7 @@ import CreativeCommons from '../src/assets/CreativeCommons'
 import { useT } from '../src/components/Message'
 import { useSafeRouter } from '../lib/next'
 import { Schema } from 'effect'
-import { Locale } from '../lib/types'
+import { Locale } from '../src/domain'
 
 const WebApp = ({ Component, pageProps }: AppProps) => {
   const {

@@ -1,6 +1,6 @@
 import qs from 'querystring'
 import { DRUPAL_DATA_BASE_URL } from '../../constants'
-import { Locale } from '../types'
+import { Locale } from '../../src/domain'
 import { Query } from './fetch'
 
 export const data = <A>(locale: Locale, path: string, query?: Query<A>) => {

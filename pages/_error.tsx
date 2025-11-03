@@ -6,7 +6,7 @@ import MetaTags from 'src/components/MetaTags'
 import { NextApiResponse } from 'next'
 import { useSafeRouter } from '../lib/next'
 import { Schema } from 'effect'
-import { Locale } from '../lib/types'
+import { Locale } from '../src/domain'
 
 function Error({ statusCode }: NextApiResponse) {
   const {
