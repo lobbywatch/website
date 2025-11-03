@@ -5,7 +5,7 @@ import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
-import { getLobbyGroup } from 'lib/api/queries/lobbyGroups'
+import { getLobbyGroup } from 'src/api/queries/lobbyGroups'
 import {
   LobbyGroupId,
   Locale,

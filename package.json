@@ -16,7 +16,7 @@
     "lint:ts": "tsc --noEmit",
     "=== TEST ===": "",
     "test": "vitest",
-    "test:update": "tsx ./lib/api/test/update.ts",
+    "test:update": "tsx ./src/api/test/update.ts",
     "=== UTILITIES ===": "",
     "klog": "find . -name '*.js' -not -path \"./node_modules*\" -not -path \"./.next*\" | xargs wc -l",
     "=== HOOKS ===": "",

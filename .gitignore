@@ -3,7 +3,7 @@
 
 # testing
 /coverage
-/lib/api/test/data
+/src/api/test/data
 
 # production
 /build

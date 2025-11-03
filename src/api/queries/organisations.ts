@@ -1,13 +1,13 @@
 import * as api from '../api'
 import { mapOrganisation } from '../mappers/mappers'
 import { Query, safeFetcher } from '../fetch'
-import { translator } from '../../../src/components/Message'
+import { translator } from '../../components/Message'
 import {
   Locale,
   MappedOrganisation,
   OrganisationId,
   RawOrganisation,
-} from '../../../src/domain'
+} from '../../domain'
 import { Array, Option, pipe, Schema } from 'effect'
 
 export const organisationUrl = <A>(locale: Locale, id: OrganisationId) =>

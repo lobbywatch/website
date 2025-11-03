@@ -2,7 +2,7 @@ import * as api from '../api'
 import { mapGuest } from '../mappers/mappers'
 import { translator } from 'src/components/Message'
 import { fetcher, Query, safeFetcher } from '../fetch'
-import { GuestId, Locale, MappedGuest, RawGuest } from '../../../src/domain'
+import { GuestId, Locale, MappedGuest, RawGuest } from '../../domain'
 import { Array, Option, Order, pipe, Schema } from 'effect'
 import { parliamentarianUrl } from './parliamentarians'
 
