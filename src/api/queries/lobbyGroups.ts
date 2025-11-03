@@ -1,4 +1,4 @@
-import { translator } from '../../../src/components/Message'
+import { translator } from '../../components/Message'
 import * as api from '../api'
 import { mapLobbyGroup } from '../mappers/mappers'
 import { safeFetcher } from '../fetch'
@@ -7,7 +7,7 @@ import {
   Locale,
   MappedLobbyGroup,
   RawLobbyGroup,
-} from '../../../src/domain'
+} from '../../domain'
 import { Array, Option, Order, pipe, Schema } from 'effect'
 
 export const lobbyGroupUrl = (locale: Locale, id: LobbyGroupId) =>

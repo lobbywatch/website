@@ -9,7 +9,7 @@ import {
   RawLobbyGroup,
   RawOrganisation,
   RawParliamentarian,
-} from 'lib/api/mappers/raw'
+} from 'src/api/mappers/raw'
 
 export const schemaMap = {
   [RawBranch.toString()]: RawBranch,

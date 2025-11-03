@@ -1,4 +1,4 @@
-import { translator } from '../../../src/components/Message'
+import { translator } from '../../components/Message'
 import * as api from '../api'
 import { mapParliamentarian } from '../mappers/mappers'
 import { Query, safeFetcher } from '../fetch'
@@ -7,7 +7,7 @@ import {
   MappedParliamentarian,
   ParliamentarianId,
   RawParliamentarian,
-} from '../../../src/domain'
+} from '../../domain'
 import { Array, Option, Order, pipe, Schema } from 'effect'
 
 export const parliamentarianUrl = (locale: Locale, id: ParliamentarianId) =>

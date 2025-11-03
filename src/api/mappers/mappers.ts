@@ -21,7 +21,7 @@ import {
   MappedVerguetung,
   MappedOrganisationLobbyGroup,
   MappedEdge,
-} from '../../../src/domain'
+} from '../../domain'
 
 const requireNonNull = <A>(a: A): NonNullable<A> => {
   if (a == null) throw new Error('Expected non-null value')

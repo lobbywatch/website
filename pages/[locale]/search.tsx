@@ -6,7 +6,7 @@ import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 
-import { useSearch } from '../../lib/api/queries/useSearch'
+import { useSearch } from '../../src/api/queries/useSearch'
 import { Locale } from '../../src/domain'
 import { useSafeRouter, withStaticPropsContext } from '../../src/vendor/next'
 import { Schema } from 'effect'

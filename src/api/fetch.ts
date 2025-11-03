@@ -1,5 +1,5 @@
 import { Array, Either, flow, Option, ParseResult, Schema } from 'effect'
-import { Locale } from '../../src/domain'
+import { Locale } from '../domain'
 import useSWR from 'swr'
 
 const { formatIssueSync } = ParseResult.TreeFormatter
