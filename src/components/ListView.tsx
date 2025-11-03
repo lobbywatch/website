@@ -1,7 +1,6 @@
 import React from 'react'
 
 import styles from './ListView.module.css'
-import Link from 'next/link'
 import { itemPath } from '../utils/routes'
 
 import Icons from '../assets/TypeIcons'
@@ -70,12 +69,7 @@ function ListView<A extends MappedObject>(props: ListViewProps<A>) {
   const elements = items.map((item) => {
     const Icon = !('portrait' in item) ? Icons[item.__typename] : undefined
     return (
-      <Link
-        key={item.id}
-        href={itemPath(item, locale)}
-        prefetch={false}
-        className={styles.link}
-      >
+      <a key={item.id} href={itemPath(item, locale)} className={styles.link}>
         {'portrait' in item && (
           <span className={[styles.symbol, styles.portrait].join(' ')}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -95,7 +89,7 @@ function ListView<A extends MappedObject>(props: ListViewProps<A>) {
             {subtitle(item) || ' '}
           </span>
         </span>
-      </Link>
+      </a>
     )
   })
 
