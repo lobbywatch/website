@@ -9,6 +9,9 @@
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start -p ${PORT:=3000}",
+    "dev2": "NODE_OPTIONS=\"--experimental-vm-modules --disable-warning=ExperimentalWarning\" rsbuild dev",
+    "build2": "rsbuild build",
+    "preview2": "NODE_OPTIONS=\"--experimental-vm-modules --disable-warning=ExperimentalWarning\" node playground/server.prod.ts",
     "=== LINT ===": "",
     "lint": "concurrently \"npm:lint:*\"",
     "lint:format": "prettier --check --cache --cache-strategy content .",
@@ -51,6 +54,8 @@
     "swr": "2.3.6"
   },
   "devDependencies": {
+    "@rsbuild/core": "^1.6.0",
+    "@rsbuild/plugin-react": "^1.4.1",
     "@types/d3-array": "^1.2.12",
     "@types/d3-collection": "^1.0.13",
     "@types/d3-format": "^1.4.5",

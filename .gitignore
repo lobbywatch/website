@@ -7,6 +7,10 @@
 
 # production
 /build
+/dist
+
+# rspack
+.rspack-profile-*/
 
 # next
 /.next
