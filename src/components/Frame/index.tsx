@@ -9,6 +9,7 @@ import type { ReactNode } from 'react'
 import { useSafeRouter } from '../../vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../../domain'
+import CreativeCommons from '../../assets/CreativeCommons.tsx'
 
 export interface FrameProps {
   children: ReactNode
@@ -86,6 +87,17 @@ const Frame = ({ children }: FrameProps) => {
         />
       </header>
       <main>{children}</main>
+      <footer className='page-footer'>
+        <div className='u-center'>
+          <CreativeCommons />
+          <p
+            className='text-meta'
+            dangerouslySetInnerHTML={{
+              __html: t('footer/cc'),
+            }}
+          ></p>
+        </div>
+      </footer>
     </SearchContext.Provider>
   )
 }
