@@ -5,7 +5,7 @@ import SearchIcon from '../../assets/Search'
 
 import { useT } from '../Message'
 import SearchContext from './SearchContext'
-import { useSafeRouter } from '../../vendor/next'
+import { useLocale, useSafeRouter } from '../../vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../../domain'
 
@@ -18,7 +18,7 @@ const SearchField = () => {
     }),
   )
   const inputRef = useRef<HTMLInputElement>(null)
-  const currentLocale = router.query.locale
+  const currentLocale = useLocale()
   const t = useT(currentLocale)
 
   useEffect(() => {

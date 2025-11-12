@@ -1,6 +1,4 @@
 import React from 'react'
-
-import Loader from 'src/components/Loader'
 import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
@@ -8,9 +6,12 @@ import DetailHead from 'src/components/DetailHead'
 import { getLobbyGroup } from 'src/api/queries/lobbyGroups'
 import type { MappedLobbyGroup, MappedObjectType } from 'src/domain'
 import { LobbyGroupId, Locale } from 'src/domain'
-import type { InferGetStaticPropsType } from 'src/vendor/next'
+import {
+  type InferGetStaticPropsType,
+  useLocale,
+  withStaticPropsContext,
+} from 'src/vendor/next'
 import { Schema } from 'effect'
-import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
 
 const CONNECTION_WEIGHTS: Record<MappedObjectType, number> = {
   Branch: 1,
@@ -23,37 +24,26 @@ const CONNECTION_WEIGHTS: Record<MappedObjectType, number> = {
 const LobbyGroup = (
   lobbyGroup: InferGetStaticPropsType<typeof getStaticProps>,
 ) => {
-  const {
-    query: { locale },
-    isFallback,
-  } = useSafeRouter(Schema.Struct({ locale: Locale }))
-
+  const locale = useLocale()
+  const { __typename } = lobbyGroup
   return (
     <Frame>
-      <Loader
-        loading={isFallback}
-        render={() => {
-          const { __typename } = lobbyGroup
-          return (
-            <div>
-              <MetaTags locale={locale} data={lobbyGroup} />
-              <div className='u-center-container'>
-                <DetailHead locale={locale} data={lobbyGroup} />
-              </div>
-              <Connections
-                origin={__typename}
-                locale={locale}
-                directness={1}
-                data={lobbyGroup.connections ?? []}
-                groupByDestination
-                connectionWeight={(connection) =>
-                  CONNECTION_WEIGHTS[connection.to.__typename]
-                }
-              />
-            </div>
-          )
-        }}
-      />
+      <div>
+        <MetaTags locale={locale} data={lobbyGroup} />
+        <div className='u-center-container'>
+          <DetailHead locale={locale} data={lobbyGroup} />
+        </div>
+        <Connections
+          origin={__typename}
+          locale={locale}
+          directness={1}
+          data={lobbyGroup.connections ?? []}
+          groupByDestination
+          connectionWeight={(connection) =>
+            CONNECTION_WEIGHTS[connection.to.__typename]
+          }
+        />
+      </div>
     </Frame>
   )
 }

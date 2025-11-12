@@ -1,16 +1,14 @@
 import React from 'react'
-
-import Loader from 'src/components/Loader'
 import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getBranche } from 'src/api/queries/branchen'
-import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
+import type { InferGetStaticPropsType } from 'src/vendor/next'
+import { useLocale, withStaticPropsContext } from 'src/vendor/next'
 import { Schema } from 'effect'
 import type { MappedBranch } from 'src/domain'
 import { BranchId, Locale } from 'src/domain'
-import type { InferGetStaticPropsType } from 'src/vendor/next'
 
 const CONNECTION_WEIGHTS = {
   Branch: 1,
@@ -21,34 +19,26 @@ const CONNECTION_WEIGHTS = {
 }
 
 const Branch = (branche: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const {
-    query: { locale },
-    isFallback,
-  } = useSafeRouter(Schema.Struct({ locale: Locale }))
+  const locale = useLocale()
 
   return (
     <Frame>
-      <Loader
-        loading={isFallback}
-        render={() => (
-          <div>
-            <MetaTags locale={locale} data={branche} />
-            <div className='u-center-container'>
-              <DetailHead locale={locale} data={branche} />
-            </div>
-            <Connections
-              origin={branche.__typename}
-              locale={locale}
-              directness={1}
-              data={branche.connections ?? []}
-              groupByDestination
-              connectionWeight={(connection) =>
-                CONNECTION_WEIGHTS[connection.to.__typename]
-              }
-            />
-          </div>
-        )}
-      />
+      <div>
+        <MetaTags locale={locale} data={branche} />
+        <div className='u-center-container'>
+          <DetailHead locale={locale} data={branche} />
+        </div>
+        <Connections
+          origin={branche.__typename}
+          locale={locale}
+          directness={1}
+          data={branche.connections ?? []}
+          groupByDestination
+          connectionWeight={(connection) =>
+            CONNECTION_WEIGHTS[connection.to.__typename]
+          }
+        />
+      </div>{' '}
     </Frame>
   )
 }
