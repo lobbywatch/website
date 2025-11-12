@@ -2,6 +2,7 @@ import { flow, ParseResult, Schema } from 'effect'
 import type { NextRouter } from 'next/router'
 import { useRouter } from 'next/router'
 import type { ParsedUrlQuery } from 'node:querystring'
+import { Locale } from '../domain'
 
 type Redirect =
   | {
@@ -60,6 +61,15 @@ export function useSafeRouter<A, I>(
     router.query,
   ) as ParsedUrlQuery
   return router as UseSafeRouterResult<A>
+}
+
+export function useLocale(): Locale {
+  const pathname =
+    typeof location === 'object' ? location.pathname.toLocaleLowerCase() : ''
+  const matches = pathname.match(
+    new RegExp(`^\/(${Locale.literals.join('|')})(?:\/|$)`),
+  )
+  return matches != null ? (matches[1] as Locale) : Locale.literals[0]
 }
 
 export const getSearchParams = () => {
