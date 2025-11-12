@@ -1,8 +1,19 @@
 import { flow, ParseResult, Schema } from 'effect'
-import type { GetStaticPropsResult } from 'next'
 import type { NextRouter } from 'next/router'
 import { useRouter } from 'next/router'
 import type { ParsedUrlQuery } from 'node:querystring'
+
+type Redirect =
+  | {
+      statusCode: 301 | 302 | 303 | 307 | 308
+      destination: string
+      basePath?: false
+    }
+  | {
+      permanent: boolean
+      destination: string
+      basePath?: false
+    }
 
 export { useSearchParams } from 'next/navigation'
 
@@ -10,6 +21,11 @@ export type InferGetStaticPropsType<T extends (args: any) => any> = Extract<
   Awaited<ReturnType<T>>,
   { props: any }
 >['props']
+
+export type GetStaticPropsResult<Props> =
+  | { props: Props; revalidate?: number | boolean }
+  | { redirect: Redirect; revalidate?: number | boolean }
+  | { notFound: true; revalidate?: number | boolean }
 
 export interface PropsContext<A> {
   params: A
