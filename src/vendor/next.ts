@@ -15,8 +15,6 @@ type Redirect =
       basePath?: false
     }
 
-export { useSearchParams } from 'next/navigation'
-
 export type InferGetStaticPropsType<T extends (args: any) => any> = Extract<
   Awaited<ReturnType<T>>,
   { props: any }
@@ -62,4 +60,10 @@ export function useSafeRouter<A, I>(
     router.query,
   ) as ParsedUrlQuery
   return router as UseSafeRouterResult<A>
+}
+
+export const getSearchParams = () => {
+  return typeof location === 'object'
+    ? new URLSearchParams(location.search).get('term')
+    : ''
 }
