@@ -4,17 +4,10 @@ import Message, { useT } from 'src/components/Message'
 
 import MetaTags from 'src/components/MetaTags'
 import { PUBLIC_BASE_URL } from '../../constants'
-import { useSafeRouter } from '../../src/vendor/next'
-import { Schema } from 'effect'
-import { Locale } from '../../src/domain'
+import { useLocale } from '../../src/vendor/next'
 
 const Page = () => {
-  const router = useSafeRouter(
-    Schema.Struct({
-      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
-    }),
-  )
-  const locale = router.query.locale
+  const locale = useLocale()
 
   const t = useT(locale)
 

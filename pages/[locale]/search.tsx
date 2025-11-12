@@ -10,7 +10,7 @@ import { useSearch } from '../../src/api/queries/useSearch'
 import { Locale } from '../../src/domain'
 import {
   getSearchParams,
-  useSafeRouter,
+  useLocale,
   withStaticPropsContext,
 } from '../../src/vendor/next'
 import { Schema } from 'effect'
@@ -69,9 +69,7 @@ export async function getStaticPaths() {
 
 const Page = () => {
   const term = getSearchParams()
-  const {
-    query: { locale },
-  } = useSafeRouter(Schema.Struct({ locale: Locale }))
+  const locale = useLocale()
   return (
     <Frame>
       <Search locale={locale} term={term ?? ''} />

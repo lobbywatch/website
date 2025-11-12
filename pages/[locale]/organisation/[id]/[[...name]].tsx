@@ -1,16 +1,14 @@
 import React from 'react'
-
-import Loader from 'src/components/Loader'
 import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getOrganisation } from 'src/api/queries/organisations'
-import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
+import type { InferGetStaticPropsType } from 'src/vendor/next'
+import { useLocale, withStaticPropsContext } from 'src/vendor/next'
 import type { MappedOrganisation } from 'src/domain'
 import { Locale, OrganisationId } from 'src/domain'
 import { Schema } from 'effect'
-import type { InferGetStaticPropsType } from 'src/vendor/next'
 
 const CONNECTION_WEIGHTS = {
   Branch: 1,
@@ -21,33 +19,25 @@ const CONNECTION_WEIGHTS = {
 }
 
 const Org = (organisation: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const {
-    query: { locale },
-    isFallback,
-  } = useSafeRouter(Schema.Struct({ locale: Locale }))
+  const locale = useLocale()
 
   return (
     <Frame>
-      <Loader
-        loading={isFallback}
-        render={() => (
-          <div>
-            <MetaTags locale={locale} data={organisation} />
-            <div className='u-center-container'>
-              <DetailHead locale={locale} data={organisation} />
-            </div>
-            <Connections
-              origin={organisation.__typename}
-              locale={locale}
-              data={organisation.connections ?? []}
-              groupByDestination
-              connectionWeight={(connection) =>
-                CONNECTION_WEIGHTS[connection.to.__typename]
-              }
-            />
-          </div>
-        )}
-      />
+      <div>
+        <MetaTags locale={locale} data={organisation} />
+        <div className='u-center-container'>
+          <DetailHead locale={locale} data={organisation} />
+        </div>
+        <Connections
+          origin={organisation.__typename}
+          locale={locale}
+          data={organisation.connections ?? []}
+          groupByDestination
+          connectionWeight={(connection) =>
+            CONNECTION_WEIGHTS[connection.to.__typename]
+          }
+        />
+      </div>{' '}
     </Frame>
   )
 }

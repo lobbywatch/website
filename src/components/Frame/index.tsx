@@ -6,8 +6,7 @@ import { useT } from '../Message'
 import Header from './Header'
 import SearchContext, { useSearchContextState } from './SearchContext'
 import type { ReactNode } from 'react'
-import { useSafeRouter } from '../../vendor/next'
-import { Schema } from 'effect'
+import { useLocale } from '../../vendor/next'
 import { Locale } from '../../domain'
 import CreativeCommons from '../../assets/CreativeCommons.tsx'
 
@@ -16,14 +15,8 @@ export interface FrameProps {
 }
 
 const Frame = ({ children }: FrameProps) => {
-  const {
-    asPath,
-    query: { locale: currentLocale },
-  } = useSafeRouter(
-    Schema.Struct({
-      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
-    }),
-  )
+  const currentLocale = useLocale()
+  const asPath = typeof location === 'object' ? location.pathname : ''
   const searchContextState = useSearchContextState()
   const t = useT(currentLocale)
 
