@@ -1,7 +1,8 @@
 import { flow, ParseResult, Schema } from 'effect'
-import { GetStaticPropsResult } from 'next'
-import { NextRouter, useRouter } from 'next/router'
-import { ParsedUrlQuery } from 'node:querystring'
+import type { GetStaticPropsResult } from 'next'
+import type { NextRouter } from 'next/router'
+import { useRouter } from 'next/router'
+import type { ParsedUrlQuery } from 'node:querystring'
 
 export { useSearchParams } from 'next/navigation'
 

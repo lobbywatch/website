@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { assert, describe, test } from 'vitest'
-import { ParseResult, Schema } from 'effect'
+import type { Schema } from 'effect'
+import { ParseResult } from 'effect'
 import {
   RawBranch,
   RawGuest,

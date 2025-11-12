@@ -1,12 +1,9 @@
-import Document, {
+import type {
   DocumentContext,
   DocumentInitialProps,
   DocumentProps,
-  Head,
-  Html,
-  Main,
-  NextScript,
 } from 'next/document'
+import Document, { Head, Html, Main, NextScript } from 'next/document'
 
 import { Locale } from '../src/domain'
 import { Option, Schema } from 'effect'

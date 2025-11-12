@@ -3,7 +3,7 @@ import type { Formatter } from 'src/utils/translate'
 import { timeMonth, timeYear } from 'd3-time'
 import { timeFormat, timeParse } from 'd3-time-format'
 import { descending } from 'd3-array'
-import {
+import type {
   MappedConnection,
   MappedBranch,
   MappedLobbyGroup,

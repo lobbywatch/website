@@ -7,9 +7,10 @@ import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getParliamentarian } from 'src/api/queries/parliamentarians'
 import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
-import { Locale, MappedParliamentarian, ParliamentarianId } from 'src/domain'
+import type { MappedParliamentarian } from 'src/domain'
+import { Locale, ParliamentarianId } from 'src/domain'
 import { Schema } from 'effect'
-import { InferGetStaticPropsType } from 'next'
+import type { InferGetStaticPropsType } from 'next'
 
 const Parliamentarian = (
   parliamentarian: InferGetStaticPropsType<typeof getStaticProps>,

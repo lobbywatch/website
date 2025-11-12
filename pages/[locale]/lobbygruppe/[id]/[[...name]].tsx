@@ -6,13 +6,9 @@ import MetaTags from 'src/components/MetaTags'
 import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getLobbyGroup } from 'src/api/queries/lobbyGroups'
-import {
-  LobbyGroupId,
-  Locale,
-  MappedLobbyGroup,
-  MappedObjectType,
-} from 'src/domain'
-import { InferGetStaticPropsType } from 'next'
+import type { MappedLobbyGroup, MappedObjectType } from 'src/domain'
+import { LobbyGroupId, Locale } from 'src/domain'
+import type { InferGetStaticPropsType } from 'next'
 import { Schema } from 'effect'
 import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
 

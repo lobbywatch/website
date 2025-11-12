@@ -1,14 +1,15 @@
 import React, { Component } from 'react'
 import Head from 'next/head'
 import { useT } from './Message'
-import { nest, set, Set } from 'd3-collection'
+import type { Set } from 'd3-collection'
+import { nest, set } from 'd3-collection'
 import { descending } from 'd3-array'
 import { DRUPAL_BASE_URL, PUBLIC_BASE_URL } from '../../constants'
 import { itemPath } from '../utils/routes'
 import { recursivelyRemoveNullsInPlace } from '../utils/helpers'
 import { convertDateToIso } from '../utils/formats'
-import { Locale, MappedConnection, MappedObject } from '../domain'
-import { Formatter } from '../utils/translate'
+import type { Locale, MappedConnection, MappedObject } from '../domain'
+import type { Formatter } from '../utils/translate'
 
 export interface RawProps {
   title: string

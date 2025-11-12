@@ -1,4 +1,5 @@
-import React, { ReactNode, useState } from 'react'
+import type { ReactNode } from 'react'
+import React, { useState } from 'react'
 import styles from './DetailHead.module.css'
 import { useT } from './Message'
 import { ContextBoxValue } from './ContextBox'
@@ -7,8 +8,8 @@ import { numberFormat } from '../utils/formats'
 import { itemPath } from '../utils/routes'
 import Icons from '../assets/TypeIcons'
 import ExpandIcon from '../assets/Expand'
-import { Formatter } from '../utils/translate'
-import { Locale, MappedObject } from '../domain'
+import type { Formatter } from '../utils/translate'
+import type { Locale, MappedObject } from '../domain'
 import { intersperse } from '../utils/helpers'
 
 // Keep in sync with CSS definition

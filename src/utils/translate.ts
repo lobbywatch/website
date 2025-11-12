@@ -1,5 +1,5 @@
-import { ReactNode } from 'react'
-import { Locale } from 'src/domain'
+import type { ReactNode } from 'react'
+import type { Locale } from 'src/domain'
 
 export interface Translation {
   key: string

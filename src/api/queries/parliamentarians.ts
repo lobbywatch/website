@@ -1,13 +1,14 @@
 import { translator } from '../../components/Message'
 import * as api from '../api'
 import { mapParliamentarian } from '../mappers/mappers'
-import { Query, safeFetcher } from '../fetch'
-import {
+import type { Query } from '../fetch'
+import { safeFetcher } from '../fetch'
+import type {
   Locale,
   MappedParliamentarian,
   ParliamentarianId,
-  RawParliamentarian,
 } from '../../domain'
+import { RawParliamentarian } from '../../domain'
 import { Array, Option, Order, pipe, Schema } from 'effect'
 
 export const parliamentarianUrl = (locale: Locale, id: ParliamentarianId) =>

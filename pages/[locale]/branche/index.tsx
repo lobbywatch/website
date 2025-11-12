@@ -8,8 +8,9 @@ import ListView from 'src/components/ListView'
 import { getAllBranchen } from 'src/api/queries/branchen'
 import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
 import { Schema } from 'effect'
-import { Locale, MappedBranch } from 'src/domain'
-import { InferGetStaticPropsType } from 'next'
+import type { MappedBranch } from 'src/domain'
+import { Locale } from 'src/domain'
+import type { InferGetStaticPropsType } from 'next'
 
 const Branchs = ({
   branchen,

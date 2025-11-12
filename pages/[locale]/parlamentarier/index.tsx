@@ -9,10 +9,11 @@ import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import { getAllParliamentarians } from 'src/api/queries/parliamentarians'
-import { InferGetStaticPropsType } from 'next'
+import type { InferGetStaticPropsType } from 'next'
 import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
 import { Schema } from 'effect'
-import { Locale, MappedParliamentarian } from 'src/domain'
+import type { MappedParliamentarian } from 'src/domain'
+import { Locale } from 'src/domain'
 
 const Parliamentarians = ({
   parliamentarians,

@@ -4,7 +4,7 @@ import styles from './ListView.module.css'
 import { itemPath } from '../utils/routes'
 
 import Icons from '../assets/TypeIcons'
-import { Locale, MappedObject } from '../domain'
+import type { Locale, MappedObject } from '../domain'
 
 /**
  * Keep in sync with CSS

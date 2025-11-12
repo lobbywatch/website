@@ -7,9 +7,10 @@ import Connections from 'src/components/Connections'
 import DetailHead from 'src/components/DetailHead'
 import { getOrganisation } from 'src/api/queries/organisations'
 import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
-import { Locale, MappedOrganisation, OrganisationId } from 'src/domain'
+import type { MappedOrganisation } from 'src/domain'
+import { Locale, OrganisationId } from 'src/domain'
 import { Schema } from 'effect'
-import { InferGetStaticPropsType } from 'next'
+import type { InferGetStaticPropsType } from 'next'
 
 const CONNECTION_WEIGHTS = {
   Branch: 1,

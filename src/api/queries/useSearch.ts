@@ -4,7 +4,7 @@ import { getAllGuests } from './guests'
 import { getAllLobbyGroups } from './lobbyGroups'
 import { getAllBranchen } from './branchen'
 import { getAllOrganisations } from './organisations'
-import {
+import type {
   Locale,
   MappedBranch,
   MappedGuest,

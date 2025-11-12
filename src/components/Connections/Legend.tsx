@@ -1,5 +1,5 @@
 import React from 'react'
-import { Locale } from '../../domain'
+import type { Locale } from '../../domain'
 import styles from './Legend.module.css'
 import { intersperse } from '../../utils/helpers'
 
