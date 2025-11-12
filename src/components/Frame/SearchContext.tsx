@@ -1,9 +1,8 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { createContext, useEffect, useMemo, useState } from 'react'
 
-import { getSearchParams, useSafeRouter } from '../../vendor/next'
+import { getSearchParams, useLocale, useSafeRouter } from '../../vendor/next'
 import { Schema } from 'effect'
-import { Locale } from '../../domain'
 import type { ParsedUrlQuery } from 'node:querystring'
 
 let beforeSearch:
@@ -18,13 +17,9 @@ const SearchContext = createContext<
 >(['', () => undefined])
 export const useSearchContextState = () => {
   const term = getSearchParams()
-  const router = useSafeRouter(
-    Schema.Struct({
-      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
-    }),
-  )
+  const currentLocale = useLocale()
+  const router = useSafeRouter(Schema.Unknown)
   const [value, setValue] = useState(term || '')
-  const currentLocale = router.query.locale
 
   useEffect(
     () => {

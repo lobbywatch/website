@@ -2,19 +2,11 @@ import React from 'react'
 
 import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
-import { useSafeRouter } from '../src/vendor/next'
-import { Schema } from 'effect'
-import { Locale } from '../src/domain'
+import { useLocale } from '../src/vendor/next'
 import type { ServerResponse } from 'node:http'
 
 function Error({ statusCode }: ServerResponse) {
-  const {
-    query: { locale },
-  } = useSafeRouter(
-    Schema.Struct({
-      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
-    }),
-  )
+  const locale = useLocale()
 
   return (
     <Frame>

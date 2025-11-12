@@ -4,9 +4,8 @@ import type { Replacements, Translation } from '../utils/translate'
 import { createFormatter } from '../utils/translate'
 
 import translationsJson from '../assets/translations.json'
-import { Locale } from '../domain'
-import { useSafeRouter } from '../vendor/next'
-import { Schema } from 'effect'
+import type { Locale } from '../domain'
+import { useLocale } from '../vendor/next'
 
 type TranslationsCache = Record<Locale, Array<Translation>>
 
@@ -35,12 +34,8 @@ export const translator = (locale: Locale) => {
 }
 
 export const useT = (locale: Locale) => {
-  const { query } = useSafeRouter(
-    Schema.Struct({
-      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
-    }),
-  )
-  const translations = getTranslations(query.locale)
+  const queryLocale = useLocale()
+  const translations = getTranslations(queryLocale)
   return createFormatter(translations, locale)
 }
 
