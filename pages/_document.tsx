@@ -54,6 +54,7 @@ export default class MyDocument extends Document {
       <Html lang={locale} dir='ltr'>
         <Head>
           <script dangerouslySetInnerHTML={{ __html: motivationComment }} />
+          <meta name='viewport' content='width=device-width,initial-scale=1' />
           <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
 
           {css ? <style dangerouslySetInnerHTML={{ __html: css }} /> : null}
