@@ -6,6 +6,11 @@ import type { ParsedUrlQuery } from 'node:querystring'
 
 export { useSearchParams } from 'next/navigation'
 
+export type InferGetStaticPropsType<T extends (args: any) => any> = Extract<
+  Awaited<ReturnType<T>>,
+  { props: any }
+>['props']
+
 export interface PropsContext<A> {
   params: A
 }

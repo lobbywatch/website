@@ -10,7 +10,7 @@ import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
 import type { MappedParliamentarian } from 'src/domain'
 import { Locale, ParliamentarianId } from 'src/domain'
 import { Schema } from 'effect'
-import type { InferGetStaticPropsType } from 'next'
+import type { InferGetStaticPropsType } from 'src/vendor/next'
 
 const Parliamentarian = (
   parliamentarian: InferGetStaticPropsType<typeof getStaticProps>,

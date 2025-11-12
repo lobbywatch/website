@@ -10,7 +10,7 @@ import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
 import { Schema } from 'effect'
 import type { MappedBranch } from 'src/domain'
 import { BranchId, Locale } from 'src/domain'
-import type { InferGetStaticPropsType } from 'next'
+import type { InferGetStaticPropsType } from 'src/vendor/next'
 
 const CONNECTION_WEIGHTS = {
   Branch: 1,
