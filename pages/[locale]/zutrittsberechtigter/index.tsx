@@ -10,7 +10,7 @@ import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
 import type { MappedGuest } from 'src/domain'
 import { Locale } from 'src/domain'
 import { Schema } from 'effect'
-import type { InferGetStaticPropsType } from 'next'
+import type { InferGetStaticPropsType } from 'src/vendor/next'
 
 const Guests = ({ guests }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {

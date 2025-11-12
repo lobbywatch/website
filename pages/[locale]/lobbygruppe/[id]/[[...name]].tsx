@@ -8,7 +8,7 @@ import DetailHead from 'src/components/DetailHead'
 import { getLobbyGroup } from 'src/api/queries/lobbyGroups'
 import type { MappedLobbyGroup, MappedObjectType } from 'src/domain'
 import { LobbyGroupId, Locale } from 'src/domain'
-import type { InferGetStaticPropsType } from 'next'
+import type { InferGetStaticPropsType } from 'src/vendor/next'
 import { Schema } from 'effect'
 import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
 
