@@ -2,7 +2,10 @@ import type { RequestListener } from 'node:http'
 import path from 'node:path'
 import fsp from 'node:fs/promises'
 import fs from 'node:fs'
-import type { Locale } from '../src/domain'
+import { Locale } from '../src/domain'
+import acceptLanguage from 'accept-language'
+
+acceptLanguage.languages([...Locale.literals])
 
 type MimeType = keyof typeof MIME_TYPES
 
@@ -53,7 +56,8 @@ export const app =
   ({ loadBundle, loadHtml }: AppEnv, next: VoidFunction): RequestListener =>
   async (req, res) => {
     if (req.url === '/') {
-      res.writeHead(302, { Location: '/de' })
+      const lang = acceptLanguage.get(req.headers['accept-language'])
+      res.writeHead(302, { Location: `/${lang}` })
       res.end()
     } else if (req.url === '/de') {
       const importedApp = await loadBundle('index')
