@@ -8,7 +8,6 @@ import Legend from './Legend'
 import Message, { useT } from '../Message'
 import { chfFormat } from '../../utils/formats'
 import { itemPath, shouldIgnoreClick } from '../../utils/routes'
-import { useRouter } from 'next/router'
 import type { LayoutNode } from './layout'
 import layout, { START_Y } from './layout'
 import type { HoverItem, HoverValue, NestConnectionsProps } from './nest'
@@ -36,7 +35,7 @@ const styleBubbleVia = ['u-plain-button', styles.bubble, styles.bubbleVia].join(
 
 interface ConnectionsProps extends NestConnectionsProps {
   locale: Locale
-  navigateTo: (path: string) => Promise<boolean>
+  navigateTo: (path: string) => void
   updated?: string
   published?: string
 }
@@ -662,7 +661,6 @@ interface NewConnectionsProps extends Omit<NestConnectionsProps, 't'> {
 
 function NewConnections(props: NewConnectionsProps) {
   const t = useT(props.locale)
-  const router = useRouter()
   const defaultProps = {
     directness: 0,
     potency: false,
@@ -678,7 +676,7 @@ function NewConnections(props: NewConnectionsProps) {
       {...defaultProps}
       {...props}
       t={t}
-      navigateTo={(path) => router.push(path)}
+      navigateTo={(path) => (window.location.href = path)}
     />
   )
 }
