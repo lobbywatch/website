@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import styles from './Header.module.css'
 import Logo from '../../assets/Logo'
 
-import Menu, { MenuItem } from './Menu'
+import type { MenuItem } from './Menu'
+import Menu from './Menu'
 import Toggle from './Toggle'
 import SearchField from './SearchField'
-import { Locale } from '../../domain'
+import type { Locale } from '../../domain'
 
 export interface HeaderProps {
   locale: Locale

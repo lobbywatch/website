@@ -9,16 +9,15 @@ import Message, { useT } from '../Message'
 import { chfFormat } from '../../utils/formats'
 import { itemPath, shouldIgnoreClick } from '../../utils/routes'
 import { useRouter } from 'next/router'
-import layout, { LayoutNode, START_Y } from './layout'
-import nestConnections, {
-  HoverItem,
-  HoverValue,
-  NestConnectionsProps,
-} from './nest'
-import { set, Set } from 'd3-collection'
+import type { LayoutNode } from './layout'
+import layout, { START_Y } from './layout'
+import type { HoverItem, HoverValue, NestConnectionsProps } from './nest'
+import nestConnections from './nest'
+import type { Set } from 'd3-collection'
+import { set } from 'd3-collection'
 
 import Icons from '../../assets/TypeIcons'
-import { Locale, MappedConnection, Potency } from '../../domain'
+import type { Locale, MappedConnection, Potency } from '../../domain'
 import { shallowEqual } from 'shallow-equal'
 import { intersperse } from '../../utils/helpers'
 
@@ -616,7 +615,7 @@ const hoverValues: Array<HoverValue> = [
     ({ data }, { t }) =>
       'connection' in data &&
       data.connection.compensations
-        ?.filter((e, index) => index < 3)
+        ?.filter((_, index) => index < 3)
         .map((compensation, index) => (
           <div key={`compensation-${index}`}>
             {compensation.year}

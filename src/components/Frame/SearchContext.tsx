@@ -1,16 +1,10 @@
-import {
-  createContext,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import type { Dispatch, SetStateAction } from 'react'
+import { createContext, useEffect, useMemo, useState } from 'react'
 
 import { useSafeRouter, useSearchParams } from '../../vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../../domain'
-import { ParsedUrlQuery } from 'node:querystring'
+import type { ParsedUrlQuery } from 'node:querystring'
 
 let beforeSearch:
   | undefined

@@ -1,10 +1,15 @@
 import { nest } from 'd3-collection'
-import { HierarchyNode, stratify } from 'd3-hierarchy'
+import type { HierarchyNode } from 'd3-hierarchy'
+import { stratify } from 'd3-hierarchy'
 import { ascending, descending, sum } from 'd3-array'
-import { MappedConnection, MappedGuest, MappedObjectType } from '../../domain'
-import { Formatter } from '../../utils/translate'
-import { ReactNode } from 'react'
-import {
+import type {
+  MappedConnection,
+  MappedGuest,
+  MappedObjectType,
+} from '../../domain'
+import type { Formatter } from '../../utils/translate'
+import type { ReactNode } from 'react'
+import type {
   LayoutDatum,
   LayoutDatumConnection,
   LayoutDatumGroup,

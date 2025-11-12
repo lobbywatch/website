@@ -3,7 +3,7 @@ import React from 'react'
 import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
 
-import { NextApiResponse } from 'next'
+import type { NextApiResponse } from 'next'
 import { useSafeRouter } from '../src/vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../src/domain'

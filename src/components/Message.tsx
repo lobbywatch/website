@@ -1,6 +1,7 @@
 import React from 'react'
 
-import { createFormatter, Replacements, Translation } from '../utils/translate'
+import type { Replacements, Translation } from '../utils/translate'
+import { createFormatter } from '../utils/translate'
 
 import translationsJson from '../assets/translations.json'
 import { Locale } from '../domain'

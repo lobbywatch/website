@@ -1,4 +1,5 @@
-import React, { Component, ReactNode } from 'react'
+import type { ReactNode } from 'react'
+import React, { Component } from 'react'
 import styles from './Loader.module.css'
 
 export interface SpacerProps {

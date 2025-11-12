@@ -7,9 +7,10 @@ import MetaTags from 'src/components/MetaTags'
 import ListView from 'src/components/ListView'
 import { getAllGuests } from 'src/api/queries/guests'
 import { useSafeRouter, withStaticPropsContext } from 'src/vendor/next'
-import { Locale, MappedGuest } from 'src/domain'
+import type { MappedGuest } from 'src/domain'
+import { Locale } from 'src/domain'
 import { Schema } from 'effect'
-import { InferGetStaticPropsType } from 'next'
+import type { InferGetStaticPropsType } from 'next'
 
 const Guests = ({ guests }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const {

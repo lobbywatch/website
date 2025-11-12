@@ -1,4 +1,4 @@
-import { Locale, MappedEdge, MappedObject } from '../domain'
+import type { Locale, MappedEdge, MappedObject } from '../domain'
 
 const getRawId = (
   { id, __typename }: Pick<MappedObject, 'id' | '__typename'>,

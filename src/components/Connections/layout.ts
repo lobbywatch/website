@@ -1,6 +1,6 @@
-import { NestConnectionType } from './nest'
-import { HierarchyNode } from 'd3-hierarchy'
-import { MappedConnection, Potency } from '../../domain'
+import type { NestConnectionType } from './nest'
+import type { HierarchyNode } from 'd3-hierarchy'
+import type { MappedConnection, Potency } from '../../domain'
 
 export const START_Y = 70
 
