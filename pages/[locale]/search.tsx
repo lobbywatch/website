@@ -8,9 +8,12 @@ import ListView from 'src/components/ListView'
 
 import { useSearch } from '../../src/api/queries/useSearch'
 import { Locale } from '../../src/domain'
-import { useSafeRouter, withStaticPropsContext } from '../../src/vendor/next'
+import {
+  getSearchParams,
+  useSafeRouter,
+  withStaticPropsContext,
+} from '../../src/vendor/next'
 import { Schema } from 'effect'
-import { useSearchParams } from 'next/navigation'
 
 const Search = ({ term, locale }: { term: string; locale: Locale }) => {
   const { data: results, error, isLoading } = useSearch({ locale, term })
@@ -65,7 +68,7 @@ export async function getStaticPaths() {
 }
 
 const Page = () => {
-  const term = useSearchParams().get('term')
+  const term = getSearchParams()
   const {
     query: { locale },
   } = useSafeRouter(Schema.Struct({ locale: Locale }))
