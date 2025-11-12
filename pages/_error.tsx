@@ -2,13 +2,12 @@ import React from 'react'
 
 import Frame from 'src/components/Frame'
 import MetaTags from 'src/components/MetaTags'
-
-import type { NextApiResponse } from 'next'
 import { useSafeRouter } from '../src/vendor/next'
 import { Schema } from 'effect'
 import { Locale } from '../src/domain'
+import type { ServerResponse } from 'node:http'
 
-function Error({ statusCode }: NextApiResponse) {
+function Error({ statusCode }: ServerResponse) {
   const {
     query: { locale },
   } = useSafeRouter(
@@ -47,8 +46,8 @@ Error.getInitialProps = ({
   res,
   err,
 }: {
-  res: NextApiResponse
-  err: NextApiResponse
+  res: ServerResponse
+  err: ServerResponse
 }) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : undefined
   if (res) {
