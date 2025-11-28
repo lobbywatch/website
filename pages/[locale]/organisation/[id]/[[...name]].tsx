@@ -1,0 +1,60 @@
+import React from 'react'
+import Frame from 'src/components/Frame'
+import MetaTags from 'src/components/MetaTags'
+import Connections from 'src/components/Connections'
+import DetailHead from 'src/components/DetailHead'
+import { getOrganisation } from 'src/api/queries/organisations'
+import type { InferGetStaticPropsType } from 'src/vendor/next'
+import { useLocale, withStaticPropsContext } from 'src/vendor/next'
+import type { MappedOrganisation } from 'src/domain'
+import { Locale, OrganisationId } from 'src/domain'
+import { Schema } from 'effect'
+
+const CONNECTION_WEIGHTS = {
+  Branch: 1,
+  Guest: 1,
+  LobbyGroup: 1,
+  Organisation: 0.1,
+  Parliamentarian: 1000,
+}
+
+const Org = (organisation: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const locale = useLocale()
+
+  return (
+    <Frame>
+      <div>
+        <MetaTags locale={locale} data={organisation} />
+        <div className='u-center-container'>
+          <DetailHead locale={locale} data={organisation} />
+        </div>
+        <Connections
+          origin={organisation.__typename}
+          locale={locale}
+          data={organisation.connections ?? []}
+          groupByDestination
+          connectionWeight={(connection) =>
+            CONNECTION_WEIGHTS[connection.to.__typename]
+          }
+        />
+      </div>{' '}
+    </Frame>
+  )
+}
+
+export const getStaticProps = withStaticPropsContext<MappedOrganisation>()(
+  Schema.Struct({ locale: Locale, id: OrganisationId }),
+  async ({ params }) => {
+    const props = await getOrganisation(params)
+    return props ? { props } : { notFound: true }
+  },
+)
+
+export async function getStaticPaths() {
+  return {
+    paths: [],
+    fallback: 'blocking',
+  }
+}
+
+export default Org

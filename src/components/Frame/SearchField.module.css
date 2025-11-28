@@ -1,0 +1,46 @@
+.container {
+  position: relative;
+}
+
+.input {
+  appearance: none;
+  width: 100%;
+  border: 1px solid var(--colorGreyLight);
+  text-overflow: ellipsis;
+  padding-left: 8px;
+  padding-right: calc(8px + 21px + 5px);
+  height: 40px;
+  border-radius: 4px;
+  background-color: var(--colorWhite);
+
+  &::placeholder {
+    color: var(--colorGreyMid);
+    text-overflow: ellipsis;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--colorGreyMid);
+  }
+
+  &::-ms-clear {
+    width: 0;
+    height: 0;
+  }
+
+  @media only screen and (min-width: 48em) {
+    height: 56px;
+    padding-right: calc(16px + 21px + 5px);
+    padding-left: 16px;
+  }
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  margin-top: -10px;
+  right: 8px;
+  @media only screen and (min-width: 48em) {
+    right: 16px;
+  }
+}

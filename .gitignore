@@ -3,12 +3,20 @@
 
 # testing
 /coverage
+/src/api/test/data
 
 # production
 /build
+/dist
+
+# rspack
+.rspack-profile-*/
 
 # next
 /.next
+
+# TypeScript
+*.tsbuildinfo
 
 # misc
 .DS_Store
