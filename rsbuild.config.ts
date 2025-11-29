@@ -11,8 +11,12 @@ export const serverRender = (
   serverContext: SetupMiddlewaresContext,
 ): RequestHandler => {
   const appEnv: AppEnv = {
-    loadBundle: async (name: string) =>
-      await serverContext.environments.node.loadBundle<SSRModule>(name),
+    loadBundle: async (name: string) => {
+      const stats =
+        await serverContext.environments.node.getTransformedHtml(name)
+      console.log(stats)
+      return await serverContext.environments.node.loadBundle<SSRModule>(name)
+    },
     loadHtml: async (name: string) =>
       await serverContext.environments.web.getTransformedHtml(name),
   }
@@ -57,7 +61,7 @@ export default defineConfig({
       source: {
         entry: {
           index: './playground/index.server.tsx',
-          test: './playground/test.server.tsx',
+          test: './pages/[locale]/index.tsx',
         },
       },
       output: {
