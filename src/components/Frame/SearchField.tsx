@@ -12,23 +12,17 @@ import { Locale } from '../../domain'
 let isFocused: boolean = false
 
 const SearchField = () => {
-  const router = useSafeRouter(
-    Schema.Struct({
-      locale: Schema.optionalWith(Locale, { default: () => 'de' }),
-    }),
-  )
   const inputRef = useRef<HTMLInputElement>(null)
   const currentLocale = useLocale()
   const t = useT(currentLocale)
 
   useEffect(() => {
-    const isSearchRoute = router.pathname === '/[locale]/search'
+    const isSearchRoute = false // router.pathname === '/[locale]/search'
     if (isSearchRoute || isFocused) {
       inputRef.current?.focus()
       inputRef.current?.scrollIntoView({ block: 'center' })
     }
-    router.prefetch('/[locale]/search')
-  }, [router])
+  }, [])
   const [searchValue, setSearchValue] = useContext(SearchContext)
 
   return (

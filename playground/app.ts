@@ -66,13 +66,6 @@ export const app =
       const html = template.replace(`<!--app-content-->`, markup)
       res.writeHead(200, { 'Content-Type': 'text/html' })
       res.end(html)
-    } else if (req.url === '/test') {
-      const importedApp = await loadBundle('test')
-      const markup = importedApp.render('de')
-      const template = await loadHtml('test')
-      const html = template.replace(`<!--app-content-->`, markup)
-      res.writeHead(200, { 'Content-Type': 'text/html' })
-      res.end(html)
     } else {
       const file = req.url != null ? await prepareFile(req.url) : undefined
       if (file) {

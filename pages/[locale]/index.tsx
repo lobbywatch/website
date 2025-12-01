@@ -1,3 +1,7 @@
+import '../reset.css'
+import '../font.css'
+import '../index.css'
+
 import React from 'react'
 import Frame from 'src/components/Frame'
 import Message, { useT } from 'src/components/Message'
@@ -5,6 +9,7 @@ import Message, { useT } from 'src/components/Message'
 import MetaTags from 'src/components/MetaTags'
 import { PUBLIC_BASE_URL } from '../../constants'
 import { useLocale } from '../../src/vendor/next'
+import ReactDOMServer from 'react-dom/server'
 
 const Page = () => {
   const locale = useLocale()
@@ -50,6 +55,14 @@ const Page = () => {
         </p>
       </div>
     </Frame>
+  )
+}
+
+export const render = () => {
+  return ReactDOMServer.renderToString(
+    <React.StrictMode>
+      <Page />
+    </React.StrictMode>,
   )
 }
 

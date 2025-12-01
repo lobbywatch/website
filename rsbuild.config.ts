@@ -6,17 +6,14 @@ import {
 } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 import { app, type AppEnv, type SSRModule } from './playground/app.ts'
+import { CssExtractRspackPlugin } from '@rspack/core'
 
 export const serverRender = (
   serverContext: SetupMiddlewaresContext,
 ): RequestHandler => {
   const appEnv: AppEnv = {
-    loadBundle: async (name: string) => {
-      const stats =
-        await serverContext.environments.node.getTransformedHtml(name)
-      console.log(stats)
-      return await serverContext.environments.node.loadBundle<SSRModule>(name)
-    },
+    loadBundle: async (name: string) =>
+      await serverContext.environments.node.loadBundle<SSRModule>(name),
     loadHtml: async (name: string) =>
       await serverContext.environments.web.getTransformedHtml(name),
   }
@@ -48,28 +45,57 @@ export default defineConfig({
   html: {
     template: './playground/template.html',
   },
+  output: {
+    cssModules: {
+      auto: false,
+    },
+    manifest: true,
+  },
   environments: {
     web: {
       source: {
         entry: {
           index: './playground/index.tsx',
-          test: './playground/test.tsx',
         },
       },
     },
     node: {
       source: {
         entry: {
-          index: './playground/index.server.tsx',
-          test: './pages/[locale]/index.tsx',
+          index: './pages/[locale]/index.tsx',
         },
       },
       output: {
-        module: true,
         target: 'node',
+        module: true,
         distPath: {
           root: 'dist/server',
         },
+      },
+    },
+  },
+  tools: {
+    bundlerChain: (chain, { CHAIN_ID }) => {
+      chain.module.rules.delete(CHAIN_ID.RULE.CSS)
+      chain.module.rules.delete(CHAIN_ID.RULE.CSS_INLINE)
+      chain.module.rules.delete(CHAIN_ID.RULE.CSS_RAW)
+    },
+    cssExtract: {
+      pluginOptions: {
+        ignoreOrder: false,
+        runtime: true,
+      },
+    },
+    rspack: {
+      plugins: [new CssExtractRspackPlugin({})],
+      module: {
+        rules: [
+          {
+            test: /\.css$/i,
+            use: [CssExtractRspackPlugin.loader, 'css-loader'],
+            type: 'javascript/auto',
+          },
+        ],
       },
     },
   },

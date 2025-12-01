@@ -1,8 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { createContext, useEffect, useMemo, useState } from 'react'
 
-import { getSearchParams, useLocale, useSafeRouter } from '../../vendor/next'
-import { Schema } from 'effect'
+import { getSearchParams, useLocale } from '../../vendor/next'
 import type { ParsedUrlQuery } from 'node:querystring'
 
 let beforeSearch:
@@ -18,7 +17,7 @@ const SearchContext = createContext<
 export const useSearchContextState = () => {
   const term = getSearchParams()
   const currentLocale = useLocale()
-  const router = useSafeRouter(Schema.Unknown)
+  // const router = useSafeRouter(Schema.Unknown)
   const [value, setValue] = useState(term || '')
 
   useEffect(
@@ -28,22 +27,22 @@ export const useSearchContextState = () => {
           const path = `/${encodeURIComponent(
             currentLocale,
           )}/search?term=${encodeURIComponent(value)}`
-          if (router.pathname === '/[locale]/search' && term) {
-            router.replace(path)
-          } else {
-            beforeSearch = {
-              pathname: router.pathname,
-              query: router.query,
-            }
-            router.push(path)
-          }
+          // if (router.pathname === '/[locale]/search' && term) {
+          //   router.replace(path)
+          // } else {
+          //   beforeSearch = {
+          //     pathname: router.pathname,
+          //     query: router.query,
+          //   }
+          //   router.push(path)
+          // }
         } else if (term) {
-          router.push(
-            beforeSearch || {
-              pathname: '/[locale]/search',
-              query: { locale: currentLocale },
-            },
-          )
+          // router.push(
+          //   beforeSearch || {
+          //     pathname: '/[locale]/search',
+          //     query: { locale: currentLocale },
+          //   },
+          // )
         }
       }, 100)
       return () => {
