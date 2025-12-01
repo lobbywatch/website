@@ -60,22 +60,50 @@ export const app =
       res.writeHead(302, { Location: `/${lang}` })
       res.end()
     } else if (req.url === '/de') {
+      const page = 'index'
       const manifestWeb = JSON.parse(
         await fs.promises.readFile('./dist/manifest.web.json', 'utf-8'),
       )
       const manifestNode = JSON.parse(
         await fs.promises.readFile('./dist/manifest.node.json', 'utf-8'),
       )
-      const styleTagsNode = manifestNode.entries['index'].initial.css.map(
-        (file) => `<link rel="stylesheet" href="${file}" />`,
-      )
-      const scriptTagsWeb = manifestWeb.entries['index'].initial.js.map(
-        (file) => `<script src="${file}" defer></script>`,
-      )
+      const styleTagsNode =
+        manifestNode.entries[page]?.initial.css.map(
+          (file) => `<link rel="stylesheet" href="${file}" />`,
+        ) ?? []
+      const scriptTagsWeb =
+        manifestWeb.entries[page]?.initial.js.map(
+          (file) => `<script src="${file}" defer></script>`,
+        ) ?? []
       const headContent = [...styleTagsNode, ...scriptTagsWeb].join('\n')
-      const importedApp = await loadBundle('index')
-      const markup = importedApp.render('de')
-      const template = await loadHtml('index')
+      const importedApp = await loadBundle(page)
+      const markup = await importedApp.render('de')
+      const template = await loadHtml(page)
+      const html = template
+        .replace(`<!--head-content-->`, headContent)
+        .replace(`<!--app-content-->`, markup)
+      res.writeHead(200, { 'Content-Type': 'text/html' })
+      res.end(html)
+    } else if (req.url === '/de/parlamentarier') {
+      const page = 'parlamentarier'
+      const manifestWeb = JSON.parse(
+        await fs.promises.readFile('./dist/manifest.web.json', 'utf-8'),
+      )
+      const manifestNode = JSON.parse(
+        await fs.promises.readFile('./dist/manifest.node.json', 'utf-8'),
+      )
+      const styleTagsNode =
+        manifestNode.entries[page]?.initial.css.map(
+          (file) => `<link rel="stylesheet" href="${file}" />`,
+        ) ?? []
+      const scriptTagsWeb =
+        manifestWeb.entries[page]?.initial.js.map(
+          (file) => `<script src="${file}" defer></script>`,
+        ) ?? []
+      const headContent = [...styleTagsNode, ...scriptTagsWeb].join('\n')
+      const importedApp = await loadBundle(page)
+      const markup = await importedApp.render('de')
+      const template = await loadHtml(page)
       const html = template
         .replace(`<!--head-content-->`, headContent)
         .replace(`<!--app-content-->`, markup)

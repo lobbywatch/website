@@ -50,6 +50,7 @@ export default defineConfig({
       source: {
         entry: {
           index: './pages/[locale]/index.web.tsx',
+          parlamentarier: './pages/[locale]/parlamentarier/index.web.tsx',
         },
       },
       output: {
@@ -67,6 +68,7 @@ export default defineConfig({
       source: {
         entry: {
           index: './pages/[locale]/index.tsx',
+          parlamentarier: './pages/[locale]/parlamentarier/index.tsx',
         },
       },
       output: {

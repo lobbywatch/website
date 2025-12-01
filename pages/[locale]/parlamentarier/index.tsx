@@ -15,6 +15,8 @@ import {
 import { Schema } from 'effect'
 import type { MappedParliamentarian } from 'src/domain'
 import { Locale } from 'src/domain'
+import ReactDOMServer from 'react-dom/server'
+import Page from '../index.tsx'
 
 const Parliamentarians = ({
   parliamentarians,
@@ -74,6 +76,15 @@ export async function getStaticPaths() {
     paths: [],
     fallback: 'blocking',
   }
+}
+
+export const render = async (locale) => {
+  const { props } = await getStaticProps({ params: { locale } })
+  return ReactDOMServer.renderToString(
+    <React.StrictMode>
+      <Parliamentarians {...props} />
+    </React.StrictMode>,
+  )
 }
 
 export default Parliamentarians
