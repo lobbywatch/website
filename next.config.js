@@ -67,6 +67,11 @@ module.exports = {
         destination: '/de/patronage',
         permanent: false,
       },
+      {
+        source: '/spenden',
+        destination: '/de/patronage',
+        permanent: false,
+      },
     ].filter(Boolean)
   },
   poweredByHeader: false,
