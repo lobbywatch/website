@@ -1,3 +1,7 @@
+import '../../../pages/reset.css'
+import '../../../pages/font.css'
+import '../../../pages/index.css'
+
 import Head from 'next/head'
 
 import { typeSegments } from '../../utils/routes'

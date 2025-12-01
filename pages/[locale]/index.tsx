@@ -1,7 +1,3 @@
-import '../reset.css'
-import '../font.css'
-import '../index.css'
-
 import React from 'react'
 import Frame from 'src/components/Frame'
 import Message, { useT } from 'src/components/Message'

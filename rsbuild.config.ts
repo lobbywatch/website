@@ -6,7 +6,6 @@ import {
 } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
 import { app, type AppEnv, type SSRModule } from './playground/app.ts'
-import { CssExtractRspackPlugin } from '@rspack/core'
 
 export const serverRender = (
   serverContext: SetupMiddlewaresContext,
@@ -45,12 +44,6 @@ export default defineConfig({
   html: {
     template: './playground/template.html',
   },
-  output: {
-    cssModules: {
-      auto: false,
-    },
-    manifest: true,
-  },
   environments: {
     web: {
       source: {
@@ -68,34 +61,7 @@ export default defineConfig({
       output: {
         target: 'node',
         module: true,
-        distPath: {
-          root: 'dist/server',
-        },
-      },
-    },
-  },
-  tools: {
-    bundlerChain: (chain, { CHAIN_ID }) => {
-      chain.module.rules.delete(CHAIN_ID.RULE.CSS)
-      chain.module.rules.delete(CHAIN_ID.RULE.CSS_INLINE)
-      chain.module.rules.delete(CHAIN_ID.RULE.CSS_RAW)
-    },
-    cssExtract: {
-      pluginOptions: {
-        ignoreOrder: false,
-        runtime: true,
-      },
-    },
-    rspack: {
-      plugins: [new CssExtractRspackPlugin({})],
-      module: {
-        rules: [
-          {
-            test: /\.css$/i,
-            use: [CssExtractRspackPlugin.loader, 'css-loader'],
-            type: 'javascript/auto',
-          },
-        ],
+        emitCss: true,
       },
     },
   },
