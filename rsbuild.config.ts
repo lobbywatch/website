@@ -44,6 +44,11 @@ export default defineConfig({
   html: {
     template: './playground/template.html',
   },
+  output: {
+    // injectStyles: process.env.NODE_ENV === 'development',
+    injectStyles: false,
+    manifest: true,
+  },
   environments: {
     web: {
       source: {
@@ -61,7 +66,9 @@ export default defineConfig({
       output: {
         target: 'node',
         module: true,
+        emitAssets: false,
         emitCss: true,
+        filenameHash: true,
       },
     },
   },
