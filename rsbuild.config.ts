@@ -42,18 +42,24 @@ export default defineConfig({
     ],
   },
   html: {
+    inject: false,
     template: './playground/template.html',
-  },
-  output: {
-    // injectStyles: process.env.NODE_ENV === 'development',
-    injectStyles: false,
-    manifest: true,
   },
   environments: {
     web: {
       source: {
         entry: {
-          index: './playground/index.tsx',
+          index: './pages/[locale]/index.web.tsx',
+        },
+      },
+      output: {
+        distPath: {
+          css: 'static/web/css',
+          js: 'static/web/js',
+        },
+        injectStyles: false,
+        manifest: {
+          filename: 'manifest.web.json',
         },
       },
     },
@@ -65,10 +71,15 @@ export default defineConfig({
       },
       output: {
         target: 'node',
-        module: true,
-        emitAssets: false,
+        emitAssets: true,
         emitCss: true,
-        filenameHash: true,
+        distPath: {
+          css: 'static/node/css',
+          js: 'static/node/js',
+        },
+        manifest: {
+          filename: 'manifest.node.json',
+        },
       },
     },
   },
