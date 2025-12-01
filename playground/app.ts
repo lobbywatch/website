@@ -52,6 +52,13 @@ export interface AppEnv {
   loadHtml: (name: string) => Promise<string>
 }
 
+const manifestWeb = JSON.parse(
+  await fs.promises.readFile('./dist/manifest.web.json', 'utf-8'),
+)
+const manifestNode = JSON.parse(
+  await fs.promises.readFile('./dist/manifest.node.json', 'utf-8'),
+)
+
 export const app =
   ({ loadBundle, loadHtml }: AppEnv, next: VoidFunction): RequestListener =>
   async (req, res) => {
@@ -60,13 +67,8 @@ export const app =
       res.writeHead(302, { Location: `/${lang}` })
       res.end()
     } else if (req.url === '/de') {
+      const locale = 'de'
       const page = 'index'
-      const manifestWeb = JSON.parse(
-        await fs.promises.readFile('./dist/manifest.web.json', 'utf-8'),
-      )
-      const manifestNode = JSON.parse(
-        await fs.promises.readFile('./dist/manifest.node.json', 'utf-8'),
-      )
       const styleTagsNode =
         manifestNode.entries[page]?.initial.css.map(
           (file) => `<link rel="stylesheet" href="${file}" />`,
@@ -77,7 +79,9 @@ export const app =
         ) ?? []
       const headContent = [...styleTagsNode, ...scriptTagsWeb].join('\n')
       const importedApp = await loadBundle(page)
-      const markup = await importedApp.render('de')
+      const markup = await importedApp.render(locale)
+      // FIXME Don't use loadHtml, we can render our own template here
+      // (because we need to inject manually anyway)
       const template = await loadHtml(page)
       const html = template
         .replace(`<!--head-content-->`, headContent)
@@ -85,13 +89,8 @@ export const app =
       res.writeHead(200, { 'Content-Type': 'text/html' })
       res.end(html)
     } else if (req.url === '/de/parlamentarier') {
+      const locale = 'de'
       const page = 'parlamentarier'
-      const manifestWeb = JSON.parse(
-        await fs.promises.readFile('./dist/manifest.web.json', 'utf-8'),
-      )
-      const manifestNode = JSON.parse(
-        await fs.promises.readFile('./dist/manifest.node.json', 'utf-8'),
-      )
       const styleTagsNode =
         manifestNode.entries[page]?.initial.css.map(
           (file) => `<link rel="stylesheet" href="${file}" />`,
@@ -102,7 +101,7 @@ export const app =
         ) ?? []
       const headContent = [...styleTagsNode, ...scriptTagsWeb].join('\n')
       const importedApp = await loadBundle(page)
-      const markup = await importedApp.render('de')
+      const markup = await importedApp.render(locale)
       const template = await loadHtml(page)
       const html = template
         .replace(`<!--head-content-->`, headContent)
