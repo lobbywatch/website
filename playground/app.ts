@@ -70,7 +70,7 @@ export const app =
       const locale = 'de'
       const page = 'index'
       const styleTagsNode =
-        manifestNode.entries[page]?.initial.css.map(
+        manifestNode.entries[page]?.initial.css?.map(
           (file) => `<link rel="stylesheet" href="${file}" />`,
         ) ?? []
       const scriptTagsWeb =
@@ -92,7 +92,7 @@ export const app =
       const locale = 'de'
       const page = 'parlamentarier'
       const styleTagsNode =
-        manifestNode.entries[page]?.initial.css.map(
+        manifestNode.entries[page]?.initial.css?.map(
           (file) => `<link rel="stylesheet" href="${file}" />`,
         ) ?? []
       const scriptTagsWeb =
