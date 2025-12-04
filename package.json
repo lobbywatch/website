@@ -11,7 +11,7 @@
     "start": "next start -p ${PORT:=3000}",
     "dev2": "NODE_OPTIONS=\"--experimental-vm-modules --disable-warning=ExperimentalWarning\" rsbuild dev",
     "build2": "rsbuild build",
-    "preview2": "NODE_OPTIONS=\"--experimental-vm-modules --disable-warning=ExperimentalWarning\" node playground/server.prod.ts",
+    "preview2": "NODE_OPTIONS=\"--experimental-vm-modules --disable-warning=ExperimentalWarning\" node server/server.prod.ts",
     "=== LINT ===": "",
     "lint": "concurrently \"npm:lint:*\"",
     "lint:format": "prettier --check --cache --cache-strategy content .",

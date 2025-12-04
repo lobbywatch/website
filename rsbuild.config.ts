@@ -5,7 +5,7 @@ import {
   type SetupMiddlewaresContext,
 } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
-import { app, type AppEnv, type SSRModule } from './playground/app.ts'
+import { app, type AppEnv, type SSRModule } from './server/app.ts'
 
 export const serverRender = (
   serverContext: SetupMiddlewaresContext,
@@ -43,7 +43,7 @@ export default defineConfig({
   },
   html: {
     inject: false,
-    template: './playground/template.html',
+    template: './server/template.html',
   },
   environments: {
     web: {

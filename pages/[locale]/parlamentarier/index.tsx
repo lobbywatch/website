@@ -16,7 +16,6 @@ import { Schema } from 'effect'
 import type { MappedParliamentarian } from 'src/domain'
 import { Locale } from 'src/domain'
 import ReactDOMServer from 'react-dom/server'
-import Page from '../index.tsx'
 
 const Parliamentarians = ({
   parliamentarians,
