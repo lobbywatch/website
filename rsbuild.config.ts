@@ -5,12 +5,12 @@ import {
   type SetupMiddlewaresContext,
 } from '@rsbuild/core'
 import { pluginReact } from '@rsbuild/plugin-react'
-import { app, type AppEnv, type SSRModule } from './server/app.ts'
+import { app, type BuildEnv, type SSRModule } from './server/app.ts'
 
 export const serverRender = (
   serverContext: SetupMiddlewaresContext,
 ): RequestHandler => {
-  const appEnv: AppEnv = {
+  const buildEnv: BuildEnv = {
     loadBundle: async (name: string) =>
       await serverContext.environments.node.loadBundle<SSRModule>(name),
     loadHtml: async (name: string) =>
@@ -18,7 +18,7 @@ export const serverRender = (
   }
 
   return async (req, res, next) => {
-    app(appEnv, next)(req, res)
+    app({ ...buildEnv, next })(req, res)
   }
 }
 

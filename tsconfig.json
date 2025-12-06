@@ -18,6 +18,7 @@
     "baseUrl": ".",
     "verbatimModuleSyntax": true,
     "allowImportingTsExtensions": true,
+    "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
