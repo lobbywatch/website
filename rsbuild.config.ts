@@ -1,72 +1,34 @@
-import {
-  defineConfig,
-  logger,
-  type RequestHandler,
-  type SetupMiddlewaresContext,
-} from '@rsbuild/core'
-import { pluginReact } from '@rsbuild/plugin-react'
-import { app, type AppEnv, type SSRModule } from './playground/app.ts'
-
-export const serverRender = (
-  serverContext: SetupMiddlewaresContext,
-): RequestHandler => {
-  const appEnv: AppEnv = {
-    loadBundle: async (name: string) =>
-      await serverContext.environments.node.loadBundle<SSRModule>(name),
-    loadHtml: async (name: string) =>
-      await serverContext.environments.web.getTransformedHtml(name),
-  }
-
-  return async (req, res, next) => {
-    app(appEnv, next)(req, res)
-  }
-}
+import { defineConfig } from '@rsbuild/core'
 
 export default defineConfig({
-  plugins: [pluginReact()],
-  dev: {
-    writeToDisk: true,
-    setupMiddlewares: [
-      ({ unshift }, serverContext) => {
-        const serverRenderMiddleware = serverRender(serverContext)
-        unshift(async (req, res, next) => {
-          try {
-            await serverRenderMiddleware(req, res, next)
-          } catch (err) {
-            logger.error('SSR render error, downgrade to CSR...')
-            logger.error(err)
-            next()
-          }
-        })
-      },
-    ],
-  },
-  html: {
-    template: './playground/template.html',
-  },
   environments: {
-    web: {
+    components: {
+      output: {
+        target: 'web',
+        distPath: {
+          root: 'public/components',
+          js: '[name]',
+          html: '[name]',
+        },
+        filename: {
+          js: 'index.js',
+          html: 'index.html',
+        },
+        filenameHash: false,
+      },
+      html: {
+        template: './components/test.html',
+      },
       source: {
         entry: {
-          index: './playground/index.tsx',
-          test: './playground/test.tsx',
+          'lw-search': './components/lw-search/index.ts',
         },
       },
     },
-    node: {
-      source: {
-        entry: {
-          index: './playground/index.server.tsx',
-          test: './playground/test.server.tsx',
-        },
-      },
-      output: {
-        module: true,
-        target: 'node',
-        distPath: {
-          root: 'dist/server',
-        },
-      },
+  },
+  server: {
+    publicDir: {
+      copyOnBuild: false,
     },
   },
 })
