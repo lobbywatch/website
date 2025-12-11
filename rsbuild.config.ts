@@ -27,6 +27,7 @@ export default defineConfig({
     },
   },
   server: {
+    base: '/components',
     publicDir: {
       copyOnBuild: false,
     },
