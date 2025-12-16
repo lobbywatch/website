@@ -33,6 +33,10 @@ const Frame = ({ children }: FrameProps) => {
       label: t('menu/lobbygroups'),
       href: `/${currentLocale}/${typeSegments.LobbyGroup}`,
     },
+    {
+      label: t('menu/about'),
+      href: t('menu/about-url'),
+    },
   ].map((item) => ({
     ...item,
     active: asPath.startsWith(item.href),
