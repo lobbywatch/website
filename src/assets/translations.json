@@ -722,8 +722,18 @@
     },
     {
       "key": "menu/parliamentarians",
-      "de": "Parlamentarier:in",
+      "de": "Parlamentarier:innen",
       "fr": "Parlementaires"
+    },
+    {
+      "key": "menu/about",
+      "de": "Über Lobbywatch",
+      "fr": "À propos Lobbywatch"
+    },
+    {
+      "key": "menu/about-url",
+      "de": "https://lobbywatch.ch/de",
+      "fr": "https://lobbywatch.ch/fr"
     },
     {
       "key": "organisation/legalForm/AG",

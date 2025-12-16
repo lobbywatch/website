@@ -30,7 +30,7 @@ const Menu = ({ items, expanded = false, id }: MenuProps) => {
             {separator && (
               <span key='separator' className={styles.listItemSeparator} />
             )}
-            <a key='link' href={href} className={active ? 'active' : ''}>
+            <a key={href} href={href} className={active ? 'active' : ''}>
               {label}
             </a>
           </li>
