@@ -11,6 +11,7 @@
   --colorPrimaryLight: #74d7ff;
   --colorPrimaryDark: #112233;
   --colorPrimaryHover: #004c88;
+  --colorPrimaryMuted: #a4ccde;
 
   --colorPotencyHigh: #00305a;
   --colorPotencyLow: var(--colorPrimary);

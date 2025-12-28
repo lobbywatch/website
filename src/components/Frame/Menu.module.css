@@ -55,9 +55,22 @@
   & a:visited,
   & a:hover {
     color: var(--colorPrimaryLight);
+    &:where(:global(.secondary)) {
+      font-weight: 300;
+      color: var(--colorPrimaryMuted);
+    }
+    &:where(:global(.button)) {
+      font-weight: 300;
+      color: var(--colorPrimaryMuted);
+      border: 1px solid var(--colorPrimaryMuted);
+      border-radius: var(--sizeS);
+      padding-block: var(--sizeXXS);
+      padding-inline: var(--sizeM);
+    }
   }
   & a:hover {
     color: var(--colorWhite);
+    border-color: var(--colorWhite);
   }
   & a.active {
     color: var(--colorWhite);

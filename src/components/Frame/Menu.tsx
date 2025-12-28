@@ -8,6 +8,7 @@ export interface MenuItem {
   href: string
   active?: boolean
   separator?: boolean
+  type: 'primary' | 'secondary' | 'button' | 'menu'
 }
 
 export interface MenuProps {
@@ -25,12 +26,16 @@ const Menu = ({ items, expanded = false, id }: MenuProps) => {
       data-expanded={expanded}
     >
       <ul className={styles.list}>
-        {items.map(({ label, href, active, separator }, index) => (
+        {items.map(({ type, label, href, active, separator }, index) => (
           <li className={styles.listItem} key={index}>
             {separator && (
               <span key='separator' className={styles.listItemSeparator} />
             )}
-            <a key={href} href={href} className={active ? 'active' : ''}>
+            <a
+              key={href}
+              href={href}
+              className={`${type} ${active ? 'active' : ''}`}
+            >
               {label}
             </a>
           </li>
