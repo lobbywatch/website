@@ -732,8 +732,18 @@
     },
     {
       "key": "menu/about-url",
-      "de": "https://lobbywatch.ch/de",
-      "fr": "https://lobbywatch.ch/fr"
+      "de": "https://www.lobbywatch.ch/de",
+      "fr": "https://www.lobbywatch.ch/fr"
+    },
+    {
+      "key": "menu/donate",
+      "de": "Spenden",
+      "fr": "Donner"
+    },
+    {
+      "key": "menu/donate-url",
+      "de": "https://www.lobbywatch.ch/spenden",
+      "fr": "https://www.lobbywatch.ch/fr/spenden"
     },
     {
       "key": "organisation/legalForm/AG",

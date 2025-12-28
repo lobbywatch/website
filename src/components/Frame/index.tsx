@@ -9,6 +9,7 @@ import type { ReactNode } from 'react'
 import { useLocale } from '../../vendor/next'
 import { Locale } from '../../domain'
 import CreativeCommons from '../../assets/CreativeCommons.tsx'
+import type { MenuItem } from './Menu.tsx'
 
 export interface FrameProps {
   children: ReactNode
@@ -24,23 +25,32 @@ const Frame = ({ children }: FrameProps) => {
     {
       label: t('menu/parliamentarians'),
       href: `/${currentLocale}/${typeSegments.Parliamentarian}`,
-    },
-    {
-      label: t('menu/guests'),
-      href: `/${currentLocale}/${typeSegments.Guest}`,
+      type: 'primary' as const,
     },
     {
       label: t('menu/lobbygroups'),
       href: `/${currentLocale}/${typeSegments.LobbyGroup}`,
+      type: 'primary' as const,
+    },
+    {
+      label: t('menu/guests'),
+      href: `/${currentLocale}/${typeSegments.Guest}`,
+      type: 'primary' as const,
     },
     {
       label: t('menu/about'),
       href: t('menu/about-url'),
+      type: 'secondary' as const,
+    },
+    {
+      label: t('menu/donate'),
+      href: t('menu/donate-url'),
+      type: 'button' as const,
     },
   ].map((item) => ({
     ...item,
     active: asPath.startsWith(item.href),
-  }))
+  })) satisfies Array<MenuItem>
 
   const localizedRoutes = Locale.literals
     .filter((locale) => locale !== currentLocale)
@@ -63,6 +73,7 @@ const Frame = ({ children }: FrameProps) => {
       separator: index === 0,
       label: t(`menu/locales/${locale}`, {}, locale),
       href,
+      type: 'menu' as const,
     }
   })
 
