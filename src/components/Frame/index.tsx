@@ -10,6 +10,7 @@ import { useLocale } from '../../vendor/next'
 import { Locale } from '../../domain'
 import CreativeCommons from '../../assets/CreativeCommons.tsx'
 import type { MenuItem } from './Menu.tsx'
+import { useRouter } from 'next/router'
 
 export interface FrameProps {
   children: ReactNode
@@ -17,7 +18,7 @@ export interface FrameProps {
 
 const Frame = ({ children }: FrameProps) => {
   const currentLocale = useLocale()
-  const asPath = typeof location === 'object' ? location.pathname : ''
+  const { asPath } = useRouter()
   const searchContextState = useSearchContextState()
   const t = useT(currentLocale)
 

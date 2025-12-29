@@ -64,12 +64,8 @@ export function useSafeRouter<A, I>(
 }
 
 export function useLocale(): Locale {
-  const pathname =
-    typeof location === 'object' ? location.pathname.toLocaleLowerCase() : ''
-  const matches = pathname.match(
-    new RegExp(`^\/(${Locale.literals.join('|')})(?:\/|$)`),
-  )
-  return matches != null ? (matches[1] as Locale) : Locale.literals[0]
+  const { query } = useRouter()
+  return (query.locale as Locale) ?? Locale.literals[0]
 }
 
 export const getSearchParams = () => {
