@@ -1,0 +1,84 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+  max-width: 64rem;
+  margin-bottom: 4rem;
+}
+
+.lead {
+  font-size: var(--fontSizeL);
+}
+
+.factsGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+}
+
+.primaryCard {
+  background: var(--colorPrimaryLight);
+  color: var(--colorPrimaryDark);
+  padding-inline: 2rem;
+  padding-block: 1.5rem;
+  border-radius: 2rem;
+  box-shadow:
+    rgba(0, 0, 0, 0.04) 0 1px 0,
+    rgba(0, 0, 0, 0.05) 0 2px 7px,
+    rgba(0, 0, 0, 0.06) 0 12px 22px;
+
+  & > h2 {
+    font-size: var(--fontSizeL);
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+  }
+
+  & > p {
+    font-size: 4rem;
+    font-weight: 300;
+    line-height: 1;
+  }
+
+  & > a {
+    display: inline-block;
+    color: var(--colorPrimaryDark);
+    background: rgba(30, 98, 158, 0.2);
+    border-radius: 0.75rem;
+    padding-inline: 1rem;
+    margin-top: 2rem;
+    line-height: 2.5;
+
+    &::after {
+      content: '';
+      display: inline-block;
+      position: relative;
+      top: 0.15em;
+      margin-left: 2rem;
+      width: 1.05em;
+      height: 1.1em;
+      background: url('data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20640%20640%22%3E%3Cpath%20d%3D%22M439.1%20297.4C451.6%20309.9%20451.6%20330.2%20439.1%20342.7L279.1%20502.7C266.6%20515.2%20246.3%20515.2%20233.8%20502.7C221.3%20490.2%20221.3%20469.9%20233.8%20457.4L371.2%20320L233.9%20182.6C221.4%20170.1%20221.4%20149.8%20233.9%20137.3C246.4%20124.8%20266.7%20124.8%20279.2%20137.3L439.2%20297.3z%22%2F%3E%3C%2Fsvg%3E')
+        no-repeat;
+      opacity: 0.5;
+    }
+  }
+}
+
+.flourishCard {
+  overflow: hidden;
+  background: #f5f5f5;
+  padding-inline: 1rem;
+  margin-bottom: -3px;
+  border-radius: 2rem;
+  box-shadow:
+    rgba(0, 0, 0, 0.04) 0 1px 0,
+    rgba(0, 0, 0, 0.05) 0 2px 7px,
+    rgba(0, 0, 0, 0.06) 0 12px 22px;
+  border: 2px solid #eaeaea;
+
+  & > * {
+    position: relative;
+    top: -3px;
+  }
+}
