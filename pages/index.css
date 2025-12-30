@@ -13,6 +13,8 @@
   --colorPrimaryHover: #004c88;
   --colorPrimaryMuted: #a4ccde;
 
+  --colorSpotlight: #ff4547;
+
   --colorPotencyHigh: #00305a;
   --colorPotencyLow: var(--colorPrimary);
   --colorPotencyMedium: #005599;
