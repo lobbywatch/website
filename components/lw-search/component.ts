@@ -1,5 +1,10 @@
 import { html, css, LitElement } from 'lit'
 
+export interface LwSearchProps {
+  label?: string
+  placeholder?: string
+}
+
 export class LwSearch extends LitElement {
   static properties = {
     label: { type: String },
