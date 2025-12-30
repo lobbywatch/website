@@ -671,9 +671,14 @@
       "fr": "Personnes accréditées"
     },
     {
-      "key": "index/meta/description",
-      "de": "Die Plattform Lobbywatch thematisiert Interessenbindungen zwischen National‐ und Ständeräten zu Firmen, Vereinigungen und Institutionen und den Einfluss dieser Verbände, Organisationen und Firmen.",
-      "fr": "La plateforme Lobbywatch réunit les liens des parlementaires de l'Assemblée fédérale avec des entreprises, des associations et des institutions. Lobbywatch veut montrer l'influence de ces organismes dans la politique."
+      "key": "index/title",
+      "de": "Fakten und Zahlen",
+      "fr": "Faits et données chiffrées"
+    },
+    {
+      "key": "index/byline",
+      "de": "Über 50’000 Datensätze aus der Schweizer Politik. Wöchentlich aktualisiert. <a href='https://www.lobbywatch.ch/hinweise-melden/'>Hinweise melden.</a>",
+      "fr": "Plus de 50’000 données chiffrées à propos la politique Suisse. Mis à jour chaque semaine. <a href='https://www.lobbywatch.ch/fr/hinweise-melden/'>Signaler une information.</a>"
     },
     {
       "key": "lobbygroup/meta/description/0",
@@ -974,36 +979,6 @@
       "key": "published",
       "de": "Veröffentlicht am {date}",
       "fr": "Publié le {date}"
-    },
-    {
-      "key": "purpose/independence/text",
-      "de": "Lobbywatch ist eine unabhängige journalistische Plattform. Frei zugänglich für interessierte Bürger:innen und alle Redaktionen.",
-      "fr": "Lobbywatch est une plateforme journalistique indépendante. Elle est librement accessible aux citoyens-nes intéressés-ées et à toutes les rédactions."
-    },
-    {
-      "key": "purpose/independence/title",
-      "de": "Wir sind unabhängig",
-      "fr": "Nous sommes indépendants"
-    },
-    {
-      "key": "purpose/nonprofit/text",
-      "de": "Unsere Mitglieder engagieren sich bei uns finanziell für eine lebendige und transparente Demokratie. Bald auch Sie?",
-      "fr": "Nos membres s'engagent chez nous pour une démocratie vivante et transparente. Bientôt vous aussi ?"
-    },
-    {
-      "key": "purpose/nonprofit/title",
-      "de": "Gemeinnütziger Verein",
-      "fr": "Association à but non lucratif"
-    },
-    {
-      "key": "purpose/research/text",
-      "de": "Politik muss transparent sein. Deshalb zeigen wir auf, für welche Unternehmen sich Nationalrätinnen und Ständeräte engagieren.",
-      "fr": "La politique doit être transparente. C'est pourquoi nous indiquons les entreprises pour lesquelles les conseillers-ères nationaux-ales et les conseillers-ères aux États s'engagent."
-    },
-    {
-      "key": "purpose/research/title",
-      "de": "Interessenskonflikte",
-      "fr": "Conflits d'intérêts"
     },
     {
       "key": "search/claim",
