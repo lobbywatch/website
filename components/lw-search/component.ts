@@ -1,6 +1,23 @@
 import { html, css, LitElement } from 'lit'
 
 export class LwSearch extends LitElement {
+  static properties = {
+    label: { type: String },
+    placeholder: { type: String },
+  }
+
+  accessor label = ''
+  accessor placeholder = ''
+
+  render() {
+    return html`
+      <form method="get" action="https://daten.lobbywatch.ch/de/search">
+        <input type="text" name="term" placeholder=${this.placeholder} />
+        <button><span>${this.label}</span></button>
+      </form>
+    `
+  }
+
   static styles = css`
     form {
       display: flex;
@@ -29,6 +46,7 @@ export class LwSearch extends LitElement {
       border: none;
       border-radius: 2.5rem;
       height: 2.5rem;
+      min-width: 2.5rem;
       width: 2.5rem;
     }
 
@@ -36,17 +54,4 @@ export class LwSearch extends LitElement {
       visibility: hidden;
     }
   `
-
-  render() {
-    return html`
-      <form method="get" action="https://daten.lobbywatch.ch/de/search">
-        <input
-          type="text"
-          name="term"
-          placeholder="Suchen nach Personen, Lobbygruppen, Zutrittsberechtigten"
-        />
-        <button><span>Suchen</span></button>
-      </form>
-    `
-  }
 }
