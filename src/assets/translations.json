@@ -1006,6 +1006,11 @@
       "fr": "Conflits d'intérêts"
     },
     {
+      "key": "search/claim",
+      "de": "Grösste Lobbydatenbank der Schweiz durchsuchen:",
+      "fr": "Explorer la plus vaste base de données sur les lobbys en Suisse:"
+    },
+    {
       "key": "search/hint",
       "de": "Suchen Sie nach Nationalrätinnen, Nationalräten, Ständerätinnen, Ständeräten, Lobbyisten, Lobbygruppen oder Organisationen.",
       "fr": "Cherchez d'après le nom d'un parlementaire, un lobbyiste, un groupe d'intérêt ou une organisation "
