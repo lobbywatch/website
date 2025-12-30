@@ -1,8 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import styles from './SearchField.module.css'
 
-import SearchIcon from '../../assets/Search'
-
 import { useT } from '../Message'
 import SearchContext from './SearchContext'
 import { useLocale, useSafeRouter } from '../../vendor/next'
@@ -32,7 +30,7 @@ const SearchField = () => {
   const [searchValue, setSearchValue] = useContext(SearchContext)
 
   return (
-    <div className={styles.container}>
+    <form className={styles.container} onSubmit={(evt) => evt.preventDefault()}>
       <input
         className={styles.input}
         type='text'
@@ -49,8 +47,15 @@ const SearchField = () => {
         value={searchValue}
         placeholder={t('search/placeholder')}
       />
-      <SearchIcon className={styles.icon} />
-    </div>
+      <div
+        className={styles.separator}
+        aria-hidden='true'
+        role='presentation'
+      ></div>
+      <button className={styles.button}>
+        <span>{t('search/meta/title')}</span>
+      </button>
+    </form>
   )
 }
 
