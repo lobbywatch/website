@@ -37,6 +37,7 @@ export class LwSearch extends LitElement {
     }
 
     input[type='text'] {
+      font-size: 1rem;
       border: none;
       width: 100%;
       border-radius: 2.5rem;
