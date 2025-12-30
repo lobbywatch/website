@@ -6,8 +6,8 @@ export class LwSearch extends LitElement {
     placeholder: { type: String },
   }
 
-  accessor label = ''
-  accessor placeholder = ''
+  label = ''
+  placeholder = ''
 
   render() {
     return html`
