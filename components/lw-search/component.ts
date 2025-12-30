@@ -13,6 +13,7 @@ export class LwSearch extends LitElement {
     return html`
       <form method="get" action="https://daten.lobbywatch.ch/de/search">
         <input type="text" name="term" placeholder=${this.placeholder} />
+        <div class="separator" aria-hidden="true" role="presentation"></div>
         <button><span>${this.label}</span></button>
       </form>
     `
@@ -27,13 +28,19 @@ export class LwSearch extends LitElement {
       width: 100%;
       max-width: 40rem;
       padding-block: 0.5rem;
-      padding-inline: 1rem;
+      padding-inline: 0.5rem;
     }
 
     input[type='text'] {
       border: none;
-      border-right: 1px solid #cbcbcb;
       width: 100%;
+      border-radius: 2.5rem;
+      padding-inline: 1rem;
+    }
+
+    .separator {
+      width: 1px;
+      background: #cbcbcb;
     }
 
     button {
@@ -48,10 +55,10 @@ export class LwSearch extends LitElement {
       height: 2.5rem;
       min-width: 2.5rem;
       width: 2.5rem;
-    }
 
-    button span {
-      visibility: hidden;
+      & span {
+        visibility: hidden;
+      }
     }
   `
 }
