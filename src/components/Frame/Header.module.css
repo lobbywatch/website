@@ -43,6 +43,13 @@
   max-width: var(--sizeSearchMaxWidth);
 }
 
+.searchClaim {
+  color: var(--colorPrimaryLight);
+  font-size: var(--fontSizeXXL);
+  margin-bottom: 0.75rem;
+  text-wrap: balance;
+}
+
 .focusMode {
   height: calc(var(--sizeHeaderHeight) + 20px);
 }
