@@ -1032,8 +1032,8 @@
     },
     {
       "key": "search/placeholder",
-      "de": "Personen, Organisationen, Lobbygruppen",
-      "fr": "Personnes, Organisations, Groupes d'intérêt"
+      "de": "Personen, Lobbygruppen, Zutrittsberechtigte",
+      "fr": "Personnes, Groupes d'intérêt, Personnes accréditées"
     },
     {
       "key": "updated",
