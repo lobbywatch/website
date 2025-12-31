@@ -44,7 +44,7 @@ const Page = () => {
           />
           <PrimaryCard
             title={t('menu/guests')}
-            count={1331}
+            count={368}
             url={`/${locale}/${typeSegments.Guest}`}
           />
         </div>
