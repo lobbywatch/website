@@ -7,19 +7,35 @@ export interface LwSearchProps {
 
 export class LwSearch extends LitElement {
   static properties = {
+    lang: { type: String },
     label: { type: String },
     placeholder: { type: String },
   }
 
-  label = ''
-  placeholder = ''
+  accessor lang = 'de'
+  accessor label = ''
+  accessor placeholder = ''
 
   render() {
+    const lang = ['de', 'fr'].includes(this.lang) ? this.lang : 'de'
+    const placeholder =
+      this.placeholder.length > 0
+        ? this.placeholder
+        : lang === 'de'
+          ? 'Suchen nach Personen, Lobbygruppen, Zutrittsberechtigten'
+          : 'Rechercher des personnes, des groupes d’intérêt, des organisations'
+    const label =
+      this.label.length > 0
+        ? this.label
+        : lang === 'de'
+          ? 'Suchen'
+          : 'Rechercher'
+
     return html`
-      <form method="get" action="https://daten.lobbywatch.ch/de/search">
-        <input type="text" name="term" placeholder=${this.placeholder} />
+      <form method="get" action="https://daten.lobbywatch.ch/${lang}/search">
+        <input type="text" name="term" placeholder=${placeholder} />
         <div class="separator" aria-hidden="true" role="presentation"></div>
-        <button><span>${this.label}</span></button>
+        <button><span>${label}</span></button>
       </form>
     `
   }
