@@ -75,13 +75,17 @@ interface PrimaryCardProps {
   url: string
 }
 
-const PrimaryCard = ({ title, count, url }: PrimaryCardProps) => (
-  <div className={styles.primaryCard}>
-    <h2>{title}:</h2>
-    <p>{count}</p>
-    <a href={url}>Alle entdecken</a>
-  </div>
-)
+const PrimaryCard = ({ title, count, url }: PrimaryCardProps) => {
+  const locale = useLocale()
+  const t = useT(locale)
+  return (
+    <div className={styles.primaryCard}>
+      <h2>{title}:</h2>
+      <p>{count}</p>
+      <a href={url}>{t('index/discover-button')}</a>
+    </div>
+  )
+}
 
 interface FlourishCardProps {
   chartId: string
