@@ -38,7 +38,7 @@
   --sizeXL: 24px;
   --sizeXXL: 32px;
 
-  --sizeContentWidth: 760px;
+  --sizeContentWidth: 56rem;
   --sizeHeaderHeight: 75px;
   --sizeSearchMaxWidth: 600px;
 
@@ -107,38 +107,6 @@ a {
   @media only screen and (min-width: 48em) {
     font-size: var(--fontSizeS);
     line-height: 1.29;
-  }
-}
-
-/**
- * Global components
- */
-
-.page-footer {
-  position: sticky;
-  top: 100vh;
-
-  font-size: var(--fontSizeS);
-  color: var(--colorTextSecondary);
-  background: var(--colorGreySoft);
-  padding: var(--sizeL);
-
-  & > * {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: var(--sizeXL);
-
-    & > svg {
-      flex-shrink: 0;
-    }
-  }
-
-  p {
-  }
-
-  a {
-    color: inherit;
   }
 }
 
