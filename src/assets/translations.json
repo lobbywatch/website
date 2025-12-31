@@ -671,6 +671,11 @@
       "fr": "Personnes accréditées"
     },
     {
+      "key": "index/discover-button",
+      "de": "Alle entdecken",
+      "fr": "Découvrir"
+    },
+    {
       "key": "index/title",
       "de": "Fakten und Zahlen",
       "fr": "Faits et données chiffrées"
