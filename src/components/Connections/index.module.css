@@ -36,6 +36,13 @@
   position: relative;
   background-color: var(--colorGreyLight);
   margin-bottom: 20px;
+  max-width: var(--sizeContentWidth);
+  margin-inline: auto;
+  border-radius: 2rem;
+  box-shadow:
+    rgba(0, 0, 0, 0.04) 0 1px 0,
+    rgba(0, 0, 0, 0.05) 0 2px 7px,
+    rgba(0, 0, 0, 0.06) 0 12px 22px;
 }
 
 .container {
