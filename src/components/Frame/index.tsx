@@ -11,6 +11,7 @@ import { Locale } from '../../domain'
 import CreativeCommons from '../../assets/CreativeCommons.tsx'
 import type { MenuItem } from './Menu.tsx'
 import { useRouter } from 'next/router'
+import styles from './index.module.css'
 
 export interface FrameProps {
   children: ReactNode
@@ -96,8 +97,8 @@ const Frame = ({ children }: FrameProps) => {
         />
       </header>
       <main>{children}</main>
-      <footer className='page-footer'>
-        <div className='u-center'>
+      <footer className={styles.footer}>
+        <div className={styles.licence}>
           <CreativeCommons />
           <p
             className='text-meta'
@@ -105,6 +106,71 @@ const Frame = ({ children }: FrameProps) => {
               __html: t('footer/cc'),
             }}
           ></p>
+        </div>
+        <hr />
+        <div className={styles.navigation}>
+          <div className={styles.navigationGroup}>
+            <h3>{t('menu/database')}</h3>
+            <ul>
+              <li>
+                <a href={`/${currentLocale}`}>{t('menu/homepage')}</a>
+              </li>
+              <li>
+                <a href={`/${currentLocale}/${typeSegments.Parliamentarian}`}>
+                  {t('menu/parliamentarians')}
+                </a>
+              </li>
+              <li>
+                <a href={`/${currentLocale}/${typeSegments.LobbyGroup}`}>
+                  {t('menu/lobbygroups')}
+                </a>
+              </li>
+              <li>
+                <a href={`/${currentLocale}/${typeSegments.Guest}`}>
+                  {t('menu/guests')}
+                </a>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <a href={t('menu/hinweise-url')}>{t('menu/hinweise')}</a>
+              </li>
+              <li>
+                <a href={t('menu/export-url')}>{t('menu/export')}</a>
+              </li>
+              <li>
+                <a href={t('menu/tech-url')}>{t('menu/tech')}</a>
+              </li>
+            </ul>
+          </div>
+          <div className={styles.navigationGroup}>
+            <h3>Lobbywatch</h3>
+            <ul>
+              <li>
+                <a href={t('menu/homepage-url')}>{t('menu/homepage')}</a>
+              </li>
+              <li>
+                <a href={t('menu/why-url')}>{t('menu/why')}</a>
+              </li>
+              <li>
+                <a href={t('menu/research-url')}>{t('menu/research')}</a>
+              </li>
+              <li>
+                <a href={t('menu/education-url')}>{t('menu/education')}</a>
+              </li>
+            </ul>
+            <ul>
+              <li>
+                <a href={t('menu/about-url')}>{t('menu/about')}</a>
+              </li>
+              <li>
+                <a href={t('menu/blog-url')}>{t('menu/blog')}</a>
+              </li>
+              <li>
+                <a href={t('menu/contact-url')}>{t('menu/contact')}</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </footer>
     </SearchContext.Provider>

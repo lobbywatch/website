@@ -721,6 +721,36 @@
       "fr": "Groupes d'intérêt"
     },
     {
+      "key": "menu/hinweise",
+      "de": "Hinweise melden",
+      "fr": "Signaler une information"
+    },
+    {
+      "key": "menu/hinweise-url",
+      "de": "https://www.lobbywatch.ch/hinweise-melden/",
+      "fr": "https://www.lobbywatch.ch/fr/hinweise-melden/"
+    },
+    {
+      "key": "menu/export",
+      "de": "Datenexport",
+      "fr": "Export des donées"
+    },
+    {
+      "key": "menu/export-url",
+      "de": "https://www.lobbywatch.ch/datenexport/",
+      "fr": "https://www.lobbywatch.ch/fr/datenexport/"
+    },
+    {
+      "key": "menu/tech",
+      "de": "Technik",
+      "fr": "Technique"
+    },
+    {
+      "key": "menu/tech-url",
+      "de": "https://www.lobbywatch.ch/technik/",
+      "fr": "https://www.lobbywatch.ch/fr/technik/"
+    },
+    {
       "key": "menu/locales/de",
       "de": "Deutsch",
       "fr": "Deutsch"
@@ -741,9 +771,24 @@
       "fr": "À propos Lobbywatch"
     },
     {
+      "key": "menu/homepage",
+      "de": "Startseite",
+      "fr": "Homepage"
+    },
+    {
+      "key": "menu/homepage-url",
+      "de": "https://www.lobbywatch.ch/",
+      "fr": "https://www.lobbywatch.ch/fr/"
+    },
+    {
       "key": "menu/about-url",
-      "de": "https://www.lobbywatch.ch/de",
-      "fr": "https://www.lobbywatch.ch/fr"
+      "de": "https://www.lobbywatch.ch/ueber-uns/",
+      "fr": "https://www.lobbywatch.ch/fr/ueber-uns/"
+    },
+    {
+      "key": "menu/database",
+      "de": "Lobbydatenbank",
+      "fr": "Base des données sur le lobbying"
     },
     {
       "key": "menu/donate",
@@ -754,6 +799,56 @@
       "key": "menu/donate-url",
       "de": "https://www.lobbywatch.ch/spenden",
       "fr": "https://www.lobbywatch.ch/fr/spenden"
+    },
+    {
+      "key": "menu/why",
+      "de": "Wieso Lobbywatch?",
+      "fr": "Pourquoi Lobbywatch?"
+    },
+    {
+      "key": "menu/why-url",
+      "de": "https://www.lobbywatch.ch/wieso-lobbywatch/",
+      "fr": "https://www.lobbywatch.ch/fr/wieso-lobbywatch/"
+    },
+    {
+      "key": "menu/research",
+      "de": "Recherche & Tools",
+      "fr": "Enquêtes"
+    },
+    {
+      "key": "menu/research-url",
+      "de": "https://www.lobbywatch.ch/recherche/",
+      "fr": "https://www.lobbywatch.ch/fr/recherche/"
+    },
+    {
+      "key": "menu/education",
+      "de": "Bildungsangebot",
+      "fr": "Éducation"
+    },
+    {
+      "key": "menu/education-url",
+      "de": "https://www.lobbywatch.ch/bildung/",
+      "fr": "https://www.lobbywatch.ch/fr/bildung/"
+    },
+    {
+      "key": "menu/blog",
+      "de": "Lobbynews (Blog)",
+      "fr": "Actualités du lobbying"
+    },
+    {
+      "key": "menu/blog-url",
+      "de": "https://www.lobbywatch.ch/lobbynews/",
+      "fr": "https://www.lobbywatch.ch/fr/lobbynews/"
+    },
+    {
+      "key": "menu/contact",
+      "de": "Kontakt",
+      "fr": "Contact"
+    },
+    {
+      "key": "menu/contact-url",
+      "de": "https://www.lobbywatch.ch/kontakt/",
+      "fr": "https://www.lobbywatch.ch/fr/kontakt/"
     },
     {
       "key": "organisation/legalForm/AG",
