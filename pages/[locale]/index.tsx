@@ -34,7 +34,7 @@ const Page = () => {
         <div className={styles.factsGrid}>
           <PrimaryCard
             title={t('menu/parliamentarians')}
-            count={244}
+            count={246}
             url={`/${locale}/${typeSegments.Parliamentarian}`}
           />
           <PrimaryCard
