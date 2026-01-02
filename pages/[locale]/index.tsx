@@ -50,14 +50,14 @@ const Page = () => {
         </div>
 
         <FlourishCard
-          chartId={'26738457'}
-          title='Transparenzquote 2025 (%)'
+          chartId={t('chart/transparenz-1-id')}
+          title={t('chart/transparenz-1')}
           height={220}
         />
 
         <FlourishCard
-          chartId={'26990045'}
-          title='Transparenzquote nach Fraktionen (%)'
+          chartId={t('chart/transparenz-2-id')}
+          title={t('chart/transparenz-2')}
           height={400}
         />
       </div>
