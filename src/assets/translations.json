@@ -682,8 +682,8 @@
     },
     {
       "key": "index/byline",
-      "de": "Über 50’000 Datensätze aus der Schweizer Politik. Wöchentlich aktualisiert. <a href='https://www.lobbywatch.ch/hinweise-melden/'>Hinweise melden.</a>",
-      "fr": "Plus de 50’000 données chiffrées à propos la politique Suisse. Mis à jour chaque semaine. <a href='https://www.lobbywatch.ch/fr/hinweise-melden/'>Signaler une information.</a>"
+      "de": "Über 50’000 Datensätze aus der Schweizer Politik. Wöchentlich aktualisiert. <a href='https://lobbywatch.ch/hinweise-melden/'>Hinweise melden.</a>",
+      "fr": "Plus de 50’000 données chiffrées à propos la politique Suisse. Mis à jour chaque semaine. <a href='https://lobbywatch.ch/fr/hinweise-melden/'>Signaler une information.</a>"
     },
     {
       "key": "lobbygroup/meta/description/0",
@@ -727,8 +727,8 @@
     },
     {
       "key": "menu/hinweise-url",
-      "de": "https://www.lobbywatch.ch/hinweise-melden/",
-      "fr": "https://www.lobbywatch.ch/fr/hinweise-melden/"
+      "de": "https://lobbywatch.ch/hinweise-melden/",
+      "fr": "https://lobbywatch.ch/fr/hinweise-melden/"
     },
     {
       "key": "menu/export",
@@ -737,8 +737,8 @@
     },
     {
       "key": "menu/export-url",
-      "de": "https://www.lobbywatch.ch/datenexport/",
-      "fr": "https://www.lobbywatch.ch/fr/datenexport/"
+      "de": "https://lobbywatch.ch/datenexport/",
+      "fr": "https://lobbywatch.ch/fr/datenexport/"
     },
     {
       "key": "menu/tech",
@@ -747,8 +747,8 @@
     },
     {
       "key": "menu/tech-url",
-      "de": "https://www.lobbywatch.ch/technik/",
-      "fr": "https://www.lobbywatch.ch/fr/technik/"
+      "de": "https://lobbywatch.ch/technik/",
+      "fr": "https://lobbywatch.ch/fr/technik/"
     },
     {
       "key": "menu/locales/de",
@@ -777,13 +777,13 @@
     },
     {
       "key": "menu/homepage-url",
-      "de": "https://www.lobbywatch.ch/",
-      "fr": "https://www.lobbywatch.ch/fr/"
+      "de": "https://lobbywatch.ch/",
+      "fr": "https://lobbywatch.ch/fr/"
     },
     {
       "key": "menu/about-url",
-      "de": "https://www.lobbywatch.ch/ueber-uns/",
-      "fr": "https://www.lobbywatch.ch/fr/ueber-uns/"
+      "de": "https://lobbywatch.ch/ueber-uns/",
+      "fr": "https://lobbywatch.ch/fr/ueber-uns/"
     },
     {
       "key": "menu/database",
@@ -797,8 +797,8 @@
     },
     {
       "key": "menu/donate-url",
-      "de": "https://www.lobbywatch.ch/spenden",
-      "fr": "https://www.lobbywatch.ch/fr/spenden"
+      "de": "https://lobbywatch.ch/spenden",
+      "fr": "https://lobbywatch.ch/fr/spenden"
     },
     {
       "key": "menu/why",
@@ -807,8 +807,8 @@
     },
     {
       "key": "menu/why-url",
-      "de": "https://www.lobbywatch.ch/wieso-lobbywatch/",
-      "fr": "https://www.lobbywatch.ch/fr/wieso-lobbywatch/"
+      "de": "https://lobbywatch.ch/wieso-lobbywatch/",
+      "fr": "https://lobbywatch.ch/fr/wieso-lobbywatch/"
     },
     {
       "key": "menu/research",
@@ -817,8 +817,8 @@
     },
     {
       "key": "menu/research-url",
-      "de": "https://www.lobbywatch.ch/recherche/",
-      "fr": "https://www.lobbywatch.ch/fr/recherche/"
+      "de": "https://lobbywatch.ch/recherche/",
+      "fr": "https://lobbywatch.ch/fr/recherche/"
     },
     {
       "key": "menu/education",
@@ -827,8 +827,8 @@
     },
     {
       "key": "menu/education-url",
-      "de": "https://www.lobbywatch.ch/bildung/",
-      "fr": "https://www.lobbywatch.ch/fr/bildung/"
+      "de": "https://lobbywatch.ch/bildung/",
+      "fr": "https://lobbywatch.ch/fr/bildung/"
     },
     {
       "key": "menu/blog",
@@ -837,8 +837,8 @@
     },
     {
       "key": "menu/blog-url",
-      "de": "https://www.lobbywatch.ch/lobbynews/",
-      "fr": "https://www.lobbywatch.ch/fr/lobbynews/"
+      "de": "https://lobbywatch.ch/lobbynews/",
+      "fr": "https://lobbywatch.ch/fr/lobbynews/"
     },
     {
       "key": "menu/contact",
@@ -847,8 +847,8 @@
     },
     {
       "key": "menu/contact-url",
-      "de": "https://www.lobbywatch.ch/kontakt/",
-      "fr": "https://www.lobbywatch.ch/fr/kontakt/"
+      "de": "https://lobbywatch.ch/kontakt/",
+      "fr": "https://lobbywatch.ch/fr/kontakt/"
     },
     {
       "key": "organisation/legalForm/AG",
