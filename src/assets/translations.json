@@ -16,6 +16,26 @@
       "fr": "{count} branches influencent la politique en Suisse"
     },
     {
+      "key": "chart/transparenz-1",
+      "de": "Transparenzquote 2025 (%)",
+      "fr": "Taux de transparence 2025 (%)"
+    },
+    {
+      "key": "chart/transparenz-1-id",
+      "de": "26738457",
+      "fr": "26989080"
+    },
+    {
+      "key": "chart/transparenz-2",
+      "de": "Transparenzquote nach Fraktionen (%)",
+      "fr": "Taux de transparence par groupe parlementaire (%)"
+    },
+    {
+      "key": "chart/transparenz-2-id",
+      "de": "26990045",
+      "fr": "26989082"
+    },
+    {
       "key": "claim",
       "de": "Gut zu wissen, wer Politik macht",
       "fr": "Pour savoir qui façonne la politique"
