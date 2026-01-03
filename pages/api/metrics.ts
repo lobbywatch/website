@@ -12,7 +12,7 @@ export default async function handler(
     request.headers.authorization !== `Bearer ${BEARER_TOKEN}` ||
     !BEARER_TOKEN
   ) {
-    res.status(404).end()
+    res.status(401).end()
     return
   }
 
