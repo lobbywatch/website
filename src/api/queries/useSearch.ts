@@ -230,6 +230,7 @@ export const useSearch = ({
       'geschlecht',
       'funktion',
       'zweiter_vorname',
+      'bis_unix', // needed to filter out inactive guests
     ],
   })
   const lobbyGroups = useFetcher(locale, getAllLobbyGroups)
