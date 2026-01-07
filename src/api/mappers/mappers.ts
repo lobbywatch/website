@@ -44,6 +44,22 @@ const compensationTransparenceStateMap = {
   teilweise: 'PARTIAL',
 } as const
 
+function ref(
+  origin:
+    | MappedGuest
+    | MappedParliamentarian
+    | MappedLobbyGroup
+    | MappedLobbyGroup
+    | MappedOrganisation
+    | MappedBranch,
+) {
+  return {
+    id: origin.id,
+    name: origin.name,
+    __typename: origin.__typename,
+  }
+}
+
 // avoid error 'Reason: undefined cannot be serialized as JSON. Please use null or omit this value all together.'
 const replaceUndefinedWithNull = (obj: unknown) =>
   JSON.parse(JSON.stringify(obj))
@@ -168,7 +184,7 @@ const mapParliamentariansFromConnections = (
     }
     const vias: Array<MappedConnection> = [
       {
-        from: structuredClone(origin),
+        from: ref(origin),
         to: connectorOrganisation,
         function: directFunction,
       },
@@ -214,7 +230,7 @@ const mapParliamentariansFromConnections = (
     }
 
     return {
-      from: structuredClone(origin),
+      from: ref(origin),
       vias,
       to: parliamentarian,
       group: parliamentarian.partyMembership
@@ -233,7 +249,7 @@ export const mapLobbyGroup = (
     const organisations: (MappedConnection | null)[] = (
       raw.organisationen ?? []
     ).map((connection) => ({
-      from: structuredClone(lobbyGroup),
+      from: ref(lobbyGroup),
       vias: [],
       to: {
         id: `${orgIdPrefix}${connection.id}-${t.locale}`,
@@ -250,7 +266,7 @@ export const mapLobbyGroup = (
         const parliamentarian = mapParliamentarian(parliamentarianRaw, t)
 
         return {
-          from: structuredClone(lobbyGroup),
+          from: ref(lobbyGroup),
           vias: [],
           function: parliamentarianRaw.beruf,
           to: parliamentarian,
@@ -314,7 +330,7 @@ export const branchIdPrefix = 'Branch-'
 export const mapBranch = (raw: RawBranch, t: Formatter): MappedBranch => {
   const connections = (): Array<MappedConnection> => {
     const lobbygroups = raw.interessengruppe.map((connection) => ({
-      from: structuredClone(branch),
+      from: ref(branch),
       vias: [],
       to: {
         id: `${lobbyGroupIdPrefix}${connection.id}-${t.locale}`,
@@ -380,7 +396,7 @@ export const mapOrganisation = (
       }
       const parliamentarian = mapParliamentarian(directConnection, t)
       return {
-        from: structuredClone(org),
+        from: ref(org),
         vias: [],
         to: parliamentarian,
         group: parliamentarian.partyMembership
@@ -403,10 +419,10 @@ export const mapOrganisation = (
         const parliamentarian = mapParliamentarian(rawGuest.parlamentarier, t)
         const guest = mapGuest(rawGuest, t)
         indirect.push({
-          from: structuredClone(org),
+          from: ref(org),
           vias: [
             {
-              from: structuredClone(org),
+              from: ref(org),
               to: guest,
               function: mapFunction(
                 t,
@@ -427,7 +443,7 @@ export const mapOrganisation = (
     }
     const relations: Array<MappedConnection> = raw.beziehungen.map(
       (connection) => ({
-        from: structuredClone(org),
+        from: ref(org),
         to: {
           id: `${orgIdPrefix}${connection.ziel_organisation_id}-${t.locale}`,
           name: connection.ziel_organisation_name,
@@ -511,7 +527,7 @@ const mapMandate = (
   connection: RawConnection,
   t: Formatter,
 ): MappedConnection => ({
-  from: structuredClone(origin),
+  from: ref(origin),
   vias: [],
   to: {
     id: `${orgIdPrefix}${connection.organisation_id}-${t.locale}`,
@@ -608,10 +624,10 @@ export const mapParliamentarian = (
       for (const indirectConnection of guest?.connections ?? []) {
         indirect.push(
           Object.assign({}, indirectConnection, {
-            from: structuredClone(parliamentarian),
+            from: ref(parliamentarian),
             vias: [
               {
-                from: structuredClone(parliamentarian),
+                from: ref(parliamentarian),
                 to: guest,
                 function: guest.function,
               },
