@@ -21,6 +21,7 @@ import type {
   MappedVerguetung,
   MappedOrganisationLobbyGroup,
   MappedEdge,
+  MappedObject,
 } from '../../domain'
 
 const requireNonNull = <A>(a: A): NonNullable<A> => {
@@ -44,15 +45,7 @@ const compensationTransparenceStateMap = {
   teilweise: 'PARTIAL',
 } as const
 
-function ref(
-  origin:
-    | MappedGuest
-    | MappedParliamentarian
-    | MappedLobbyGroup
-    | MappedLobbyGroup
-    | MappedOrganisation
-    | MappedBranch,
-) {
+function ref(origin: MappedObject) {
   return {
     id: origin.id,
     name: origin.name,
