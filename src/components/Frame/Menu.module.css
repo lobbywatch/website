@@ -1,0 +1,95 @@
+.menu {
+  @media only screen and (max-width: 849px) {
+    display: flex;
+    background-color: var(--colorPrimaryDark);
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    flex-direction: column;
+    padding: 20px;
+    padding-top: calc(var(--sizeHeaderHeight) + 20px);
+    visibility: hidden;
+    opacity: 0;
+    transition:
+      opacity 0.2s ease-in-out,
+      visibility 0s linear 0.2s;
+    &[data-expanded='true'] {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.2s ease-in-out;
+    }
+  }
+
+  @media only screen and (min-width: 850px) {
+    display: block;
+    white-space: none;
+    position: absolute;
+    top: 26px;
+    right: 26px;
+  }
+}
+
+.list {
+  font-size: 16px;
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+  line-height: 24px;
+}
+
+.listItem {
+  @media only screen and (max-width: 849px) {
+    line-height: 56px;
+    padding-left: 30px;
+  }
+  @media only screen and (min-width: 850px) {
+    float: left;
+    margin-left: 15px;
+    position: relative;
+  }
+
+  & a,
+  & a:visited,
+  & a:hover {
+    color: var(--colorPrimaryLight);
+    &:where(:global(.secondary)) {
+      font-weight: 300;
+      color: var(--colorPrimaryMuted);
+    }
+    &:where(:global(.button)) {
+      font-weight: 300;
+      color: var(--colorPrimaryMuted);
+      border: 1px solid var(--colorPrimaryMuted);
+      border-radius: var(--sizeS);
+      padding-block: var(--sizeXXS);
+      padding-inline: var(--sizeM);
+    }
+  }
+  & a:hover {
+    color: var(--colorWhite);
+    border-color: var(--colorWhite);
+  }
+  & a.active {
+    color: var(--colorWhite);
+  }
+}
+
+.listItemSeparator {
+  @media only screen and (max-width: 849px) {
+    display: block;
+    height: 56px;
+  }
+  @media only screen and (min-width: 850px) {
+    display: inline-block;
+    background-color: var(--colorWhite);
+    vertical-align: middle;
+    margin-right: 25px;
+    margin-left: calc(25px - 15px);
+    opacity: 0.2;
+    width: 1px;
+    height: 24px;
+  }
+}

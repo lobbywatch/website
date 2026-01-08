@@ -1,0 +1,55 @@
+.title {
+  font-size: var(--fontSizeXL);
+  line-height: 1.42;
+  position: relative;
+  z-index: 5;
+  &,
+  &:visited {
+    color: var(--colorPrimaryLight);
+  }
+}
+
+.titleText {
+  vertical-align: top;
+  display: inline-block;
+  margin-top: -1px;
+  margin-left: 10px;
+}
+
+.navBar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: var(--sizeHeaderHeight);
+  background-color: var(--colorPrimaryDark);
+  padding: var(--paddingFrame);
+  z-index: 10;
+}
+
+.searchContainer {
+  background-color: var(--colorPrimaryDark);
+  padding-top: var(--sizeHeaderHeight);
+  padding-bottom: 20px;
+
+  @media only screen and (min-width: 53em) {
+    padding-top: calc(var(--sizeHeaderHeight) + 20px);
+    padding-bottom: 40px;
+  }
+}
+
+.searchBox {
+  margin: 0 auto;
+  max-width: var(--sizeSearchMaxWidth);
+}
+
+.searchClaim {
+  color: var(--colorPrimaryLight);
+  font-size: var(--fontSizeXXL);
+  margin-bottom: 0.75rem;
+  text-wrap: balance;
+}
+
+.focusMode {
+  height: calc(var(--sizeHeaderHeight) + 20px);
+}

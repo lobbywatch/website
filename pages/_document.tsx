@@ -1,0 +1,125 @@
+import type {
+  DocumentContext,
+  DocumentInitialProps,
+  DocumentProps,
+} from 'next/document'
+import Document, { Head, Html, Main, NextScript } from 'next/document'
+
+import { Locale } from '../src/domain'
+import { Option, Schema } from 'effect'
+
+export interface MyDocumentProps extends DocumentInitialProps {
+  locale: Locale
+  env: {
+    MATOMO_URL_BASE: string
+    MATOMO_SITE_ID: string
+    PUBLIC_BASE_URL: string
+  }
+  css?: string
+}
+
+export default class MyDocument extends Document {
+  static async getInitialProps({
+    renderPage,
+    query,
+  }: DocumentContext): Promise<MyDocumentProps> {
+    const page = await renderPage()
+    const locale = Schema.decodeUnknownOption(Locale)(query.locale).pipe(
+      Option.getOrElse((): Locale => 'de'),
+    )
+
+    return { ...page, env: require('../constants'), locale }
+  }
+  constructor(props: DocumentProps) {
+    super(props)
+    const { __NEXT_DATA__ } = props
+    if ('env' in this.props) {
+      // @ts-expect-error env is not defined on __NEXT_DATA__
+      __NEXT_DATA__['env'] = this.props.env
+    }
+  }
+  render() {
+    const {
+      locale,
+      env: { MATOMO_URL_BASE, MATOMO_SITE_ID, PUBLIC_BASE_URL },
+      css,
+    } = this.props as unknown as MyDocumentProps
+    const motivationComment = `/*
+🤔 You look like a curious person.
+💁 That's good, we need people like you!
+👉 Join us, ${PUBLIC_BASE_URL || ''}/de/seite/mitarbeiten
+*/`
+    const matomo = !!MATOMO_URL_BASE && !!MATOMO_SITE_ID
+    return (
+      <Html lang={locale} dir='ltr'>
+        <Head>
+          <script dangerouslySetInnerHTML={{ __html: motivationComment }} />
+          <meta name='viewport' content='width=device-width,initial-scale=1' />
+          <meta httpEquiv='X-UA-Compatible' content='IE=edge' />
+
+          {css ? <style dangerouslySetInnerHTML={{ __html: css }} /> : null}
+          <link
+            rel='apple-touch-icon'
+            sizes='180x180'
+            href='/apple-touch-icon.png'
+          />
+          <link
+            rel='icon'
+            type='image/png'
+            href='/static/favicon-32x32.png'
+            sizes='32x32'
+          />
+          <link
+            rel='icon'
+            type='image/png'
+            href='/static/favicon-16x16.png'
+            sizes='16x16'
+          />
+          <link rel='manifest' href='/static/manifest.json' />
+          <link rel='shortcut icon' href='/favicon.ico' />
+          <meta
+            name='msapplication-config'
+            content='/static/browserconfig.xml'
+          />
+          <meta name='theme-color' content={'var(--colorWhite)'} />
+        </Head>
+        <body>
+          <script
+            dangerouslySetInnerHTML={{ __html: `var _paq = _paq || [];` }}
+          />
+          <Main />
+          <NextScript />
+          {matomo && (
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+            _paq.push(['enableLinkTracking']);
+            ${
+              PUBLIC_BASE_URL?.indexOf('https') === 0
+                ? "_paq.push(['setSecureCookie', true]);"
+                : ''
+            }
+            (function() {
+              _paq.push(['setTrackerUrl', '${MATOMO_URL_BASE}/matomo.php']);
+              _paq.push(['setSiteId', '${MATOMO_SITE_ID}']);
+              var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+              g.type='text/javascript'; g.async=true; g.defer=true; g.src='${MATOMO_URL_BASE}/matomo.js'; s.parentNode.insertBefore(g,s);
+            })();`,
+              }}
+            />
+          )}
+          {matomo && (
+            <noscript>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`${MATOMO_URL_BASE}/matomo.php?idsite=${MATOMO_SITE_ID}&rec=1`}
+                style={{ border: 0, position: 'fixed', left: -1 }}
+                alt=''
+              />
+            </noscript>
+          )}
+        </body>
+      </Html>
+    )
+  }
+}

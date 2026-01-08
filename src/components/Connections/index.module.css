@@ -1,0 +1,117 @@
+.metaBox {
+  text-align: center;
+  line-height: 1.33;
+  padding: var(--sizeS);
+}
+
+.bubble {
+  display: inline-block;
+  font-size: 14px;
+  line-height: 24px;
+  background-color: var(--colorPrimaryDark);
+  color: var(--colorWhite);
+  border-radius: 20px;
+  padding: 8px 16px;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  min-height: 40px;
+  z-index: 1;
+}
+
+.bubbleVia {
+  color: var(--colorPrimaryDark);
+  background-color: var(--colorWhite);
+  border: 1px solid var(--colorPrimaryDark);
+  text-decoration: none;
+}
+
+.hidden {
+  position: absolute;
+  left: 0;
+  top: 0;
+  visibility: hidden;
+}
+
+.edge {
+  position: relative;
+  background-color: var(--colorGreyLight);
+  margin-bottom: 20px;
+  max-width: var(--sizeContentWidth);
+  margin-inline: auto;
+  border-radius: 2rem;
+  box-shadow:
+    rgba(0, 0, 0, 0.04) 0 1px 0,
+    rgba(0, 0, 0, 0.05) 0 2px 7px,
+    rgba(0, 0, 0, 0.06) 0 12px 22px;
+}
+
+.container {
+  position: relative;
+}
+
+.root {
+  position: absolute;
+  left: 50%;
+  top: 0;
+}
+
+.count {
+  display: inline-block;
+  height: 24px;
+  min-width: 24px;
+  text-align: center;
+  border-radius: 12px;
+  margin-left: -8px;
+  padding: 0 8px;
+  margin-right: 3px;
+  background-color: var(--colorWhite);
+  color: var(--colorPrimaryDark);
+  font-weight: 500;
+}
+
+.countVia {
+  color: var(--colorWhite);
+  background-color: var(--colorPrimaryDark);
+}
+
+.icon {
+  margin-left: -8px;
+  margin-right: 3px;
+  vertical-align: middle;
+}
+
+.connection {
+  display: inline-block;
+  text-decoration: none;
+  border-radius: 8px;
+  background-color: var(--colorGreyDark);
+  color: var(--colorWhite) !important;
+  font-size: 14px;
+  line-height: 16px;
+  padding: 5px 10px;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.connectionIndirect {
+  background-color: var(--colorWhite);
+  color: var(--colorGreyDark);
+  border: 1px solid var(--colorGreyDark);
+}
+
+.pathSegment {
+  position: relative;
+  display: block;
+  padding-left: 20px;
+}
+
+.pathSegmentFunction {
+  color: var(--colorGreyDark);
+}
+
+.pathSegmentIcon {
+  position: absolute;
+  top: 2px;
+  left: 0;
+}

@@ -3,12 +3,23 @@
 
 # testing
 /coverage
+/src/api/test/data
 
 # production
 /build
+/dist
+
+# These are build artefacts placed in /public due to Next.js limitations
+/public/components
+
+# rspack
+.rspack-profile-*/
 
 # next
 /.next
+
+# TypeScript
+*.tsbuildinfo
 
 # misc
 .DS_Store
