@@ -322,6 +322,10 @@ const rawConnectionFields = {
   }),
   person_id: Schema.optionalWith(Schema.String, { nullable: true }),
   zutrittsberechtigter: Schema.optionalWith(Schema.String, { nullable: true }),
+  funktion_im_gremium: Schema.optionalWith(
+    Schema.Literal('mitglied', 'praesident', 'vizepraesident'),
+    { nullable: true },
+  ),
 }
 
 export const RawConnection = Schema.Struct({
