@@ -22,7 +22,15 @@ const rawParliamentarianFields = {
   anzahl_kinder: Schema.optionalWith(Schema.NumberFromString, {
     nullable: true,
   }),
-  art: Schema.optional(Schema.Literal('beirat', 'mitglied', 'vorstand')),
+  art: Schema.optional(
+    Schema.Literal(
+      'beirat',
+      'mitglied',
+      'vorstand',
+      'geschaeftsfuehrend',
+      'taetig',
+    ),
+  ),
   beruf: Schema.String,
   beruf_interessengruppe_id: Schema.optionalWith(Schema.String, {
     nullable: true,
