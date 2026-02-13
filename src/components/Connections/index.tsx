@@ -539,6 +539,8 @@ const hoverValues: Array<HoverValue> = [
       'connection' in data &&
       data.connection.vias?.length === 0 &&
       data.connection.function != null,
+    // @ts-expect-error existence of property is ensured by test() function above
+    ({ data }) => data.connection.function,
   ],
   [
     'connections/context/paths/direct',
@@ -546,6 +548,8 @@ const hoverValues: Array<HoverValue> = [
       origin === 'Organisation' &&
       'connection' in data &&
       data.connection.function != null,
+    // @ts-expect-error existence of property is ensured by test() function above
+    ({ data }) => data.connection.function,
   ],
   [
     null,
@@ -597,10 +601,14 @@ const hoverValues: Array<HoverValue> = [
       (origin === 'Parliamentarian' || origin === 'Guest') &&
       'connection' in data &&
       data.connection.function != null,
+    // @ts-expect-error existence of property is ensured by test() function above
+    ({ data }) => data.connection.function,
   ],
   [
     'connections/context/description',
     ({ data }) => 'connection' in data && data.connection.description != null,
+    // @ts-expect-error existence of property is ensured by test() function above
+    ({ data }) => data.connection.description,
   ],
   [
     'connections/context/compensation',
@@ -640,6 +648,8 @@ const hoverValues: Array<HoverValue> = [
         !('label' in parent.data) ||
         data.connection.group !== parent?.data.label) &&
       data.connection.group != null,
+    // @ts-expect-error existence of property is ensured by test() function above
+    ({ data }) => data.connection.group,
   ],
 ]
 
