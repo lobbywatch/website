@@ -11,6 +11,7 @@
     "build:next": "next build",
     "build:components": "rsbuild build",
     "start": "next start -p ${PORT:=3000}",
+    "format": "prettier  --write .",
     "=== LINT ===": "",
     "lint": "concurrently \"npm:lint:*\"",
     "lint:format": "prettier --check --cache --cache-strategy content .",
