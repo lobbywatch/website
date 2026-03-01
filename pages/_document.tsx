@@ -77,6 +77,7 @@ export default class MyDocument extends Document {
           />
           <link rel='manifest' href='/static/manifest.json' />
           <link rel='shortcut icon' href='/favicon.ico' />
+          <link rel='me' href='https://tooting.ch/@Lobbywatch' />
           <meta
             name='msapplication-config'
             content='/static/browserconfig.xml'
