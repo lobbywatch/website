@@ -170,7 +170,7 @@ const rawGuestFields = {
   wikidata_item_url: Schema.optional(Schema.String),
   wikipedia: Schema.optional(Schema.String),
   zweiter_vorname: Schema.optionalWith(Schema.String, { nullable: true }),
-  bis_unix: Schema.optionalWith(Schema.JsonNumber, { nullable: true }),
+  bis_unix: Schema.optionalWith(Schema.NumberFromString, { nullable: true }),
 }
 
 export const RawGuest = Schema.Struct({
