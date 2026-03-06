@@ -63,27 +63,13 @@ const mapFunction = (t: Formatter, raw: RawFunction): string => {
     [
       `connection/function/${rechtsform}-${art}-${funktion}-${gender}`,
       `connection/function/${art}-${funktion}`,
+      `connection/funktion_im_gremium/${funktion}-${gender}`,
+      `connection/funktion_im_gremium/${funktion}`,
+      `connection/art/${art}`,
     ],
     {},
     null,
   )
-  if (translated === null) {
-    translated = [
-      art && t(`connection/art/${art}`, {}, art),
-      funktion &&
-        funktion !== art &&
-        t.first(
-          [
-            `connection/funktion_im_gremium/${funktion}-${gender}`,
-            `connection/funktion_im_gremium/${funktion}`,
-          ],
-          {},
-          funktion,
-        ),
-    ]
-      .filter(Boolean)
-      .join(', ')
-  }
   return translated
 }
 
