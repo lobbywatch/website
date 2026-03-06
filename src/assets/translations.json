@@ -66,6 +66,11 @@
       "fr": "Comité"
     },
     {
+      "key": "connection/art/gesellschafter",
+      "de": "Gesellschafter:in",
+      "fr": "associé∙e"
+    },
+    {
       "key": "connection/function/AG-geschaeftsfuehrend-mitglied-F",
       "de": "Geschäftsleitung",
       "fr": "Direction"
