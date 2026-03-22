@@ -314,7 +314,7 @@ export const mapBranch = (raw: RawBranch, t: Formatter): MappedBranch => {
       to: {
         id: `${lobbyGroupIdPrefix}${connection.id}-${t.locale}`,
         name: connection.name,
-        __typename: 'Branch',
+        __typename: 'LobbyGroup',
       } satisfies MappedEdge,
       group: t('connections/lobbyGroup'),
       description: connection.beschreibung,
