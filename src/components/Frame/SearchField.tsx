@@ -25,8 +25,8 @@ const SearchField = () => {
       inputRef.current?.focus()
       inputRef.current?.scrollIntoView({ block: 'center' })
     }
-    router.prefetch('/[locale]/search')
-  }, [router])
+    router.prefetch(`/${currentLocale}/search`)
+  }, [router, currentLocale])
   const [searchValue, setSearchValue] = useContext(SearchContext)
 
   return (
