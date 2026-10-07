@@ -44,7 +44,7 @@ Error.getInitialProps = ({
   const statusCode = res ? res.statusCode : err ? err.statusCode : undefined
   if (res) {
     // server only
-    console.error('[error]', res.statusCode, err)
+    console.error('[error]', res.req.url, res.statusCode, err)
   }
   return {
     statusCode,
