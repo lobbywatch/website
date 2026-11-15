@@ -29,6 +29,8 @@ const rawParliamentarianFields = {
       'vorstand',
       'geschaeftsfuehrend',
       'taetig',
+      'gesellschafter',
+      'finanziell',
     ),
   ),
   beruf: Schema.String,
