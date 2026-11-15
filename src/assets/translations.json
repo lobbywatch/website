@@ -71,6 +71,11 @@
       "fr": "associé∙e"
     },
     {
+      "key": "connection/art/finanziell",
+      "de": "finanziell beteiligt",
+      "fr": "avec participation financière"
+    },
+    {
       "key": "connection/function/AG-geschaeftsfuehrend-mitglied-F",
       "de": "Geschäftsleitung",
       "fr": "Direction"
